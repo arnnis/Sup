@@ -1,5 +1,5 @@
 import {MessageInput} from '../../models';
-import {store} from '../../../App';
+import {store} from '../../App';
 import {
   addPendingMessage,
   addMessageToChat,

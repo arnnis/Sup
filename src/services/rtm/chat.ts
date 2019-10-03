@@ -1,4 +1,4 @@
-import {store} from '../../../App';
+import {store} from '../../App';
 
 import {setUserTyping} from '../../actions/chats';
 import {updateEntity} from '../../actions/entities';

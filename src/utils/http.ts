@@ -1,7 +1,7 @@
 import NetInfo from '@react-native-community/netinfo';
 import {API_URL} from '../env';
 import {NetworkError, SlackError, ServerError} from './errors';
-import {store} from '../../App';
+import {store} from '../App';
 import {RootState} from '../reducers';
 import {Platform} from 'react-native';
 
