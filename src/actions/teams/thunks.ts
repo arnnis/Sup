@@ -31,24 +31,6 @@ export const signinTeam = (
   try {
     dispatch(signinTeamStart());
 
-    // let result = await AppAuth.authorize({
-    //   clientId: CLIENT_ID,
-    //   scopes: SCOPES,
-    //   serviceConfiguration: {
-    //     authorizationEndpoint: AUTHORIZE_ENDPOINT,
-    //     tokenEndpoint: TOKEN_ENDPOINT,
-    //   },
-    //   redirectUrl: 'whatslack://oauth/callback',
-    // });
-    // console.log(result);
-    // alert(JSON.stringify(result));
-    // let url = `${OAUTH_URL}?client_id=${CLIENT_ID}&scope=${SCOPES.join(",")}`;
-
-    // let result = WebBrowser.openAuthSessionAsync(
-    //   url,
-    //   "whatslack://oauth/callback"
-    // );
-
     let {team_id}: {team_id: string} = await http({
       path: '/auth.findTeam',
       body: {

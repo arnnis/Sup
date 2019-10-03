@@ -3,6 +3,7 @@ import {API_URL} from '../env';
 import {NetworkError, SlackError, ServerError} from './errors';
 import {store} from '../../App';
 import {RootState} from '../reducers';
+import {Platform} from 'react-native';
 
 interface RequestOption {
   path: string;
@@ -15,6 +16,9 @@ interface RequestOption {
 export default async (options: RequestOption) => {
   let {path, method, silent, body, isFormData} = options;
   try {
+    if (silent === undefined) silent = false;
+    silent = Platform.OS === 'web' ? true : silent;
+
     let isConnected = await NetInfo.isConnected.fetch();
     if (!isConnected) {
       !silent && alert('Network not available');
@@ -36,15 +40,13 @@ export default async (options: RequestOption) => {
 
     let response = await fetch(`${API_URL}${path}`, {
       method,
-      headers: {
-        Authorization: 'Bearer ' + token,
-      },
+      headers: {},
       body: isFormData ? createFormData(body) : JSON.stringify(body),
     });
 
     if (response.ok) {
       let responseJson = await response.json();
-      //debugger;
+
       if (responseJson.ok) {
         return Promise.resolve(responseJson);
       } else {

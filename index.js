@@ -2,10 +2,10 @@
  * @format
  */
 import React from 'react';
-import {AppRegistry} from 'react-native';
+import {AppRegistry, Platform} from 'react-native';
 import 'react-native-gesture-handler';
 import {useScreens} from 'react-native-screens';
-import App from './App';
+import App from './src/App';
 import {name as appName} from './app.json';
 
 if (process.env.NODE_ENV !== 'production') {
@@ -13,6 +13,11 @@ if (process.env.NODE_ENV !== 'production') {
   whyDidYouRender(React);
 }
 
-//useScreens();
+useScreens();
 
 AppRegistry.registerComponent(appName, () => App);
+
+Platform.OS === 'web' &&
+  AppRegistry.runApplication(appName, {
+    rootTag: document.getElementById('root'),
+  });

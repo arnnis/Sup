@@ -1,6 +1,11 @@
 import React, {FC} from 'react';
-import {TouchableNativeFeedback} from 'react-native-gesture-handler';
-import {View, TouchableOpacity, ViewStyle, Platform} from 'react-native';
+import {
+  View,
+  TouchableOpacity,
+  TouchableNativeFeedback,
+  ViewStyle,
+  Platform,
+} from 'react-native';
 
 type Props = {
   style?: Array<ViewStyle> | ViewStyle;
@@ -9,13 +14,13 @@ type Props = {
 };
 
 const Touchable: FC<Props> = ({style, onPress, disabled, children}) => {
-  let _renderAndroid = ({children}) => (
+  let _renderAndroid = () => (
     <TouchableNativeFeedback onPress={onPress} disabled={disabled}>
       <View style={style ? style : null}>{children}</View>
     </TouchableNativeFeedback>
   );
 
-  let _renderIOS = ({children}) => (
+  let _renderIOS = () => (
     <TouchableOpacity
       style={style ? style : null}
       onPress={onPress}
@@ -25,8 +30,9 @@ const Touchable: FC<Props> = ({style, onPress, disabled, children}) => {
   );
 
   return Platform.select({
-    android: _renderAndroid({children}),
-    ios: _renderIOS({children}),
+    android: _renderAndroid(),
+    ios: _renderIOS(),
+    web: _renderIOS(),
   });
 };
 

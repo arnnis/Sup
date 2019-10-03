@@ -13,8 +13,15 @@ export type TeamsState = Readonly<{
 }>;
 
 const initialState: TeamsState = {
-  currentTeam: 'T0ED8BPHS',
-  list: [],
+  currentTeam: 'TMYS2CUFQ',
+  list: [
+    {
+      id: 'TMYS2CUFQ',
+      token:
+        'xoxs-746886436534-738318706257-780860807956-f4e6ee07637c5630275a09c49dd7d2b4d65cef4aa50a84678a197be75cd2190e',
+      userId: 'UMQ9CLS7K',
+    },
+  ],
   loading: {},
   loggingIn: false,
 };
