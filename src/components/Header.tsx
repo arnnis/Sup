@@ -32,9 +32,9 @@ class Header extends Component<Props> {
     return (
       <Touchable style={styles.button} onPress={() => {}}>
         <MaterialCommunityIcons
-          name="menu"
-          color={theme.foregroundColor}
-          size={px(25)}
+          name="dots-vertical"
+          color="#fff"
+          size={px(23)}
         />
       </Touchable>
     );
@@ -50,11 +50,7 @@ class Header extends Component<Props> {
             ? this.props.onBackPress()
             : navigation.goBack()
         }>
-        <MaterialCommunityIcons
-          name="arrow-left"
-          color={theme.foregroundColor}
-          size={px(22)}
-        />
+        <MaterialCommunityIcons name="arrow-left" color="#fff" size={px(22)} />
       </Touchable>
     );
   }
@@ -81,7 +77,7 @@ class Header extends Component<Props> {
           style={{
             fontSize: px(15.5),
             fontWeight: 'bold',
-            color: theme.foregroundColor,
+            color: '#fff',
           }}>
           {title}
         </Text>
@@ -120,8 +116,7 @@ class Header extends Component<Props> {
         style={[
           styles.container,
           {
-            backgroundColor: theme.backgroundColor,
-            borderColor: theme.backgroundColorLess2,
+            backgroundColor: '#3D2037',
           },
           this.props.style,
         ]}>
@@ -142,10 +137,9 @@ var styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: px(12.5),
-    borderBottomWidth: StyleSheet.hairlineWidth,
   },
   button: {
-    width: px(40),
+    width: px(30),
     height: '100%',
     justifyContent: 'center',
     alignItems: 'center',

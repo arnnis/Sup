@@ -232,11 +232,7 @@ class ChatUI extends Component<Props> {
     if (!currentChat) return null;
 
     return (
-      <SafeAreaView
-        style={[
-          styles.container,
-          {backgroundColor: theme.backgroundColorMore1},
-        ]}>
+      <SafeAreaView style={[styles.container, {backgroundColor: '#3D2037'}]}>
         <Header
           center={
             isGroup
@@ -246,33 +242,35 @@ class ChatUI extends Component<Props> {
           }
           left="back"
         />
-        <GiftedChat
-          messages={this.getMessages()}
-          user={slackUserToGiftedUser(me)}
-          onLoadEarlier={() => dispatch(getMessages(currentChat.id))}
-          isLoadingEarlier={loading && messagesList.length > 1}
-          loadEarlier={
-            nextCursor && nextCursor !== 'end' && messagesList.length > 1
-          }
-          scrollToBottom={false}
-          parsePatterns={this.getParsePatterns}
-          onPressAvatar={this.handleAvatarPress}
-          onSend={(messages: GMessage[]) => {
-            sendMessage({
-              type: 'message',
-              text: messages[0].text,
-              channel: currentChat.id,
-            });
-          }}
-          renderUsernameOnMessage={!currentChat.is_im}
-          showUserAvatar={!currentChat.is_im}
-          renderMessage={this.renderMessage}
-          renderBubble={this.renderBubble}
-          renderSend={this.renderSend}
-          renderInputToolbar={this.renderInputToolbar}
-          renderMessageImage={this.renderMessageImage}
-          renderAvatar={this.renderAvatar}
-        />
+        <View style={{backgroundColor: theme.backgroundColor, flex: 1}}>
+          <GiftedChat
+            messages={this.getMessages()}
+            user={slackUserToGiftedUser(me)}
+            onLoadEarlier={() => dispatch(getMessages(currentChat.id))}
+            isLoadingEarlier={loading && messagesList.length > 1}
+            loadEarlier={
+              nextCursor && nextCursor !== 'end' && messagesList.length > 1
+            }
+            scrollToBottom={false}
+            parsePatterns={this.getParsePatterns}
+            onPressAvatar={this.handleAvatarPress}
+            onSend={(messages: GMessage[]) => {
+              sendMessage({
+                type: 'message',
+                text: messages[0].text,
+                channel: currentChat.id,
+              });
+            }}
+            renderUsernameOnMessage={!currentChat.is_im}
+            showUserAvatar={!currentChat.is_im}
+            renderMessage={this.renderMessage}
+            renderBubble={this.renderBubble}
+            renderSend={this.renderSend}
+            renderInputToolbar={this.renderInputToolbar}
+            renderMessageImage={this.renderMessageImage}
+            renderAvatar={this.renderAvatar}
+          />
+        </View>
       </SafeAreaView>
     );
   }

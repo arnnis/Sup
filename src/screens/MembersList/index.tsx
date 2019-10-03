@@ -31,10 +31,7 @@ class MembersList extends PureComponent<Props> {
 
     return (
       <View
-        style={[
-          styles.container,
-          {backgroundColor: theme.backgroundColorDarker1},
-        ]}>
+        style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
         {this.props.loading ? (
           this.renderLoading()
         ) : (
@@ -46,9 +43,10 @@ class MembersList extends PureComponent<Props> {
               offset: px(150) * index,
               index,
             })}
-            numColumns={3}
+            numColumns={4}
             initialNumToRender={10}
             maxToRenderPerBatch={10}
+            contentContainerStyle={{paddingTop: px(10)}}
           />
         )}
       </View>

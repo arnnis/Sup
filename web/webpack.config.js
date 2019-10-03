@@ -25,6 +25,7 @@ const config = {
           path.resolve(appDirectory, 'index.js'),
           path.resolve(appDirectory, 'App.tsx'),
           path.resolve(appDirectory, 'src'),
+          path.resolve(appDirectory, 'node_modules/react-native-web'),
           path.resolve(appDirectory, 'node_modules/react-navigation'),
           path.resolve(appDirectory, 'node_modules/@react-navigation/web'),
           path.resolve(appDirectory, 'node_modules/@react-navigation/native'),

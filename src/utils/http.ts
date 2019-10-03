@@ -16,6 +16,7 @@ interface RequestOption {
 export default async (options: RequestOption) => {
   let {path, method, silent, body, isFormData} = options;
   try {
+    silent = true;
     if (silent === undefined) silent = false;
     silent = Platform.OS === 'web' ? true : silent;
 

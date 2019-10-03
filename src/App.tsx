@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 import {StatusBar, YellowBox, Linking, AsyncStorage} from 'react-native';
 import {Provider as ReduxProvider} from 'react-redux';
+import {Provider as PaperProvider} from 'react-native-paper';
 import Navigator, {NavigationService} from './navigation/Navigator';
 import configureStore from './store/configureStore';
 import {PersistGate} from 'redux-persist/integration/react';
@@ -19,13 +20,15 @@ const App = () => {
   return (
     <ReduxProvider store={store}>
       <ThemeProvider>
-        <PersistGate loading={null} persistor={persistor}>
-          <Navigator
-            ref={navigatorRef => {
-              NavigationService.setTopLevelNavigator(navigatorRef);
-            }}
-          />
-        </PersistGate>
+        <PaperProvider>
+          <PersistGate loading={null} persistor={persistor}>
+            <Navigator
+              ref={navigatorRef => {
+                NavigationService.setTopLevelNavigator(navigatorRef);
+              }}
+            />
+          </PersistGate>
+        </PaperProvider>
       </ThemeProvider>
     </ReduxProvider>
   );

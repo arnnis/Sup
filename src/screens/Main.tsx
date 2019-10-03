@@ -1,7 +1,16 @@
 import React, {useState, useRef, useEffect} from 'react';
-import {View, StyleSheet, Image, SafeAreaView, StatusBar} from 'react-native';
+import {
+  Text,
+  StyleSheet,
+  Image,
+  SafeAreaView,
+  StatusBar,
+  Dimensions,
+} from 'react-native';
 import {BottomNavigation} from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
+import {Button, Paragraph, Menu, Divider, Provider} from 'react-native-paper';
 import Header from '../components/Header';
 import ChatsList from './ChatsList';
 import px from '../utils/normalizePixel';
@@ -26,14 +35,20 @@ const Main = React.memo(
     let [navigationState, setNavigationState] = useState({
       index: 0,
       routes: [
-        {key: 'chats', title: 'Chats', icon: 'email-open'},
-        {key: 'groups', title: 'Groups', icon: 'account-multiple'},
+        {key: 'chats', title: 'Chats', icon: 'email-open', color: '#333333'},
+        {
+          key: 'groups',
+          title: 'Groups',
+          icon: 'account-multiple',
+          color: '#333333',
+        },
         {key: 'peoples', title: 'Members', icon: 'domain'},
-        {key: 'settings', title: 'Settings', icon: 'settings-box'},
+        // {key: 'settings', title: 'Settings', icon: 'settings-box'},
       ],
     });
 
     let [drawerOpen, setDrawerOpen] = useState(false);
+    let [menuOpen, setMenuOpen] = useState(false);
 
     let drawerRef = useRef(null);
 
@@ -49,11 +64,11 @@ const Main = React.memo(
     let currentTeamInfo = teams.list.find(ws => ws.id === currentTeamId);
     let currentUserId = currentTeamInfo && currentTeamInfo.userId;
 
-    let _renderScene = BottomNavigation.SceneMap({
+    let _renderScene = SceneMap({
       chats: ChatsList,
       groups: GroupsList,
       peoples: MembersList,
-      settings: () => <UserProfile userId={currentUserId} isMe />,
+      // settings: () => <UserProfile userId={currentUserId} isMe />,
     } as any);
 
     let currentTeam = entities.teams.byId[currentTeamId];
@@ -77,7 +92,7 @@ const Main = React.memo(
     );
 
     let _renderTabIcon = ({route, focused, color}) => (
-      <MaterialCommunityIcons name={route.icon} color="#fff" size={px(20)} />
+      <MaterialCommunityIcons name={route.icon} color="#fff" size={px(17)} />
     );
 
     let _renderAvatar = () => (
@@ -88,6 +103,27 @@ const Main = React.memo(
       connectionStatus === 'connected'
         ? currentTeam && currentTeam.name
         : 'Connecting...';
+
+    let _openMenu = () => setMenuOpen(true);
+
+    let _closeMenu = () => setMenuOpen(false);
+
+    let _renderMenu = () => (
+      <Menu
+        visible={menuOpen}
+        onDismiss={_closeMenu}
+        anchor={
+          <Touchable onPress={_openMenu}>
+            <MaterialCommunityIcons
+              name="dots-vertical"
+              color="#fff"
+              size={px(22)}
+            />
+          </Touchable>
+        }>
+        <Menu.Item onPress={() => {}} title="Settings" />
+      </Menu>
+    );
 
     return (
       <SafeAreaView style={styles.container}>
@@ -106,9 +142,33 @@ const Main = React.memo(
           <Header
             center={_renderTeamName()}
             left={currentTeam && _renderTeamLogo()}
-            // right={currentUser && _renderAvatar()}
+            right={_renderMenu()}
           />
-          <BottomNavigation
+          <TabView
+            navigationState={navigationState}
+            renderScene={_renderScene}
+            onIndexChange={_handleIndexChange}
+            initialLayout={{width: Dimensions.get('window').width}}
+            renderTabBar={props => (
+              <TabBar
+                {...props}
+                indicatorStyle={{backgroundColor: '#fff'}}
+                style={{
+                  backgroundColor: '#3D2037',
+                  height: px(42.5),
+                  paddingHorizontal: px(10),
+                }}
+                labelStyle={{color: '#fff', fontSize: px(13.6)}}
+                renderIcon={_renderTabIcon}
+                tabStyle={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}
+                getLabelText={({route}) => route.title}
+              />
+            )}
+          />
+          {/* <BottomNavigation
             navigationState={navigationState}
             onIndexChange={_handleIndexChange}
             renderScene={_renderScene}
@@ -116,7 +176,7 @@ const Main = React.memo(
             shifting={false}
             renderIcon={_renderTabIcon}
             style={{backgroundColor: theme.backgroundColor}}
-          />
+          /> */}
         </DrawerLayout>
       </SafeAreaView>
     );
