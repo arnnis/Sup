@@ -3,13 +3,14 @@ import {View, Text, StyleSheet, Image, ViewStyle} from 'react-native';
 import {User} from '../models';
 import px from '../utils/normalizePixel';
 import FastImage from 'react-native-fast-image';
+import {connect} from 'react-redux';
+import {RootState} from '../reducers';
 
-interface Props {
-  user: User;
-  online?: boolean;
+type Props = ReturnType<typeof mapStateToProps> & {
+  userId: string;
   width?: number;
   styles?: ViewStyle;
-}
+};
 
 class Avatar extends Component<Props> {
   static defaultProps = {
@@ -17,11 +18,11 @@ class Avatar extends Component<Props> {
   };
 
   renderImage() {
-    let {
-      user: {profile, name},
-      width,
-    } = this.props;
+    let {user, width} = this.props;
 
+    if (!user) return <View style={styles.image} />;
+
+    let {profile} = user;
     let uri = '';
 
     switch (true) {
@@ -40,23 +41,20 @@ class Avatar extends Component<Props> {
         uri = profile.image_512;
     }
 
-    if (profile)
-      return (
-        <Image
-          source={{uri}}
-          style={[styles.image, {borderRadius: width / 2}]}
-        />
-      );
-
     return (
-      <View style={styles.image}>
-        <Text>{name[0]}</Text>
-      </View>
+      <FastImage
+        source={{uri}}
+        style={[styles.image, {borderRadius: width / 2}]}
+      />
     );
   }
 
   renderOnlineBadge() {
-    return <View style={styles.onlineBadge} />;
+    let {user, width} = this.props;
+
+    if (user && user.hasOwnProperty('presence') && user.presence === 'active')
+      return <View style={styles.onlineBadge} />;
+    return null;
   }
 
   render() {
@@ -70,9 +68,7 @@ class Avatar extends Component<Props> {
           this.props.styles,
         ]}>
         {this.renderImage()}
-        {user.hasOwnProperty('presence') &&
-          user.presence === 'active' &&
-          this.renderOnlineBadge()}
+        {this.renderOnlineBadge()}
       </View>
     );
   }
@@ -97,4 +93,8 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Avatar;
+const mapStateToProps = (state: RootState, ownProps) => ({
+  user: state.entities.users.byId[ownProps.userId],
+});
+
+export default connect(mapStateToProps)(Avatar);

@@ -2,12 +2,18 @@ import {createThemeFromColor} from './create-theme';
 
 export const darkBlueTheme = createThemeFromColor(
   '#242B38',
-  'dark-blue',
+  'darkBlueTheme',
   'Dark Blue',
 );
 
 export const lightWhite = createThemeFromColor(
   '#FFFFFF',
-  'light-white',
+  'lightWhite',
   'Light White',
+);
+
+export const darkBlack = createThemeFromColor(
+  '#000',
+  'darkBlack',
+  'Dark Black',
 );

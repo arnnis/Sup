@@ -25,7 +25,7 @@ class MemberCell extends PureComponent<Props> {
     });
 
   renderAvatar(user: User) {
-    return <Avatar user={user} width={px(60)} />;
+    return <Avatar userId={user.id} width={px(60)} />;
   }
 
   renderName(member: User) {

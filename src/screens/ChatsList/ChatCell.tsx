@@ -32,8 +32,8 @@ class ChatCell extends PureComponent<Props> {
   handlePress = () =>
     this.props.navigation.navigate('ChatUI', {chatId: this.props.chatId});
 
-  renderAvatar(user: User) {
-    let {isGroup, theme} = this.props;
+  renderAvatar() {
+    let {isGroup, theme, chat} = this.props;
     if (isGroup) {
       return (
         <View
@@ -58,22 +58,7 @@ class ChatCell extends PureComponent<Props> {
       );
     }
 
-    if (!user) {
-      return (
-        <View
-          style={{
-            width: px(50),
-            height: px(50),
-            justifyContent: 'center',
-            alignItems: 'center',
-            borderRadius: px(25),
-            backgroundColor: '#ccc',
-          }}
-        />
-      );
-    }
-
-    return <Avatar user={user} />;
+    return <Avatar userId={chat.user_id} />;
   }
 
   renderName(user: User) {
@@ -188,7 +173,7 @@ class ChatCell extends PureComponent<Props> {
           },
         ]}
         onPress={this.handlePress}>
-        {this.renderAvatar(user)}
+        {this.renderAvatar()}
         <View style={{flex: 1, marginLeft: px(10), paddingRight: px(15)}}>
           {this.renderName(user)}
           {this.renderLastMessage()}
