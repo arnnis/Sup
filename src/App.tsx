@@ -11,8 +11,8 @@ export const {store, persistor} = configureStore();
 
 const App = () => {
   useEffect(() => {
-    persistor.purge();
-    AsyncStorage.clear();
+    // persistor.purge();
+    // AsyncStorage.clear();
     console.disableYellowBox = true;
     YellowBox.ignoreWarnings(['deprecated', 'Require cycle']);
   }, []);

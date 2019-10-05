@@ -22,10 +22,28 @@ class Avatar extends Component<Props> {
       width,
     } = this.props;
 
+    let uri = '';
+
+    switch (true) {
+      case width < 32:
+        uri = profile.image_24;
+        break;
+      case width < 72:
+        uri = profile.image_48;
+      case width < 192:
+        uri = profile.image_72;
+        break;
+      case width < 512:
+        uri = profile.image_192;
+        break;
+      default:
+        uri = profile.image_512;
+    }
+
     if (profile)
       return (
         <Image
-          source={{uri: profile.image_48}}
+          source={{uri}}
           style={[styles.image, {borderRadius: width / 2}]}
         />
       );

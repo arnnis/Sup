@@ -64,7 +64,11 @@ export const init = async () => {
     if (data.type === 'user_typing') handleUserTyping(data);
 
     // Chat was seen by current user.
-    if (data.type === 'im_marked' || data.type === 'channel_marked')
+    if (
+      data.type === 'im_marked' ||
+      data.type === 'channel_marked' ||
+      data.type === 'group_marked'
+    )
       handleChatsMarkedAsSeen(data);
 
     // Handle server ack messages
