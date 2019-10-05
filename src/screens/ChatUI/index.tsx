@@ -40,6 +40,7 @@ import Username from './Username';
 import Emoji from './Emoji';
 import px from '../../utils/normalizePixel';
 import {getMember} from '../../actions/members/thunks';
+import memoizeOne from 'memoize-one';
 
 type Props = ReturnType<typeof mapStateToProps> &
   ThemeInjectedProps &
@@ -50,21 +51,14 @@ type Props = ReturnType<typeof mapStateToProps> &
 
 class ChatUI extends Component<Props> {
   async componentDidMount() {
-    let {
-      navigation,
-      lastMessages,
-      nextCursor,
-      messagesList,
-      dispatch,
-    } = this.props;
+    let {navigation, lastMessage, nextCursor, messages, dispatch} = this.props;
     let chatId = navigation.getParam('chatId');
 
-    let lastMessage = lastMessages[chatId];
     if (lastMessage && lastMessage.messageId && !lastMessage.loading) {
       dispatch(addMessageToChat(lastMessage.messageId, chatId));
     }
 
-    if (nextCursor[chatId] !== 'end' && messagesList.length <= 1) {
+    if (nextCursor[chatId] !== 'end' && messages.length <= 1) {
       await dispatch(getMessages(chatId));
     }
 
@@ -106,34 +100,8 @@ class ChatUI extends Component<Props> {
   markChatAsRead = () => {
     let {dispatch, navigation} = this.props;
     let chatId = navigation.getParam('chatId');
-    dispatch(markChatAsRead(chatId, this.props.messagesList[0]));
+    dispatch(markChatAsRead(chatId, this.props.messages[0]._id));
   };
-
-  getMessages(): GMessage[] {
-    let {entities, messagesList, pendingMessages, me, dispatch} = this.props;
-
-    let messages: GMessage[] = [];
-
-    // Pending messages
-    if (pendingMessages.length > 0) {
-      for (let pendingMessage of pendingMessages) {
-        let gMessage: GMessage = pendingMessageToGiftedMessage(
-          pendingMessage,
-          me,
-        );
-        messages.push(gMessage);
-      }
-    }
-
-    // Chat messages
-    for (let messageId of messagesList) {
-      let message: TMessage = entities.messages.byId[messageId];
-      let user: User = entities.users.byId[message.user];
-      let gMessage: GMessage = slackMessagetoGiftedMessage(message, user);
-      messages.push(gMessage);
-    }
-    return messages;
-  }
 
   getParsePatterns = () => {
     return [
@@ -174,11 +142,7 @@ class ChatUI extends Component<Props> {
       source={{
         uri: props.currentMessage.image,
         headers: {
-          Authorization:
-            'Bearer ' +
-            this.props.teams.list.find(
-              ws => ws.id === this.props.teams.currentTeam,
-            ).token,
+          Authorization: 'Bearer ' + this.props.currentTeamToken,
         },
       }}
       resizeMode="cover"
@@ -222,7 +186,7 @@ class ChatUI extends Component<Props> {
       currentChat,
       currentUser,
       loading,
-      messagesList,
+      messages,
       nextCursor,
       isGroup,
       dispatch,
@@ -244,12 +208,12 @@ class ChatUI extends Component<Props> {
         />
         <View style={{backgroundColor: theme.backgroundColor, flex: 1}}>
           <GiftedChat
-            messages={this.getMessages()}
+            messages={messages}
             user={slackUserToGiftedUser(me)}
             onLoadEarlier={() => dispatch(getMessages(currentChat.id))}
-            isLoadingEarlier={loading && messagesList.length > 1}
+            isLoadingEarlier={loading && messages.length > 1}
             loadEarlier={
-              nextCursor && nextCursor !== 'end' && messagesList.length > 1
+              nextCursor && nextCursor !== 'end' && messages.length > 1
             }
             scrollToBottom={false}
             parsePatterns={this.getParsePatterns}
@@ -292,24 +256,65 @@ const mapStateToProps = (state: RootState, ownProps) => {
   let currentChat = state.entities.chats.byId[chatId];
   let currentUser =
     currentChat && state.entities.users.byId[currentChat.user_id];
+
+  let me =
+    state.entities.users.byId[
+      state.teams.list.find(ws => ws.id === state.teams.currentTeam).userId
+    ];
+
+  let messagesList = state.messages.list[chatId] || defaultList;
+  let pendingMessages = state.messages.pendingMessages[chatId] || defaultList;
+  let messages = convertMessages(
+    state.entities,
+    messagesList,
+    pendingMessages,
+    me,
+  );
+
   return {
     chatId,
     currentChat,
     currentUser,
-    messagesList: state.messages.list[chatId] || defaultList,
+    messages,
     nextCursor: state.messages.nextCursor[chatId],
     loading: state.messages.loading[chatId],
     isGroup: currentChat && !currentChat.is_im,
-    lastMessages: state.chats.lastMessages,
-    pendingMessages: state.messages.pendingMessages[chatId] || defaultList,
+    lastMessage: state.chats.lastMessages[chatId],
+    pendingMessages,
     me:
       state.entities.users.byId[
         state.teams.list.find(ws => ws.id === state.teams.currentTeam).userId
       ],
-    teams: state.teams,
-    members: state.members,
-    entities: state.entities,
+    currentTeamToken: state.teams.list.find(
+      ws => ws.id === state.teams.currentTeam,
+    ).token,
   };
 };
+
+const convertMessages = memoizeOne(
+  (entities, messagesList, pendingMessages, me): GMessage[] => {
+    let messages: GMessage[] = [];
+
+    // Pending messages
+    if (pendingMessages.length > 0) {
+      for (let pendingMessage of pendingMessages) {
+        let gMessage: GMessage = pendingMessageToGiftedMessage(
+          pendingMessage,
+          me,
+        );
+        messages.push(gMessage);
+      }
+    }
+
+    // Chat messages
+    for (let messageId of messagesList) {
+      let message: TMessage = entities.messages.byId[messageId];
+      let user: User = entities.users.byId[message.user];
+      let gMessage: GMessage = slackMessagetoGiftedMessage(message, user);
+      messages.push(gMessage);
+    }
+    return messages;
+  },
+);
 
 export default connect(mapStateToProps)(withTheme(ChatUI));
