@@ -12,6 +12,7 @@ import Touchable from '../../components/Touchable';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import {NavigationInjectedProps, withNavigation} from 'react-navigation';
+import MessageText from '../ChatUIN/MessageText';
 
 dayjs.extend(utc);
 
@@ -29,8 +30,7 @@ class ChatCell extends PureComponent<Props> {
     this.props.dispatch(getChatLastMessage(chatId));
   }
 
-  handlePress = () =>
-    this.props.navigation.navigate('ChatUI', {chatId: this.props.chatId});
+  handlePress = () => this.props.navigation.navigate('ChatUI', {chatId: this.props.chatId});
 
   renderAvatar() {
     let {isGroup, theme, chat} = this.props;
@@ -76,10 +76,7 @@ class ChatCell extends PureComponent<Props> {
     }
     return (
       <Text style={[styles.name, {color: theme.foregroundColor}]}>
-        {isGroup
-          ? chat.name
-          : user.profile.display_name_normalized ||
-            user.profile.real_name_normalized}
+        {isGroup ? chat.name : user.profile.display_name_normalized || user.profile.real_name_normalized}
       </Text>
     );
   }
@@ -105,11 +102,11 @@ class ChatCell extends PureComponent<Props> {
 
     return (
       <View>
-        <Text
+        <MessageText
+          messageId={lastMessage.ts}
           style={[styles.lastMessage, {color: theme.backgroundColorLess5}]}
-          numberOfLines={1}>
-          {lastMessage.text}
-        </Text>
+          textProps={{numberOfLines: 1}}
+        />
       </View>
     );
   }
@@ -134,15 +131,11 @@ class ChatCell extends PureComponent<Props> {
 
     let data =
       chatLastMessageStatus.messageId &&
-      dayjs
-        .unix(Number(chatLastMessageStatus.messageId.split('.')[0]))
-        .format('HH:MM');
+      dayjs.unix(Number(chatLastMessageStatus.messageId.split('.')[0])).format('HH:MM');
 
     return (
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <Text style={[styles.date, {color: theme.backgroundColorLess4}]}>
-          {data}
-        </Text>
+        <Text style={[styles.date, {color: theme.backgroundColorLess4}]}>{data}</Text>
       </View>
     );
   }

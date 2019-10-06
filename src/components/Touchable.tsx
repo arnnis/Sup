@@ -1,11 +1,5 @@
 import React, {FC} from 'react';
-import {
-  View,
-  TouchableOpacity,
-  TouchableNativeFeedback,
-  ViewStyle,
-  Platform,
-} from 'react-native';
+import {View, TouchableOpacity, TouchableNativeFeedback, ViewStyle, Platform} from 'react-native';
 
 type Props = {
   style?: Array<ViewStyle> | ViewStyle;
@@ -21,10 +15,7 @@ const Touchable: FC<Props> = ({style, onPress, disabled, children}) => {
   );
 
   let _renderIOS = () => (
-    <TouchableOpacity
-      style={style ? style : null}
-      onPress={onPress}
-      disabled={disabled}>
+    <TouchableOpacity style={style ? style : null} onPress={onPress} disabled={disabled}>
       {children}
     </TouchableOpacity>
   );

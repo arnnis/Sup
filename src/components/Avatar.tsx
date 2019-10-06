@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, Image, ViewStyle} from 'react-native';
+import {View, Text, StyleSheet, Image, ViewStyle, TouchableOpacity} from 'react-native';
 import {User} from '../models';
 import px from '../utils/normalizePixel';
 import FastImage from 'react-native-fast-image';
@@ -9,7 +9,8 @@ import {RootState} from '../reducers';
 type Props = ReturnType<typeof mapStateToProps> & {
   userId: string;
   width?: number;
-  styles?: ViewStyle;
+  style?: ViewStyle;
+  onPress?(): void;
 };
 
 class Avatar extends Component<Props> {
@@ -41,12 +42,7 @@ class Avatar extends Component<Props> {
         uri = profile.image_512;
     }
 
-    return (
-      <FastImage
-        source={{uri}}
-        style={[styles.image, {borderRadius: width / 2}]}
-      />
-    );
+    return <FastImage source={{uri}} style={[styles.image, {borderRadius: width / 2}]} />;
   }
 
   renderOnlineBadge() {
@@ -58,18 +54,16 @@ class Avatar extends Component<Props> {
   }
 
   render() {
-    let {width, user} = this.props;
+    let {width, onPress} = this.props;
 
     return (
-      <View
-        style={[
-          styles.container,
-          {width, height: width, borderRadius: width / 2},
-          this.props.styles,
-        ]}>
+      <TouchableOpacity
+        disabled={!onPress}
+        onPress={onPress}
+        style={[styles.container, {width, height: width, borderRadius: width / 2}, this.props.style]}>
         {this.renderImage()}
         {this.renderOnlineBadge()}
-      </View>
+      </TouchableOpacity>
     );
   }
 }
