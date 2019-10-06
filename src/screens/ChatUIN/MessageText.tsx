@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, Linking, TextProps} from 'react-native';
+import {View, StyleSheet, Linking, TextProps, TextStyle} from 'react-native';
 import ParsedText from 'react-native-parsed-text';
 import {connect} from 'react-redux';
 import {RootState} from '../../reducers';
@@ -13,6 +13,7 @@ type Props = ReturnType<typeof mapStateToProps> & {
   messageId: string;
   isMe: boolean;
   textProps: TextProps;
+  style: TextStyle;
 };
 
 class MessageText extends Component<Props> {
@@ -44,11 +45,11 @@ class MessageText extends Component<Props> {
   }
 
   render() {
-    let {text, isMe, textProps} = this.props;
+    let {text, isMe, textProps, style} = this.props;
     return (
       <View style={styles.container}>
         <ParsedText
-          style={[styles.text, isMe ? styles.textRight : styles.textLeft]}
+          style={[styles.text, isMe ? styles.textRight : styles.textLeft, style]}
           parse={[
             {type: 'url', style: styles.linkStyle, onPress: this.onUrlPress},
             {
@@ -90,7 +91,9 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state: RootState, ownProps) => ({
-  text: state.entities.messages.byId[ownProps.messageId] && state.entities.messages.byId[ownProps.messageId].text,
+  text:
+    state.entities.messages.byId[ownProps.messageId] &&
+    state.entities.messages.byId[ownProps.messageId].text,
 });
 
 export default connect(mapStateToProps)(MessageText);

@@ -9,8 +9,12 @@ import {getMessages} from '../../actions/messages/thunks';
 import {markChatAsRead} from '../../actions/chats/thunks';
 import Header from '../../components/Header';
 import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
+import InputToolbar from './InputToolbar';
 
-type Props = ReturnType<typeof mapStateToProps> & NavigationInjectedProps & DispatchProp<any> & ThemeInjectedProps;
+type Props = ReturnType<typeof mapStateToProps> &
+  NavigationInjectedProps &
+  DispatchProp<any> &
+  ThemeInjectedProps;
 
 class ChatUI extends Component<Props> {
   async componentDidMount() {
@@ -35,8 +39,10 @@ class ChatUI extends Component<Props> {
       let isGroup = !currentChat.is_im;
 
       if (currentChat && prevChat) {
-        if (isGroup && currentChat.unread_count && currentChat.unread_count > prevChat.unread_count) return true;
-        if (!isGroup && currentChat.dm_count && currentChat.dm_count > prevChat.dm_count) return true;
+        if (isGroup && currentChat.unread_count && currentChat.unread_count > prevChat.unread_count)
+          return true;
+        if (!isGroup && currentChat.dm_count && currentChat.dm_count > prevChat.dm_count)
+          return true;
       }
       return false;
     };
@@ -70,6 +76,10 @@ class ChatUI extends Component<Props> {
     );
   }
 
+  renderInputToolbar() {
+    return <InputToolbar />;
+  }
+
   render() {
     let {theme, isGroup, currentChat, currentUser} = this.props;
     let chatName = isGroup
@@ -80,6 +90,7 @@ class ChatUI extends Component<Props> {
       <SafeAreaView style={[styles.container, {backgroundColor: theme.backgroundColorDarker2}]}>
         <Header center={chatName} left="back" />
         {this.renderList()}
+        {this.renderInputToolbar()}
       </SafeAreaView>
     );
   }
@@ -98,7 +109,10 @@ const mapStateToProps = (state: RootState, ownProps) => {
   let currentChat = state.entities.chats.byId[chatId];
   let currentUser = currentChat && state.entities.users.byId[currentChat.user_id];
 
-  let me = state.entities.users.byId[state.teams.list.find(ws => ws.id === state.teams.currentTeam).userId];
+  let me =
+    state.entities.users.byId[
+      state.teams.list.find(ws => ws.id === state.teams.currentTeam).userId
+    ];
 
   let messagesList = state.messages.list[chatId] || defaultList;
   let pendingMessages = state.messages.pendingMessages[chatId] || defaultList;
