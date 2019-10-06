@@ -92,7 +92,7 @@
     "extends": "@react-native-community"
   },
   "prettier": {
-    "printWidth": 120,
+    "printWidth": 100,
     "bracketSpacing": false,
     "jsxBracketSameLine": true,
     "singleQuote": true,

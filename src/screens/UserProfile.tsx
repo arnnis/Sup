@@ -6,16 +6,13 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
+  SafeAreaView,
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Header from '../components/Header';
 import {RootState} from '../reducers';
 import {connect, DispatchProp} from 'react-redux';
-import {
-  NavigationInjectedProps,
-  withNavigation,
-  NavigationActions,
-} from 'react-navigation';
+import {NavigationInjectedProps, withNavigation, NavigationActions} from 'react-navigation';
 import px from '../utils/normalizePixel';
 import {User} from '../models';
 import {openChat} from '../actions/chats/thunks';
@@ -73,8 +70,7 @@ class UserProfile extends Component<Props> {
         </View>
 
         <Text style={[styles.name, {color: theme.foregroundColor}]}>
-          {user.profile.display_name_normalized ||
-            user.profile.real_name_normalized}
+          {user.profile.display_name_normalized || user.profile.real_name_normalized}
         </Text>
         <Text style={[styles.jobTitle, {color: theme.backgroundColorLess5}]}>
           {user.profile.title}
@@ -96,26 +92,15 @@ class UserProfile extends Component<Props> {
           marginBottom: px(35),
         }}>
         {isMe && (
-          <Touchable
-            style={[
-              styles.button,
-              {backgroundColor: theme.backgroundColorLess2},
-            ]}>
-            <Text style={[styles.buttonTitle, {color: theme.foregroundColor}]}>
-              Edit Profile
-            </Text>
+          <Touchable style={[styles.button, {backgroundColor: theme.backgroundColorLess2}]}>
+            <Text style={[styles.buttonTitle, {color: theme.foregroundColor}]}>Edit Profile</Text>
           </Touchable>
         )}
         {!isMe && (
           <Touchable
-            style={[
-              styles.button,
-              {backgroundColor: theme.backgroundColorLess2},
-            ]}
+            style={[styles.button, {backgroundColor: theme.backgroundColorLess2}]}
             onPress={this.handleCallPress}>
-            <Text style={[styles.buttonTitle, {color: theme.foregroundColor}]}>
-              Call
-            </Text>
+            <Text style={[styles.buttonTitle, {color: theme.foregroundColor}]}>Call</Text>
           </Touchable>
         )}
         <Touchable
@@ -125,9 +110,7 @@ class UserProfile extends Component<Props> {
           {isOpeningChat ? (
             <ActivityIndicator size="small" color="#3D2037" />
           ) : (
-            <Text style={[styles.buttonTitle, {color: theme.foregroundColor}]}>
-              Message
-            </Text>
+            <Text style={[styles.buttonTitle, {color: theme.foregroundColor}]}>Message</Text>
           )}
         </Touchable>
       </View>
@@ -147,22 +130,12 @@ class UserProfile extends Component<Props> {
               style={{marginRight: px(8), marginTop: -px(1)}}
             />
           ) : null}
-          <Text style={[styles.infoRowTitle, {color: theme.foregroundColor}]}>
-            {title}
-          </Text>
+          <Text style={[styles.infoRowTitle, {color: theme.foregroundColor}]}>{title}</Text>
         </View>
         {text ? (
-          <Text
-            style={[styles.infoRowText, {color: theme.backgroundColorLess4}]}>
-            {text}
-          </Text>
+          <Text style={[styles.infoRowText, {color: theme.backgroundColorLess4}]}>{text}</Text>
         ) : null}
-        <View
-          style={[
-            styles.divider,
-            {backgroundColor: theme.backgroundColorLess4},
-          ]}
-        />
+        <View style={[styles.divider, {backgroundColor: theme.backgroundColorLess4}]} />
       </Touchable>
     );
   }
@@ -195,8 +168,7 @@ class UserProfile extends Component<Props> {
     return (
       <>
         <Background />
-        <View
-          style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
+        <SafeAreaView style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
           {!isMe && (
             <Header
               center={`${user.profile.real_name_normalized ||
@@ -211,7 +183,7 @@ class UserProfile extends Component<Props> {
             {!isMe && this.renderUserInfoRows(user)}
             {/* {this.renderInfoRow()} */}
           </ScrollView>
-        </View>
+        </SafeAreaView>
       </>
     );
   }
