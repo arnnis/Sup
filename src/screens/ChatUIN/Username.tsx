@@ -16,7 +16,7 @@ const Username: FC<Props> = memo(({userId, name, navigation}) => {
   };
   return (
     <Text style={styles.text} onPress={handlePress}>
-      {`@${name}` || 'loading...'}
+      {name ? `@${name}` : '@loading...'}
     </Text>
   );
 });

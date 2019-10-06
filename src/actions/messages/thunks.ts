@@ -10,15 +10,12 @@ export const getMessages = (chatId: string) => async (dispatch, getState) => {
   let store: RootState = getState();
   let messageList = store.messages.list[chatId] || [];
   let cursor = messageList[messageList.length - 1] || '';
-
-  if (cursor === 'end') return;
+  let alreadyLoading = store.messages.loading[chatId];
+  if (cursor === 'end' || alreadyLoading) return;
 
   try {
     dispatch(getMessagesStart(chatId));
-    let {
-      messages,
-      response_metadata,
-    }: {messages: Array<Message>} & PaginationResult = await http({
+    let {messages, response_metadata}: {messages: Array<Message>} & PaginationResult = await http({
       path: '/conversations.history',
       body: {
         channel: chatId,

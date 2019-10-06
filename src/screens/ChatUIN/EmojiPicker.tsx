@@ -50,7 +50,7 @@ const EmojiPicker: FC<Props> = ({onEmojiSelected, onOpen, onClose}) => {
 
 const styles = StyleSheet.create({
   container: {
-    height: px(350),
+    height: px(300),
   },
 });
 

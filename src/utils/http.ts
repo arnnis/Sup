@@ -60,7 +60,7 @@ export default async (options: RequestOption) => {
     }
   } catch (err) {
     if (err instanceof SlackError) {
-      handleSlackError(err, path);
+      handleSlackError(err, path, silent);
     } else if (err instanceof NetworkError) {
       !silent && alert('Please check your internet connection');
     } else if (err instanceof ServerError) {
@@ -73,12 +73,9 @@ export default async (options: RequestOption) => {
   }
 };
 
-const handleSlackError = (error: SlackError, path: string) => {
-  alert('SlackError: ' + error.message + '\npath: ' + path);
-  if (
-    error.message === 'token_revoked' ||
-    error.message === 'account_inactive'
-  ) {
+const handleSlackError = (error: SlackError, path: string, silent: boolean) => {
+  !silent && alert('SlackError: ' + error.message + '\npath: ' + path);
+  if (error.message === 'token_revoked' || error.message === 'account_inactive') {
     // logout
     return;
   }

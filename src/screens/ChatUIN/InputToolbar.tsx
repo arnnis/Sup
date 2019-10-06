@@ -7,8 +7,13 @@ import Composer from './Composer';
 import Send from './Send';
 import EmojiPicker from './EmojiPicker';
 import Touchable from '../../components/Touchable';
+import {sendMessage} from '../../services/rtm';
 
-class InputToolbar extends Component {
+interface Props {
+  chatId: string;
+}
+
+class InputToolbar extends Component<Props> {
   state = {
     text: '',
     emojiSelectorVisible: true,
@@ -17,7 +22,11 @@ class InputToolbar extends Component {
   handleTextChanged = text => this.setState({text});
 
   handleSendPress = () => {
-    alert('send pressed!');
+    sendMessage({
+      type: 'message',
+      text: this.state.text,
+      channel: this.props.chatId,
+    });
   };
 
   handleEmojiButtonPress = () => {

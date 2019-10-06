@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, SafeAreaView, StyleSheet, FlatList} from 'react-native';
+import {View, SafeAreaView, StyleSheet, FlatList, ActivityIndicator} from 'react-native';
 import {RootState} from '../../reducers';
 import {connect, DispatchProp} from 'react-redux';
 import Message from './Message';
@@ -10,6 +10,7 @@ import {markChatAsRead} from '../../actions/chats/thunks';
 import Header from '../../components/Header';
 import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 import InputToolbar from './InputToolbar';
+import {getMember} from '../../actions/members/thunks';
 
 type Props = ReturnType<typeof mapStateToProps> &
   NavigationInjectedProps &
@@ -18,11 +19,19 @@ type Props = ReturnType<typeof mapStateToProps> &
 
 class ChatUI extends Component<Props> {
   async componentDidMount() {
-    let {navigation, lastMessage, nextCursor, messagesList, dispatch} = this.props;
+    let {
+      navigation,
+      lastMessageStatus,
+      lastMessage,
+      nextCursor,
+      messagesList,
+      dispatch,
+    } = this.props;
     let chatId = navigation.getParam('chatId');
 
-    if (lastMessage && lastMessage.messageId && !lastMessage.loading) {
-      dispatch(addMessageToChat(lastMessage.messageId, chatId));
+    if (lastMessageStatus && lastMessageStatus.messageId && !lastMessageStatus.loading) {
+      dispatch(addMessageToChat(lastMessageStatus.messageId, chatId));
+      dispatch(getMember(lastMessage.user));
     }
 
     if (nextCursor[chatId] !== 'end' && messagesList.length <= 1) {
@@ -31,6 +40,8 @@ class ChatUI extends Component<Props> {
 
     this.markChatAsRead();
   }
+
+  getMessages = () => this.props.dispatch(getMessages(this.props.navigation.getParam('chatId')));
 
   componentDidUpdate(prevProps: Props) {
     let unreadCountIncreased = () => {
@@ -63,6 +74,19 @@ class ChatUI extends Component<Props> {
     return <Message messageId={messageId} prevMessageId={prevMessageId} />;
   };
 
+  renderLoadingMore = () => {
+    let {loading, messagesList} = this.props;
+    if (loading && messagesList.length > 1)
+      return (
+        <View style={{width: '100%', alignItems: 'center'}}>
+          <ActivityIndicator size="small" color="#fff" />
+        </View>
+      );
+    return null;
+  };
+
+  keyExtractor = (messageId: string) => messageId;
+
   renderList() {
     let {messagesList} = this.props;
     return (
@@ -72,12 +96,16 @@ class ChatUI extends Component<Props> {
         bounces={false}
         initialNumToRender={3}
         inverted
+        keyExtractor={this.keyExtractor}
+        onEndReachedThreshold={0.25}
+        onEndReached={this.getMessages}
+        ListFooterComponent={this.renderLoadingMore}
       />
     );
   }
 
   renderInputToolbar() {
-    return <InputToolbar />;
+    return <InputToolbar chatId={this.props.currentChat.id} />;
   }
 
   render() {
@@ -117,6 +145,8 @@ const mapStateToProps = (state: RootState, ownProps) => {
   let messagesList = state.messages.list[chatId] || defaultList;
   let pendingMessages = state.messages.pendingMessages[chatId] || defaultList;
 
+  let lastMessageStatus = state.chats.lastMessages[chatId];
+
   return {
     chatId,
     currentChat,
@@ -125,7 +155,11 @@ const mapStateToProps = (state: RootState, ownProps) => {
     nextCursor: state.messages.nextCursor[chatId],
     loading: state.messages.loading[chatId],
     isGroup: currentChat && !currentChat.is_im,
-    lastMessage: state.chats.lastMessages[chatId],
+    lastMessageStatus,
+    lastMessage:
+      state.entities.messages.byId[
+        lastMessageStatus && lastMessageStatus.messageId && lastMessageStatus.messageId
+      ],
     pendingMessages,
     me,
     currentTeamToken: state.teams.list.find(ws => ws.id === state.teams.currentTeam).token,
