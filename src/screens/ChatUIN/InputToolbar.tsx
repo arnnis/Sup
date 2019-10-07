@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, Text, Keyboard} from 'react-native';
+import {View, StyleSheet, Text, Keyboard, Platform} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import emojis from '../../utils/emoji';
 import px from '../../utils/normalizePixel';
@@ -105,14 +105,12 @@ const styles = StyleSheet.create({
     paddingBottom: px(7.5),
   },
   emojiButton: {
-    width: px(31),
-    height: px(31),
     borderRadius: px(15),
     backgroundColor: 'transparent',
     justifyContent: 'center',
     alignItems: 'center',
     marginLeft: px(5),
-    paddingBottom: px(17),
+    paddingBottom: Platform.select({ios: px(7.5), default: px(11)}),
   },
   emojiAndComposeWrapper: {
     backgroundColor: '#333333',
