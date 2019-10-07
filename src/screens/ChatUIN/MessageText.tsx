@@ -52,6 +52,7 @@ class MessageText extends Component<Props> {
 
   render() {
     let {text, isMe, textProps, style} = this.props;
+    if (!text) return null;
     return (
       <View style={styles.container}>
         <ParsedText

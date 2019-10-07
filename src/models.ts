@@ -163,8 +163,10 @@ export interface MessageAttachement {
   footer: string;
   mimetype: string;
   url_private_download: string;
+  url_private: string;
   footer_icon: string;
   ts: number;
+  permalink: string;
 }
 
 interface AttachmentField {
