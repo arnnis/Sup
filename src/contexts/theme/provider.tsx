@@ -21,10 +21,10 @@ class ThemeProvider extends Component<unknown, State> {
     let theme: Theme = themes[this.state.themeName];
     if (theme.isDark) {
       StatusBar.setBarStyle('dark-content');
-      Platform.OS === 'android' && StatusBar.setBackgroundColor('#3D2037');
+      Platform.OS === 'android' && StatusBar.setBackgroundColor('#3A1C39');
     } else {
       StatusBar.setBarStyle('light-content');
-      Platform.OS === 'android' && StatusBar.setBackgroundColor('#3D2037');
+      Platform.OS === 'android' && StatusBar.setBackgroundColor('#3A1C39');
     }
   }
 

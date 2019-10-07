@@ -1,12 +1,5 @@
 import React, {ComponentType, Component, ElementType} from 'react';
-import {
-  View,
-  StyleSheet,
-  Platform,
-  Text,
-  TouchableOpacity,
-  ViewStyle,
-} from 'react-native';
+import {View, StyleSheet, Platform, Text, TouchableOpacity, ViewStyle} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import withTheme, {ThemeInjectedProps} from '../contexts/theme/withTheme';
 import px from '../utils/normalizePixel';
@@ -31,11 +24,7 @@ class Header extends Component<Props> {
     let {theme} = this.props;
     return (
       <Touchable style={styles.button} onPress={() => {}}>
-        <MaterialCommunityIcons
-          name="dots-vertical"
-          color="#fff"
-          size={px(23)}
-        />
+        <MaterialCommunityIcons name="dots-vertical" color="#fff" size={px(23)} />
       </Touchable>
     );
   }
@@ -45,11 +34,7 @@ class Header extends Component<Props> {
     return (
       <Touchable
         style={styles.button}
-        onPress={() =>
-          this.props.onBackPress
-            ? this.props.onBackPress()
-            : navigation.goBack()
-        }>
+        onPress={() => (this.props.onBackPress ? this.props.onBackPress() : navigation.goBack())}>
         <MaterialCommunityIcons name="arrow-left" color="#fff" size={px(22)} />
       </Touchable>
     );
@@ -116,7 +101,7 @@ class Header extends Component<Props> {
         style={[
           styles.container,
           {
-            backgroundColor: '#3D2037',
+            backgroundColor: '#482046',
           },
           this.props.style,
         ]}>

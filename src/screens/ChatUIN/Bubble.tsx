@@ -5,6 +5,7 @@ import MessageText from './MessageText';
 import px from '../../utils/normalizePixel';
 import Name from './Name';
 import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
+import MessageImage from './MessageImage';
 
 type Props = ThemeInjectedProps & {
   currentMessage: Message;
@@ -15,6 +16,10 @@ type Props = ThemeInjectedProps & {
 class Bubble extends Component<Props> {
   renderMessageText() {
     return <MessageText messageId={this.props.currentMessage.ts} isMe={this.props.isMe} />;
+  }
+
+  renderMessageImage() {
+    return <MessageImage messageId={this.props.currentMessage.ts} />;
   }
 
   renderName() {
@@ -29,10 +34,15 @@ class Bubble extends Component<Props> {
           styles.container,
           {backgroundColor: theme.backgroundColor},
           isMe && styles.right,
-          !sameUser && {borderBottomLeftRadius: isMe ? 5 : 0, borderBottomRightRadius: isMe ? 0 : 5},
+          !sameUser && {
+            borderBottomLeftRadius: isMe ? 5 : 0,
+            borderBottomRightRadius: isMe ? 0 : 5,
+          },
         ]}>
         {this.renderName()}
+
         {this.renderMessageText()}
+        {this.renderMessageImage()}
       </View>
     );
   }

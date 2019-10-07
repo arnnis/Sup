@@ -25,8 +25,18 @@ class Message extends Component<Props> {
   renderAvatar(isMe, sameUser) {
     // If same author of previous message, render a placeholder instead of avatar
     if (sameUser)
-      return <View style={{width: 35, height: 35, marginLeft: isMe ? 7.5 : 0, marginRight: isMe ? 0 : 7.5}} />;
-    return <Avatar userId={this.props.currentMessage.user} width={px(35)} onPress={this.handleAvatarPress} />;
+      return (
+        <View
+          style={{width: 35, height: 35, marginLeft: isMe ? 7.5 : 0, marginRight: isMe ? 0 : 7.5}}
+        />
+      );
+    return (
+      <Avatar
+        userId={this.props.currentMessage.user}
+        width={px(35)}
+        onPress={this.handleAvatarPress}
+      />
+    );
   }
 
   renderBubble(isMe: boolean, sameUser: boolean) {
@@ -61,7 +71,12 @@ class Message extends Component<Props> {
     let sameUser = isSameUser(currentMessage, prevMessage);
     let isMe = me.id === currentMessage.user;
     return (
-      <View style={[styles.container, isMe ? styles.right : styles.left, {marginBottom: sameUser ? 4 : 10}]}>
+      <View
+        style={[
+          styles.container,
+          isMe ? styles.right : styles.left,
+          {marginBottom: sameUser ? 4 : 10},
+        ]}>
         {!isMe ? (
           <>
             {this.renderAvatar(isMe, sameUser)}
@@ -97,9 +112,12 @@ const styles = StyleSheet.create({
   },
 });
 
-const meSelector = createSelector(
+export const meSelector = createSelector(
   (state: RootState) => state,
-  state => state.entities.users.byId[state.teams.list.find(tm => tm.id === state.teams.currentTeam).userId],
+  state =>
+    state.entities.users.byId[
+      state.teams.list.find(tm => tm.id === state.teams.currentTeam).userId
+    ],
 );
 
 const mapStateToProps = (state: RootState, ownProps) => ({

@@ -11,9 +11,8 @@ type Props = ReturnType<typeof mapStateToProps> &
   };
 
 const Username: FC<Props> = memo(({userId, name, navigation}) => {
-  let handlePress = () => {
-    navigation.push('UserProfile', {userId});
-  };
+  let handlePress = () => navigation.push('UserProfile', {userId});
+
   return (
     <Text style={styles.text} onPress={handlePress}>
       {name ? `@${name}` : '@loading...'}
