@@ -6,6 +6,7 @@ import {RootState} from '../../reducers';
 import px from '../../utils/normalizePixel';
 import Emoji from './Emoji';
 import Username from './Username';
+import Code from './Code';
 
 const WWW_URL_PATTERN = /^www\./i;
 
@@ -44,6 +45,11 @@ class MessageText extends Component<Props> {
     return <Emoji name={name} />;
   }
 
+  renderCode(text: string) {
+    text = text.replace(/```/g, '');
+    return <Code text={text} />;
+  }
+
   render() {
     let {text, isMe, textProps, style} = this.props;
     return (
@@ -53,12 +59,16 @@ class MessageText extends Component<Props> {
           parse={[
             {type: 'url', style: styles.linkStyle, onPress: this.onUrlPress},
             {
-              pattern: RegExp(/<@[A-Z, 0-9]+>/g, 'g'),
+              pattern: /\<@(.*?)\>/gm,
               renderText: this.renderUsername,
             },
             {
               pattern: RegExp(/:[A-z, 0-9]+:+/g, 'g'),
               renderText: this.renderEmoji,
+            },
+            {
+              pattern: /\```(.*?)\```/g,
+              renderText: this.renderCode,
             },
           ]}
           {...textProps}>
