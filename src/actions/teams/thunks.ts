@@ -11,6 +11,7 @@ import {
   setCurrentTeam,
   getEmojisStart,
   getEmojisFail,
+  logout,
 } from '.';
 import {batch} from 'react-redux';
 import {storeEntities} from '../entities';
@@ -61,16 +62,18 @@ export const signinTeam = (
 };
 
 export const initTeam = () => async (dispatch, getState) => {
+  let store: RootState = getState();
+  let currentTeamId = store.teams.currentTeam;
+
+  if (!currentTeamId) return;
+
   dispatch(initTeamStart());
 
   try {
-    let store: RootState = getState();
-
     initRTM();
 
-    let teamId = store.teams.currentTeam;
     batch(async () => {
-      dispatch(getTeam(teamId));
+      dispatch(getTeam(currentTeamId));
       dispatch(getCurrentUser());
       dispatch(getEmojis());
       await dispatch(getChats());
@@ -111,6 +114,13 @@ export const switchTeam = (teamId: string) => dispatch => {
     dispatch(setCurrentTeam(teamId));
     dispatch(initTeam());
   });
+};
+
+export const logoutFromCurrentTeam = () => (dispatch, getState) => {
+  let state: RootState = getState();
+  let currentTeam = state.teams.currentTeam;
+  dispatch(logout(currentTeam));
+  closeSocket();
 };
 
 export const getEmojis = () => async dispatch => {

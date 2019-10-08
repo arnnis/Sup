@@ -1,5 +1,5 @@
 import React, {useState, useRef, useEffect} from 'react';
-import {Text, StyleSheet, Image, SafeAreaView, StatusBar, Dimensions} from 'react-native';
+import {Text, StyleSheet, Image, SafeAreaView, StatusBar, Dimensions, View} from 'react-native';
 import {BottomNavigation} from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
@@ -13,7 +13,7 @@ import Avatar from '../components/Avatar';
 import GroupsList from './GroupsList';
 import DrawerLayout from 'react-native-gesture-handler/DrawerLayout';
 import TeamsList from './TeamsList';
-import {initTeam} from '../actions/teams/thunks';
+import {initTeam, logoutFromCurrentTeam} from '../actions/teams/thunks';
 import MembersList from './MembersList';
 import UserProfile from './UserProfile';
 import Touchable from '../components/Touchable';
@@ -85,23 +85,35 @@ const Main = React.memo(({teams, entities, connectionStatus, dispatch, theme}: P
   let _renderAvatar = () => <Avatar user={currentUser} styles={{height: px(35), width: px(35)}} />;
 
   let _renderTeamName = () =>
-    connectionStatus === 'connected' ? currentTeam && currentTeam.name : 'Connecting...';
+    currentTeamId
+      ? connectionStatus === 'connected'
+        ? currentTeam && currentTeam.name
+        : 'Connecting...'
+      : 'No team selected';
 
   let _openMenu = () => setMenuOpen(true);
 
   let _closeMenu = () => setMenuOpen(false);
 
-  let _renderMenu = () => (
-    <Menu
-      visible={menuOpen}
-      onDismiss={_closeMenu}
-      anchor={
-        <Touchable onPress={_openMenu}>
-          <MaterialCommunityIcons name="dots-vertical" color="#fff" size={px(22)} />
-        </Touchable>
-      }>
-      <Menu.Item onPress={() => {}} title="Settings" />
-    </Menu>
+  let _renderMenu = () =>
+    currentTeamId && (
+      <Menu
+        visible={menuOpen}
+        onDismiss={_closeMenu}
+        anchor={
+          <Touchable onPress={_openMenu}>
+            <MaterialCommunityIcons name="dots-vertical" color="#fff" size={px(22)} />
+          </Touchable>
+        }>
+        <Menu.Item onPress={() => {}} title="Settings" />
+        <Menu.Item onPress={() => dispatch(logoutFromCurrentTeam())} title="Logout" />
+      </Menu>
+    );
+
+  let _renderNoTeamSelected = () => (
+    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <Text style={{color: '#fff'}}>Please signin into a team from side to get started.</Text>
+    </View>
   );
 
   return (
@@ -118,35 +130,36 @@ const Main = React.memo(({teams, entities, connectionStatus, dispatch, theme}: P
           />
         )}
         drawerWidth={px(160)}>
-        <Header
-          center={_renderTeamName()}
-          left={currentTeam && _renderTeamLogo()}
-          right={_renderMenu()}
-        />
-        <TabView
-          navigationState={navigationState}
-          renderScene={_renderScene}
-          onIndexChange={_handleIndexChange}
-          initialLayout={{width: Dimensions.get('window').width}}
-          renderTabBar={props => (
-            <TabBar
-              {...props}
-              indicatorStyle={{backgroundColor: '#fff'}}
-              style={{
-                backgroundColor: '#482046',
-                height: px(42.5),
-                paddingHorizontal: px(10),
-              }}
-              labelStyle={{color: '#fff', fontSize: px(13.6)}}
-              renderIcon={_renderTabIcon}
-              tabStyle={{
-                flexDirection: 'row',
-                alignItems: 'center',
-              }}
-              getLabelText={({route}) => route.title}
-            />
-          )}
-        />
+        <Header center={_renderTeamName()} left={_renderTeamLogo()} right={_renderMenu()} />
+        {currentTeamId ? (
+          <TabView
+            navigationState={navigationState}
+            renderScene={_renderScene}
+            onIndexChange={_handleIndexChange}
+            initialLayout={{width: Dimensions.get('window').width}}
+            renderTabBar={props => (
+              <TabBar
+                {...props}
+                indicatorStyle={{backgroundColor: '#fff'}}
+                style={{
+                  backgroundColor: '#482046',
+                  height: px(42.5),
+                  paddingHorizontal: px(10),
+                }}
+                labelStyle={{color: '#fff', fontSize: px(13.6)}}
+                renderIcon={_renderTabIcon}
+                tabStyle={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}
+                getLabelText={({route}) => route.title}
+              />
+            )}
+          />
+        ) : (
+          _renderNoTeamSelected()
+        )}
+
         {/* <BottomNavigation
             navigationState={navigationState}
             onIndexChange={_handleIndexChange}

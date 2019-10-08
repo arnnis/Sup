@@ -4,6 +4,8 @@ import {NetworkError, SlackError, ServerError} from './errors';
 import {store} from '../App';
 import {RootState} from '../reducers';
 import {Platform} from 'react-native';
+import {logout} from '../actions/teams';
+import {logoutFromCurrentTeam} from '../actions/teams/thunks';
 
 interface RequestOption {
   path: string;
@@ -16,7 +18,6 @@ interface RequestOption {
 export default async (options: RequestOption) => {
   let {path, method, silent, body, isFormData} = options;
   try {
-    silent = true;
     if (silent === undefined) silent = false;
     silent = Platform.OS === 'web' ? true : silent;
 
@@ -74,9 +75,9 @@ export default async (options: RequestOption) => {
 };
 
 const handleSlackError = (error: SlackError, path: string, silent: boolean) => {
-  alert('SlackError: ' + error.message + '\npath: ' + path);
+  console.log('SlackError: ' + error.message + '\npath: ' + path);
   if (error.message === 'token_revoked' || error.message === 'account_inactive') {
-    // logout
+    store.dispatch(logoutFromCurrentTeam() as any);
     return;
   }
 };

@@ -4,11 +4,7 @@ import {batch} from 'react-redux';
 import {setConnectionStatus} from '../../actions/app';
 import {getCurrentUser} from '../../actions/app/thunks';
 import {getChats} from '../../actions/chats/thunks';
-import {
-  sendMessage,
-  handleMessageRecieved,
-  handleSendMessageAckRecieved,
-} from './message';
+import {sendMessage, handleMessageRecieved, handleSendMessageAckRecieved} from './message';
 import {handleUserTyping, handleChatsMarkedAsSeen} from './chat';
 
 export let socket: WebSocket = null;
@@ -64,11 +60,7 @@ export const init = async () => {
     if (data.type === 'user_typing') handleUserTyping(data);
 
     // Chat was seen by current user.
-    if (
-      data.type === 'im_marked' ||
-      data.type === 'channel_marked' ||
-      data.type === 'group_marked'
-    )
+    if (data.type === 'im_marked' || data.type === 'channel_marked' || data.type === 'group_marked')
       handleChatsMarkedAsSeen(data);
 
     // Handle server ack messages
@@ -79,9 +71,7 @@ export const init = async () => {
 
   socket.onclose = event => {
     if (event.wasClean) {
-      console.log(
-        `[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`,
-      );
+      console.log(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
     } else {
       // e.g. server process killed or network down
       // event.code is usually 1006 in this case
@@ -99,7 +89,7 @@ export const init = async () => {
 };
 
 export const closeSocket = () => {
-  if (socket && connected) {
+  if (socket) {
     stopPing();
     stopReconnect();
     socket.close();
@@ -129,8 +119,7 @@ const reconnect = () => {
   }, 3000);
 };
 
-const stopReconnect = () =>
-  reconnectInterval && clearInterval(reconnectInterval);
+const stopReconnect = () => reconnectInterval && clearInterval(reconnectInterval);
 
 export * from './message';
 export * from './chat';

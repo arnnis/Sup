@@ -26,10 +26,7 @@ const initialState: TeamsState = {
   loggingIn: false,
 };
 
-export const teamsReducer: Reducer<TeamsState, RootAction> = (
-  state = initialState,
-  action,
-) => {
+export const teamsReducer: Reducer<TeamsState, RootAction> = (state = initialState, action) => {
   switch (action.type) {
     case 'SIGNIN_TEAM_SUCCESS': {
       let {teamId, userId, token} = action.payload;
@@ -67,6 +64,15 @@ export const teamsReducer: Reducer<TeamsState, RootAction> = (
       return {
         ...state,
         currentTeam: teamId,
+      };
+    }
+
+    case 'LOGOUT': {
+      let {teamId} = action.payload;
+      return {
+        ...state,
+        currentTeam: teamId === state.currentTeam ? '' : state.currentTeam,
+        list: state.list.filter(tm => tm.id !== teamId),
       };
     }
 

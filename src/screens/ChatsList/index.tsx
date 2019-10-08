@@ -1,12 +1,6 @@
 import React, {PureComponent, Component} from 'react';
 import {DispatchProp} from 'react-redux';
-import {
-  View,
-  StyleSheet,
-  FlatList,
-  ActivityIndicator,
-  Platform,
-} from 'react-native';
+import {View, StyleSheet, FlatList, ActivityIndicator, Platform} from 'react-native';
 import {NavigationInjectedProps, withNavigation} from 'react-navigation';
 import {connect} from 'react-redux';
 import ChatCell from './ChatCell';
@@ -29,9 +23,7 @@ class ChatsList extends PureComponent<Props> {
     );
   }
 
-  renderDirectCell = ({item: directId, index}) => (
-    <ChatCell chatId={directId} />
-  );
+  renderDirectCell = ({item: directId, index}) => <ChatCell chatId={directId} />;
 
   keyExtractor = (chatId: string) => chatId;
 
@@ -44,12 +36,8 @@ class ChatsList extends PureComponent<Props> {
   render() {
     let {directsList, loading, theme} = this.props;
     return (
-      <View
-        style={[
-          styles.container,
-          {backgroundColor: theme.backgroundColorDarker1},
-        ]}>
-        {loading ? (
+      <View style={[styles.container, {backgroundColor: theme.backgroundColorDarker1}]}>
+        {loading && directsList.length === 0 ? (
           this.renderLoading()
         ) : (
           <FlatList
