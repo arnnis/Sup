@@ -12,7 +12,7 @@ import Touchable from '../../components/Touchable';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import {NavigationInjectedProps, withNavigation} from 'react-navigation';
-import MessageText from '../ChatUIN/MessageText';
+import MessageText from '../ChatUI/MessageText';
 
 dayjs.extend(utc);
 
@@ -76,7 +76,9 @@ class ChatCell extends PureComponent<Props> {
     }
     return (
       <Text style={[styles.name, {color: theme.foregroundColor}]}>
-        {isGroup ? chat.name : user.profile.display_name_normalized || user.profile.real_name_normalized}
+        {isGroup
+          ? chat.name
+          : user.profile.display_name_normalized || user.profile.real_name_normalized}
       </Text>
     );
   }

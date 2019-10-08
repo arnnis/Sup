@@ -9,14 +9,7 @@ type Props = ReturnType<typeof mapStateToProps> & {
   name: string;
 };
 
-const Emoji: FC<Props> = ({name, emojisEntities}) => {
-  let allEmojis = {...emojis, ...emojisEntities.byId};
-  return (
-    <Text style={styles.emoji}>
-      {allEmojis[name] && allEmojis[name].native}
-    </Text>
-  );
-};
+const Emoji: FC<Props> = ({emoji}) => <Text style={styles.emoji}>{emoji}</Text>;
 
 const styles = StyleSheet.create({
   emoji: {
@@ -24,8 +17,8 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state: RootState) => ({
-  emojisEntities: state.entities.emojis,
+const mapStateToProps = (state: RootState, ownProps) => ({
+  emoji: {...emojis, ...state.entities.emojis.byId}[ownProps.name].native,
 });
 
 export default connect(mapStateToProps)(Emoji);

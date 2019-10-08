@@ -1,35 +1,38 @@
-import React, {FC} from 'react';
-import {Text} from 'react-native';
-import {RootState} from '../../reducers';
+import React, {FC, memo} from 'react';
+import {Text, StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
-import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
+import {RootState} from '../../reducers';
+import px from '../../utils/normalizePixel';
 import {NavigationInjectedProps, withNavigation} from 'react-navigation';
 
 type Props = ReturnType<typeof mapStateToProps> &
-  ThemeInjectedProps &
   NavigationInjectedProps & {
-    username: string;
+    userId: string;
   };
 
-const Username: FC<Props> = ({username, entities, navigation}) => {
-  username = username
-    .replace('@', '')
-    .replace('<', '')
-    .replace('>', '');
-
-  let handlePress = () => {
-    navigation.navigate('UserProfile', {userId: username});
-  };
+const Username: FC<Props> = memo(({userId, name, navigation}) => {
+  let handlePress = () => navigation.push('UserProfile', {userId});
 
   return (
-    <Text onPress={handlePress}>
-      @{entities.users.byId[username] && entities.users.byId[username].name}
+    <Text style={styles.text} onPress={handlePress}>
+      {name ? `@${name}` : '@loading...'}
     </Text>
   );
-};
-
-const mapStateToProps = (state: RootState) => ({
-  entities: state.entities,
 });
 
-export default connect(mapStateToProps)(withTheme(withNavigation(Username)));
+const styles = StyleSheet.create({
+  text: {
+    fontSize: px(15),
+    color: '#AC5A9B',
+    fontWeight: '500',
+  },
+});
+
+const mapStateToProps = (state: RootState, ownProps) => {
+  let user = state.entities.users.byId[ownProps.userId];
+  return {
+    name: user && user.name,
+  };
+};
+
+export default connect(mapStateToProps)(withNavigation(Username));

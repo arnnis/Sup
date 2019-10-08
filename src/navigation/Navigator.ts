@@ -7,14 +7,13 @@ import Main from '../screens/Main';
 import ChatUI from '../screens/ChatUI';
 import Auth from '../screens/Auth';
 import UserProfile from '../screens/UserProfile';
-import ChatUIN from '../screens/ChatUIN';
 
 const AppStack = createStackNavigator(
   {
     // You could add another route here for authentication.
     // Read more at https://reactnavigation.org/docs/en/auth-flow.html
     Main,
-    ChatUI: ChatUIN,
+    ChatUI,
     Auth,
     UserProfile,
   },
@@ -27,9 +26,7 @@ const AppStack = createStackNavigator(
   },
 );
 
-export default isNative()
-  ? createAppContainer(AppStack)
-  : createBrowserApp(AppStack);
+export default isNative() ? createAppContainer(AppStack) : createBrowserApp(AppStack);
 
 let _navigator;
 

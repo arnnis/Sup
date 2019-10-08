@@ -30,11 +30,7 @@ class Reactions extends Component<Props> {
     if (!message) return null;
 
     return (
-      <View
-        style={[
-          styles.container,
-          me.id === gMessage.user._id && styles.reactionsRight,
-        ]}>
+      <View style={[styles.container, me.id === gMessage.user._id && styles.reactionsRight]}>
         {message.reactions &&
           message.reactions.length &&
           message.reactions.map(reaction => {
