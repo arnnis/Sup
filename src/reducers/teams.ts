@@ -9,7 +9,6 @@ export type TeamsState = Readonly<{
     token: string;
   }>;
   loading: {[teamId: string]: boolean};
-  loggingIn: boolean;
 }>;
 
 const initialState: TeamsState = {
@@ -23,7 +22,6 @@ const initialState: TeamsState = {
     },
   ],
   loading: {},
-  loggingIn: false,
 };
 
 export const teamsReducer: Reducer<TeamsState, RootAction> = (state = initialState, action) => {

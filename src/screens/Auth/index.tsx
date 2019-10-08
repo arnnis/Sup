@@ -1,26 +1,15 @@
 import React, {Component} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-  ActivityIndicator,
-} from 'react-native';
-import Svg, {
-  Defs,
-  ClipPath,
-  Path,
-  Stop,
-  LinearGradient,
-} from 'react-native-svg';
-import Header from '../../components/Header';
+import {View, Text, StyleSheet, TextInput, TouchableOpacity, ActivityIndicator} from 'react-native';
+import Svg, {Defs, Path, Stop, LinearGradient} from 'react-native-svg';
+
 import px from '../../utils/normalizePixel';
 import {DispatchProp, connect} from 'react-redux';
 import {signinTeam} from '../../actions/teams/thunks';
-import {RootState} from '../../reducers';
+import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 
-class Auth extends Component<DispatchProp<any>> {
+type Props = ThemeInjectedProps & DispatchProp<any>;
+
+class Auth extends Component<Props> {
   state = {
     domain: 'arnnis',
     email: 'alireza.rzna@gmail.com',
@@ -46,9 +35,9 @@ class Auth extends Component<DispatchProp<any>> {
         </Defs>
         <Path
           data-name="Path 1"
-          d={`M23 224.095s97.5 ${px(37.06)} ${px(194.587)} 0 ${px(
+          d={`M23 224.095s97.5 ${px(37.06)} ${px(194.587)} 0 ${px(180.413)} 0 ${px(
             180.413,
-          )} 0 ${px(180.413)} 0V2.865H23z`}
+          )} 0V2.865H23z`}
           transform="translate(-23 -2.865)"
           fill="url(#prefix__a)"
         />
@@ -60,30 +49,29 @@ class Auth extends Component<DispatchProp<any>> {
     );
   }
 
-  renderInput(
-    key: string,
-    title: string,
-    placeholder: string,
-    onChange: any,
-    secure?: boolean,
-  ) {
+  renderInput(key: string, title: string, placeholder: string, onChange: any, secure?: boolean) {
+    let {theme} = this.props;
     return (
       <View style={{width: '85%', marginBottom: px(12.5)}}>
         <Text
-          style={{marginBottom: px(7.5), color: '#333333', fontSize: px(13.5)}}>
+          style={{
+            marginBottom: px(7.5),
+            color: theme.foregroundColor,
+            fontSize: px(13.5),
+          }}>
           {title}
         </Text>
         <TextInput
           style={{
             width: '100%',
             height: px(45),
-            backgroundColor: '#E8E8E8',
+            backgroundColor: theme.backgroundColorLess2,
             padding: px(10),
             borderRadius: px(5),
-            color: '#333333',
+            color: theme.foregroundColor,
           }}
           value={this.state[key]}
-          placeholderTextColor="#ccc"
+          placeholderTextColor={theme.backgroundColorLess4}
           onChangeText={onChange}
           placeholder={placeholder || ''}
           secureTextEntry={secure ? secure : false}
@@ -94,6 +82,7 @@ class Auth extends Component<DispatchProp<any>> {
   }
 
   renderDivider() {
+    let {theme} = this.props;
     return (
       <View
         style={{
@@ -104,13 +93,14 @@ class Auth extends Component<DispatchProp<any>> {
           marginTop: px(20),
           marginBottom: px(10),
           height: StyleSheet.hairlineWidth,
-          backgroundColor: '#ccc',
+          backgroundColor: theme.backgroundColorLess2,
         }}
       />
     );
   }
 
   renderDomainInput() {
+    let {theme} = this.props;
     return (
       <View
         style={{
@@ -123,21 +113,21 @@ class Auth extends Component<DispatchProp<any>> {
             style={{
               width: '100%',
               height: px(41),
-              backgroundColor: '#E8E8E8',
+              backgroundColor: theme.backgroundColorLess2,
               padding: px(10),
               borderRadius: px(5),
-              color: '#333333',
+              color: theme.foregroundColor,
               textAlignVertical: 'bottom',
             }}
             value={this.state.domain}
-            placeholderTextColor="#ccc"
+            placeholderTextColor={theme.backgroundColorLess4}
             onChangeText={text => this.setState({domain: text})}
             placeholder="Team (e.g. arnnis)"
           />
         </View>
         <Text
           style={{
-            color: '#333333',
+            color: theme.foregroundColor,
             fontWeight: 'bold',
             marginLeft: px(10),
             fontSize: px(16),
@@ -181,16 +171,14 @@ class Auth extends Component<DispatchProp<any>> {
   }
 
   render() {
+    let {theme} = this.props;
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
         {this.renderHeader()}
         {this.renderDomainInput()}
         {this.renderDivider()}
-        {this.renderInput(
-          'email',
-          'Email',
-          'Enter your email',
-          (email: string) => this.setState({email}),
+        {this.renderInput('email', 'Email', 'Enter your email', (email: string) =>
+          this.setState({email}),
         )}
         {this.renderInput(
           'password',
@@ -253,4 +241,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect()(Auth);
+export default connect()(withTheme(Auth));

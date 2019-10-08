@@ -28,6 +28,7 @@ class MessageImage extends Component<Props> {
   render() {
     let {images} = this.props;
     if (!images) return null;
+
     let imageWidth = '100%';
     let imageHeight = px(200);
     if (images.length > 1) {
@@ -37,7 +38,7 @@ class MessageImage extends Component<Props> {
 
     return (
       <View style={styles.container}>
-        {images.map(image => this.renderImage(image.thumb_160, imageWidth, imageHeight))}
+        {images.map(image => this.renderImage(images.length > 1? image.thumb_360 : image.thumb_160, imageWidth, imageHeight))}
       </View>
     );
   }
