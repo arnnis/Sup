@@ -58,7 +58,7 @@ const messageImagesSelector = createSelector(
 
 export const currentTeamTokenSelector = createSelector(
   [(state: RootState) => state.teams.list, (state: RootState) => state.teams.currentTeam],
-  (teamsList, currentTeamId) => teamsList.find(tm => tm.id === currentTeamId).token,
+  (teamsList, currentTeamId) => teamsList.find(tm => tm.id === currentTeamId)?.token,
 );
 
 const mapStateToProps = (state: RootState, ownProps) => {
