@@ -20,6 +20,7 @@ class MessageImage extends Component<Props> {
       <FastImage
         source={{uri, headers: {Authorization: 'Bearer ' + token}}}
         style={{width: width, height: height, marginBottom: px(7.5)}}
+        resizeMode="cover"
       />
     );
   }

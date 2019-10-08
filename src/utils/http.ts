@@ -74,7 +74,7 @@ export default async (options: RequestOption) => {
 };
 
 const handleSlackError = (error: SlackError, path: string, silent: boolean) => {
-  !silent && alert('SlackError: ' + error.message + '\npath: ' + path);
+  alert('SlackError: ' + error.message + '\npath: ' + path);
   if (error.message === 'token_revoked' || error.message === 'account_inactive') {
     // logout
     return;

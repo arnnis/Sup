@@ -39,11 +39,7 @@ export const signinTeam = (
       isFormData: true,
     });
 
-    let {
-      token,
-      user,
-      user_email,
-    }: {token: string; user: string; user_email: string} = await http({
+    let {token, user, user_email}: {token: string; user: string; user_email: string} = await http({
       path: '/auth.signin',
       body: {
         email,

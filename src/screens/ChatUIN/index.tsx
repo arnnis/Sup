@@ -127,7 +127,7 @@ class ChatUI extends Component<Props> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'purple',
+    backgroundColor: '#3A1C39',
   },
 });
 

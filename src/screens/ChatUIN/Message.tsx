@@ -9,6 +9,7 @@ import Avatar from '../../components/Avatar';
 import px from '../../utils/normalizePixel';
 import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 import {NavigationInjectedProps, withNavigation} from 'react-navigation';
+import Day from './Day';
 
 type Props = ReturnType<typeof mapStateToProps> &
   NavigationInjectedProps &
@@ -66,31 +67,39 @@ class Message extends Component<Props> {
     );
   }
 
+  renderDay() {
+    let {currentMessage, prevMessage} = this.props;
+    return <Day currentMessage={currentMessage} prevMessage={prevMessage} />;
+  }
+
   render() {
     let {currentMessage, prevMessage, me} = this.props;
     let sameUser = isSameUser(currentMessage, prevMessage);
     let isMe = me.id === currentMessage.user;
     return (
-      <View
-        style={[
-          styles.container,
-          isMe ? styles.right : styles.left,
-          {marginBottom: sameUser ? 4 : 10},
-        ]}>
-        {!isMe ? (
-          <>
-            {this.renderAvatar(isMe, sameUser)}
-            {this.renderAnchor(isMe, sameUser)}
-          </>
-        ) : null}
-        {this.renderBubble(isMe, sameUser)}
-        {isMe && (
-          <>
-            {this.renderAnchor(isMe, sameUser)}
-            {this.renderAvatar(isMe, sameUser)}
-          </>
-        )}
-      </View>
+      <>
+        <View
+          style={[
+            styles.container,
+            isMe ? styles.right : styles.left,
+            {marginBottom: sameUser ? 4 : 10},
+          ]}>
+          {!isMe ? (
+            <>
+              {this.renderAvatar(isMe, sameUser)}
+              {this.renderAnchor(isMe, sameUser)}
+            </>
+          ) : null}
+          {this.renderBubble(isMe, sameUser)}
+          {isMe && (
+            <>
+              {this.renderAnchor(isMe, sameUser)}
+              {this.renderAvatar(isMe, sameUser)}
+            </>
+          )}
+        </View>
+        {this.renderDay()}
+      </>
     );
   }
 }

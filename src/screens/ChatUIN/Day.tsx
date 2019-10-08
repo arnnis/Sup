@@ -1,96 +1,26 @@
-import PropTypes from 'prop-types';
 import React, {PureComponent} from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  ViewPropTypes,
-  StyleProp,
-  ViewStyle,
-  TextStyle,
-} from 'react-native';
-import moment from 'moment';
-
-import Color from './Color';
+import {StyleSheet, Text, View} from 'react-native';
+import dayjs from 'dayjs';
 
 import {isSameDay} from './utils';
-import {DATE_FORMAT} from './Constant';
-import {IMessage} from './types';
+import {Message} from '../../models';
+import px from '../../utils/normalizePixel';
 
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 5,
-    marginBottom: 10,
-  },
-  text: {
-    backgroundColor: Color.backgroundTransparent,
-    color: Color.defaultColor,
-    fontSize: 12,
-    fontWeight: '600',
-  },
-});
+type Props = {
+  currentMessage?: Message;
+  prevMessage?: Message | undefined;
+};
 
-export interface DayProps<TMessage extends IMessage> {
-  currentMessage?: TMessage;
-  nextMessage?: TMessage;
-  previousMessage?: TMessage;
-  containerStyle?: StyleProp<ViewStyle>;
-  wrapperStyle?: StyleProp<ViewStyle>;
-  textStyle?: StyleProp<TextStyle>;
-  dateFormat?: string;
-  inverted?: boolean;
-}
-
-export default class Day<
-  TMessage extends IMessage = IMessage
-> extends PureComponent<DayProps<TMessage>> {
-  static contextTypes = {
-    getLocale: PropTypes.func,
-  };
-
-  static defaultProps = {
-    currentMessage: {
-      // TODO: test if crash when createdAt === null
-      createdAt: null,
-    },
-    previousMessage: {},
-    nextMessage: {},
-    containerStyle: {},
-    wrapperStyle: {},
-    textStyle: {},
-    dateFormat: DATE_FORMAT,
-  };
-
-  static propTypes = {
-    currentMessage: PropTypes.object,
-    previousMessage: PropTypes.object,
-    nextMessage: PropTypes.object,
-    inverted: PropTypes.bool,
-    containerStyle: ViewPropTypes.style,
-    wrapperStyle: ViewPropTypes.style,
-    textStyle: PropTypes.any,
-    dateFormat: PropTypes.string,
-  };
+class Day extends PureComponent<Props> {
   render() {
-    const {
-      dateFormat,
-      currentMessage,
-      previousMessage,
-      containerStyle,
-      wrapperStyle,
-      textStyle,
-    } = this.props;
+    const {currentMessage, prevMessage} = this.props;
 
-    if (currentMessage && !isSameDay(currentMessage, previousMessage!)) {
+    if (currentMessage && !isSameDay(currentMessage, prevMessage)) {
       return (
-        <View style={[styles.container, containerStyle]}>
-          <View style={wrapperStyle}>
-            <Text style={[styles.text, textStyle]}>
-              {moment(currentMessage.createdAt)
-                .locale(this.context.getLocale())
-                .format(dateFormat)}
+        <View style={styles.container}>
+          <View style={styles.wrapper}>
+            <Text style={styles.text}>
+              {dayjs.unix(Number(currentMessage.ts.split('.')[0]) * 1000).format('DD MMMM')}
             </Text>
           </View>
         </View>
@@ -99,3 +29,26 @@ export default class Day<
     return null;
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: px(5),
+    marginBottom: px(10),
+    borderRadius: px(5),
+  },
+  wrapper: {
+    borderRadius: px(10),
+    backgroundColor: 'purple',
+  },
+  text: {
+    color: '#fff',
+    fontSize: px(12),
+    fontWeight: '600',
+    padding: px(2.5),
+    paddingHorizontal: px(5),
+  },
+});
+
+export default Day;

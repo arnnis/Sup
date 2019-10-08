@@ -90,7 +90,6 @@ export interface Chat {
 }
 
 export interface Message {
-  id: string;
   type: 'message';
   subtype?: MessageSubType;
   hidden?: boolean; // Some subtypes have a special hidden property. These indicate messages that are part of the history of a channel but should not be displayed to user
@@ -145,6 +144,7 @@ export interface MessageReaction {
 }
 
 export interface MessageAttachement {
+  name: string;
   fallback: string;
   color: string;
   pretext: string;
@@ -167,6 +167,8 @@ export interface MessageAttachement {
   footer_icon: string;
   ts: number;
   permalink: string;
+  size: number;
+  filetype: string;
 }
 
 interface AttachmentField {

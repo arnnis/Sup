@@ -196,6 +196,7 @@ const Background = () => (
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#3A1C39',
   },
   backgroundContainer: {
     flex: 1,

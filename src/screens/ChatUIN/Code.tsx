@@ -1,5 +1,6 @@
 import React, {FC} from 'react';
 import {Text, StyleSheet} from 'react-native';
+import px from '../../utils/normalizePixel';
 
 interface Props {
   text: string;
