@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, Image, ScrollView, SafeAreaView} from 'react-native';
+import {View, Text, StyleSheet, ScrollView, SafeAreaView} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Header from '../components/Header';
 import {RootState} from '../reducers';
@@ -11,6 +11,8 @@ import {openChat} from '../actions/chats/thunks';
 import {ActivityIndicator} from 'react-native-paper';
 import withTheme, {ThemeInjectedProps} from '../contexts/theme/withTheme';
 import Touchable from '../components/Touchable';
+import FastImage from 'react-native-fast-image';
+import {currentTeamTokenSelector} from './ChatUI/MessageImage';
 
 type Props = ReturnType<typeof mapStateToProps> &
   ThemeInjectedProps &
@@ -53,11 +55,14 @@ class UserProfile extends Component<Props> {
   };
 
   renderHeader(user: User) {
-    let {theme} = this.props;
+    let {theme, token} = this.props;
     return (
       <View style={styles.headerContainer}>
         <View>
-          <Image source={{uri: user.profile.image_192}} style={styles.avatar} />
+          <FastImage
+            source={{uri: user.profile.image_192, headers: {Authorization: 'Bearer ' + token}}}
+            style={styles.avatar}
+          />
           {user.presence === 'active' && <View style={styles.onlineBadge} />}
         </View>
 
@@ -282,6 +287,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state: RootState) => ({
   entities: state.entities,
+  token: currentTeamTokenSelector(state),
 });
 
 export default connect(mapStateToProps)(withNavigation(withTheme(UserProfile)));

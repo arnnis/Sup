@@ -1,5 +1,5 @@
 import React, {useState, useRef, useEffect} from 'react';
-import {Text, StyleSheet, Image, SafeAreaView, StatusBar, Dimensions, View} from 'react-native';
+import {Text, StyleSheet, SafeAreaView, StatusBar, Dimensions, View} from 'react-native';
 import {BottomNavigation} from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
@@ -18,6 +18,7 @@ import MembersList from './MembersList';
 import UserProfile from './UserProfile';
 import Touchable from '../components/Touchable';
 import withTheme, {ThemeInjectedProps} from '../contexts/theme/withTheme';
+import FastImage from 'react-native-fast-image';
 
 type Props = ReturnType<typeof mapStateToProps> & DispatchProp<any> & ThemeInjectedProps;
 
@@ -69,7 +70,7 @@ const Main = React.memo(({teams, entities, connectionStatus, dispatch, theme}: P
       onPress={() =>
         drawerOpen ? drawerRef.current.closeDrawer() : drawerRef.current.openDrawer()
       }>
-      <Image
+      <FastImage
         source={{
           uri: currentTeam && currentTeam.icon && currentTeam.icon.image_44,
         }}

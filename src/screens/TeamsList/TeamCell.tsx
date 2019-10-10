@@ -1,9 +1,10 @@
 import React, {PureComponent, Component} from 'react';
-import {View, StyleSheet, Image, Text, TouchableOpacity} from 'react-native';
+import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import px from '../../utils/normalizePixel';
 import {Team} from '../../models';
 import {DispatchProp} from 'react-redux';
 import Touchable from '../../components/Touchable';
+import FastImage from 'react-native-fast-image';
 
 type Props = DispatchProp<any> & {
   team: Team;
@@ -23,32 +24,18 @@ class TeamCell extends Component<Props> {
 
   renderLogo() {
     let {team} = this.props;
-    return (
-      <Image
-        source={{uri: team && team.icon.image_68}}
-        style={styles.teamLogo}
-      />
-    );
+    return <FastImage source={{uri: team && team.icon.image_68}} style={styles.teamLogo} />;
   }
 
   renderSelectMark() {
     let {selected} = this.props;
-    return (
-      <View
-        style={[
-          styles.selectMark,
-          !selected && {backgroundColor: 'transparent'},
-        ]}></View>
-    );
+    return <View style={[styles.selectMark, !selected && {backgroundColor: 'transparent'}]}></View>;
   }
 
   render() {
     let {onPress, team} = this.props;
     return (
-      <Touchable
-        style={styles.container}
-        key={team.id}
-        onPress={() => onPress && onPress(team)}>
+      <Touchable style={styles.container} key={team.id} onPress={() => onPress && onPress(team)}>
         {this.renderSelectMark()}
         {this.renderLogo()}
         {this.renderName()}

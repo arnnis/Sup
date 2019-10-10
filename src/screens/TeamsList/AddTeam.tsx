@@ -1,5 +1,5 @@
 import React, {Component, PureComponent} from 'react';
-import {View, StyleSheet, Image, Text, TouchableOpacity} from 'react-native';
+import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import px from '../../utils/normalizePixel';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {withNavigation, NavigationInjectedProps} from 'react-navigation';

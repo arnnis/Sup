@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, Image, ViewStyle, TouchableOpacity} from 'react-native';
-import {User} from '../models';
+import {View, Text, StyleSheet, ViewStyle, TouchableOpacity} from 'react-native';
 import px from '../utils/normalizePixel';
 import FastImage from 'react-native-fast-image';
 import {connect} from 'react-redux';
@@ -60,7 +59,11 @@ class Avatar extends Component<Props> {
       <TouchableOpacity
         disabled={!onPress}
         onPress={onPress}
-        style={[styles.container, {width, height: width, borderRadius: width / 2}, this.props.style]}>
+        style={[
+          styles.container,
+          {width, height: width, borderRadius: width / 2},
+          this.props.style,
+        ]}>
         {this.renderImage()}
         {this.renderOnlineBadge()}
       </TouchableOpacity>

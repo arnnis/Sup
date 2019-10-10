@@ -31,10 +31,7 @@ const config = {
           path.resolve(appDirectory, 'node_modules/@react-navigation/native'),
           path.resolve(appDirectory, 'node_modules/react-navigation-stack'),
           path.resolve(appDirectory, 'node_modules/@react-navigation/native'),
-          path.resolve(
-            appDirectory,
-            'node_modules/react-native-gesture-handler',
-          ),
+          path.resolve(appDirectory, 'node_modules/react-native-gesture-handler'),
           path.resolve(appDirectory, 'node_modules/react-native-reanimated'),
           path.resolve(appDirectory, 'node_modules/react-native-gifted-chat'),
           path.resolve(appDirectory, 'node_modules/react-native-parsed-text'),
@@ -45,14 +42,12 @@ const config = {
           path.resolve(appDirectory, 'node_modules/react-native-vector-icons'),
           path.resolve(appDirectory, 'node_modules/react-native-video'),
           path.resolve(appDirectory, 'node_modules/react-native-fast-image'),
-          path.resolve(
-            appDirectory,
-            'node_modules/react-native-animated-ellipsis',
-          ),
-          path.resolve(
-            appDirectory,
-            'node_modules/@react-native-community/netinfo',
-          ),
+          path.resolve(appDirectory, 'node_modules/react-native-animated-ellipsis'),
+          path.resolve(appDirectory, 'node_modules/@react-native-community/netinfo'),
+          path.resolve(appDirectory, 'node_modules/react-native-emoji-input'),
+          path.resolve(appDirectory, 'node_modules/react-native-triangle'),
+          path.resolve(appDirectory, 'node_modules/react-native-animatable'),
+          path.resolve(appDirectory, 'node_modules/react-native-sound'),
         ],
         use: {
           loader: 'babel-loader',
@@ -104,11 +99,10 @@ const config = {
   resolve: {
     alias: {
       'react-native$': 'react-native-web',
-      '@react-native-community/netinfo':
-        'react-native-web/dist/exports/NetInfo',
+      '@react-native-community/netinfo': 'react-native-web/dist/exports/NetInfo',
       'react-native-fast-image': 'react-native-web/dist/exports/Image',
     },
-    extensions: ['.web.js', '.js', '.web.ts', '.web.tsx', '.ts', '.tsx'],
+    extensions: ['.web.js', '.js', '.web.ts', '.web.tsx', '.ts', '.tsx', '.json'],
   },
 };
 
