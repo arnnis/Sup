@@ -1,0 +1,7 @@
+{
+  "name": "Whatslack",
+  "displayName": "Whatslack",
+  "expo": {
+    "platforms": ["web"]
+  }
+}

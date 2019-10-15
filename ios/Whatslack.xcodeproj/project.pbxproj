@@ -7,6 +7,7 @@
 	objects = {
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* WhatslackTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* WhatslackTests.m */; };
+		0DD9476449AE5519EAB02B6C /* libPods-Whatslack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CD673A0C4C64D6371EFBE89 /* libPods-Whatslack.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
@@ -15,27 +16,26 @@
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* WhatslackTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* WhatslackTests.m */; };
-		9E4A459838EE43BDCF3DFA4C /* libPods-Whatslack-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 96B8DCE02F5D22132A52BDFD /* libPods-Whatslack-tvOSTests.a */; };
-		A5A18B4BD1049ADE8C738600 /* libPods-Whatslack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EF43B207F57F5E302533435D /* libPods-Whatslack.a */; };
-		B661D333D6468959AC31AFDD /* libPods-Whatslack-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BCAB2EBF848B8561E6DFE94 /* libPods-Whatslack-tvOS.a */; };
-		CDE61000393FFB7A3E6B1818 /* libPods-WhatslackTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19B23EC8B23BE1F794D1FDAB /* libPods-WhatslackTests.a */; };
-		3317B641874F4968903E1D5D /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D04FDC522B63407AA1CC7191 /* AntDesign.ttf */; };
-		764AFEE463E542378853745D /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D735FC70EC4A4661BC26BE28 /* Entypo.ttf */; };
-		FD0EB6FF96674DB9BA071F94 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 604B91B51621447084180E21 /* EvilIcons.ttf */; };
-		433F0BBB4F1B4DC88C26392F /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 53487F9CD9C143E289F49636 /* Feather.ttf */; };
-		6C9C8E71A2B949BE9F7C7447 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AF910FC84507491C8467E6B6 /* FontAwesome.ttf */; };
-		188205157D104CB5B3584024 /* FontAwesome5_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A0C9858A7CBA48DAB2ACD362 /* FontAwesome5_Brands.ttf */; };
-		14130DB96589453DBF4A2297 /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 500AD544835F4E998C0E140A /* FontAwesome5_Regular.ttf */; };
-		1B3F41CA35644F3EA321DF88 /* FontAwesome5_Solid.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1108CE44A71F48F8A6D75616 /* FontAwesome5_Solid.ttf */; };
-		1ABDE3A0A60B4E57B618C641 /* Fontisto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 18E1FEAD3CCA4C0DAD6A633F /* Fontisto.ttf */; };
-		6DBAD4E1E4EF46D9BBD99ABE /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A583B43302AA497B91C30A49 /* Foundation.ttf */; };
-		19760C8E80B544E7839827E1 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 59531E35DF734ED9B386018A /* Ionicons.ttf */; };
-		D70C5C71F6A7438D81E15E1E /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8859BADBF38C4CBCBD21879D /* MaterialCommunityIcons.ttf */; };
-		CE3D22A4980C45189DB9CBC1 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EE853802151B44C28B57AFBB /* MaterialIcons.ttf */; };
-		57D9CA4D2A5F45E7A3010F2E /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9F1ABF6CA48540C0943926A4 /* Octicons.ttf */; };
-		5C12139B19EA4B7485BCA88D /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 18A0EDE3E6A04E1696700675 /* SimpleLineIcons.ttf */; };
-		CE850B4FD1A84730B388BF2F /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6A56BCDEDE964C4098FA0329 /* Zocial.ttf */; };
-		C962E86A7CC743CF91E946E8 /* Lucida Console.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 71B1774F68F34752A67FCB75 /* Lucida Console.ttf */; };
+		72011F969771A2FAC995C365 /* libPods-WhatslackTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 46CEFDC51863BA194EDD0EB0 /* libPods-WhatslackTests.a */; };
+		808BAE2CCC52EE128CF5890A /* libPods-Whatslack-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DB5822A41363E5C1225F694 /* libPods-Whatslack-tvOSTests.a */; };
+		BA474C064B4CC987A5E2C5DD /* libPods-Whatslack-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93F359A10941DD33054B6647 /* libPods-Whatslack-tvOS.a */; };
+		2E3387822BC24E6A9CA59F60 /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 59A8DADC47EA418FB445B588 /* AntDesign.ttf */; };
+		08148B7822C24303B3ABD793 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 98DC301A9E6D4CE99F8E0609 /* Entypo.ttf */; };
+		59A4D97EB1484B94A059769D /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 75006F01FEEC4E9BA765B245 /* EvilIcons.ttf */; };
+		C47ED05F260E4F47B278B3AC /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DFE96655CBE84CA78FC65A06 /* Feather.ttf */; };
+		D64E5F58B9474C868CD381C6 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CCCE4E32A8D94F77BDC61046 /* FontAwesome.ttf */; };
+		59C95B2A91EB4C8C9ADCF069 /* FontAwesome5_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B1A30C0201A948B68C3A35E5 /* FontAwesome5_Brands.ttf */; };
+		74AC6C7CDAAD421AA6598F3C /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7B457BD1CAE04F5EA8905FA9 /* FontAwesome5_Regular.ttf */; };
+		ABC5B463DC354969BCB8886E /* FontAwesome5_Solid.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BE1E35B8A1FD410E86D82B7A /* FontAwesome5_Solid.ttf */; };
+		9C946A2C2F134FD3BC61F733 /* Fontisto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 33D31865F38B4BB98101F310 /* Fontisto.ttf */; };
+		06DD07AD422D49C78CEAB5AD /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B9062318EF1840B8946A6A62 /* Foundation.ttf */; };
+		BF6A03E8F67347409F284398 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E1C4758EB56946D383433BE2 /* Ionicons.ttf */; };
+		B00BF20996E046B7B7CB11FA /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 187EEDE6ECD0437A82E2B16A /* MaterialCommunityIcons.ttf */; };
+		E5FF24114406418C902D5A16 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C5053A181F9F4D42A5391159 /* MaterialIcons.ttf */; };
+		B58735E2404341668935C217 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AC3426E0EE564C379ECF5B3E /* Octicons.ttf */; };
+		D48DEC1C857E44C687A6C86D /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 95A1A1DECB01454BBBC28213 /* SimpleLineIcons.ttf */; };
+		2DF862413880418799ED702F /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8483A07FF061499FB17BA56B /* Zocial.ttf */; };
+		7E6C8B659C55461AB1748893 /* Lucida Console.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7903FFF9023C41C7A7635670 /* Lucida Console.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,7 +60,6 @@
 		00E356EE1AD99517003FC87E /* WhatslackTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WhatslackTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* WhatslackTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WhatslackTests.m; sourceTree = "<group>"; };
-		08290337B62E08D295A23A23 /* Pods-Whatslack-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Whatslack-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-Whatslack-tvOS/Pods-Whatslack-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* Whatslack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Whatslack.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Whatslack/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = Whatslack/AppDelegate.m; sourceTree = "<group>"; };
@@ -68,38 +67,39 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Whatslack/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Whatslack/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Whatslack/main.m; sourceTree = "<group>"; };
-		19B23EC8B23BE1F794D1FDAB /* libPods-WhatslackTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-WhatslackTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		157F5FE2D6E56A93550AF293 /* Pods-Whatslack-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Whatslack-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-Whatslack-tvOSTests/Pods-Whatslack-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* Whatslack-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Whatslack-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* Whatslack-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Whatslack-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		3C9E89F4118560F43769A169 /* Pods-Whatslack-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Whatslack-tvOS.release.xcconfig"; path = "Target Support Files/Pods-Whatslack-tvOS/Pods-Whatslack-tvOS.release.xcconfig"; sourceTree = "<group>"; };
-		3DE752A8ED1860A619169091 /* Pods-Whatslack.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Whatslack.release.xcconfig"; path = "Target Support Files/Pods-Whatslack/Pods-Whatslack.release.xcconfig"; sourceTree = "<group>"; };
-		42017EB5AC65E96EE611A792 /* Pods-WhatslackTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WhatslackTests.release.xcconfig"; path = "Target Support Files/Pods-WhatslackTests/Pods-WhatslackTests.release.xcconfig"; sourceTree = "<group>"; };
-		5CFF79EF8DE86DFB09E9189A /* Pods-Whatslack.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Whatslack.debug.xcconfig"; path = "Target Support Files/Pods-Whatslack/Pods-Whatslack.debug.xcconfig"; sourceTree = "<group>"; };
-		775C04015FCDAE0176CD384A /* Pods-Whatslack-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Whatslack-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-Whatslack-tvOSTests/Pods-Whatslack-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
-		8BCAB2EBF848B8561E6DFE94 /* libPods-Whatslack-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Whatslack-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		96B8DCE02F5D22132A52BDFD /* libPods-Whatslack-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Whatslack-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		AAE0C9F4A56C80081A62F8B4 /* Pods-Whatslack-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Whatslack-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-Whatslack-tvOSTests/Pods-Whatslack-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
-		DC342E9CA5AC1A4A671C4EDF /* Pods-WhatslackTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WhatslackTests.debug.xcconfig"; path = "Target Support Files/Pods-WhatslackTests/Pods-WhatslackTests.debug.xcconfig"; sourceTree = "<group>"; };
+		2DB5822A41363E5C1225F694 /* libPods-Whatslack-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Whatslack-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		46CEFDC51863BA194EDD0EB0 /* libPods-WhatslackTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-WhatslackTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4DE691EA67169D094DCEB7EF /* Pods-Whatslack-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Whatslack-tvOS.release.xcconfig"; path = "Target Support Files/Pods-Whatslack-tvOS/Pods-Whatslack-tvOS.release.xcconfig"; sourceTree = "<group>"; };
+		6543A227E1AC332C3A4DC555 /* Pods-WhatslackTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WhatslackTests.debug.xcconfig"; path = "Target Support Files/Pods-WhatslackTests/Pods-WhatslackTests.debug.xcconfig"; sourceTree = "<group>"; };
+		6CD673A0C4C64D6371EFBE89 /* libPods-Whatslack.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Whatslack.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		72C70F52075DCC1215BF11FC /* Pods-WhatslackTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WhatslackTests.release.xcconfig"; path = "Target Support Files/Pods-WhatslackTests/Pods-WhatslackTests.release.xcconfig"; sourceTree = "<group>"; };
+		7B496B04EA58D6A48E82E8F4 /* Pods-Whatslack.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Whatslack.debug.xcconfig"; path = "Target Support Files/Pods-Whatslack/Pods-Whatslack.debug.xcconfig"; sourceTree = "<group>"; };
+		7DCBD916991D08CF4A72FD2A /* Pods-Whatslack-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Whatslack-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-Whatslack-tvOS/Pods-Whatslack-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
+		93F359A10941DD33054B6647 /* libPods-Whatslack-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Whatslack-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BAF267EF13F47ED7F3336039 /* Pods-Whatslack.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Whatslack.release.xcconfig"; path = "Target Support Files/Pods-Whatslack/Pods-Whatslack.release.xcconfig"; sourceTree = "<group>"; };
+		DEC017900DC9470591E5C0EE /* Pods-Whatslack-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Whatslack-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-Whatslack-tvOSTests/Pods-Whatslack-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
-		EF43B207F57F5E302533435D /* libPods-Whatslack.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Whatslack.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		D04FDC522B63407AA1CC7191 /* AntDesign.ttf */ = {isa = PBXFileReference; name = "AntDesign.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		D735FC70EC4A4661BC26BE28 /* Entypo.ttf */ = {isa = PBXFileReference; name = "Entypo.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		604B91B51621447084180E21 /* EvilIcons.ttf */ = {isa = PBXFileReference; name = "EvilIcons.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		53487F9CD9C143E289F49636 /* Feather.ttf */ = {isa = PBXFileReference; name = "Feather.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		AF910FC84507491C8467E6B6 /* FontAwesome.ttf */ = {isa = PBXFileReference; name = "FontAwesome.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		A0C9858A7CBA48DAB2ACD362 /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; name = "FontAwesome5_Brands.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		500AD544835F4E998C0E140A /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; name = "FontAwesome5_Regular.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		1108CE44A71F48F8A6D75616 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; name = "FontAwesome5_Solid.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		18E1FEAD3CCA4C0DAD6A633F /* Fontisto.ttf */ = {isa = PBXFileReference; name = "Fontisto.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		A583B43302AA497B91C30A49 /* Foundation.ttf */ = {isa = PBXFileReference; name = "Foundation.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		59531E35DF734ED9B386018A /* Ionicons.ttf */ = {isa = PBXFileReference; name = "Ionicons.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		8859BADBF38C4CBCBD21879D /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; name = "MaterialCommunityIcons.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		EE853802151B44C28B57AFBB /* MaterialIcons.ttf */ = {isa = PBXFileReference; name = "MaterialIcons.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		9F1ABF6CA48540C0943926A4 /* Octicons.ttf */ = {isa = PBXFileReference; name = "Octicons.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		18A0EDE3E6A04E1696700675 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; name = "SimpleLineIcons.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		6A56BCDEDE964C4098FA0329 /* Zocial.ttf */ = {isa = PBXFileReference; name = "Zocial.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		71B1774F68F34752A67FCB75 /* Lucida Console.ttf */ = {isa = PBXFileReference; name = "Lucida Console.ttf"; path = "../src/assets/fonts/Lucida Console.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		59A8DADC47EA418FB445B588 /* AntDesign.ttf */ = {isa = PBXFileReference; name = "AntDesign.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		98DC301A9E6D4CE99F8E0609 /* Entypo.ttf */ = {isa = PBXFileReference; name = "Entypo.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		75006F01FEEC4E9BA765B245 /* EvilIcons.ttf */ = {isa = PBXFileReference; name = "EvilIcons.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		DFE96655CBE84CA78FC65A06 /* Feather.ttf */ = {isa = PBXFileReference; name = "Feather.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		CCCE4E32A8D94F77BDC61046 /* FontAwesome.ttf */ = {isa = PBXFileReference; name = "FontAwesome.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		B1A30C0201A948B68C3A35E5 /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; name = "FontAwesome5_Brands.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		7B457BD1CAE04F5EA8905FA9 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; name = "FontAwesome5_Regular.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		BE1E35B8A1FD410E86D82B7A /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; name = "FontAwesome5_Solid.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		33D31865F38B4BB98101F310 /* Fontisto.ttf */ = {isa = PBXFileReference; name = "Fontisto.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		B9062318EF1840B8946A6A62 /* Foundation.ttf */ = {isa = PBXFileReference; name = "Foundation.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		E1C4758EB56946D383433BE2 /* Ionicons.ttf */ = {isa = PBXFileReference; name = "Ionicons.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		187EEDE6ECD0437A82E2B16A /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; name = "MaterialCommunityIcons.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		C5053A181F9F4D42A5391159 /* MaterialIcons.ttf */ = {isa = PBXFileReference; name = "MaterialIcons.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		AC3426E0EE564C379ECF5B3E /* Octicons.ttf */ = {isa = PBXFileReference; name = "Octicons.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		95A1A1DECB01454BBBC28213 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; name = "SimpleLineIcons.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		8483A07FF061499FB17BA56B /* Zocial.ttf */ = {isa = PBXFileReference; name = "Zocial.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		7903FFF9023C41C7A7635670 /* Lucida Console.ttf */ = {isa = PBXFileReference; name = "Lucida Console.ttf"; path = "../src/assets/fonts/Lucida Console.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,7 +107,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CDE61000393FFB7A3E6B1818 /* libPods-WhatslackTests.a in Frameworks */,
+				72011F969771A2FAC995C365 /* libPods-WhatslackTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -115,7 +115,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A5A18B4BD1049ADE8C738600 /* libPods-Whatslack.a in Frameworks */,
+				0DD9476449AE5519EAB02B6C /* libPods-Whatslack.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -123,7 +123,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B661D333D6468959AC31AFDD /* libPods-Whatslack-tvOS.a in Frameworks */,
+				BA474C064B4CC987A5E2C5DD /* libPods-Whatslack-tvOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -131,7 +131,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9E4A459838EE43BDCF3DFA4C /* libPods-Whatslack-tvOSTests.a in Frameworks */,
+				808BAE2CCC52EE128CF5890A /* libPods-Whatslack-tvOSTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -174,10 +174,10 @@
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
-				EF43B207F57F5E302533435D /* libPods-Whatslack.a */,
-				8BCAB2EBF848B8561E6DFE94 /* libPods-Whatslack-tvOS.a */,
-				96B8DCE02F5D22132A52BDFD /* libPods-Whatslack-tvOSTests.a */,
-				19B23EC8B23BE1F794D1FDAB /* libPods-WhatslackTests.a */,
+				6CD673A0C4C64D6371EFBE89 /* libPods-Whatslack.a */,
+				93F359A10941DD33054B6647 /* libPods-Whatslack-tvOS.a */,
+				2DB5822A41363E5C1225F694 /* libPods-Whatslack-tvOSTests.a */,
+				46CEFDC51863BA194EDD0EB0 /* libPods-WhatslackTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -197,8 +197,8 @@
 				00E356EF1AD99517003FC87E /* WhatslackTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
-				A23FF61EDF2DC32677A9E7F0 /* Pods */,
-				5D118844C93D4BF59F8991E5 /* Resources */,
+				C853AE1E677B15EA58ABAC7C /* Pods */,
+				E4360976801A4D3CA2A6228B /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -216,41 +216,42 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		A23FF61EDF2DC32677A9E7F0 /* Pods */ = {
+		C853AE1E677B15EA58ABAC7C /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				5CFF79EF8DE86DFB09E9189A /* Pods-Whatslack.debug.xcconfig */,
-				3DE752A8ED1860A619169091 /* Pods-Whatslack.release.xcconfig */,
-				08290337B62E08D295A23A23 /* Pods-Whatslack-tvOS.debug.xcconfig */,
-				3C9E89F4118560F43769A169 /* Pods-Whatslack-tvOS.release.xcconfig */,
-				775C04015FCDAE0176CD384A /* Pods-Whatslack-tvOSTests.debug.xcconfig */,
-				AAE0C9F4A56C80081A62F8B4 /* Pods-Whatslack-tvOSTests.release.xcconfig */,
-				DC342E9CA5AC1A4A671C4EDF /* Pods-WhatslackTests.debug.xcconfig */,
-				42017EB5AC65E96EE611A792 /* Pods-WhatslackTests.release.xcconfig */,
+				7B496B04EA58D6A48E82E8F4 /* Pods-Whatslack.debug.xcconfig */,
+				BAF267EF13F47ED7F3336039 /* Pods-Whatslack.release.xcconfig */,
+				7DCBD916991D08CF4A72FD2A /* Pods-Whatslack-tvOS.debug.xcconfig */,
+				4DE691EA67169D094DCEB7EF /* Pods-Whatslack-tvOS.release.xcconfig */,
+				157F5FE2D6E56A93550AF293 /* Pods-Whatslack-tvOSTests.debug.xcconfig */,
+				DEC017900DC9470591E5C0EE /* Pods-Whatslack-tvOSTests.release.xcconfig */,
+				6543A227E1AC332C3A4DC555 /* Pods-WhatslackTests.debug.xcconfig */,
+				72C70F52075DCC1215BF11FC /* Pods-WhatslackTests.release.xcconfig */,
 			);
+			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
-		5D118844C93D4BF59F8991E5 /* Resources */ = {
+		E4360976801A4D3CA2A6228B /* Resources */ = {
 			isa = "PBXGroup";
 			children = (
-				D04FDC522B63407AA1CC7191 /* AntDesign.ttf */,
-				D735FC70EC4A4661BC26BE28 /* Entypo.ttf */,
-				604B91B51621447084180E21 /* EvilIcons.ttf */,
-				53487F9CD9C143E289F49636 /* Feather.ttf */,
-				AF910FC84507491C8467E6B6 /* FontAwesome.ttf */,
-				A0C9858A7CBA48DAB2ACD362 /* FontAwesome5_Brands.ttf */,
-				500AD544835F4E998C0E140A /* FontAwesome5_Regular.ttf */,
-				1108CE44A71F48F8A6D75616 /* FontAwesome5_Solid.ttf */,
-				18E1FEAD3CCA4C0DAD6A633F /* Fontisto.ttf */,
-				A583B43302AA497B91C30A49 /* Foundation.ttf */,
-				59531E35DF734ED9B386018A /* Ionicons.ttf */,
-				8859BADBF38C4CBCBD21879D /* MaterialCommunityIcons.ttf */,
-				EE853802151B44C28B57AFBB /* MaterialIcons.ttf */,
-				9F1ABF6CA48540C0943926A4 /* Octicons.ttf */,
-				18A0EDE3E6A04E1696700675 /* SimpleLineIcons.ttf */,
-				6A56BCDEDE964C4098FA0329 /* Zocial.ttf */,
-				71B1774F68F34752A67FCB75 /* Lucida Console.ttf */,
+				59A8DADC47EA418FB445B588 /* AntDesign.ttf */,
+				98DC301A9E6D4CE99F8E0609 /* Entypo.ttf */,
+				75006F01FEEC4E9BA765B245 /* EvilIcons.ttf */,
+				DFE96655CBE84CA78FC65A06 /* Feather.ttf */,
+				CCCE4E32A8D94F77BDC61046 /* FontAwesome.ttf */,
+				B1A30C0201A948B68C3A35E5 /* FontAwesome5_Brands.ttf */,
+				7B457BD1CAE04F5EA8905FA9 /* FontAwesome5_Regular.ttf */,
+				BE1E35B8A1FD410E86D82B7A /* FontAwesome5_Solid.ttf */,
+				33D31865F38B4BB98101F310 /* Fontisto.ttf */,
+				B9062318EF1840B8946A6A62 /* Foundation.ttf */,
+				E1C4758EB56946D383433BE2 /* Ionicons.ttf */,
+				187EEDE6ECD0437A82E2B16A /* MaterialCommunityIcons.ttf */,
+				C5053A181F9F4D42A5391159 /* MaterialIcons.ttf */,
+				AC3426E0EE564C379ECF5B3E /* Octicons.ttf */,
+				95A1A1DECB01454BBBC28213 /* SimpleLineIcons.ttf */,
+				8483A07FF061499FB17BA56B /* Zocial.ttf */,
+				7903FFF9023C41C7A7635670 /* Lucida Console.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -263,7 +264,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "WhatslackTests" */;
 			buildPhases = (
-				33FA4B9BA46AF6E0B7935237 /* [CP] Check Pods Manifest.lock */,
+				A9F12F9187A52406DF6FE282 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
@@ -282,13 +283,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Whatslack" */;
 			buildPhases = (
-				EDA02ABED9C646EBA0335D6C /* [CP] Check Pods Manifest.lock */,
+				9BB084452DC964EC3101C373 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				5F99048CEE8CBA7718903EC1 /* [CP] Copy Pods Resources */,
+				55B1F680A92BCC0CC7F41FED /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -303,7 +304,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "Whatslack-tvOS" */;
 			buildPhases = (
-				C11B896CAC444799BDCE688F /* [CP] Check Pods Manifest.lock */,
+				5C6C978264A9C20C61EA69DA /* [CP] Check Pods Manifest.lock */,
 				FD10A7F122414F3F0027D42C /* Start Packager */,
 				2D02E4771E0B4A5D006451C7 /* Sources */,
 				2D02E4781E0B4A5D006451C7 /* Frameworks */,
@@ -323,7 +324,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "Whatslack-tvOSTests" */;
 			buildPhases = (
-				9EE31540962271D228702643 /* [CP] Check Pods Manifest.lock */,
+				95ED3CC763E5C5C211A8A0ED /* [CP] Check Pods Manifest.lock */,
 				2D02E48C1E0B4A5D006451C7 /* Sources */,
 				2D02E48D1E0B4A5D006451C7 /* Frameworks */,
 				2D02E48E1E0B4A5D006451C7 /* Resources */,
@@ -367,7 +368,6 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				English,
 				en,
 				Base,
 			);
@@ -398,23 +398,23 @@
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
-				3317B641874F4968903E1D5D /* AntDesign.ttf in Resources */,
-				764AFEE463E542378853745D /* Entypo.ttf in Resources */,
-				FD0EB6FF96674DB9BA071F94 /* EvilIcons.ttf in Resources */,
-				433F0BBB4F1B4DC88C26392F /* Feather.ttf in Resources */,
-				6C9C8E71A2B949BE9F7C7447 /* FontAwesome.ttf in Resources */,
-				188205157D104CB5B3584024 /* FontAwesome5_Brands.ttf in Resources */,
-				14130DB96589453DBF4A2297 /* FontAwesome5_Regular.ttf in Resources */,
-				1B3F41CA35644F3EA321DF88 /* FontAwesome5_Solid.ttf in Resources */,
-				1ABDE3A0A60B4E57B618C641 /* Fontisto.ttf in Resources */,
-				6DBAD4E1E4EF46D9BBD99ABE /* Foundation.ttf in Resources */,
-				19760C8E80B544E7839827E1 /* Ionicons.ttf in Resources */,
-				D70C5C71F6A7438D81E15E1E /* MaterialCommunityIcons.ttf in Resources */,
-				CE3D22A4980C45189DB9CBC1 /* MaterialIcons.ttf in Resources */,
-				57D9CA4D2A5F45E7A3010F2E /* Octicons.ttf in Resources */,
-				5C12139B19EA4B7485BCA88D /* SimpleLineIcons.ttf in Resources */,
-				CE850B4FD1A84730B388BF2F /* Zocial.ttf in Resources */,
-				C962E86A7CC743CF91E946E8 /* Lucida Console.ttf in Resources */,
+				2E3387822BC24E6A9CA59F60 /* AntDesign.ttf in Resources */,
+				08148B7822C24303B3ABD793 /* Entypo.ttf in Resources */,
+				59A4D97EB1484B94A059769D /* EvilIcons.ttf in Resources */,
+				C47ED05F260E4F47B278B3AC /* Feather.ttf in Resources */,
+				D64E5F58B9474C868CD381C6 /* FontAwesome.ttf in Resources */,
+				59C95B2A91EB4C8C9ADCF069 /* FontAwesome5_Brands.ttf in Resources */,
+				74AC6C7CDAAD421AA6598F3C /* FontAwesome5_Regular.ttf in Resources */,
+				ABC5B463DC354969BCB8886E /* FontAwesome5_Solid.ttf in Resources */,
+				9C946A2C2F134FD3BC61F733 /* Fontisto.ttf in Resources */,
+				06DD07AD422D49C78CEAB5AD /* Foundation.ttf in Resources */,
+				BF6A03E8F67347409F284398 /* Ionicons.ttf in Resources */,
+				B00BF20996E046B7B7CB11FA /* MaterialCommunityIcons.ttf in Resources */,
+				E5FF24114406418C902D5A16 /* MaterialIcons.ttf in Resources */,
+				B58735E2404341668935C217 /* Octicons.ttf in Resources */,
+				D48DEC1C857E44C687A6C86D /* SimpleLineIcons.ttf in Resources */,
+				2DF862413880418799ED702F /* Zocial.ttf in Resources */,
+				7E6C8B659C55461AB1748893 /* Lucida Console.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -464,29 +464,7 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
-		33FA4B9BA46AF6E0B7935237 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-WhatslackTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		5F99048CEE8CBA7718903EC1 /* [CP] Copy Pods Resources */ = {
+		55B1F680A92BCC0CC7F41FED /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -534,29 +512,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Whatslack/Pods-Whatslack-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		9EE31540962271D228702643 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Whatslack-tvOSTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		C11B896CAC444799BDCE688F /* [CP] Check Pods Manifest.lock */ = {
+		5C6C978264A9C20C61EA69DA /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -578,7 +534,29 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		EDA02ABED9C646EBA0335D6C /* [CP] Check Pods Manifest.lock */ = {
+		95ED3CC763E5C5C211A8A0ED /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Whatslack-tvOSTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9BB084452DC964EC3101C373 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -594,6 +572,28 @@
 			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-Whatslack-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A9F12F9187A52406DF6FE282 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-WhatslackTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -705,7 +705,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DC342E9CA5AC1A4A671C4EDF /* Pods-WhatslackTests.debug.xcconfig */;
+			baseConfigurationReference = 6543A227E1AC332C3A4DC555 /* Pods-WhatslackTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -728,7 +728,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 42017EB5AC65E96EE611A792 /* Pods-WhatslackTests.release.xcconfig */;
+			baseConfigurationReference = 72C70F52075DCC1215BF11FC /* Pods-WhatslackTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -748,7 +748,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5CFF79EF8DE86DFB09E9189A /* Pods-Whatslack.debug.xcconfig */;
+			baseConfigurationReference = 7B496B04EA58D6A48E82E8F4 /* Pods-Whatslack.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
@@ -768,7 +768,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3DE752A8ED1860A619169091 /* Pods-Whatslack.release.xcconfig */;
+			baseConfigurationReference = BAF267EF13F47ED7F3336039 /* Pods-Whatslack.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
@@ -787,7 +787,7 @@
 		};
 		2D02E4971E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 08290337B62E08D295A23A23 /* Pods-Whatslack-tvOS.debug.xcconfig */;
+			baseConfigurationReference = 7DCBD916991D08CF4A72FD2A /* Pods-Whatslack-tvOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -815,7 +815,7 @@
 		};
 		2D02E4981E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3C9E89F4118560F43769A169 /* Pods-Whatslack-tvOS.release.xcconfig */;
+			baseConfigurationReference = 4DE691EA67169D094DCEB7EF /* Pods-Whatslack-tvOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -843,7 +843,7 @@
 		};
 		2D02E4991E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 775C04015FCDAE0176CD384A /* Pods-Whatslack-tvOSTests.debug.xcconfig */;
+			baseConfigurationReference = 157F5FE2D6E56A93550AF293 /* Pods-Whatslack-tvOSTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -870,7 +870,7 @@
 		};
 		2D02E49A1E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AAE0C9F4A56C80081A62F8B4 /* Pods-Whatslack-tvOSTests.release.xcconfig */;
+			baseConfigurationReference = DEC017900DC9470591E5C0EE /* Pods-Whatslack-tvOSTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;

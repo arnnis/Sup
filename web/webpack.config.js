@@ -3,9 +3,45 @@ const webpack = require('webpack');
 const HtmlPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
+const chalk = require('chalk')
 
 const appDirectory = path.resolve(__dirname, '../');
 const isProd = process.env.NODE_ENV === 'production';
+
+// Compiles modules which has following keys in their path.
+const modules = [
+  'src',
+  'react-native',
+  'react-navigation',
+  'expo',
+  'unimodules',
+  '@react',
+  '@expo',
+  '@unimodules',
+  'native-base',
+]
+
+function packageNameFromPath(inputPath) {
+  const modules = inputPath.split('node_modules/');
+  const libAndFile = modules.pop();
+  if (!libAndFile) return null;
+  if (libAndFile.charAt(0) === '@') {
+    const [org, lib] = libAndFile.split('/');
+    return org + '/' + lib;
+  } else {
+    const components = libAndFile.split('/');
+    const first = components.shift();
+    return first || null;
+  }
+}
+
+const compiledPackageNames = [];
+function logPackage(packageName) {
+  if (!compiledPackageNames.includes(packageName)) {
+    compiledPackageNames.push(packageName);
+    console.log(chalk.cyan('\nCompiling module: ' + chalk.bold(packageName)));
+  }
+}
 
 const config = {
   entry: [path.resolve(appDirectory, 'index.js')],
@@ -19,36 +55,16 @@ const config = {
     rules: [
       {
         test: /\.(tsx|ts|js)$/,
-        // Add every directory that needs to be compiled by Babel during the build
-        // including third party modules like react-navigation etc.
-        include: [
-          path.resolve(appDirectory, 'index.js'),
-          path.resolve(appDirectory, 'App.tsx'),
-          path.resolve(appDirectory, 'src'),
-          path.resolve(appDirectory, 'node_modules/react-native-web'),
-          path.resolve(appDirectory, 'node_modules/react-navigation'),
-          path.resolve(appDirectory, 'node_modules/@react-navigation/web'),
-          path.resolve(appDirectory, 'node_modules/@react-navigation/native'),
-          path.resolve(appDirectory, 'node_modules/react-navigation-stack'),
-          path.resolve(appDirectory, 'node_modules/@react-navigation/native'),
-          path.resolve(appDirectory, 'node_modules/react-native-gesture-handler'),
-          path.resolve(appDirectory, 'node_modules/react-native-reanimated'),
-          path.resolve(appDirectory, 'node_modules/react-native-gifted-chat'),
-          path.resolve(appDirectory, 'node_modules/react-native-parsed-text'),
-          path.resolve(appDirectory, 'node_modules/react-native-lightbox'),
-          path.resolve(appDirectory, 'node_modules/react-native-paper'),
-          path.resolve(appDirectory, 'node_modules/react-native-screens'),
-          path.resolve(appDirectory, 'node_modules/react-native-svg'),
-          path.resolve(appDirectory, 'node_modules/react-native-vector-icons'),
-          path.resolve(appDirectory, 'node_modules/react-native-video'),
-          path.resolve(appDirectory, 'node_modules/react-native-fast-image'),
-          path.resolve(appDirectory, 'node_modules/react-native-animated-ellipsis'),
-          path.resolve(appDirectory, 'node_modules/@react-native-community/netinfo'),
-          path.resolve(appDirectory, 'node_modules/react-native-emoji-input'),
-          path.resolve(appDirectory, 'node_modules/react-native-triangle'),
-          path.resolve(appDirectory, 'node_modules/react-native-animatable'),
-          path.resolve(appDirectory, 'node_modules/react-native-sound'),
-        ],
+        include: function(inputPath) {
+          for (const possibleModule of modules) {
+            if (inputPath.includes(possibleModule)) {
+              const packageName = packageNameFromPath(inputPath);
+              if (packageName) logPackage(packageName);
+              return !!inputPath;
+            }
+          }
+          return false;
+        },
         use: {
           loader: 'babel-loader',
           options: {
