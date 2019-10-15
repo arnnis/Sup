@@ -58,4 +58,4 @@ buck-out/
 # CocoaPods
 /ios/Pods/
 
-.expo
+.vscode
