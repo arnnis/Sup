@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {createSelector} from 'reselect';
-import fs from 'react-native-fs';
-import Sound from 'react-native-sound';
+import { FileSystem as fs } from 'react-native-unimodules';
+import { Audio } from 'expo-av';
 import bytes from 'bytes';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {RootState} from '../../reducers';
@@ -11,6 +11,7 @@ import {View, StyleSheet, Text, ToastAndroid, Platform} from 'react-native';
 import px from '../../utils/normalizePixel';
 import Touchable from '../../components/Touchable';
 import {currentTeamTokenSelector} from './MessageImage';
+
 
 type Props = ReturnType<typeof mapStateToProps> & {
   messageId: string;
@@ -59,10 +60,11 @@ class MessageFile extends Component<MessageFileProps, MessageFileState> {
     };
   }
 
-  sound: Sound = null;
+  download: fs.DownloadResumable = null
+  sound: Audio.Sound = null;
 
   componentWillUnmount() {
-    this.sound && this.sound.release();
+    this.sound && this.sound.unloadAsync();
     this.stopDownload();
   }
 
@@ -74,31 +76,40 @@ class MessageFile extends Component<MessageFileProps, MessageFileState> {
     } else if (isSound) {
       // Play and Pause
       if (this.sound) {
-        if (this.sound.isPlaying()) {
-          this.sound.pause();
-          this.setState({playing: false});
+        let playbackStatus = await this.sound.getStatusAsync()
+        if (!playbackStatus.isLoaded) return
+        if (playbackStatus.isPlaying) {
+          this.sound.pauseAsync();
         } else {
-          this.sound.play();
-          this.setState({playing: true});
+          this.sound.playAsync();
         }
       } else {
         let localPath = await this.downloadFile(uri);
-        this.sound = new Sound(localPath, '', err => {
-          if (err) {
-            console.log('failed to load the sound', err);
-            return;
+        let { sound } = await Audio.Sound.createAsync({uri: localPath}, { shouldPlay: false });
+        this.sound = sound
+
+        await this.sound.playAsync();
+        this.setState({playing: true});
+
+        this.sound.setOnPlaybackStatusUpdate((playbackStatus) => {
+          if (!playbackStatus.isLoaded) {
+            // Update your UI for the unloaded state
+            if (playbackStatus.error) {
+              console.log(`Encountered a fatal error during playback: ${playbackStatus.error}`);
+              // Send Expo team the error on Slack or the forums so we can help you debug!
+            }
+          } else {
+            if (playbackStatus.isPlaying) {
+              this.setState({playing: true})
+            } else {
+              this.setState({playing: false})
+            }
+
+            if (playbackStatus.didJustFinish && !playbackStatus.isLooping) {
+              this.setState({playing: false})
+            }
           }
-          console.log(
-            'duration in seconds: ' +
-              this.sound.getDuration() +
-              'number of channels: ' +
-              this.sound.getNumberOfChannels(),
-          );
-          this.sound.play(() => {
-            this.setState({playing: false});
-          });
-          this.setState({playing: true});
-        });
+        })
       }
     } else {
       await this.downloadFile(uri);
@@ -107,39 +118,37 @@ class MessageFile extends Component<MessageFileProps, MessageFileState> {
     }
   };
 
-  downloadFile = async (uri: string) => {
+  downloadFile = async (url: string) => {
     if (this.state.downloading) return;
     if (this.state.localPath) return this.state.localPath;
 
-    const filename = uri.split('/').pop();
-    let localPath = `${fs.DocumentDirectoryPath}/${filename}`;
-    let exists = await fs.exists(localPath);
-    if (exists) return localPath;
+    const filename = url.split('/').pop();
+    let localPath = `${fs.documentDirectory}/${filename}`;
+    // let {exists} = await fs.getInfoAsync(localPath);
+    // if (exists) return localPath;
 
     this.setState({downloading: true});
-    let {jobId, promise} = await fs.downloadFile({
-      fromUrl: uri,
-      toFile: localPath,
+    
+    this.download = fs.createDownloadResumable(url, localPath, {
       headers: {
         Authorization: 'Bearer ' + this.props.token,
-      },
-      progress: res => {
-        //alert(JSON.stringify(res));
-        this.setState({
-          downloadProgress: (res.bytesWritten / res.contentLength) * 100,
-        });
-      },
-    });
-    this.setState({downloadJobId: jobId});
-    await promise;
+      }
+    }, progress => {
+      //alert(JSON.stringify(res));
+      this.setState({
+        downloadProgress: (progress.totalBytesWritten / progress.totalBytesExpectedToWrite) * 100,
+      });
+    })
+
+    await this.download.downloadAsync()
     // console.log((await fs.readFile(localPath)) || 'empty');
     await this.setState({localPath, downloading: false});
     return localPath;
   };
 
   stopDownload() {
-    if (this.state.downloadJobId) {
-      fs.stopDownload(this.state.downloadJobId);
+    if (this.state.downloading) {
+      this.download && this.download.pauseAsync()
     }
 
     this.setState({downloading: false, downloadProgress: 0});
