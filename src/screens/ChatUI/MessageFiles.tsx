@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {createSelector} from 'reselect';
-import { FileSystem as fs } from 'react-native-unimodules';
-import { Audio } from 'expo-av';
+import {FileSystem as fs} from 'react-native-unimodules';
+import {Audio} from 'expo-av';
 import bytes from 'bytes';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {RootState} from '../../reducers';
@@ -10,8 +10,7 @@ import {Message, MessageAttachement} from '../../models';
 import {View, StyleSheet, Text, ToastAndroid, Platform} from 'react-native';
 import px from '../../utils/normalizePixel';
 import Touchable from '../../components/Touchable';
-import {currentTeamTokenSelector} from './MessageImage';
-
+import {currentTeamTokenSelector} from './MessageImages';
 
 type Props = ReturnType<typeof mapStateToProps> & {
   messageId: string;
@@ -60,7 +59,7 @@ class MessageFile extends Component<MessageFileProps, MessageFileState> {
     };
   }
 
-  download: fs.DownloadResumable = null
+  download: fs.DownloadResumable = null;
   sound: Audio.Sound = null;
 
   componentWillUnmount() {
@@ -76,8 +75,8 @@ class MessageFile extends Component<MessageFileProps, MessageFileState> {
     } else if (isSound) {
       // Play and Pause
       if (this.sound) {
-        let playbackStatus = await this.sound.getStatusAsync()
-        if (!playbackStatus.isLoaded) return
+        let playbackStatus = await this.sound.getStatusAsync();
+        if (!playbackStatus.isLoaded) return;
         if (playbackStatus.isPlaying) {
           this.sound.pauseAsync();
         } else {
@@ -85,13 +84,13 @@ class MessageFile extends Component<MessageFileProps, MessageFileState> {
         }
       } else {
         let localPath = await this.downloadFile(uri);
-        let { sound } = await Audio.Sound.createAsync({uri: localPath}, { shouldPlay: false });
-        this.sound = sound
+        let {sound} = await Audio.Sound.createAsync({uri: localPath}, {shouldPlay: false});
+        this.sound = sound;
 
         await this.sound.playAsync();
         this.setState({playing: true});
 
-        this.sound.setOnPlaybackStatusUpdate((playbackStatus) => {
+        this.sound.setOnPlaybackStatusUpdate(playbackStatus => {
           if (!playbackStatus.isLoaded) {
             // Update your UI for the unloaded state
             if (playbackStatus.error) {
@@ -100,16 +99,16 @@ class MessageFile extends Component<MessageFileProps, MessageFileState> {
             }
           } else {
             if (playbackStatus.isPlaying) {
-              this.setState({playing: true})
+              this.setState({playing: true});
             } else {
-              this.setState({playing: false})
+              this.setState({playing: false});
             }
 
             if (playbackStatus.didJustFinish && !playbackStatus.isLooping) {
-              this.setState({playing: false})
+              this.setState({playing: false});
             }
           }
-        })
+        });
       }
     } else {
       await this.downloadFile(uri);
@@ -128,19 +127,24 @@ class MessageFile extends Component<MessageFileProps, MessageFileState> {
     // if (exists) return localPath;
 
     this.setState({downloading: true});
-    
-    this.download = fs.createDownloadResumable(url, localPath, {
-      headers: {
-        Authorization: 'Bearer ' + this.props.token,
-      }
-    }, progress => {
-      //alert(JSON.stringify(res));
-      this.setState({
-        downloadProgress: (progress.totalBytesWritten / progress.totalBytesExpectedToWrite) * 100,
-      });
-    })
 
-    await this.download.downloadAsync()
+    this.download = fs.createDownloadResumable(
+      url,
+      localPath,
+      {
+        headers: {
+          Authorization: 'Bearer ' + this.props.token,
+        },
+      },
+      progress => {
+        //alert(JSON.stringify(res));
+        this.setState({
+          downloadProgress: (progress.totalBytesWritten / progress.totalBytesExpectedToWrite) * 100,
+        });
+      },
+    );
+
+    await this.download.downloadAsync();
     // console.log((await fs.readFile(localPath)) || 'empty');
     await this.setState({localPath, downloading: false});
     return localPath;
@@ -148,7 +152,7 @@ class MessageFile extends Component<MessageFileProps, MessageFileState> {
 
   stopDownload() {
     if (this.state.downloading) {
-      this.download && this.download.pauseAsync()
+      this.download && this.download.pauseAsync();
     }
 
     this.setState({downloading: false, downloadProgress: 0});

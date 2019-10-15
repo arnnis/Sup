@@ -6,7 +6,7 @@ import {RootState} from '../reducers';
 import {Platform} from 'react-native';
 import {logout} from '../actions/teams';
 import {logoutFromCurrentTeam} from '../actions/teams/thunks';
-import {currentTeamTokenSelector} from '../screens/ChatUI/MessageImage';
+import {currentTeamTokenSelector} from '../screens/ChatUI/MessageImages';
 
 interface RequestOption {
   path: string;

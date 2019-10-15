@@ -6,14 +6,12 @@ import {createSelector} from 'reselect';
 import {Message, Team} from '../../models';
 import px from '../../utils/normalizePixel';
 import {connect} from 'react-redux';
-import {meSelector} from './Message';
-import {TeamsState} from '../../reducers/teams';
 
 type Props = ReturnType<typeof mapStateToProps> & {
   messageId: string;
 };
 
-class MessageImage extends Component<Props> {
+class MessageImages extends Component<Props> {
   renderImage(uri, width, height) {
     let {token} = this.props;
     return (
@@ -70,4 +68,4 @@ const mapStateToProps = (state: RootState, ownProps) => {
   };
 };
 
-export default connect(mapStateToProps)(MessageImage);
+export default connect(mapStateToProps)(MessageImages);

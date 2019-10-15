@@ -5,8 +5,9 @@ import MessageText from './MessageText';
 import px from '../../utils/normalizePixel';
 import Name from './Name';
 import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
-import MessageImage from './MessageImage';
-import MessageFilesList from './MessageFile';
+import MessageImages from './MessageImages';
+import MessageFiles from './MessageFiles';
+import MessageVideos from './MessageVideos';
 
 type Props = ThemeInjectedProps & {
   currentMessage: Message;
@@ -20,11 +21,15 @@ class Bubble extends Component<Props> {
   }
 
   renderMessageImages() {
-    return <MessageImage messageId={this.props.currentMessage.ts} />;
+    return <MessageImages messageId={this.props.currentMessage.ts} />;
+  }
+
+  renderMessageVideos() {
+    return <MessageVideos messageId={this.props.currentMessage.ts} />;
   }
 
   renderMessageFiles() {
-    return <MessageFilesList messageId={this.props.currentMessage.ts} />;
+    return <MessageFiles messageId={this.props.currentMessage.ts} />;
   }
 
   renderName() {
@@ -48,6 +53,7 @@ class Bubble extends Component<Props> {
 
         {this.renderMessageText()}
         {this.renderMessageImages()}
+        {this.renderMessageVideos()}
         {this.renderMessageFiles()}
       </View>
     );

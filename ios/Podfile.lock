@@ -2,15 +2,37 @@ PODS:
   - boost-for-react-native (1.63.0)
   - DoubleConversion (1.1.6)
   - EXAppLoaderProvider (7.0.0)
+  - EXAV (7.0.1):
+    - UMCore
+    - UMPermissionsInterface
   - EXConstants (7.0.0):
     - UMConstantsInterface
     - UMCore
   - EXFileSystem (7.0.0):
     - UMCore
     - UMFileSystemInterface
+  - EXFont (7.0.0):
+    - UMCore
+    - UMFontInterface
+  - EXKeepAwake (7.0.0):
+    - UMCore
+  - EXLinearGradient (7.0.1):
+    - UMCore
+  - EXLocation (7.0.0):
+    - UMCore
+    - UMPermissionsInterface
+    - UMTaskManagerInterface
   - EXPermissions (7.0.0):
     - UMCore
     - UMPermissionsInterface
+  - EXSQLite (7.0.0):
+    - UMCore
+    - UMFileSystemInterface
+  - EXVideoThumbnails (3.0.0):
+    - UMCore
+    - UMFileSystemInterface
+  - EXWebBrowser (7.0.1):
+    - UMCore
   - FBLazyVector (0.61.2)
   - FBReactNativeSpec (0.61.2):
     - Folly (= 2018.10.22.00)
@@ -290,9 +312,17 @@ PODS:
 DEPENDENCIES:
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - EXAppLoaderProvider (from `../node_modules/expo-app-loader-provider/ios`)
+  - EXAV (from `../node_modules/expo-av/ios`)
   - EXConstants (from `../node_modules/expo-constants/ios`)
   - EXFileSystem (from `../node_modules/expo-file-system/ios`)
+  - EXFont (from `../node_modules/expo-font/ios`)
+  - EXKeepAwake (from `../node_modules/expo-keep-awake/ios`)
+  - EXLinearGradient (from `../node_modules/expo-linear-gradient/ios`)
+  - EXLocation (from `../node_modules/expo-location/ios`)
   - EXPermissions (from `../node_modules/expo-permissions/ios`)
+  - EXSQLite (from `../node_modules/expo-sqlite/ios`)
+  - EXVideoThumbnails (from `../node_modules/expo-video-thumbnails/ios`)
+  - EXWebBrowser (from `../node_modules/expo-web-browser/ios`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - FBReactNativeSpec (from `../node_modules/react-native/Libraries/FBReactNativeSpec`)
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
@@ -338,7 +368,7 @@ DEPENDENCIES:
   - UMFontInterface (from `../node_modules/unimodules-font-interface/ios`)
   - UMImageLoaderInterface (from `../node_modules/unimodules-image-loader-interface/ios`)
   - UMPermissionsInterface (from `../node_modules/unimodules-permissions-interface/ios`)
-  - "UMReactNativeAdapter (from `../node_modules/@unimodules/react-native-adapter/ios`)"
+  - "UMReactNativeAdapter (from `../node_modules/react-native-unimodules/node_modules/@unimodules/react-native-adapter/ios`)"
   - UMSensorsInterface (from `../node_modules/unimodules-sensors-interface/ios`)
   - UMTaskManagerInterface (from `../node_modules/unimodules-task-manager-interface/ios`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -356,15 +386,39 @@ EXTERNAL SOURCES:
   EXAppLoaderProvider:
     :path: !ruby/object:Pathname
     path: "../node_modules/expo-app-loader-provider/ios"
+  EXAV:
+    :path: !ruby/object:Pathname
+    path: "../node_modules/expo-av/ios"
   EXConstants:
     :path: !ruby/object:Pathname
     path: "../node_modules/expo-constants/ios"
   EXFileSystem:
     :path: !ruby/object:Pathname
     path: "../node_modules/expo-file-system/ios"
+  EXFont:
+    :path: !ruby/object:Pathname
+    path: "../node_modules/expo-font/ios"
+  EXKeepAwake:
+    :path: !ruby/object:Pathname
+    path: "../node_modules/expo-keep-awake/ios"
+  EXLinearGradient:
+    :path: !ruby/object:Pathname
+    path: "../node_modules/expo-linear-gradient/ios"
+  EXLocation:
+    :path: !ruby/object:Pathname
+    path: "../node_modules/expo-location/ios"
   EXPermissions:
     :path: !ruby/object:Pathname
     path: "../node_modules/expo-permissions/ios"
+  EXSQLite:
+    :path: !ruby/object:Pathname
+    path: "../node_modules/expo-sqlite/ios"
+  EXVideoThumbnails:
+    :path: !ruby/object:Pathname
+    path: "../node_modules/expo-video-thumbnails/ios"
+  EXWebBrowser:
+    :path: !ruby/object:Pathname
+    path: "../node_modules/expo-web-browser/ios"
   FBLazyVector:
     :path: "../node_modules/react-native/Libraries/FBLazyVector"
   FBReactNativeSpec:
@@ -460,7 +514,7 @@ EXTERNAL SOURCES:
     path: "../node_modules/unimodules-permissions-interface/ios"
   UMReactNativeAdapter:
     :path: !ruby/object:Pathname
-    path: "../node_modules/@unimodules/react-native-adapter/ios"
+    path: "../node_modules/react-native-unimodules/node_modules/@unimodules/react-native-adapter/ios"
   UMSensorsInterface:
     :path: !ruby/object:Pathname
     path: "../node_modules/unimodules-sensors-interface/ios"
@@ -474,9 +528,17 @@ SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   EXAppLoaderProvider: 5d348813a9cf09b03bbe5b8b55437bc1bfbddbd1
+  EXAV: 97912c6002e7d7934843f50c9080f1d7f8b99a4f
   EXConstants: 31e5318521be6175009af6ccd3e97dedf39da96a
   EXFileSystem: 7e53a2c30a2eb6987ba6d5158ab908f947523228
+  EXFont: 71d07dc5d2153db7d1a23f1e0cc1b6341d55c432
+  EXKeepAwake: d4caf9a1a7691126ade4ca0b76592e93250a8f29
+  EXLinearGradient: b7d4a703ac9802078a8a8e212d205929c18b03e4
+  EXLocation: 452a1d9edceb1b93deb86fd785236606d33742dd
   EXPermissions: df10ad83df2f6b647aec304619354f8ab48d5f63
+  EXSQLite: ddc1e6727bd7d36e649f07590fe3ae5511c1f039
+  EXVideoThumbnails: da6cbd27284d6f35fc70b04faef033bc61b34ae4
+  EXWebBrowser: 18924c3d2a3a1aa95d413672f058beff589c80f4
   FBLazyVector: 68b6a76960fbd8ecd9fb7ce0aadd3329c3340a99
   FBReactNativeSpec: 5a764c60abdc3336a213e5310c40b74741f32839
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
