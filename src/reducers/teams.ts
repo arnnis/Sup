@@ -17,7 +17,7 @@ const initialState: TeamsState = {
     {
       id: 'TMYS2CUFQ',
       token:
-        'xoxs-746886436534-738318706257-780860807956-f4e6ee07637c5630275a09c49dd7d2b4d65cef4aa50a84678a197be75cd2190e',
+        'xoxs-746886436534-738318706257-784909639730-42d0b8a08e6a523683929b0628b3473608f8106eafc5ae2186f8d5fed7a484eb',
       userId: 'UMQ9CLS7K',
     },
   ],
