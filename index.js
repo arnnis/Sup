@@ -2,8 +2,7 @@ import React from 'react';
 import {AppRegistry, Platform} from 'react-native';
 import 'react-native-gesture-handler';
 import {useScreens} from 'react-native-screens';
-import App from './src/App';
-import {name as appName} from './app.json';
+const appName = 'Whatslack';
 
 if (process.env.NODE_ENV !== 'production') {
   const whyDidYouRender = require('@welldone-software/why-did-you-render');
