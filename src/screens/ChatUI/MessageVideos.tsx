@@ -57,8 +57,11 @@ class MessageVideo extends Component<MessageVideoProps> {
     this.generateThumbnail();
   }
 
-  componentWillUnmount() {
-    this.video && this.video.unloadAsync();
+  async componentWillUnmount() {
+    if (this.video) {
+      await this.video.stopAsync();
+      await this.video.unloadAsync();
+    }
   }
 
   generateThumbnail = async () => {
@@ -89,6 +92,7 @@ class MessageVideo extends Component<MessageVideoProps> {
 
   render() {
     let {token, uri, height, width} = this.props;
+    return this.renderThumbnail(uri, width, height);
     return (
       <Video
         ref={ref => (this.video = ref)}
@@ -96,7 +100,6 @@ class MessageVideo extends Component<MessageVideoProps> {
         rate={1.0}
         volume={1.0}
         isMuted={false}
-        shouldPlay
         resizeMode="cover"
         style={{width, height}}
         useNativeControls
