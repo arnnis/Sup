@@ -76,7 +76,11 @@ export default async (options: RequestOption) => {
 
 const handleSlackError = (error: SlackError, path: string, silent: boolean) => {
   !silent && console.log('SlackError: ' + error.message + '\npath: ' + path);
-  if (error.message === 'token_revoked' || error.message === 'account_inactive') {
+  if (
+    error.message === 'invalid_auth' ||
+    error.message === 'token_revoked' ||
+    error.message === 'account_inactive'
+  ) {
     store.dispatch(logoutFromCurrentTeam() as any);
     return;
   }
