@@ -19,22 +19,30 @@ import UserProfile from './UserProfile';
 import Touchable from '../components/Touchable';
 import withTheme, {ThemeInjectedProps} from '../contexts/theme/withTheme';
 import FastImage from 'react-native-fast-image';
+import BottomTabbar from './BottomTabBar';
 
 type Props = ReturnType<typeof mapStateToProps> & DispatchProp<any> & ThemeInjectedProps;
 
 const Main = React.memo(({teams, entities, connectionStatus, dispatch, theme}: Props) => {
-  let [navigationState, setNavigationState] = useState({
+  let [bottomTabState, setBottomTabState] = useState({
     index: 0,
     routes: [
-      {key: 'chats', title: 'Chats', icon: 'email-open', color: '#333333'},
+      {key: 'chats', title: 'Chats', icon: 'chat', color: '#333333'},
+      {key: 'peoples', title: 'Members', icon: 'domain'},
+      {key: 'files', title: 'Files', icon: 'file-alt'},
+      {key: 'settings', title: 'Settings', icon: 'settings-box'},
+    ],
+  });
+  let [scrollableTabState, setScrollableTabState] = useState({
+    index: 0,
+    routes: [
+      {key: 'directs', title: 'Chats', icon: 'email-open', color: '#333333'},
       {
         key: 'groups',
         title: 'Groups',
         icon: 'account-multiple',
         color: '#333333',
       },
-      {key: 'peoples', title: 'Members', icon: 'domain'},
-      // {key: 'settings', title: 'Settings', icon: 'settings-box'},
     ],
   });
 
@@ -48,18 +56,60 @@ const Main = React.memo(({teams, entities, connectionStatus, dispatch, theme}: P
     StatusBar.setBarStyle('light-content');
   }, []);
 
-  let _handleIndexChange = index => setNavigationState({...navigationState, index});
+  let _handleBottomTabIndexChange = index => setBottomTabState({...bottomTabState, index});
+  let _handleScrollableTabIndexChange = index =>
+    setScrollableTabState({...scrollableTabState, index});
 
   let currentTeamId = teams.currentTeam;
   let currentTeamInfo = teams.list.find(ws => ws.id === currentTeamId);
   let currentUserId = currentTeamInfo && currentTeamInfo.userId;
 
-  let _renderScene = SceneMap({
-    chats: ChatsList,
+  let _renderScrollableTab = () => (
+    <View style={{flex: 1}}>
+      <TabView
+        navigationState={scrollableTabState}
+        renderScene={_renderScrollableTabScene}
+        onIndexChange={_handleScrollableTabIndexChange}
+        initialLayout={{width: Dimensions.get('window').width}}
+        renderTabBar={props => (
+          <TabBar
+            {...props}
+            indicatorStyle={{backgroundColor: '#fff'}}
+            style={{
+              backgroundColor: '#482046',
+              height: px(42.5),
+              paddingHorizontal: px(10),
+            }}
+            labelStyle={{color: '#fff', fontSize: px(13.6)}}
+            renderIcon={_renderTabIcon}
+            tabStyle={{
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}
+            getLabelText={({route}) => route.title}
+          />
+        )}
+      />
+    </View>
+  );
+
+  let _renderScrollableTabScene = SceneMap({
+    directs: ChatsList,
     groups: GroupsList,
-    peoples: MembersList,
-    // settings: () => <UserProfile userId={currentUserId} isMe />,
   } as any);
+
+  let _renderBottomTabScene = () => {
+    switch (bottomTabState.index) {
+      case 0:
+        return _renderScrollableTab();
+      case 1:
+        return <GroupsList />;
+      case 2:
+        return <MembersList />;
+      case 3:
+        return <UserProfile userId={currentUserId} isMe />;
+    }
+  };
 
   let currentTeam = entities.teams.byId[currentTeamId];
   let currentUser = entities.users.byId[currentUserId];
@@ -80,7 +130,7 @@ const Main = React.memo(({teams, entities, connectionStatus, dispatch, theme}: P
   );
 
   let _renderTabIcon = ({route, focused, color}) => (
-    <MaterialCommunityIcons name={route.icon} color="#fff" size={px(17)} />
+    <MaterialCommunityIcons name={route.icon} color="#fff" size={px(19)} />
   );
 
   let _renderAvatar = () => <Avatar user={currentUser} styles={{height: px(35), width: px(35)}} />;
@@ -133,43 +183,15 @@ const Main = React.memo(({teams, entities, connectionStatus, dispatch, theme}: P
         drawerWidth={px(160)}>
         <Header center={_renderTeamName()} left={_renderTeamLogo()} right={_renderMenu()} />
         {currentTeamId ? (
-          <TabView
-            navigationState={navigationState}
-            renderScene={_renderScene}
-            onIndexChange={_handleIndexChange}
-            initialLayout={{width: Dimensions.get('window').width}}
-            renderTabBar={props => (
-              <TabBar
-                {...props}
-                indicatorStyle={{backgroundColor: '#fff'}}
-                style={{
-                  backgroundColor: '#482046',
-                  height: px(42.5),
-                  paddingHorizontal: px(10),
-                }}
-                labelStyle={{color: '#fff', fontSize: px(13.6)}}
-                renderIcon={_renderTabIcon}
-                tabStyle={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                }}
-                getLabelText={({route}) => route.title}
-              />
-            )}
+          <BottomTabbar
+            navigationState={bottomTabState}
+            onIndexChange={_handleBottomTabIndexChange}
+            renderScene={_renderBottomTabScene}
+            renderIcon={_renderTabIcon}
           />
         ) : (
           _renderNoTeamSelected()
         )}
-
-        {/* <BottomNavigation
-            navigationState={navigationState}
-            onIndexChange={_handleIndexChange}
-            renderScene={_renderScene}
-            barStyle={{backgroundColor: '#3D2037', height: px(52.5)}}
-            shifting={false}
-            renderIcon={_renderTabIcon}
-            style={{backgroundColor: theme.backgroundColor}}
-          /> */}
       </DrawerLayout>
     </SafeAreaView>
   );
