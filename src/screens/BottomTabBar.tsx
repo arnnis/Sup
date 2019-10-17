@@ -1,6 +1,5 @@
-import React, {Component, useState} from 'react';
+import React from 'react';
 import {StyleSheet, View, Text} from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import px from '../utils/normalizePixel';
 import Touchable from '../components/Touchable';
 
@@ -9,21 +8,25 @@ const BottomTabbar = ({navigationState, renderScene, onIndexChange, renderIcon})
     <>
       {renderScene(navigationState.routes[navigationState.index])}
       <View style={styles.container}>
-        {navigationState.routes.map((tab, index) => (
-          <Tab
-            title={tab.title}
-            icon={renderIcon({route: tab})}
-            onPress={() => onIndexChange(index)}
-          />
-        ))}
+        {navigationState.routes.map((tab, index) => {
+          let active = index === navigationState.index;
+          return (
+            <Tab
+              title={tab.title}
+              icon={renderIcon({route: tab, focused: active})}
+              onPress={() => onIndexChange(index)}
+              active={active}
+            />
+          );
+        })}
       </View>
     </>
   );
 };
-const Tab = ({title, icon, onPress}) => (
+const Tab = ({title, icon, onPress, active}) => (
   <Touchable style={styles.tab} onPress={onPress}>
     {icon}
-    <Text style={styles.tabTitle}>{title}</Text>
+    <Text style={[styles.tabTitle, active && styles.tabTitleActive]}>{title}</Text>
   </Touchable>
 );
 
@@ -40,8 +43,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   tabTitle: {
-    color: '#fff',
+    color: '#ccc',
     fontSize: px(13.5),
+  },
+  tabTitleActive: {
+    color: '#fff',
+    fontWeight: '700',
   },
 });
 

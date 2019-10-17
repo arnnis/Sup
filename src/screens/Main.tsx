@@ -130,7 +130,7 @@ const Main = React.memo(({teams, entities, connectionStatus, dispatch, theme}: P
   );
 
   let _renderTabIcon = ({route, focused, color}) => (
-    <MaterialCommunityIcons name={route.icon} color="#fff" size={px(19)} />
+    <MaterialCommunityIcons name={route.icon} color={focused ? '#fff' : '#ccc'} size={px(19)} />
   );
 
   let _renderAvatar = () => <Avatar user={currentUser} styles={{height: px(35), width: px(35)}} />;
