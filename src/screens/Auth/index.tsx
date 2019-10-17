@@ -1,5 +1,14 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, TextInput, TouchableOpacity, ActivityIndicator} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  ActivityIndicator,
+  KeyboardAvoidingView,
+  ScrollView,
+} from 'react-native';
 import Svg, {Defs, Path, Stop, LinearGradient} from 'react-native-svg';
 
 import px from '../../utils/normalizePixel';
@@ -173,29 +182,31 @@ class Auth extends Component<Props> {
   render() {
     let {theme} = this.props;
     return (
-      <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
-        {this.renderHeader()}
-        {this.renderDomainInput()}
-        {this.renderDivider()}
-        {this.renderInput('email', 'Email', 'Enter your email', (email: string) =>
-          this.setState({email}),
-        )}
-        {this.renderInput(
-          'password',
-          'Password',
-          'Enter your password',
-          (password: string) => this.setState({password}),
-          true,
-        )}
-        {this.renderInput(
-          'pin',
-          '2FA Pin (if enabled)',
-          'Enter your 2fa pin',
-          (pin: string) => this.setState({pin}),
-          true,
-        )}
-        {this.renderSubmitButton()}
-      </View>
+      <ScrollView style={{flex: 1, backgroundColor: theme.backgroundColor}}>
+        <KeyboardAvoidingView style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
+          {this.renderHeader()}
+          {this.renderDomainInput()}
+          {this.renderDivider()}
+          {this.renderInput('email', 'Email', 'Enter your email', (email: string) =>
+            this.setState({email}),
+          )}
+          {this.renderInput(
+            'password',
+            'Password',
+            'Enter your password',
+            (password: string) => this.setState({password}),
+            true,
+          )}
+          {this.renderInput(
+            'pin',
+            '2FA Pin (if enabled)',
+            'Enter your 2fa pin',
+            (pin: string) => this.setState({pin}),
+            true,
+          )}
+          {this.renderSubmitButton()}
+        </KeyboardAvoidingView>
+      </ScrollView>
     );
   }
 }

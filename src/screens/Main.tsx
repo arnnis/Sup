@@ -103,9 +103,13 @@ const Main = React.memo(({teams, entities, connectionStatus, dispatch, theme}: P
       case 0:
         return _renderScrollableTab();
       case 1:
-        return <GroupsList />;
-      case 2:
         return <MembersList />;
+      case 2:
+        return (
+          <View>
+            <Text>Files</Text>
+          </View>
+        );
       case 3:
         return <UserProfile userId={currentUserId} isMe />;
     }
