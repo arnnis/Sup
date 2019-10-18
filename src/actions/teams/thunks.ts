@@ -22,6 +22,7 @@ import {getChats} from '../chats/thunks';
 import {closeSocket, init as initRTM} from '../../services/rtm';
 import {getCurrentUser} from '../app/thunks';
 import {getMembers} from '../members/thunks';
+import {SlackError} from '../../utils/errors';
 
 export const signinTeam = (
   domain: string,
@@ -57,6 +58,9 @@ export const signinTeam = (
     return Promise.resolve();
   } catch (err) {
     dispatch(signinTeamFail());
+    if (err instanceof SlackError) {
+      if (err.message === 'missing_pin') alert('Please enter 2FA pin and try again');
+    }
     console.log(err);
   }
 };

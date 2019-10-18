@@ -17,6 +17,14 @@ class Avatar extends Component<Props> {
     width: px(50),
   };
 
+  state = {
+    errored: false,
+  };
+
+  onError = () => {
+    this.setState({errored: true});
+  };
+
   renderImage() {
     let {user, width} = this.props;
 
@@ -41,7 +49,13 @@ class Avatar extends Component<Props> {
         uri = profile.image_512;
     }
 
-    return <FastImage source={{uri}} style={[styles.image, {borderRadius: width / 2}]} />;
+    return (
+      <FastImage
+        source={{uri}}
+        style={[styles.image, {borderRadius: width / 2}]}
+        onError={this.onError}
+      />
+    );
   }
 
   renderOnlineBadge() {
@@ -50,6 +64,17 @@ class Avatar extends Component<Props> {
     if (user && user.hasOwnProperty('presence') && user.presence === 'active')
       return <View style={styles.onlineBadge} />;
     return null;
+  }
+
+  renderErrorPlaceholder() {
+    return (
+      <View style={{flex: 1, backgroundColor: '#562E52', borderRadius: px(360)}}>
+        <FastImage
+          source={require('../assets/img/slack-logo-white.png')}
+          style={{width: '100%', height: '100%'}}
+        />
+      </View>
+    );
   }
 
   render() {
@@ -64,8 +89,14 @@ class Avatar extends Component<Props> {
           {width, height: width, borderRadius: width / 2},
           this.props.style,
         ]}>
-        {this.renderImage()}
-        {this.renderOnlineBadge()}
+        {this.state.errored ? (
+          this.renderErrorPlaceholder()
+        ) : (
+          <>
+            {this.renderImage()}
+            {this.renderOnlineBadge()}
+          </>
+        )}
       </TouchableOpacity>
     );
   }

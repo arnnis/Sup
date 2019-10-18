@@ -25,7 +25,7 @@ class MemberCell extends PureComponent<Props> {
     });
 
   renderAvatar(user: User) {
-    return <Avatar userId={user.id} width={px(60)} />;
+    return <Avatar userId={user.id} width={px(65)} />;
   }
 
   renderName(member: User) {
@@ -34,8 +34,7 @@ class MemberCell extends PureComponent<Props> {
 
     return (
       <Text style={[styles.name, {color: theme.foregroundColor}]}>
-        {member.profile.display_name_normalized ||
-          member.profile.real_name_normalized}
+        {member.profile.display_name_normalized || member.profile.real_name_normalized}
       </Text>
     );
   }
@@ -45,9 +44,7 @@ class MemberCell extends PureComponent<Props> {
     if (!member) return null;
     return (
       <View>
-        <Text
-          style={[styles.jobTitle, {color: theme.backgroundColorLess5}]}
-          numberOfLines={2}>
+        <Text style={[styles.jobTitle, {color: theme.backgroundColorLess5}]} numberOfLines={2}>
           {member.profile.title}
         </Text>
       </View>
@@ -64,7 +61,7 @@ class MemberCell extends PureComponent<Props> {
         style={[
           styles.container,
           {
-            backgroundColor: theme.backgroundColorMore1,
+            backgroundColor: 'transparent',
           },
         ]}
         onPress={this.handlePress}>
@@ -80,16 +77,15 @@ class MemberCell extends PureComponent<Props> {
 
 const styles = StyleSheet.create({
   container: {
-    width: width / 4,
-    backgroundColor: '#FFFFFF',
+    width: width / 3 - 10,
     alignItems: 'center',
     paddingHorizontal: px(7.5),
-    paddingTop: px(10),
+    paddingTop: px(15),
     height: px(150),
   },
   name: {
     fontWeight: '700',
-    fontSize: px(13),
+    fontSize: px(14),
     marginTop: px(12.5),
     textAlign: 'center',
   },
