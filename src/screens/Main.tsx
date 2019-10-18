@@ -20,6 +20,7 @@ import Touchable from '../components/Touchable';
 import withTheme, {ThemeInjectedProps} from '../contexts/theme/withTheme';
 import FastImage from 'react-native-fast-image';
 import BottomTabbar from './BottomTabBar';
+import showMenu from '../utils/showMenu';
 
 type Props = ReturnType<typeof mapStateToProps> & DispatchProp<any> & ThemeInjectedProps;
 
@@ -47,7 +48,7 @@ const Main = React.memo(({teams, entities, connectionStatus, dispatch, theme}: P
   });
 
   let [drawerOpen, setDrawerOpen] = useState(false);
-  let [menuOpen, setMenuOpen] = useState(false);
+  let menuRef = useRef(null);
 
   let drawerRef = useRef(null);
 
@@ -146,23 +147,27 @@ const Main = React.memo(({teams, entities, connectionStatus, dispatch, theme}: P
         : 'Connecting...'
       : 'No team selected';
 
-  let _openMenu = () => setMenuOpen(true);
-
-  let _closeMenu = () => setMenuOpen(false);
+  let _openMenu = () => {
+    showMenu(
+      [
+        {
+          title: 'Settings',
+          onPress: () => {},
+        },
+        {
+          title: 'Logout',
+          onPress: () => dispatch(logoutFromCurrentTeam()),
+        },
+      ],
+      menuRef,
+    );
+  };
 
   let _renderMenu = () =>
     currentTeamId && (
-      <Menu
-        visible={menuOpen}
-        onDismiss={_closeMenu}
-        anchor={
-          <Touchable onPress={_openMenu}>
-            <MaterialCommunityIcons name="dots-vertical" color="#fff" size={px(22)} />
-          </Touchable>
-        }>
-        <Menu.Item onPress={() => {}} title="Settings" />
-        <Menu.Item onPress={() => dispatch(logoutFromCurrentTeam())} title="Logout" />
-      </Menu>
+      <Touchable onPress={_openMenu}>
+        <MaterialCommunityIcons ref={menuRef} name="dots-vertical" color="#fff" size={px(22)} />
+      </Touchable>
     );
 
   let _renderNoTeamSelected = () => (

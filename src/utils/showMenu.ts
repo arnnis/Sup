@@ -1,28 +1,32 @@
 import {UIManager, findNodeHandle, ActionSheetIOS, Platform} from 'react-native';
 
-const showMenu = (actions: Array<string>, anchorRef, destructiveButtonIndex: number) => {
+const showMenu = (
+  actions: Array<{title: string; onPress(): void}>,
+  anchorRef,
+  destructiveButtonIndex: number | undefined = 0,
+) => {
   if (Platform.OS === 'android') {
     UIManager.showPopupMenu(
       findNodeHandle(anchorRef),
-      actions,
+      actions.map(action => action.title),
       () => {},
       (action, index) => {
         if (action === 'itemSelected') {
-          this.props.onPress(index);
+          actions[index].onPress();
         }
       },
     );
   } else {
     ActionSheetIOS.showActionSheetWithOptions(
       {
-        options: ['cancel', ...actions],
+        options: ['Cancel', ...actions.map(action => action.title)],
         destructiveButtonIndex: destructiveButtonIndex,
         cancelButtonIndex: 0,
       },
       index => {
         if (index > 0) {
           // To make it same index as Android, as we do not care about Cancel action
-          this.props.onPress(index - 1);
+          actions[index - 1].onPress();
         }
       },
     );
