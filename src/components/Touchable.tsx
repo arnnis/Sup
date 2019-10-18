@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, forwardRef, Ref} from 'react';
 import {View, TouchableOpacity, TouchableNativeFeedback, ViewStyle, Platform} from 'react-native';
 
 type Props = {
@@ -7,9 +7,9 @@ type Props = {
   disabled?: boolean;
 };
 
-const Touchable: FC<Props> = ({style, onPress, disabled, children}) => {
+const Touchable: FC<Props> = forwardRef(({style, onPress, disabled, children}, ref) => {
   let _renderAndroid = () => (
-    <TouchableNativeFeedback onPress={onPress} disabled={disabled}>
+    <TouchableNativeFeedback onPress={onPress} disabled={disabled} ref={ref}>
       <View style={style ? style : null}>{children}</View>
     </TouchableNativeFeedback>
   );
@@ -25,6 +25,6 @@ const Touchable: FC<Props> = ({style, onPress, disabled, children}) => {
     ios: _renderIOS(),
     web: _renderIOS(),
   });
-};
+});
 
 export default Touchable;

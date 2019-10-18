@@ -1,4 +1,5 @@
 import {UIManager, findNodeHandle, ActionSheetIOS, Platform} from 'react-native';
+import {Ref, ReactNode} from 'react';
 
 const showMenu = (
   actions: Array<{title: string; onPress(): void}>,
@@ -12,7 +13,7 @@ const showMenu = (
       () => {},
       (action, index) => {
         if (action === 'itemSelected') {
-          actions[index].onPress();
+          actions[index] && actions[index].onPress();
         }
       },
     );

@@ -159,14 +159,14 @@ const Main = React.memo(({teams, entities, connectionStatus, dispatch, theme}: P
           onPress: () => dispatch(logoutFromCurrentTeam()),
         },
       ],
-      menuRef,
+      menuRef.current,
     );
   };
 
   let _renderMenu = () =>
     currentTeamId && (
-      <Touchable onPress={_openMenu}>
-        <MaterialCommunityIcons ref={menuRef} name="dots-vertical" color="#fff" size={px(22)} />
+      <Touchable onPress={_openMenu} ref={ref => (menuRef.current = ref)}>
+        <MaterialCommunityIcons name="dots-vertical" color="#fff" size={px(22)} />
       </Touchable>
     );
 
