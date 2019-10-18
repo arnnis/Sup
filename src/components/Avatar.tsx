@@ -4,12 +4,14 @@ import px from '../utils/normalizePixel';
 import FastImage from 'react-native-fast-image';
 import {connect} from 'react-redux';
 import {RootState} from '../reducers';
+import {currentTeamTokenSelector} from '../screens/ChatUI/MessageImages';
 
 type Props = ReturnType<typeof mapStateToProps> & {
   userId: string;
   width?: number;
   style?: ViewStyle;
   onPress?(): void;
+  containerStyle?: ViewStyle;
 };
 
 class Avatar extends Component<Props> {
@@ -21,9 +23,7 @@ class Avatar extends Component<Props> {
     errored: false,
   };
 
-  onError = () => {
-    this.setState({errored: true});
-  };
+  onError = () => this.setState({errored: true});
 
   renderImage() {
     let {user, width} = this.props;
@@ -51,9 +51,9 @@ class Avatar extends Component<Props> {
 
     return (
       <FastImage
-        source={{uri}}
-        style={[styles.image, {borderRadius: width / 2}]}
-        onError={this.onError}
+        source={{uri, headers: {Authorization: 'Bearer ' + this.props.token}}}
+        style={[styles.image, {borderRadius: width / 2}, this.props.style]}
+        //onError={this.onError}
       />
     );
   }
@@ -66,7 +66,7 @@ class Avatar extends Component<Props> {
     return null;
   }
 
-  renderErrorPlaceholder() {
+  renderPlaceholder() {
     return (
       <View style={{flex: 1, backgroundColor: '#562E52', borderRadius: px(360)}}>
         <FastImage
@@ -87,10 +87,10 @@ class Avatar extends Component<Props> {
         style={[
           styles.container,
           {width, height: width, borderRadius: width / 2},
-          this.props.style,
+          this.props.containerStyle,
         ]}>
         {this.state.errored ? (
-          this.renderErrorPlaceholder()
+          this.renderPlaceholder()
         ) : (
           <>
             {this.renderImage()}
@@ -123,6 +123,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state: RootState, ownProps) => ({
   user: state.entities.users.byId[ownProps.userId],
+  token: currentTeamTokenSelector(state),
 });
 
 export default connect(mapStateToProps)(Avatar);

@@ -44,7 +44,6 @@ class MembersList extends PureComponent<Props> {
             })}
             numColumns={3}
             initialNumToRender={10}
-            maxToRenderPerBatch={10}
             contentContainerStyle={{paddingHorizontal: 15}}
           />
         )}

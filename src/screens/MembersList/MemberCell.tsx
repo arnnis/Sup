@@ -25,7 +25,9 @@ class MemberCell extends PureComponent<Props> {
     });
 
   renderAvatar(user: User) {
-    return <Avatar userId={user.id} width={px(65)} />;
+    return (
+      <Avatar userId={user.id} width={px(67.5)} style={{borderRadius: px(15)}} containerStyle />
+    );
   }
 
   renderName(member: User) {
@@ -33,7 +35,7 @@ class MemberCell extends PureComponent<Props> {
     if (!member) return null;
 
     return (
-      <Text style={[styles.name, {color: theme.foregroundColor}]}>
+      <Text style={[styles.name, {color: theme.foregroundColor}]} numberOfLines={1}>
         {member.profile.display_name_normalized || member.profile.real_name_normalized}
       </Text>
     );
@@ -66,7 +68,7 @@ class MemberCell extends PureComponent<Props> {
         ]}
         onPress={this.handlePress}>
         {this.renderAvatar(member)}
-        <View style={{flex: 1, marginLeft: px(10), paddingRight: px(15)}}>
+        <View style={{flex: 1, alignItems: 'center'}}>
           {this.renderName(member)}
           {this.renderJobTitle(member)}
         </View>
@@ -87,13 +89,11 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     fontSize: px(14),
     marginTop: px(12.5),
-    textAlign: 'center',
   },
   jobTitle: {
     color: '#8B8B8B',
     marginTop: px(5),
     fontSize: px(13),
-    textAlign: 'center',
   },
 });
 

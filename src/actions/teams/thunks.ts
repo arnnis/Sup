@@ -59,7 +59,9 @@ export const signinTeam = (
   } catch (err) {
     dispatch(signinTeamFail());
     if (err instanceof SlackError) {
-      if (err.message === 'missing_pin') alert('Please enter 2FA pin and try again');
+      err.message === 'missing_pin' && alert('Please enter 2FA pin and try again');
+      err.message === 'user_not_found' && alert('User with this email not found in this team');
+      err.message === 'incorrect_password' && alert('Password is incorrect');
     }
     console.log(err);
   }

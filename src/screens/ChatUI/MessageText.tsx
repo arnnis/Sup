@@ -7,15 +7,17 @@ import px from '../../utils/normalizePixel';
 import Emoji from './Emoji';
 import Username from './Username';
 import Code from './Code';
+import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 
 const WWW_URL_PATTERN = /^www\./i;
 
-type Props = ReturnType<typeof mapStateToProps> & {
-  messageId: string;
-  isMe: boolean;
-  textProps: TextProps;
-  style: TextStyle;
-};
+type Props = ReturnType<typeof mapStateToProps> &
+  ThemeInjectedProps & {
+    messageId: string;
+    isMe: boolean;
+    textProps: TextProps;
+    style: TextStyle;
+  };
 
 class MessageText extends Component<Props> {
   onUrlPress = url => {
@@ -51,12 +53,17 @@ class MessageText extends Component<Props> {
   }
 
   render() {
-    let {text, isMe, textProps, style} = this.props;
+    let {text, isMe, textProps, style, theme} = this.props;
     if (!text) return null;
     return (
       <View style={styles.container}>
         <ParsedText
-          style={[styles.text, isMe ? styles.textRight : styles.textLeft, style]}
+          style={[
+            styles.text,
+            isMe ? styles.textRight : styles.textLeft,
+            {color: isMe ? theme.backgroundColor : theme.foregroundColor},
+            style,
+          ]}
           parse={[
             {type: 'url', style: styles.linkStyle, onPress: this.onUrlPress},
             {
@@ -107,4 +114,4 @@ const mapStateToProps = (state: RootState, ownProps) => ({
     state.entities.messages.byId[ownProps.messageId].text,
 });
 
-export default connect(mapStateToProps)(MessageText);
+export default connect(mapStateToProps)(withTheme(MessageText));
