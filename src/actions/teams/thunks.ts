@@ -24,12 +24,21 @@ import {getCurrentUser} from '../app/thunks';
 import {getMembers} from '../members/thunks';
 import {SlackError} from '../../utils/errors';
 
-export const signinTeam = (
-  domain: string,
-  email: string,
-  password: string,
-  pin?: string,
-) => async dispatch => {
+export const signinTeam = (domain: string, email: string, password: string, pin?: string) => async (
+  dispatch,
+  getState,
+) => {
+  let state: RootState = getState();
+
+  if (
+    state.teams.list
+      .map(tm => state.entities.teams.byId[tm.id])
+      .some(team => team.domain === domain)
+  ) {
+    alert('You have already signed in this team.');
+    return;
+  }
+
   try {
     dispatch(signinTeamStart());
 
