@@ -169,6 +169,32 @@ export interface MessageAttachement {
   permalink: string;
   size: number;
   filetype: string;
+  id: string;
+  created: number;
+  timestamp: number;
+  pretty_type: string;
+  user: string;
+  editable: boolean;
+  mode: string;
+  is_external: boolean;
+  external_type: string;
+  is_public: boolean;
+  public_url_shared: boolean;
+  display_as_bot: boolean;
+  username: string;
+  thumb_360_w: number;
+  thumb_360_h: number;
+  thumb_360_gif: string;
+  image_exif_rotation: number;
+  original_w: number;
+  original_h: number;
+  deanimate_gif: string;
+  pjpeg: string;
+  permalink_public: string;
+  channels: string[];
+  groups: string[];
+  ims: string[];
+  comments_count: number;
 }
 
 interface AttachmentField {

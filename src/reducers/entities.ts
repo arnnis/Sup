@@ -1,13 +1,14 @@
 import {Reducer} from 'redux';
 import merge from 'lodash/merge';
 import {RootAction} from '../actions';
-import {User, Message, Chat, Team} from '../models';
+import {User, Message, Chat, Team, MessageAttachement} from '../models';
 
 export type EntitiesState = Readonly<{
   users: {byId: {[userId: string]: User}};
   teams: {byId: {[teamId: string]: Team}};
   chats: {byId: {[chatId: string]: Chat}};
   messages: {byId: {[messageId: string]: Message}};
+  files: {byId: {[fileId: string]: MessageAttachement}};
   emojis: {byId: {[emojiId: string]: string}};
 }>;
 

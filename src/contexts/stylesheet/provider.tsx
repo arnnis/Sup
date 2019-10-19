@@ -39,10 +39,7 @@ class ThemeProvider extends Component<unknown> {
   };
 
   handleUIModeMedia = (mediaProperty, style) => {
-    if (
-      (mediaProperty.includes('whatslack') && this.getOrientation() === 'landscape') ||
-      (mediaProperty.includes('dislack') && this.getOrientation() === 'portrait')
-    ) {
+    if (mediaProperty.includes('whatslack') && this.getOrientation() === 'landscape') {
       return {
         ...style,
         ...style[mediaProperty],

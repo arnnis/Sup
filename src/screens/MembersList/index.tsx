@@ -1,6 +1,6 @@
 import React, {PureComponent, Component} from 'react';
 import {DispatchProp} from 'react-redux';
-import {View, StyleSheet, FlatList, ActivityIndicator} from 'react-native';
+import {View, StyleSheet, FlatList, ActivityIndicator, Platform} from 'react-native';
 import {connect} from 'react-redux';
 import MemberCell from './MemberCell';
 import {RootState} from '../../reducers';
@@ -45,6 +45,7 @@ class MembersList extends PureComponent<Props> {
             numColumns={3}
             initialNumToRender={10}
             contentContainerStyle={{paddingHorizontal: 15}}
+            removeClippedSubviews={Platform.OS === 'android'}
           />
         )}
       </View>
