@@ -7,7 +7,7 @@ import px from '../../utils/normalizePixel';
 
 type Props = ReturnType<typeof mapStateToProps>;
 
-class FileList extends Component<Props> {
+class FilesList extends Component<Props> {
   keyExtractor = (chatId: string) => chatId;
 
   getItemLayout = (data, index) => ({
@@ -57,4 +57,4 @@ const mapStateToProps = (state: RootState) => ({
   loading: state.files.listLoading,
 });
 
-export default connect(mapStateToProps)(FileList);
+export default connect(mapStateToProps)(FilesList);

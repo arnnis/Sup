@@ -21,6 +21,7 @@ import withTheme, {ThemeInjectedProps} from '../contexts/theme/withTheme';
 import FastImage from 'react-native-fast-image';
 import BottomTabbar from './BottomTabBar';
 import showMenu from '../utils/showMenu';
+import FilesList from './FilesList';
 
 type Props = ReturnType<typeof mapStateToProps> & DispatchProp<any> & ThemeInjectedProps;
 
@@ -30,7 +31,7 @@ const Main = React.memo(({teams, entities, connectionStatus, dispatch, theme}: P
     routes: [
       {key: 'chats', title: 'Chats', icon: 'chat', color: '#333333'},
       {key: 'peoples', title: 'Members', icon: 'domain'},
-      {key: 'files', title: 'Files', icon: 'file-alt'},
+      {key: 'files', title: 'Files', icon: 'file'},
       {key: 'settings', title: 'Settings', icon: 'settings-box'},
     ],
   });
@@ -106,11 +107,7 @@ const Main = React.memo(({teams, entities, connectionStatus, dispatch, theme}: P
       case 1:
         return <MembersList />;
       case 2:
-        return (
-          <View>
-            <Text>Files</Text>
-          </View>
-        );
+        return <FilesList />;
       case 3:
         return <UserProfile userId={currentUserId} isMe />;
     }

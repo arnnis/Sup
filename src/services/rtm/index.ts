@@ -109,7 +109,10 @@ const startPing = () => {
   }, 10000);
 };
 
-const stopPing = () => pingInterval && clearInterval(pingInterval);
+const stopPing = () => {
+  pingInterval && clearInterval(pingInterval);
+  pingInterval = null;
+};
 
 const reconnect = () => {
   reconnectInterval = setInterval(() => {
@@ -119,7 +122,10 @@ const reconnect = () => {
   }, 3000);
 };
 
-const stopReconnect = () => reconnectInterval && clearInterval(reconnectInterval);
+const stopReconnect = () => {
+  reconnectInterval && clearInterval(reconnectInterval);
+  reconnectInterval = null;
+};
 
 export * from './message';
 export * from './chat';

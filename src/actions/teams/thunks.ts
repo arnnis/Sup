@@ -35,7 +35,7 @@ export const signinTeam = (domain: string, email: string, password: string, pin?
       .map(tm => state.entities.teams.byId[tm.id])
       .some(team => team.domain === domain)
   ) {
-    alert('You have already signed in this team.');
+    alert('You have already signed into this team.');
     return;
   }
 
