@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* WhatslackTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* WhatslackTests.m */; };
 		0DD9476449AE5519EAB02B6C /* libPods-Whatslack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CD673A0C4C64D6371EFBE89 /* libPods-Whatslack.a */; };
@@ -17,9 +18,9 @@
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* WhatslackTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* WhatslackTests.m */; };
 		72011F969771A2FAC995C365 /* libPods-WhatslackTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 46CEFDC51863BA194EDD0EB0 /* libPods-WhatslackTests.a */; };
+		7E6C8B659C55461AB1748893 /* Lucida Console.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7903FFF9023C41C7A7635670 /* Lucida Console.ttf */; };
 		808BAE2CCC52EE128CF5890A /* libPods-Whatslack-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DB5822A41363E5C1225F694 /* libPods-Whatslack-tvOSTests.a */; };
 		BA474C064B4CC987A5E2C5DD /* libPods-Whatslack-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93F359A10941DD33054B6647 /* libPods-Whatslack-tvOS.a */; };
-		7E6C8B659C55461AB1748893 /* Lucida Console.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7903FFF9023C41C7A7635670 /* Lucida Console.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +61,7 @@
 		6543A227E1AC332C3A4DC555 /* Pods-WhatslackTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WhatslackTests.debug.xcconfig"; path = "Target Support Files/Pods-WhatslackTests/Pods-WhatslackTests.debug.xcconfig"; sourceTree = "<group>"; };
 		6CD673A0C4C64D6371EFBE89 /* libPods-Whatslack.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Whatslack.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		72C70F52075DCC1215BF11FC /* Pods-WhatslackTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WhatslackTests.release.xcconfig"; path = "Target Support Files/Pods-WhatslackTests/Pods-WhatslackTests.release.xcconfig"; sourceTree = "<group>"; };
+		7903FFF9023C41C7A7635670 /* Lucida Console.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lucida Console.ttf"; path = "../src/assets/fonts/Lucida Console.ttf"; sourceTree = "<group>"; };
 		7B496B04EA58D6A48E82E8F4 /* Pods-Whatslack.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Whatslack.debug.xcconfig"; path = "Target Support Files/Pods-Whatslack/Pods-Whatslack.debug.xcconfig"; sourceTree = "<group>"; };
 		7DCBD916991D08CF4A72FD2A /* Pods-Whatslack-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Whatslack-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-Whatslack-tvOS/Pods-Whatslack-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		93F359A10941DD33054B6647 /* libPods-Whatslack-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Whatslack-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -67,7 +69,6 @@
 		DEC017900DC9470591E5C0EE /* Pods-Whatslack-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Whatslack-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-Whatslack-tvOSTests/Pods-Whatslack-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
-		7903FFF9023C41C7A7635670 /* Lucida Console.ttf */ = {isa = PBXFileReference; name = "Lucida Console.ttf"; path = "../src/assets/fonts/Lucida Console.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -196,18 +197,16 @@
 				6543A227E1AC332C3A4DC555 /* Pods-WhatslackTests.debug.xcconfig */,
 				72C70F52075DCC1215BF11FC /* Pods-WhatslackTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
 		E4360976801A4D3CA2A6228B /* Resources */ = {
-			isa = "PBXGroup";
+			isa = PBXGroup;
 			children = (
 				7903FFF9023C41C7A7635670 /* Lucida Console.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
-			path = "";
 		};
 /* End PBXGroup section */
 
@@ -320,6 +319,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
