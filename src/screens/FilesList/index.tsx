@@ -4,10 +4,15 @@ import {RootState} from '../../reducers';
 import {connect} from 'react-redux';
 import FileCell from './FileCell';
 import px from '../../utils/normalizePixel';
+import {getFiles} from '../../actions/files/thunks';
 
 type Props = ReturnType<typeof mapStateToProps>;
 
 class FilesList extends Component<Props> {
+  componentDidMount() {
+    this.props.dispatch(getFiles());
+  }
+
   keyExtractor = (chatId: string) => chatId;
 
   getItemLayout = (data, index) => ({
@@ -49,6 +54,7 @@ class FilesList extends Component<Props> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#eee',
   },
 });
 

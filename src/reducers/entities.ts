@@ -17,6 +17,7 @@ const initialState: EntitiesState = {
   teams: {byId: {}},
   chats: {byId: {}},
   messages: {byId: {}},
+  files: {byId: {}},
   emojis: {byId: {}},
 };
 

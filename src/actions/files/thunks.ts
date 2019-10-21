@@ -2,6 +2,8 @@ import {getFilesStart, getFilesSuccess, getFilesFail} from '.';
 import {RootState} from '../../reducers';
 import http from '../../utils/http';
 import {MessageAttachement} from '../../models';
+import {batch} from 'react-redux';
+import {storeEntities} from '../entities';
 
 export const getFiles = (channel?: string, fileTypes?: string[], user?: string) => async (
   dispatch,
@@ -19,14 +21,16 @@ export const getFiles = (channel?: string, fileTypes?: string[], user?: string) 
     const {files}: {files: MessageAttachement[]} = await http({
       path: '/files.list',
       body: {
-        ts_to: cursor,
-        channel: channel || '',
-        user: user || '',
-        types: fileTypes && fileTypes.length ? fileTypes.join(',') : 'all',
+        // ts_to: cursor,
+        // channel: channel || '',
+        // user: user || '',
+        // types: fileTypes && fileTypes.length ? fileTypes.join(',') : 'all',
       },
     });
-
-    dispatch(getFilesSuccess(files));
+    batch(() => {
+      dispatch(storeEntities('files', files));
+      dispatch(getFilesSuccess(files));
+    });
   } catch (err) {
     dispatch(getFilesFail());
   }

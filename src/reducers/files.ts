@@ -27,10 +27,10 @@ export const filesReducer: Reducer<UsersState, RootAction> = (state = initialSta
         list: files.map(file => file.id),
       };
     }
-    case 'GET_FILES_START': {
+    case 'GET_FILES_FAIL': {
       return {
         ...state,
-        listLoading: true,
+        listLoading: false,
       };
     }
     case 'SET_CURRENT_TEAM': {

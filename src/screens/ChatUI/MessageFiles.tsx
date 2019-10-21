@@ -7,7 +7,7 @@ import bytes from 'bytes';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {RootState} from '../../reducers';
 import {Message, MessageAttachement} from '../../models';
-import {View, StyleSheet, Text, ToastAndroid, Platform} from 'react-native';
+import {View, StyleSheet, Text, ToastAndroid, Platform, ViewStyle, TextStyle} from 'react-native';
 import px from '../../utils/normalizePixel';
 import Touchable from '../../components/Touchable';
 import {currentTeamTokenSelector} from './MessageImages';
@@ -33,6 +33,8 @@ class MessageFilesList extends Component<Props> {
 interface MessageFileProps {
   token: string;
   file: MessageAttachement;
+  containerStyle?: ViewStyle;
+  textStyle: TextStyle;
 }
 
 interface MessageFileState {
@@ -45,7 +47,7 @@ interface MessageFileState {
   isSound: boolean;
 }
 
-class MessageFile extends Component<MessageFileProps, MessageFileState> {
+export class MessageFile extends Component<MessageFileProps, MessageFileState> {
   constructor(props: MessageFileProps) {
     super(props);
     this.state = {
@@ -207,18 +209,18 @@ class MessageFile extends Component<MessageFileProps, MessageFileState> {
   }
 
   renderName() {
-    let {file} = this.props;
+    let {file, textStyle} = this.props;
     return (
-      <Text style={styles.fileName} numberOfLines={2}>
+      <Text style={[styles.fileName, textStyle]} numberOfLines={2}>
         {file.name}
       </Text>
     );
   }
 
   renderFileSizeAndType() {
-    let {file} = this.props;
+    let {file, textStyle} = this.props;
     return (
-      <Text style={styles.fileSizeAndType}>
+      <Text style={[styles.fileSizeAndType, textStyle]}>
         {bytes(file.size)} {file.filetype.toUpperCase()}
       </Text>
     );
@@ -226,7 +228,7 @@ class MessageFile extends Component<MessageFileProps, MessageFileState> {
 
   render() {
     return (
-      <View style={styles.file}>
+      <View style={[styles.file, this.props.containerStyle]}>
         {this.renderActionButton()}
         <View style={styles.fileInfosWrapper}>
           {this.renderName()}
