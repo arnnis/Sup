@@ -12,7 +12,9 @@ type Props = ReturnType<typeof mapStateToProps> &
   };
 
 const Name: FC<Props> = memo(({name, isMe, theme}) => (
-  <Text style={[styles.text, {color: theme.foregroundColor}]}>{name || 'loading...'}</Text>
+  <Text style={[styles.text, {color: isMe ? '#fff' : theme.foregroundColor}]}>
+    {name || 'loading...'}
+  </Text>
 ));
 
 const styles = StyleSheet.create({

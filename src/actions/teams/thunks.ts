@@ -134,8 +134,8 @@ export const switchTeam = (teamId: string) => dispatch => {
 export const logoutFromCurrentTeam = () => (dispatch, getState) => {
   let state: RootState = getState();
   let currentTeam = state.teams.currentTeam;
-  dispatch(logout(currentTeam));
   closeSocket();
+  return dispatch(logout(currentTeam));
 };
 
 export const getEmojis = () => async dispatch => {
