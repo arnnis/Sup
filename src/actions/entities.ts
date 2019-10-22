@@ -1,7 +1,7 @@
 import {action} from 'typesafe-actions';
 import {User, Chat, Message, Team} from '../models';
 
-type EntityType = 'users' | 'chats' | 'messages' | 'teams' | 'files' | 'emojis';
+type EntityType = 'users' | 'chats' | 'messages' | 'pendingMessages' | 'teams' | 'files' | 'emojis';
 
 export const storeEntities = (
   entity: EntityType,

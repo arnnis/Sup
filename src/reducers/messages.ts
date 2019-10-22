@@ -1,21 +1,16 @@
 import {Reducer} from 'redux';
 import {RootAction} from '../actions';
-import {PendingMessage} from '../models';
 
 export type MessagesState = Readonly<{
-  list: {[chatId: string]: Array<string>};
+  list: {[chatId: string]: Array<string | number>}; // Number for pending message local fingerprint, string for regular messages
   loading: {[chatId: string]: boolean};
   nextCursor: {[chatId: string]: string};
-  pendingMessages: {
-    [chatId: string]: Array<PendingMessage>;
-  };
 }>;
 
 const initialState: MessagesState = {
   list: {},
   loading: {},
   nextCursor: {},
-  pendingMessages: {},
 };
 
 export const messagesReducer: Reducer<MessagesState, RootAction> = (
@@ -40,10 +35,7 @@ export const messagesReducer: Reducer<MessagesState, RootAction> = (
         ...state,
         list: {
           ...state.list,
-          [chatId]: [
-            ...(state.list[chatId] || []),
-            ...messages.map(msg => msg.ts),
-          ],
+          [chatId]: [...(state.list[chatId] || []), ...messages.map(msg => msg.ts)],
         },
         loading: {
           ...state.loading,
@@ -97,9 +89,9 @@ export const messagesReducer: Reducer<MessagesState, RootAction> = (
       let chatId = message.channel;
       return {
         ...state,
-        pendingMessages: {
-          ...state.pendingMessages,
-          [chatId]: [...(state.pendingMessages[chatId] || []), message],
+        list: {
+          ...state.list,
+          [chatId]: [message.id, ...(state.list[chatId] || [])],
         },
       };
     }
@@ -108,11 +100,9 @@ export const messagesReducer: Reducer<MessagesState, RootAction> = (
       let {pendingId, chatId} = action.payload;
       return {
         ...state,
-        pendingMessages: {
-          ...state.pendingMessages,
-          [chatId]: state.pendingMessages[chatId].filter(
-            pendingMessage => pendingMessage.id !== pendingId,
-          ),
+        list: {
+          ...state.list,
+          [chatId]: state.list[chatId].filter(id => id !== pendingId),
         },
       };
     }

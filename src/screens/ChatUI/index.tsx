@@ -85,7 +85,7 @@ class ChatUI extends Component<Props> {
     return null;
   };
 
-  keyExtractor = (messageId: string) => messageId;
+  keyExtractor = (messageId: string) => messageId.toString();
 
   renderList() {
     let {messagesList} = this.props;
@@ -143,7 +143,6 @@ const mapStateToProps = (state: RootState, ownProps) => {
     ];
 
   let messagesList = state.messages.list[chatId] || defaultList;
-  let pendingMessages = state.messages.pendingMessages[chatId] || defaultList;
 
   let lastMessageStatus = state.chats.lastMessages[chatId];
 
@@ -160,7 +159,6 @@ const mapStateToProps = (state: RootState, ownProps) => {
       state.entities.messages.byId[
         lastMessageStatus && lastMessageStatus.messageId && lastMessageStatus.messageId
       ],
-    pendingMessages,
     me,
     currentTeamToken: state.teams.list.find(ws => ws.id === state.teams.currentTeam).token,
   };

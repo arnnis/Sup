@@ -41,7 +41,15 @@ class Message extends Component<Props> {
   }
 
   renderBubble(isMe: boolean, sameUser: boolean) {
-    return <Bubble currentMessage={this.props.currentMessage} isMe={isMe} sameUser={sameUser} />;
+    return (
+      <Bubble
+        messageId={this.props.messageId}
+        userId={this.props.currentMessage.user}
+        pending={this.props.currentMessage.pending}
+        isMe={isMe}
+        sameUser={sameUser}
+      />
+    );
   }
 
   renderAnchor(isMe, sameUser) {

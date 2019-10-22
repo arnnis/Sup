@@ -216,4 +216,8 @@ export interface SocketMessageResult {
   ts?: string;
 }
 
-export type PendingMessage = MessageInput;
+export type PendingMessage = Message &
+  MessageInput & {
+    id: string;
+    pending: boolean;
+  };
