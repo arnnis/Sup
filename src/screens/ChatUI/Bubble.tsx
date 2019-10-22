@@ -34,7 +34,7 @@ class Bubble extends Component<Props> {
   }
 
   renderName() {
-    return <Name userId={this.props.userId} />;
+    return <Name userId={this.props.userId} isMe={this.props.isMe} />;
   }
 
   render() {

@@ -6,9 +6,12 @@ import px from '../../utils/normalizePixel';
 
 type Props = ReturnType<typeof mapStateToProps> & {
   userId: string;
+  isMe: boolean;
 };
 
-const Name: FC<Props> = memo(({name}) => <Text style={styles.text}>{name || 'loading...'}</Text>);
+const Name: FC<Props> = memo(({name, isMe}) => (
+  <Text style={[styles.text, {color: isMe ? '#fff' : '#333'}]}>{name || 'loading...'}</Text>
+));
 
 const styles = StyleSheet.create({
   text: {
