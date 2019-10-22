@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state: RootState, ownProps) => ({
-  emoji: {...emojis, ...state.entities.emojis.byId}[ownProps.name].native,
+  emoji: {...emojis, ...state.entities.emojis.byId}[ownProps.name]?.native,
 });
 
 export default connect(mapStateToProps)(Emoji);
