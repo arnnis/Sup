@@ -37,6 +37,7 @@ export const getMessagesByChatId = (chatId: string) => async (dispatch, getState
   } catch (err) {
     console.log(err);
     dispatch(getMessagesFail(chatId));
+    return Promise.reject(err);
   }
 };
 
@@ -77,6 +78,7 @@ export const getRepliesByThreadId = (threadId: string, chatId: string) => async 
   } catch (err) {
     console.log(err);
     dispatch(getMessagesFail(threadId));
+    return Promise.reject(err);
   }
 };
 

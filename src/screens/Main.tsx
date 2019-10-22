@@ -38,10 +38,10 @@ const Main = React.memo(({teams, entities, connectionStatus, dispatch, theme}: P
   let [scrollableTabState, setScrollableTabState] = useState({
     index: 0,
     routes: [
-      {key: 'directs', title: 'Chats', icon: 'email-open', color: '#333333'},
+      {key: 'directs', title: 'Directs', icon: 'email-open', color: '#333333'},
       {
-        key: 'groups',
-        title: 'Groups',
+        key: 'channels',
+        title: 'Channels',
         icon: 'account-multiple',
         color: '#333333',
       },
@@ -97,7 +97,7 @@ const Main = React.memo(({teams, entities, connectionStatus, dispatch, theme}: P
 
   let _renderScrollableTabScene = SceneMap({
     directs: ChatsList,
-    groups: GroupsList,
+    channels: GroupsList,
   } as any);
 
   let _renderBottomTabScene = () => {

@@ -83,7 +83,7 @@ class Message extends Component<Props> {
   render() {
     let {currentMessage, prevMessage, me} = this.props;
     let sameUser = isSameUser(currentMessage, prevMessage);
-    let isMe = me.id === currentMessage.user;
+    let isMe = me && me.id === currentMessage.user;
     return (
       <>
         <View
