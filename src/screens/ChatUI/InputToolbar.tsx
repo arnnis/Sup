@@ -27,6 +27,7 @@ class InputToolbar extends Component<Props> {
       text: this.state.text,
       channel: this.props.chatId,
     });
+    this.setState({text: ''});
   };
 
   handleEmojiButtonPress = () => {
