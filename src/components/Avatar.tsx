@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {View, Text, StyleSheet, ViewStyle, TouchableOpacity} from 'react-native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import px from '../utils/normalizePixel';
 import FastImage from 'react-native-fast-image';
 import {connect} from 'react-redux';
@@ -69,12 +70,17 @@ class Avatar extends Component<Props> {
   }
 
   renderPlaceholder() {
+    let {width} = this.props;
     return (
-      <View style={{flex: 1, backgroundColor: '#562E52', borderRadius: px(360)}}>
-        <FastImage
-          source={require('../assets/img/slack-logo-white.png')}
-          style={{width: '100%', height: '100%'}}
-        />
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: '#562E52',
+          borderRadius: px(360),
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <MaterialCommunityIcons name="slack" size={width / 2} color="#fff" />
       </View>
     );
   }
