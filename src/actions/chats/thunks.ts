@@ -56,27 +56,17 @@ export const getChats = () => async (dispatch, getState) => {
   }
 };
 
-export const getChatLastMessage = (chatId: string) => async (
-  dispatch,
-  getState,
-) => {
+export const getChatLastMessage = (chatId: string) => async (dispatch, getState) => {
   let store: RootState = getState();
 
   // If already is loading or already loaded break.
-  let loading =
-    store.chats.lastMessages[chatId] &&
-    store.chats.lastMessages[chatId].loading;
-  let loaded =
-    store.chats.lastMessages[chatId] &&
-    store.chats.lastMessages[chatId].messageId;
+  let loading = store.chats.lastMessages[chatId] && store.chats.lastMessages[chatId].loading;
+  let loaded = store.chats.lastMessages[chatId] && store.chats.lastMessages[chatId].messageId;
   if (loading || loaded) return;
 
   try {
     dispatch(getChatLastMessageStart(chatId));
-    let {
-      messages,
-      response_metadata,
-    }: {messages: Array<Message>} & PaginationResult = await http({
+    let {messages, response_metadata}: {messages: Array<Message>} & PaginationResult = await http({
       path: '/conversations.history',
       body: {
         channel: chatId,
@@ -124,10 +114,7 @@ export const openChat = (userIds: Array<string>) => async dispatch => {
   return channel.id;
 };
 
-export const markChatAsRead = (
-  chatId: string,
-  messageId: string,
-) => async dispatch => {
+export const markChatAsRead = (chatId: string, messageId: string) => async dispatch => {
   try {
     let {ok} = await http({
       path: '/conversations.mark',
@@ -136,8 +123,9 @@ export const markChatAsRead = (
         ts: messageId,
       },
     });
-    return ok;
+    return Promise.resolve(ok);
   } catch (err) {
     console.log(err);
+    return Promise.reject(err);
   }
 };

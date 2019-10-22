@@ -61,7 +61,7 @@ class MessageText extends Component<Props> {
           style={[
             styles.text,
             isMe ? styles.textRight : styles.textLeft,
-            {color: isMe ? theme.backgroundColor : theme.foregroundColor},
+            {color: theme.foregroundColor},
             style,
           ]}
           parse={[

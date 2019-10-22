@@ -4,8 +4,8 @@ import {batch} from 'react-redux';
 import {setConnectionStatus} from '../../actions/app';
 import {getCurrentUser} from '../../actions/app/thunks';
 import {getChats} from '../../actions/chats/thunks';
-import {sendMessage, handleMessageRecieved, handleSendMessageAckRecieved} from './message';
-import {handleUserTyping, handleChatsMarkedAsSeen} from './chat';
+import {sendMessage, handleMessageRecieved, handleSendMessageAckRecieved} from './message-events';
+import {handleUserTyping, handleChatsMarkedAsSeen} from './chat-events';
 
 export let socket: WebSocket = null;
 export let connected = false;
@@ -127,5 +127,5 @@ const stopReconnect = () => {
   reconnectInterval = null;
 };
 
-export * from './message';
-export * from './chat';
+export * from './message-events';
+export * from './chat-events';

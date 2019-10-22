@@ -6,8 +6,10 @@ import {connect} from 'react-redux';
 import px from '../../utils/normalizePixel';
 import Touchable from '../../components/Touchable';
 import {withNavigation, NavigationInjectedProps} from 'react-navigation';
+import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 
 type Props = ReturnType<typeof mapStateToProps> &
+  ThemeInjectedProps &
   NavigationInjectedProps & {
     messageId: string;
   };
@@ -40,12 +42,17 @@ class Replies extends Component<Props> {
   }
 
   renderRepliesCount() {
-    let {message} = this.props;
-    return <Text style={styles.repliesCountText}>{message.reply_count} replies</Text>;
+    let {message, theme} = this.props;
+    return (
+      <Text style={[styles.repliesCountText, {color: theme.foregroundColor}]}>
+        {message.reply_count} replies
+      </Text>
+    );
   }
 
   renderDivider() {
-    return <View style={styles.divider} />;
+    let {theme} = this.props;
+    return <View style={[styles.divider, {backgroundColor: theme.backgroundColorLess4}]} />;
   }
 
   render() {
@@ -90,4 +97,4 @@ const mapStateToProps = (state: RootState, ownProps) => ({
   message: state.entities.messages.byId[ownProps.messageId],
 });
 
-export default connect(mapStateToProps)(withNavigation(Replies));
+export default connect(mapStateToProps)(withNavigation(withTheme(Replies)));

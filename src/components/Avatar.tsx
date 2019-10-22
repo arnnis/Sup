@@ -54,7 +54,7 @@ class Avatar extends Component<Props> {
       <FastImage
         source={{uri, headers: {Authorization: 'Bearer ' + this.props.token}}}
         style={[styles.image, {borderRadius: width / 2}, this.props.style]}
-        //onError={this.onError}
+        onError={this.onError}
       />
     );
   }
