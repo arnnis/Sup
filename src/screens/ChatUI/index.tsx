@@ -2,23 +2,38 @@ import React, {Component} from 'react';
 import {View, SafeAreaView, StyleSheet, FlatList, ActivityIndicator} from 'react-native';
 import {RootState} from '../../reducers';
 import {connect, DispatchProp} from 'react-redux';
-import Message from './Message';
+import Message, {meSelector} from './Message';
 import {NavigationInjectedProps} from 'react-navigation';
 import {addMessageToChat} from '../../actions/messages';
-import {getMessages} from '../../actions/messages/thunks';
+import {getMessagesByChatId, getRepliesByThreadId} from '../../actions/messages/thunks';
 import {markChatAsRead} from '../../actions/chats/thunks';
 import Header from '../../components/Header';
 import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 import InputToolbar from './InputToolbar';
 import {getMember} from '../../actions/members/thunks';
 
+type ChatType = 'direct' | 'channel' | 'thread';
+
 type Props = ReturnType<typeof mapStateToProps> &
   NavigationInjectedProps &
   DispatchProp<any> &
-  ThemeInjectedProps;
-
+  ThemeInjectedProps & {
+    chatId: string;
+    chatType: ChatType;
+  };
 class ChatUI extends Component<Props> {
   async componentDidMount() {
+    let {chatType} = this.props;
+    if (chatType === 'channel' || chatType === 'direct') {
+      this.getMessage();
+    }
+
+    if (chatType === 'thread') {
+      this.getReplies();
+    }
+  }
+
+  async getMessage() {
     let {
       navigation,
       lastMessageStatus,
@@ -35,24 +50,53 @@ class ChatUI extends Component<Props> {
     }
 
     if (nextCursor[chatId] !== 'end' && messagesList.length <= 1) {
-      await dispatch(getMessages(chatId));
+      await dispatch(getMessagesByChatId(chatId));
     }
 
     this.markChatAsRead();
   }
 
-  getMessages = () => this.props.dispatch(getMessages(this.props.navigation.getParam('chatId')));
+  getReplies() {
+    let {navigation, dispatch} = this.props;
+    let threadId = navigation.getParam('threadId');
+    let chatId = navigation.getParam('chatId');
+
+    dispatch(getRepliesByThreadId(threadId, chatId));
+  }
+
+  getOlderMessages = () => {
+    let {chatType} = this.props;
+    if (chatType === 'channel' || chatType === 'direct') {
+      this.props.dispatch(getMessagesByChatId(this.props.navigation.getParam('chatId')));
+    }
+
+    if (chatType === 'thread') {
+      this.props.dispatch(
+        getRepliesByThreadId(
+          this.props.navigation.getParam('threadId'),
+          this.props.navigation.getParam('chatId'),
+        ),
+      );
+    }
+  };
 
   componentDidUpdate(prevProps: Props) {
     let unreadCountIncreased = () => {
-      let {currentChat} = this.props;
+      let {currentChat, chatType} = this.props;
       let {currentChat: prevChat} = prevProps;
-      let isGroup = !currentChat.is_im;
 
       if (currentChat && prevChat) {
-        if (isGroup && currentChat.unread_count && currentChat.unread_count > prevChat.unread_count)
+        if (
+          chatType === 'channel' &&
+          currentChat.unread_count &&
+          currentChat.unread_count > prevChat.unread_count
+        )
           return true;
-        if (!isGroup && currentChat.dm_count && currentChat.dm_count > prevChat.dm_count)
+        if (
+          chatType === 'direct' &&
+          currentChat.dm_count &&
+          currentChat.dm_count > prevChat.dm_count
+        )
           return true;
       }
       return false;
@@ -98,7 +142,7 @@ class ChatUI extends Component<Props> {
         inverted
         keyExtractor={this.keyExtractor}
         onEndReachedThreshold={0.25}
-        onEndReached={this.getMessages}
+        onEndReached={this.getOlderMessages}
         ListFooterComponent={this.renderLoadingMore}
       />
     );
@@ -109,10 +153,13 @@ class ChatUI extends Component<Props> {
   }
 
   render() {
-    let {theme, isGroup, currentChat, currentUser} = this.props;
-    let chatName = isGroup
-      ? `#${currentChat.name_normalized}`
-      : currentUser.profile.display_name_normalized || currentUser.profile.real_name_normalized;
+    let {theme, chatType, currentChat, currentUser} = this.props;
+    let chatName =
+      chatType === 'channel'
+        ? `#${currentChat.name_normalized}`
+        : chatType === 'direct'
+        ? currentUser.profile.display_name_normalized || currentUser.profile.real_name_normalized
+        : 'Thread';
 
     return (
       <SafeAreaView style={[styles.container, {backgroundColor: theme.backgroundColorDarker2}]}>
@@ -134,15 +181,15 @@ const styles = StyleSheet.create({
 let defaultList = [];
 const mapStateToProps = (state: RootState, ownProps) => {
   let chatId = ownProps.navigation.getParam('chatId');
+  let threadId = ownProps.navigation.getParam('threadId');
+  let chatType = ownProps.navigation.getParam('chatType');
+
   let currentChat = state.entities.chats.byId[chatId];
   let currentUser = currentChat && state.entities.users.byId[currentChat.user_id];
 
-  let me =
-    state.entities.users.byId[
-      state.teams.list.find(ws => ws.id === state.teams.currentTeam).userId
-    ];
+  let me = meSelector(state);
 
-  let messagesList = state.messages.list[chatId] || defaultList;
+  let messagesList = state.messages.list[threadId || chatId] || defaultList;
 
   let lastMessageStatus = state.chats.lastMessages[chatId];
 
@@ -153,7 +200,7 @@ const mapStateToProps = (state: RootState, ownProps) => {
     messagesList,
     nextCursor: state.messages.nextCursor[chatId],
     loading: state.messages.loading[chatId],
-    isGroup: currentChat && !currentChat.is_im,
+    chatType: (chatType ? chatType : currentChat.is_im ? 'direct' : 'channel') as ChatType,
     lastMessageStatus,
     lastMessage:
       state.entities.messages.byId[

@@ -2,8 +2,8 @@ import {Reducer} from 'redux';
 import {RootAction} from '../actions';
 
 export type MessagesState = Readonly<{
-  list: {[chatId: string]: Array<string | number>}; // Number for pending message local fingerprint, string for regular messages
-  loading: {[chatId: string]: boolean};
+  list: {[chatIdOrThreadId: string]: Array<string | number>}; // Number for pending message local fingerprint, string for regular messages
+  loading: {[chatIdOrThreadId: string]: boolean};
   nextCursor: {[chatId: string]: string};
 }>;
 

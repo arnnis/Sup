@@ -7,6 +7,7 @@ import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 import MessageImages from './MessageImages';
 import MessageFiles from './MessageFiles';
 import MessageVideos from './MessageVideos';
+import Replies from './Replies';
 
 type Props = ThemeInjectedProps & {
   messageId: string;
@@ -37,6 +38,10 @@ class Bubble extends Component<Props> {
     return <Name userId={this.props.userId} isMe={this.props.isMe} />;
   }
 
+  renderReplies() {
+    return <Replies messageId={this.props.messageId} />;
+  }
+
   render() {
     let {sameUser, isMe, pending, theme} = this.props;
     return (
@@ -58,6 +63,7 @@ class Bubble extends Component<Props> {
         {this.renderMessageImages()}
         {this.renderMessageVideos()}
         {this.renderMessageFiles()}
+        {this.renderReplies()}
       </View>
     );
   }

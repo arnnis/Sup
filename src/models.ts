@@ -106,6 +106,9 @@ export interface Message {
   pinned_to?: string[];
   reactions?: MessageReaction[];
   files?: MessageAttachement[];
+  reply_count: number;
+  reply_users: string[];
+  reply_users_count: number;
 }
 
 export type MessageSubType =

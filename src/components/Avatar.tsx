@@ -12,6 +12,7 @@ type Props = ReturnType<typeof mapStateToProps> & {
   style?: ViewStyle;
   onPress?(): void;
   containerStyle?: ViewStyle;
+  hideOnlineBadge: boolean;
 };
 
 class Avatar extends Component<Props> {
@@ -59,7 +60,8 @@ class Avatar extends Component<Props> {
   }
 
   renderOnlineBadge() {
-    let {user, width} = this.props;
+    let {user, hideOnlineBadge} = this.props;
+    if (hideOnlineBadge) return null;
 
     if (user && user.hasOwnProperty('presence') && user.presence === 'active')
       return <View style={styles.onlineBadge} />;

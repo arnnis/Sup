@@ -1,0 +1,93 @@
+import React, {Component} from 'react';
+import {View, Text, StyleSheet} from 'react-native';
+import {RootState} from '../../reducers';
+import Avatar from '../../components/Avatar';
+import {connect} from 'react-redux';
+import px from '../../utils/normalizePixel';
+import Touchable from '../../components/Touchable';
+import {withNavigation, NavigationInjectedProps} from 'react-navigation';
+
+type Props = ReturnType<typeof mapStateToProps> &
+  NavigationInjectedProps & {
+    messageId: string;
+  };
+
+class Replies extends Component<Props> {
+  handlePress = () => {
+    let chatId = this.props.navigation.getParam('chatId');
+
+    this.props.navigation.push('ChatUI', {
+      chatType: 'thread',
+      threadId: this.props.message.ts,
+      chatId: chatId,
+    });
+  };
+
+  renderParticipantsAvatar() {
+    let {message} = this.props;
+    return (
+      <View style={styles.participantsAvatarContainer}>
+        {message.reply_users.slice(0, 4).map(replyUser => (
+          <Avatar
+            userId={replyUser}
+            width={px(20)}
+            hideOnlineBadge
+            containerStyle={{marginRight: px(2)}}
+          />
+        ))}
+      </View>
+    );
+  }
+
+  renderRepliesCount() {
+    let {message} = this.props;
+    return <Text style={styles.repliesCountText}>{message.reply_count} replies</Text>;
+  }
+
+  renderDivider() {
+    return <View style={styles.divider} />;
+  }
+
+  render() {
+    let {message} = this.props;
+    if (!message.reply_count || message.reply_count <= 0) return null;
+    return (
+      <>
+        {this.renderDivider()}
+        <Touchable style={styles.container} onPress={this.handlePress}>
+          {this.renderParticipantsAvatar()}
+          {this.renderRepliesCount()}
+        </Touchable>
+      </>
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  divider: {
+    width: '100%',
+    height: StyleSheet.hairlineWidth,
+    backgroundColor: '#ccc',
+    marginTop: px(10),
+  },
+  container: {
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingTop: px(7.5),
+    paddingBottom: px(3.5),
+  },
+  participantsAvatarContainer: {
+    flexDirection: 'row',
+    marginRight: px(5),
+  },
+  repliesCountText: {
+    fontSize: px(13),
+  },
+});
+
+const mapStateToProps = (state: RootState, ownProps) => ({
+  message: state.entities.messages.byId[ownProps.messageId],
+});
+
+export default connect(mapStateToProps)(withNavigation(Replies));
