@@ -80,6 +80,7 @@
     "react-native-svg-transformer": "^0.13.0",
     "react-test-renderer": "16.9.0",
     "terser-webpack-plugin": "^2.1.3",
+    "typescript": "^3.7.0-beta",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.9",
     "webpack-dev-server": "^3.8.2"

@@ -22,10 +22,12 @@ import FastImage from 'react-native-fast-image';
 import BottomTabbar from './BottomTabBar';
 import showMenu from '../utils/showMenu';
 import FilesList from './FilesList';
+import {meSelector} from './ChatUI/Message';
+import {createSelector} from 'reselect';
 
 type Props = ReturnType<typeof mapStateToProps> & DispatchProp<any> & ThemeInjectedProps;
 
-const Main = React.memo(({teams, entities, connectionStatus, dispatch, theme}: Props) => {
+const Main = React.memo(({currentTeam, currentUser, connectionStatus, dispatch, theme}: Props) => {
   let [bottomTabState, setBottomTabState] = useState({
     index: 0,
     routes: [
@@ -61,10 +63,6 @@ const Main = React.memo(({teams, entities, connectionStatus, dispatch, theme}: P
   let _handleBottomTabIndexChange = index => setBottomTabState({...bottomTabState, index});
   let _handleScrollableTabIndexChange = index =>
     setScrollableTabState({...scrollableTabState, index});
-
-  let currentTeamId = teams.currentTeam;
-  let currentTeamInfo = teams.list.find(ws => ws.id === currentTeamId);
-  let currentUserId = currentTeamInfo && currentTeamInfo.userId;
 
   let _renderScrollableTab = () => (
     <View style={{flex: 1}}>
@@ -109,12 +107,9 @@ const Main = React.memo(({teams, entities, connectionStatus, dispatch, theme}: P
       case 2:
         return <FilesList />;
       case 3:
-        return <UserProfile userId={currentUserId} isMe />;
+        return <UserProfile userId={currentUser && currentUser.id} isMe />;
     }
   };
-
-  let currentTeam = entities.teams.byId[currentTeamId];
-  let currentUser = entities.users.byId[currentUserId];
 
   let _renderTeamLogo = () => (
     <Touchable
@@ -138,7 +133,7 @@ const Main = React.memo(({teams, entities, connectionStatus, dispatch, theme}: P
   let _renderAvatar = () => <Avatar user={currentUser} styles={{height: px(35), width: px(35)}} />;
 
   let _renderTeamName = () =>
-    currentTeamId
+    currentTeam
       ? connectionStatus === 'connected'
         ? currentTeam && currentTeam.name
         : 'Connecting...'
@@ -161,7 +156,7 @@ const Main = React.memo(({teams, entities, connectionStatus, dispatch, theme}: P
   };
 
   let _renderMenu = () =>
-    currentTeamId && (
+    currentTeam && (
       <Touchable onPress={_openMenu} ref={ref => (menuRef.current = ref)}>
         <MaterialCommunityIcons name="dots-vertical" color="#fff" size={px(22)} />
       </Touchable>
@@ -188,7 +183,7 @@ const Main = React.memo(({teams, entities, connectionStatus, dispatch, theme}: P
         )}
         drawerWidth={px(160)}>
         <Header center={_renderTeamName()} left={_renderTeamLogo()} right={_renderMenu()} />
-        {currentTeamId ? (
+        {currentTeam ? (
           <BottomTabbar
             navigationState={bottomTabState}
             onIndexChange={_handleBottomTabIndexChange}
@@ -216,9 +211,14 @@ const styles = StyleSheet.create({
   },
 });
 
+export const currentTeamSelector = createSelector(
+  [(state: RootState) => state.teams, (state: RootState) => state.entities],
+  (teams, entites) => entites.teams.byId[teams.list.find(tm => tm.id === teams.currentTeam)?.id],
+);
+
 const mapStateToProps = (state: RootState) => ({
-  teams: state.teams,
-  entities: state.entities,
+  currentTeam: currentTeamSelector(state),
+  currentUser: meSelector(state),
   connectionStatus: state.app.connectionStatus,
 });
 

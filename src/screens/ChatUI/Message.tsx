@@ -133,7 +133,7 @@ export const meSelector = createSelector(
   (state: RootState) => state,
   state =>
     state.entities.users.byId[
-      state.teams.list.find(tm => tm.id === state.teams.currentTeam).userId
+      state.teams.list.find(tm => tm.id === state.teams.currentTeam)?.userId
     ],
 );
 
