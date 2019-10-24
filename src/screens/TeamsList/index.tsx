@@ -16,17 +16,17 @@ type Props = ReturnType<typeof mapStateToProps> &
   ThemeInjectedProps &
   DispatchProp<any> &
   NavigationInjectedProps & {
-    toggleDrawer(): void;
+    onTeamSelect(): void;
   };
 
 class TeamsList extends Component<Props> {
   handleTeamPress = (team: Team) => {
     this.props.dispatch(switchTeam(team.id));
-    this.props.toggleDrawer();
+    this.props.onTeamSelect();
   };
 
   renderTeamCell = ({item: teamInfo, index}) => {
-    let {entities, navigation, currentTeam} = this.props;
+    let {entities, currentTeam} = this.props;
     let team = entities.teams.byId[teamInfo.id];
 
     if (!team) return null;
