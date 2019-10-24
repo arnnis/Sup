@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {Dimensions, ScaledSize, Platform} from 'react-native';
+import {Dimensions, ScaledSize, Platform, StyleProp} from 'react-native';
 
 const getOrientation = () =>
   Dimensions.get('window').width > Dimensions.get('window').height ? 'landscape' : 'portrait';
@@ -22,10 +22,42 @@ export const mediaQuery = (
   );
 };
 
+const applyMediaQueryToStyleObject = (
+  media: MediaQuery & {style: any},
+  style,
+  currentOrientation,
+) => {
+  if (mediaQuery(media[0], currentOrientation))
+    return {
+      ...style,
+      ...media[1],
+      media: undefined,
+    };
+  return {...style, media: undefined};
+};
+
+export const transformInputStylesheet = (inputStylesheet, currentOrientation) => {
+  const outputStylesheet = {};
+  for (let stylesName in inputStylesheet) {
+    let styleObject = inputStylesheet[stylesName];
+    let media = styleObject['media'];
+    if (media) {
+      outputStylesheet[stylesName] = applyMediaQueryToStyleObject(
+        media,
+        styleObject,
+        currentOrientation,
+      );
+    }
+  }
+  return outputStylesheet;
+};
+
 export default inputStylesheet => {
-  const [stylesheet, setStylesheet] = useState(null);
-  const [dimensions, setDimensions] = useState<ScaledSize>(Dimensions.get('window'));
   const [currentOrientation, setOrientation] = useState<Orientation>(getOrientation());
+  const [stylesheet, setStylesheet] = useState(
+    transformInputStylesheet(inputStylesheet, currentOrientation),
+  );
+  const [dimensions, setDimensions] = useState<ScaledSize>(Dimensions.get('window'));
 
   useEffect(() => {
     Dimensions.addEventListener('change', onDimensionChange);
@@ -33,34 +65,12 @@ export default inputStylesheet => {
   }, []);
 
   const onDimensionChange = ({window: {width, height, scale, fontScale}}: {window: ScaledSize}) => {
+    console.log('got here');
     setDimensions({width, height, scale, fontScale});
     setOrientation(getOrientation());
-  };
-
-  const applyMediaQueryToStyleObject = (query: MediaQuery, style) => {
-    if (mediaQuery(query, currentOrientation))
-      return {
-        ...style,
-        ...style[query],
-      };
-    return style;
-  };
-
-  const transformInputStylesheet = () => {
-    const outputStylesheet = {};
-    for (let stylesName in inputStylesheet) {
-      let styleObject = inputStylesheet[stylesName];
-      for (let property in styleObject) {
-        if (typeof property === 'object') {
-          outputStylesheet[stylesName] = applyMediaQueryToStyleObject(property, styleObject);
-          delete styleObject[property];
-        }
-      }
-    }
+    const outputStylesheet = transformInputStylesheet(inputStylesheet, getOrientation());
     setStylesheet(outputStylesheet);
   };
-
-  transformInputStylesheet();
 
   return stylesheet;
 };

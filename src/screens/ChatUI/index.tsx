@@ -3,7 +3,7 @@ import {View, SafeAreaView, StyleSheet, FlatList, ActivityIndicator} from 'react
 import {RootState} from '../../reducers';
 import {connect, DispatchProp} from 'react-redux';
 import Message, {meSelector} from './Message';
-import {NavigationInjectedProps} from 'react-navigation';
+import {NavigationInjectedProps, withNavigation} from 'react-navigation';
 import {addMessageToChat} from '../../actions/messages';
 import {getMessagesByChatId, getRepliesByThreadId} from '../../actions/messages/thunks';
 import {markChatAsRead} from '../../actions/chats/thunks';
@@ -19,6 +19,7 @@ type Props = ReturnType<typeof mapStateToProps> &
   DispatchProp<any> &
   ThemeInjectedProps & {
     chatId: string;
+    threadId: string;
     chatType: ChatType;
   };
 class ChatUI extends Component<Props> {
@@ -32,53 +33,6 @@ class ChatUI extends Component<Props> {
       this.getReplies();
     }
   }
-
-  async getMessage() {
-    let {
-      navigation,
-      lastMessageStatus,
-      lastMessage,
-      nextCursor,
-      messagesList,
-      dispatch,
-    } = this.props;
-    let chatId = navigation.getParam('chatId');
-
-    if (lastMessageStatus && lastMessageStatus.messageId && !lastMessageStatus.loading) {
-      dispatch(addMessageToChat(lastMessageStatus.messageId, chatId));
-      dispatch(getMember(lastMessage.user));
-    }
-
-    if (nextCursor[chatId] !== 'end' && messagesList.length <= 1) {
-      await dispatch(getMessagesByChatId(chatId));
-    }
-
-    this.markChatAsRead();
-  }
-
-  getReplies() {
-    let {navigation, dispatch} = this.props;
-    let threadId = navigation.getParam('threadId');
-    let chatId = navigation.getParam('chatId');
-
-    dispatch(getRepliesByThreadId(threadId, chatId));
-  }
-
-  getOlderMessages = () => {
-    let {chatType} = this.props;
-    if (chatType === 'channel' || chatType === 'direct') {
-      this.props.dispatch(getMessagesByChatId(this.props.navigation.getParam('chatId')));
-    }
-
-    if (chatType === 'thread') {
-      this.props.dispatch(
-        getRepliesByThreadId(
-          this.props.navigation.getParam('threadId'),
-          this.props.navigation.getParam('chatId'),
-        ),
-      );
-    }
-  };
 
   componentDidUpdate(prevProps: Props) {
     let unreadCountIncreased = () => {
@@ -101,15 +55,59 @@ class ChatUI extends Component<Props> {
       }
       return false;
     };
-
     if (unreadCountIncreased()) {
       this.markChatAsRead();
     }
+
+    let chatChanged = this.props.chatId !== prevProps.chatId
+    if (chatChanged) {
+      this.componentDidMount()
+    }
   }
 
+  async getMessage() {
+    let {
+      navigation,
+      lastMessageStatus,
+      lastMessage,
+      nextCursor,
+      messagesList,
+      dispatch,
+      chatId,
+    } = this.props;
+    chatId = chatId;
+
+    if (lastMessageStatus && lastMessageStatus.messageId && !lastMessageStatus.loading) {
+      dispatch(addMessageToChat(lastMessageStatus.messageId, chatId));
+      dispatch(getMember(lastMessage.user));
+    }
+
+    if (nextCursor[chatId] !== 'end' && messagesList.length <= 1) {
+      await dispatch(getMessagesByChatId(chatId));
+    }
+
+    this.markChatAsRead();
+  }
+
+  getReplies() {
+    let {navigation, dispatch, threadId, chatId} = this.props;
+
+    dispatch(getRepliesByThreadId(threadId, chatId));
+  }
+
+  getOlderMessages = () => {
+    let {chatType, chatId, threadId} = this.props;
+    if (chatType === 'channel' || chatType === 'direct') {
+      this.props.dispatch(getMessagesByChatId(chatId));
+    }
+
+    if (chatType === 'thread') {
+      this.props.dispatch(getRepliesByThreadId(threadId, chatId));
+    }
+  };
+
   markChatAsRead = () => {
-    let {dispatch, navigation} = this.props;
-    let chatId = navigation.getParam('chatId');
+    let {dispatch, navigation, chatId} = this.props;
     dispatch(markChatAsRead(chatId, this.props.messagesList[0]));
   };
 
@@ -154,6 +152,7 @@ class ChatUI extends Component<Props> {
 
   render() {
     let {theme, chatType, currentChat, currentUser} = this.props;
+    if (!currentChat) return null;
     let chatName =
       chatType === 'channel'
         ? `#${currentChat.name_normalized}`
@@ -180,9 +179,9 @@ const styles = StyleSheet.create({
 
 let defaultList = [];
 const mapStateToProps = (state: RootState, ownProps) => {
-  let chatId = ownProps.navigation.getParam('chatId');
-  let threadId = ownProps.navigation.getParam('threadId');
-  let chatType = ownProps.navigation.getParam('chatType');
+  let chatId = ownProps.chatId;
+  let threadId = ownProps.threadId;
+  let chatType = ownProps.chatType;
 
   let currentChat = state.entities.chats.byId[chatId];
   let currentUser = currentChat && state.entities.users.byId[currentChat.user_id];
@@ -200,7 +199,7 @@ const mapStateToProps = (state: RootState, ownProps) => {
     messagesList,
     nextCursor: state.messages.nextCursor[chatId],
     loading: state.messages.loading[chatId],
-    chatType: (chatType ? chatType : currentChat.is_im ? 'direct' : 'channel') as ChatType,
+    chatType: (chatType ? chatType : currentChat?.is_im ? 'direct' : 'channel') as ChatType,
     lastMessageStatus,
     lastMessage:
       state.entities.messages.byId[
@@ -211,4 +210,4 @@ const mapStateToProps = (state: RootState, ownProps) => {
   };
 };
 
-export default connect(mapStateToProps)(withTheme(ChatUI));
+export default connect(mapStateToProps)(withTheme(withNavigation(ChatUI)));

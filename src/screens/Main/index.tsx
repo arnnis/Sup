@@ -14,13 +14,17 @@ import {createSelector} from 'reselect';
 import TeamEmptyPlaceholder from './TeamEmptyPlaceholder';
 import ChangeTeamButton from './ChangeTeamButton';
 import PopupMenu from './PopupMenu';
+import useStyle from '../../utils/stylesheet/useStyle';
+import styled from '../../utils/stylesheet/styled';
+import ChatUI from '../ChatUI';
+import ChatEmptyPlaceholder from './ChatEmptyPlaceholder';
 
 type Props = ReturnType<typeof mapStateToProps> & DispatchProp<any> & ThemeInjectedProps;
 
-const Main = React.memo(({currentTeam, connectionStatus, dispatch, theme}: Props) => {
+const Main = React.memo(({currentTeam, connectionStatus, dispatch, currentChatId, currentThreadId}: Props) => {
   let [drawerOpen, setDrawerOpen] = useState(false);
   let drawerRef = useRef(null);
-
+  
   useEffect(() => {
     dispatch(initTeam());
     StatusBar.setBarStyle('light-content');
@@ -67,16 +71,18 @@ const Main = React.memo(({currentTeam, connectionStatus, dispatch, theme}: Props
         )}
         drawerWidth={px(160)}>
           <View style={{flex: 1,  flexDirection: 'row'}}>
-            <View style={{flex: 1}}>
+            <MasterView>
               <Header center={_renderConnectionStatus()} left={_renderChangeTeamButton()} right={_renderMenu()} />
               {currentTeam ? (
                 <BottomTabbar />
               ) : (
                 <TeamEmptyPlaceholder />
               )}
-            </View>
+            </MasterView>
             <MediaQuery orientation="landscape">
-              <View style={{width: px(150), height: '100%', backgroundColor: 'red'}} />
+              <View style={{flex: 1, backgroundColor: 'red'}}>
+                {currentChatId? <ChatUI chatId={currentChatId} threadId={currentThreadId} /> : <ChatEmptyPlaceholder />}
+              </View>
             </MediaQuery>
           </View>
       </DrawerLayout>
@@ -84,12 +90,21 @@ const Main = React.memo(({currentTeam, connectionStatus, dispatch, theme}: Props
   );
 });
 
+const MasterView = styled(View)({
+  width: '100%',
+  height: '100%',
+  media: [{ orientation: 'landscape' }, {
+    width: px(325),
+    borderRightWidth: px(1),
+    borderColor: '#eee'
+  }]
+})
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#3A1C39',
-  },
-
+  }
 });
 
 export const currentTeamSelector = createSelector(
@@ -100,6 +115,8 @@ export const currentTeamSelector = createSelector(
 const mapStateToProps = (state: RootState) => ({
   currentTeam: currentTeamSelector(state),
   connectionStatus: state.app.connectionStatus,
+  currentChatId: state.chats.currentChatId,
+  currentThreadId: state.chats.currentThreadId
 });
 
 export default connect(mapStateToProps)(withTheme(Main));

@@ -2,6 +2,8 @@ import {Reducer} from 'redux';
 import {RootAction} from '../actions';
 
 export type DirectsState = Readonly<{
+  currentChatId: string;
+  currentThreadId: string;
   directsList: Array<string>;
   groupsList: Array<string>;
   loading: boolean;
@@ -13,6 +15,8 @@ export type DirectsState = Readonly<{
 }>;
 
 const initialState: DirectsState = {
+  currentChatId: '',
+  currentThreadId: '',
   directsList: [],
   groupsList: [],
   loading: false,
@@ -21,10 +25,7 @@ const initialState: DirectsState = {
   typingsUsers: {},
 };
 
-export const chatsReducer: Reducer<DirectsState, RootAction> = (
-  state = initialState,
-  action,
-) => {
+export const chatsReducer: Reducer<DirectsState, RootAction> = (state = initialState, action) => {
   switch (action.type) {
     case 'FETCH_CHATS_START': {
       return {
@@ -109,6 +110,22 @@ export const chatsReducer: Reducer<DirectsState, RootAction> = (
       let {chatId, userId} = action.payload;
       return {
         ...state,
+      };
+    }
+
+    case 'SET_CURRENT_CHAT': {
+      let {chatId} = action.payload;
+      return {
+        ...state,
+        currentChatId: chatId,
+      };
+    }
+
+    case 'SET_CURRENT_THREAD': {
+      let {threadId} = action.payload;
+      return {
+        ...state,
+        currentThreadId: threadId,
       };
     }
 

@@ -13,6 +13,8 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import {NavigationInjectedProps, withNavigation} from 'react-navigation';
 import MessageText from '../ChatUI/MessageText';
+import {setCurrentChat} from '../../actions/chats';
+import getCurrentOrientaion from '../../utils/stylesheet/getCurrentOrientaion';
 
 dayjs.extend(utc);
 
@@ -30,7 +32,11 @@ class ChatCell extends PureComponent<Props> {
     this.props.dispatch(getChatLastMessage(chatId));
   }
 
-  handlePress = () => this.props.navigation.navigate('ChatUI', {chatId: this.props.chatId});
+  handlePress = () => {
+    if (getCurrentOrientaion() === 'landscape')
+      this.props.dispatch(setCurrentChat(this.props.chatId));
+    else this.props.navigation.navigate('ChatUI', {chatId: this.props.chatId});
+  };
 
   renderAvatar() {
     let {isGroup, theme, chat} = this.props;
