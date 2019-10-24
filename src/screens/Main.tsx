@@ -1,9 +1,8 @@
 import React, {useState, useRef, useEffect} from 'react';
 import {Text, StyleSheet, SafeAreaView, StatusBar, Dimensions, View} from 'react-native';
-import {BottomNavigation} from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
-import {Button, Paragraph, Menu, Divider, Provider} from 'react-native-paper';
+import MediaQuery from "../utils/stylesheet/MediaQuery";
 import Header from '../components/Header';
 import ChatsList from './ChatsList';
 import px from '../utils/normalizePixel';
@@ -182,17 +181,25 @@ const Main = React.memo(({currentTeam, currentUser, connectionStatus, dispatch, 
           />
         )}
         drawerWidth={px(160)}>
-        <Header center={_renderTeamName()} left={_renderTeamLogo()} right={_renderMenu()} />
-        {currentTeam ? (
-          <BottomTabbar
-            navigationState={bottomTabState}
-            onIndexChange={_handleBottomTabIndexChange}
-            renderScene={_renderBottomTabScene}
-            renderIcon={_renderTabIcon}
-          />
-        ) : (
-          _renderNoTeamSelected()
-        )}
+          <View style={{flex: 1,  flexDirection: 'row'}}>
+            <View style={{flex: 1}}>
+              <Header center={_renderTeamName()} left={_renderTeamLogo()} right={_renderMenu()} />
+              {currentTeam ? (
+                <BottomTabbar
+                  navigationState={bottomTabState}
+                  onIndexChange={_handleBottomTabIndexChange}
+                  renderScene={_renderBottomTabScene}
+                  renderIcon={_renderTabIcon}
+                />
+              ) : (
+                _renderNoTeamSelected()
+              )}
+            </View>
+            <MediaQuery orientation="landscape">
+              <View style={{width: px(150), height: '100%', backgroundColor: 'red'}} />
+            </MediaQuery>
+          </View>
+
       </DrawerLayout>
     </SafeAreaView>
   );

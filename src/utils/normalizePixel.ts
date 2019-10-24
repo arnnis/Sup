@@ -19,10 +19,10 @@ let scale = ((ratio / baseRatio) * width) / baseWidth;
 let cache = {};
 
 function px(pixelSize = 1) {
-  let result = scale * pixelSize;
-  if (cache[pixelSize]) return cache[pixelSize];
-  cache[pixelSize] = result;
-  return result;
+  // let result = scale * pixelSize;
+  // if (cache[pixelSize]) return cache[pixelSize];
+  // cache[pixelSize] = result;
+  return pixelSize;
 }
 
 export default px;

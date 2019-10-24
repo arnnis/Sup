@@ -36,6 +36,7 @@
     "react-native-paper": "^2.16.0",
     "react-native-parsed-text": "taskrabbit/react-native-parsed-text",
     "react-native-reanimated": "kmagiera/react-native-reanimated#390/head",
+    "react-native-responsive-ui": "^2.1.1",
     "react-native-screens": "^2.0.0-alpha.4",
     "react-native-svg": "^9.11.1",
     "react-native-tab-view": "^2.10.0",

@@ -8959,6 +8959,13 @@ react-native-responsive-dimensions@^1.0.2:
   resolved "https://registry.yarnpkg.com/react-native-responsive-dimensions/-/react-native-responsive-dimensions-1.0.2.tgz#521551fa90548f888578eafd71101d19061727ac"
   integrity sha512-hnGvlMcJ4XIZv6TTyFKdZ9o8jaWCADpKJMW/hMvYjCn1S0FNIm4GiH4hMcM4Z9c/2gwLwzkyQjTVAuN29R83YA==
 
+react-native-responsive-ui@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/react-native-responsive-ui/-/react-native-responsive-ui-2.1.1.tgz#d46557bae2e1974d5d768936091abd483587c63d"
+  integrity sha512-9NUHI4oPKHWQTg6Ls8QQhR38/dgWUFkixPeCtzvcNtcutDClMAbpI47WoOKXaet2rgxdyojPexsIRK67x18RYQ==
+  dependencies:
+    lodash "^4.17.11"
+
 react-native-safe-area-view@^0.12.0:
   version "0.12.0"
   resolved "https://registry.yarnpkg.com/react-native-safe-area-view/-/react-native-safe-area-view-0.12.0.tgz#5c312f087300ecf82e8541c3eac25d560e147f22"

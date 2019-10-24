@@ -64,6 +64,7 @@
 		7903FFF9023C41C7A7635670 /* Lucida Console.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lucida Console.ttf"; path = "../src/assets/fonts/Lucida Console.ttf"; sourceTree = "<group>"; };
 		7B496B04EA58D6A48E82E8F4 /* Pods-Whatslack.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Whatslack.debug.xcconfig"; path = "Target Support Files/Pods-Whatslack/Pods-Whatslack.debug.xcconfig"; sourceTree = "<group>"; };
 		7DCBD916991D08CF4A72FD2A /* Pods-Whatslack-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Whatslack-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-Whatslack-tvOS/Pods-Whatslack-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
+		8BCD8A3E236070D000FE9959 /* Whatslack.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Whatslack.entitlements; path = Whatslack/Whatslack.entitlements; sourceTree = "<group>"; };
 		93F359A10941DD33054B6647 /* libPods-Whatslack-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Whatslack-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BAF267EF13F47ED7F3336039 /* Pods-Whatslack.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Whatslack.release.xcconfig"; path = "Target Support Files/Pods-Whatslack/Pods-Whatslack.release.xcconfig"; sourceTree = "<group>"; };
 		DEC017900DC9470591E5C0EE /* Pods-Whatslack-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Whatslack-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-Whatslack-tvOSTests/Pods-Whatslack-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -127,6 +128,7 @@
 		13B07FAE1A68108700A75B9A /* Whatslack */ = {
 			isa = PBXGroup;
 			children = (
+				8BCD8A3E236070D000FE9959 /* Whatslack.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -687,8 +689,10 @@
 			baseConfigurationReference = 7B496B04EA58D6A48E82E8F4 /* Pods-Whatslack.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Whatslack/Whatslack.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
+				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				INFOPLIST_FILE = Whatslack/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -698,6 +702,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = Whatslack;
+				SUPPORTS_MACCATALYST = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -707,7 +713,9 @@
 			baseConfigurationReference = BAF267EF13F47ED7F3336039 /* Pods-Whatslack.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Whatslack/Whatslack.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
+				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				INFOPLIST_FILE = Whatslack/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -717,6 +725,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = Whatslack;
+				SUPPORTS_MACCATALYST = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

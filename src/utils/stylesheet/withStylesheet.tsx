@@ -1,5 +1,5 @@
 import React from 'react';
-import ThemeContext from '.';
+import useStylesheet from './useStylesheet';
 
 export interface StyleSheetInjectedProps {
   stylesheet: any;
@@ -11,13 +11,8 @@ const withStylesheet = inputStylesheet => <BaseProps extends StyleSheetInjectedP
   type HocProps = Omit<BaseProps, keyof StyleSheetInjectedProps>;
   return class WithTheme extends React.Component<HocProps> {
     render() {
-      return (
-        <ThemeContext.Consumer>
-          {({stylesheet}) => (
-            <WrapperComponent {...(this.props as BaseProps)} stylesheet={stylesheet} />
-          )}
-        </ThemeContext.Consumer>
-      );
+      let stylesheet = useStylesheet(inputStylesheet);
+      return <WrapperComponent {...(this.props as BaseProps)} stylesheet={stylesheet} />;
     }
   };
 };
