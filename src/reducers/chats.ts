@@ -132,6 +132,8 @@ export const chatsReducer: Reducer<DirectsState, RootAction> = (state = initialS
     case 'SET_CURRENT_TEAM': {
       return {
         ...state,
+        currentChatId: '',
+        currentThreadId: '',
         directsList: [],
         groupsList: [],
         loading: false,

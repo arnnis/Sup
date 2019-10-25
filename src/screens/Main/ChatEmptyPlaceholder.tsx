@@ -1,10 +1,15 @@
-import React from 'react';
+import React, {FC} from 'react';
 import {View, StyleSheet, Text} from 'react-native';
 import px from '../../utils/normalizePixel';
+import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 
-const ChatEmptyPlaceholder = () => (
-  <View style={styles.container}>
-    <Text style={styles.text}>Please select a chat to start messenging</Text>
+type Props = ThemeInjectedProps;
+
+const ChatEmptyPlaceholder: FC<Props> = ({theme}) => (
+  <View style={[styles.container, {backgroundColor: theme.backgroundColorMore1}]}>
+    <Text style={[styles.text, {color: theme.foregroundColor}]}>
+      Please select a chat to start messenging
+    </Text>
   </View>
 );
 
@@ -21,4 +26,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ChatEmptyPlaceholder;
+export default withTheme(ChatEmptyPlaceholder);

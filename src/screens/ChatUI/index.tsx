@@ -11,6 +11,7 @@ import Header from '../../components/Header';
 import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 import InputToolbar from './InputToolbar';
 import {getMember} from '../../actions/members/thunks';
+import isLandscape from '../../utils/stylesheet/isLandscape';
 
 type ChatType = 'direct' | 'channel' | 'thread';
 
@@ -150,19 +151,25 @@ class ChatUI extends Component<Props> {
     return <InputToolbar chatId={this.props.currentChat.id} />;
   }
 
-  render() {
-    let {theme, chatType, currentChat, currentUser} = this.props;
-    if (!currentChat) return null;
+  renderHeader() {
+    let {chatType, currentChat, currentUser} = this.props;
     let chatName =
-      chatType === 'channel'
-        ? `#${currentChat.name_normalized}`
-        : chatType === 'direct'
-        ? currentUser.profile.display_name_normalized || currentUser.profile.real_name_normalized
-        : 'Thread';
+    chatType === 'channel'
+      ? `#${currentChat.name_normalized}`
+      : chatType === 'direct'
+      ? currentUser.profile.display_name_normalized || currentUser.profile.real_name_normalized
+      : 'Thread';
+
+    return <Header center={chatName} left={isLandscape()? undefined : "back"} />
+  }
+
+  render() {
+    let {theme, currentChat} = this.props;
+    if (!currentChat) return null;
 
     return (
       <SafeAreaView style={[styles.container, {backgroundColor: theme.backgroundColorDarker2}]}>
-        <Header center={chatName} left="back" />
+        {this.renderHeader()}
         {this.renderList()}
         {this.renderInputToolbar()}
       </SafeAreaView>

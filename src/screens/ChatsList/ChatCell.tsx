@@ -163,13 +163,14 @@ class ChatCell extends PureComponent<Props> {
   }
 
   render() {
-    let {user, theme} = this.props;
+    let {user, chat, theme, currentChatId} = this.props;
+    let selected = chat.id === currentChatId;
     return (
       <Touchable
         style={[
           styles.container,
           {
-            backgroundColor: theme.backgroundColor,
+            backgroundColor: selected ? 'rgba(72.0, 32.0, 70.0, 1)' : theme.backgroundColor,
             borderColor: theme.backgroundColorLess1,
           },
         ]}
@@ -247,6 +248,7 @@ const mapStateToProps = (state: RootState, ownProps) => {
     isGroup: !chat.is_im,
     chatLastMessageStatus,
     lastMessage,
+    currentChatId: state.chats.currentChatId,
   };
 };
 

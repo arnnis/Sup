@@ -14,7 +14,6 @@ import {createSelector} from 'reselect';
 import TeamEmptyPlaceholder from './TeamEmptyPlaceholder';
 import ChangeTeamButton from './ChangeTeamButton';
 import PopupMenu from './PopupMenu';
-import useStyle from '../../utils/stylesheet/useStyle';
 import styled from '../../utils/stylesheet/styled';
 import ChatUI from '../ChatUI';
 import ChatEmptyPlaceholder from './ChatEmptyPlaceholder';
@@ -90,15 +89,15 @@ const Main = React.memo(({currentTeam, connectionStatus, dispatch, currentChatId
   );
 });
 
-const MasterView = styled(View)({
+const MasterView = styled(View)(({theme}) => ({
   width: '100%',
   height: '100%',
   media: [{ orientation: 'landscape' }, {
     width: px(325),
     borderRightWidth: px(1),
-    borderColor: '#eee'
+    borderColor: theme.backgroundColorDarker1
   }]
-})
+}))
 
 const styles = StyleSheet.create({
   container: {
