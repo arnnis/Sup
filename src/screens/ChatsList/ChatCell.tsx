@@ -39,7 +39,7 @@ class ChatCell extends PureComponent<Props> {
   };
 
   renderAvatar() {
-    let {isGroup, theme, chat} = this.props;
+    let {isGroup, theme, chat, selected} = this.props;
     if (isGroup) {
       return (
         <View
@@ -56,7 +56,7 @@ class ChatCell extends PureComponent<Props> {
             style={{
               fontWeight: 'bold',
               fontSize: px(16),
-              color: theme.foregroundColor,
+              color: selected ? theme.backgroundColor : theme.foregroundColor,
             }}>
             #
           </Text>
@@ -68,7 +68,7 @@ class ChatCell extends PureComponent<Props> {
   }
 
   renderName(user: User) {
-    let {chat, isGroup, theme} = this.props;
+    let {chat, isGroup, theme, selected} = this.props;
     if (!isGroup && !user) {
       return (
         <AnimatedEllipsis
@@ -81,7 +81,8 @@ class ChatCell extends PureComponent<Props> {
       );
     }
     return (
-      <Text style={[styles.name, {color: theme.foregroundColor}]}>
+      <Text
+        style={[styles.name, {color: selected ? theme.backgroundColor : theme.foregroundColor}]}>
         {isGroup
           ? chat.name
           : user.profile.display_name_normalized || user.profile.real_name_normalized}
@@ -149,7 +150,7 @@ class ChatCell extends PureComponent<Props> {
   }
 
   renderUnreadCount() {
-    let {chat, isGroup} = this.props;
+    let {chat, isGroup, selected} = this.props;
     let unread = isGroup ? chat.unread_count : chat.dm_count;
 
     if (!unread) return null;
@@ -163,8 +164,7 @@ class ChatCell extends PureComponent<Props> {
   }
 
   render() {
-    let {user, chat, theme, currentChatId} = this.props;
-    let selected = chat.id === currentChatId;
+    let {user, chat, theme, selected} = this.props;
     return (
       <Touchable
         style={[
@@ -248,7 +248,7 @@ const mapStateToProps = (state: RootState, ownProps) => {
     isGroup: !chat.is_im,
     chatLastMessageStatus,
     lastMessage,
-    currentChatId: state.chats.currentChatId,
+    selected: ownProps.chatId === state.chats.currentChatId,
   };
 };
 
