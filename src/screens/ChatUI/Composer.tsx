@@ -71,7 +71,8 @@ const styles = StyleSheet.create({
     flex: 1,
     marginLeft: px(10),
     fontSize: px(15),
-    lineHeight: px(16),
+    lineHeight: Platform.select({ios: px(21), default: px(24)}),
+    textAlignVertical: 'center',
     minHeight: px(40),
     ...Platform.select({
       web: {

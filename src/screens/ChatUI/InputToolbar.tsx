@@ -110,8 +110,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: px(5),
-    paddingBottom: Platform.select({ios: px(7.5), default: px(11)}),
+    marginLeft: px(10),
+    paddingBottom: Platform.select({ios: px(7.5), web: px(7.5), default: px(11)}),
   },
   emojiAndComposeWrapper: {
     backgroundColor: '#333333',
