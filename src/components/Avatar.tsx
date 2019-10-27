@@ -3,18 +3,20 @@ import {View, Text, StyleSheet, ViewStyle, TouchableOpacity} from 'react-native'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import px from '../utils/normalizePixel';
 import FastImage from 'react-native-fast-image';
-import {connect} from 'react-redux';
+import {connect, DispatchProp} from 'react-redux';
 import {RootState} from '../reducers';
 import {currentTeamTokenSelector} from '../screens/ChatUI/MessageImages';
+import {getMember} from '../actions/members/thunks';
 
-type Props = ReturnType<typeof mapStateToProps> & {
-  userId: string;
-  width?: number;
-  style?: ViewStyle;
-  onPress?(): void;
-  containerStyle?: ViewStyle;
-  hideOnlineBadge: boolean;
-};
+type Props = ReturnType<typeof mapStateToProps> &
+  DispatchProp<any> & {
+    userId: string;
+    width?: number;
+    style?: ViewStyle;
+    onPress?(): void;
+    containerStyle?: ViewStyle;
+    hideOnlineBadge: boolean;
+  };
 
 class Avatar extends Component<Props> {
   static defaultProps = {
@@ -24,6 +26,10 @@ class Avatar extends Component<Props> {
   state = {
     errored: false,
   };
+
+  componentDidMount() {
+    if (!this.props.user) this.props.dispatch(getMember(this.props.userId));
+  }
 
   onError = () => this.setState({errored: true});
 

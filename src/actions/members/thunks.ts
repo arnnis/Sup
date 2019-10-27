@@ -48,10 +48,7 @@ export const getMembers = () => async (dispatch, getState) => {
   }
 };
 
-export const getMembersByUserIds = (userIds: Array<string>) => async (
-  dispatch,
-  getState,
-) => {
+export const getMembersByUserIds = (userIds: Array<string>) => async (dispatch, getState) => {
   let state: RootState = getState();
 
   userIds.forEach(async userId => {
@@ -79,6 +76,8 @@ export const getMember = (userId: string) => async (dispatch, getState) => {
   let alreadyLoaded = state.entities.users.byId[userId];
   if (loading || alreadyLoaded) return;
 
+  dispatch(getMemberStart(userId));
+
   try {
     let {user}: {user: User} = await http({
       path: '/users.info',
@@ -90,8 +89,10 @@ export const getMember = (userId: string) => async (dispatch, getState) => {
 
     batch(() => {
       dispatch(storeEntities('users', [user]));
+      dispatch(getMemberSuccess(userId));
     });
   } catch (err) {
     console.log(err);
+    dispatch(getMemberFail(userId));
   }
 };
