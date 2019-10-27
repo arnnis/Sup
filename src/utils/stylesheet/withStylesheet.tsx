@@ -1,20 +1,21 @@
-import React from 'react';
+import React, {FC} from 'react';
 import useStylesheet from './useStylesheet';
 
 export interface StyleSheetInjectedProps {
-  stylesheet: any;
+  dynamicStyles: any;
 }
 
 const withStylesheet = inputStylesheet => <BaseProps extends StyleSheetInjectedProps>(
   WrapperComponent: React.ComponentType<BaseProps>,
 ) => {
   type HocProps = Omit<BaseProps, keyof StyleSheetInjectedProps>;
-  return class WithTheme extends React.Component<HocProps> {
-    render() {
-      let stylesheet = useStylesheet(inputStylesheet);
-      return <WrapperComponent {...(this.props as BaseProps)} stylesheet={stylesheet} />;
-    }
+
+  const WithStylesheet: FC<HocProps> = props => {
+    let stylesheet = useStylesheet(inputStylesheet);
+    return <WrapperComponent {...(props as BaseProps)} dynamicStyles={stylesheet} />;
   };
+
+  return WithStylesheet;
 };
 
 export default withStylesheet;

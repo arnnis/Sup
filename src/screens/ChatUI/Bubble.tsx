@@ -8,7 +8,6 @@ import MessageImages from './MessageImages';
 import MessageFiles from './MessageFiles';
 import MessageVideos from './MessageVideos';
 import Replies from './Replies';
-import rem from '../../utils/stylesheet/rem';
 
 type Props = ThemeInjectedProps & {
   messageId: string;
@@ -45,6 +44,7 @@ class Bubble extends Component<Props> {
 
   render() {
     let {sameUser, isMe, pending, theme} = this.props;
+
     return (
       <View
         style={[
@@ -72,7 +72,7 @@ class Bubble extends Component<Props> {
 
 const styles = StyleSheet.create({
   container: {
-    maxWidth: '50%',
+    maxWidth: px(350),
     borderRadius: px(5),
     padding: px(5),
     paddingHorizontal: px(7.5),

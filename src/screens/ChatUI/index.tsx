@@ -166,7 +166,6 @@ class ChatUI extends Component<Props> {
   render() {
     let {theme, currentChat} = this.props;
     if (!currentChat) return null;
-
     return (
       <SafeAreaView style={[styles.container, {backgroundColor: theme.backgroundColorDarker2}]}>
         {this.renderHeader()}
@@ -186,9 +185,9 @@ const styles = StyleSheet.create({
 
 let defaultList = [];
 const mapStateToProps = (state: RootState, ownProps) => {
-  let chatId = ownProps.chatId;
-  let threadId = ownProps.threadId;
-  let chatType = ownProps.chatType;
+  let chatId = ownProps.chatId ?? ownProps.navigation?.getParam('chatId');
+  let threadId = ownProps.threadId ?? ownProps.navigation?.getParam('threadId');
+  let chatType = ownProps.chatType ?? ownProps.navigation?.getParam('chatType');
 
   let currentChat = state.entities.chats.byId[chatId];
   let currentUser = currentChat && state.entities.users.byId[currentChat.user_id];
@@ -201,6 +200,7 @@ const mapStateToProps = (state: RootState, ownProps) => {
 
   return {
     chatId,
+    threadId,
     currentChat,
     currentUser,
     messagesList,
