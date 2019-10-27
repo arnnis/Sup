@@ -74,7 +74,8 @@ export const getMember = (userId: string) => async (dispatch, getState) => {
 
   let loading = state.members.loading[userId];
   let alreadyLoaded = state.entities.users.byId[userId];
-  if (loading || alreadyLoaded) return;
+  let loadingList = state.members.loadingList;
+  if (loading || alreadyLoaded || loadingList) return;
 
   dispatch(getMemberStart(userId));
 

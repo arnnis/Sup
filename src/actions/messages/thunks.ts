@@ -31,8 +31,6 @@ export const getMessagesByChatId = (chatId: string) => async (dispatch, getState
       dispatch(storeEntities('messages', messages));
     });
 
-    dispatch(getMembersByUserIds(messages.map(msg => msg.user)));
-
     return messages;
   } catch (err) {
     console.log(err);
@@ -71,8 +69,6 @@ export const getRepliesByThreadId = (threadId: string, chatId: string) => async 
       dispatch(getMessagesSuccess(threadId, messages, nextCursor));
       dispatch(storeEntities('messages', messages));
     });
-
-    dispatch(getMembersByUserIds(messages.map(msg => msg.user)));
 
     return messages;
   } catch (err) {
