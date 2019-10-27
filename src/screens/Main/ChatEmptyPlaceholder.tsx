@@ -6,9 +6,9 @@ import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 type Props = ThemeInjectedProps;
 
 const ChatEmptyPlaceholder: FC<Props> = ({theme}) => (
-  <View style={[styles.container, {backgroundColor: theme.backgroundColorMore1}]}>
+  <View style={[styles.container, {backgroundColor: theme.backgroundColorDarker1}]}>
     <Text style={[styles.text, {color: theme.foregroundColor}]}>
-      Please select a chat to start messenging
+      Select a chat to start messenging
     </Text>
   </View>
 );

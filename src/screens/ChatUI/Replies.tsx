@@ -2,14 +2,17 @@ import React, {Component} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {RootState} from '../../reducers';
 import Avatar from '../../components/Avatar';
-import {connect} from 'react-redux';
+import {connect, DispatchProp} from 'react-redux';
 import px from '../../utils/normalizePixel';
 import Touchable from '../../components/Touchable';
 import {withNavigation, NavigationInjectedProps} from 'react-navigation';
 import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
+import isLandscape from '../../utils/stylesheet/isLandscape';
+import {openBottomSheet} from '../../actions/app';
 
 type Props = ReturnType<typeof mapStateToProps> &
   ThemeInjectedProps &
+  DispatchProp<any> &
   NavigationInjectedProps & {
     messageId: string;
   };
@@ -17,12 +20,13 @@ type Props = ReturnType<typeof mapStateToProps> &
 class Replies extends Component<Props> {
   handlePress = () => {
     let chatId = this.props.navigation.getParam('chatId');
-
-    this.props.navigation.push('ChatUI', {
+    let params = {
       chatType: 'thread',
       threadId: this.props.message.ts,
-      chatId: chatId,
-    });
+      chatId: chatId || this.props.currentChatId,
+    };
+    if (isLandscape()) this.props.dispatch(openBottomSheet('ChatUI', params));
+    else this.props.navigation.push('ChatUI', params);
   };
 
   renderParticipantsAvatar() {
@@ -95,6 +99,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state: RootState, ownProps) => ({
   message: state.entities.messages.byId[ownProps.messageId],
+  currentChatId: state.chats.currentChatId,
 });
 
 export default connect(mapStateToProps)(withNavigation(withTheme(Replies)));

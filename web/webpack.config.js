@@ -128,6 +128,7 @@ const config = {
       'react-native$': 'react-native-web',
       '@react-native-community/netinfo': 'react-native-web/dist/exports/NetInfo',
       'react-native-fast-image': 'react-native-web/dist/exports/Image',
+      'react-native-web/dist/exports/Modal': 'modal-enhanced-react-native-web',
     },
     extensions: ['.web.js', '.js', '.web.ts', '.web.tsx', '.ts', '.tsx', '.json'],
   },
@@ -145,6 +146,7 @@ if (isProd) {
     compress: true,
     stats: 'errors-only',
     overlay: true,
+    hot: true,
   };
 }
 

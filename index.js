@@ -19,5 +19,10 @@ if (Platform.OS === 'web') {
   AppRegistry.runApplication(appName, {
     rootTag: document.getElementById('root'),
   });
+
   require('./web/load-fonts').default();
+
+  if (module.hot) {
+    module.hot.accept();
+  }
 }

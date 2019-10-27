@@ -10,11 +10,11 @@ function configureStore() {
   middlewares.push(thunk);
 
   if (__DEV__) {
-    const logger = createLogger({
-      level: 'info',
-      collapsed: true,
-    });
-    middlewares.push(logger);
+    // const logger = createLogger({
+    //   level: 'info',
+    //   collapsed: true,
+    // });
+    // middlewares.push(logger);
   }
 
   const enhancer = applyMiddleware(...middlewares);

@@ -17,6 +17,7 @@ import PopupMenu from './PopupMenu';
 import styled from '../../utils/stylesheet/styled';
 import ChatUI from '../ChatUI';
 import ChatEmptyPlaceholder from './ChatEmptyPlaceholder';
+import BottomSheet from './BottomSheet';
 
 type Props = ReturnType<typeof mapStateToProps> & DispatchProp<any> & ThemeInjectedProps;
 
@@ -85,6 +86,7 @@ const Main = React.memo(({currentTeam, connectionStatus, dispatch, currentChatId
             </MediaQuery>
           </View>
       </DrawerLayout>
+      <BottomSheet />
     </SafeAreaView>
   );
 });

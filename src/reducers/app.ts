@@ -5,17 +5,22 @@ import {ConnectionStatus} from '../actions/app';
 export type AppState = Readonly<{
   drawerOpen: boolean;
   connectionStatus: ConnectionStatus;
+  bottomSheet: {
+    screen: string;
+    params: any;
+  };
 }>;
 
 const initialState: AppState = {
   drawerOpen: false,
   connectionStatus: 'connecting',
+  bottomSheet: {
+    screen: undefined,
+    params: null,
+  },
 };
 
-export const appReducer: Reducer<AppState, RootAction> = (
-  state = initialState,
-  action,
-) => {
+export const appReducer: Reducer<AppState, RootAction> = (state = initialState, action) => {
   switch (action.type) {
     case 'SET_DRAWER_OPEN': {
       let {drawerState} = action.payload;
@@ -30,6 +35,22 @@ export const appReducer: Reducer<AppState, RootAction> = (
       return {
         ...state,
         connectionStatus: status,
+      };
+    }
+
+    case 'OPEN_BOTTOM_SHEET': {
+      return {
+        ...state,
+        bottomSheet: action.payload,
+      };
+    }
+
+    case 'CLOSE_BOTTOM_SHEET': {
+      return {
+        bottomSheet: {
+          screen: undefined,
+          params: null,
+        },
       };
     }
 
