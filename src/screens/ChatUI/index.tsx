@@ -76,14 +76,12 @@ class ChatUI extends Component<Props> {
       dispatch,
       chatId,
     } = this.props;
-    chatId = chatId;
-
     if (lastMessageStatus && lastMessageStatus.messageId && !lastMessageStatus.loading) {
       dispatch(addMessageToChat(lastMessageStatus.messageId, chatId));
       dispatch(getMember(lastMessage.user));
     }
 
-    if (nextCursor[chatId] !== 'end' && messagesList.length <= 1) {
+    if (nextCursor && nextCursor[chatId] !== 'end' && messagesList.length <= 1) {
       await dispatch(getMessagesByChatId(chatId));
     }
 

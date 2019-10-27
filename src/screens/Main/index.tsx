@@ -95,9 +95,7 @@ const MasterView = styled(View)(({theme}) => ({
   width: '100%',
   height: '100%',
   media: [{ orientation: 'landscape' }, {
-    width: px(325),
-    borderRightWidth: px(1),
-    borderColor: theme.backgroundColorDarker1
+    width: px(325)
   }]
 }))
 

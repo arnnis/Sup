@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, PureComponent} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {RootState} from '../../reducers';
 import Avatar from '../../components/Avatar';
@@ -17,7 +17,7 @@ type Props = ReturnType<typeof mapStateToProps> &
     messageId: string;
   };
 
-class Replies extends Component<Props> {
+class Replies extends PureComponent<Props> {
   handlePress = () => {
     let chatId = this.props.navigation.getParam('chatId');
     let params = {

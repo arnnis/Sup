@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, PureComponent} from 'react';
 import {View, Text, StyleSheet, ViewStyle, TouchableOpacity} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import px from '../utils/normalizePixel';
@@ -18,7 +18,7 @@ type Props = ReturnType<typeof mapStateToProps> &
     hideOnlineBadge: boolean;
   };
 
-class Avatar extends Component<Props> {
+class Avatar extends PureComponent<Props> {
   static defaultProps = {
     width: px(50),
   };
