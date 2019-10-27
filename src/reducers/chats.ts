@@ -5,7 +5,7 @@ export type DirectsState = Readonly<{
   currentChatId: string;
   currentThreadId: string;
   directsList: Array<string>;
-  groupsList: Array<string>;
+  channelsList: Array<string>;
   loading: boolean;
   lastMessages: {
     [directId: string]: {loading: boolean; messageId?: string};
@@ -18,7 +18,7 @@ const initialState: DirectsState = {
   currentChatId: '',
   currentThreadId: '',
   directsList: [],
-  groupsList: [],
+  channelsList: [],
   loading: false,
   lastMessages: {},
   nextCursor: '',
@@ -39,7 +39,7 @@ export const chatsReducer: Reducer<DirectsState, RootAction> = (state = initialS
       return {
         ...state,
         directsList: ims.map(im => im.id),
-        groupsList: groups.map(group => group.id),
+        channelsList: groups.map(group => group.id),
         loading: false,
       };
     }
@@ -135,7 +135,7 @@ export const chatsReducer: Reducer<DirectsState, RootAction> = (state = initialS
         currentChatId: '',
         currentThreadId: '',
         directsList: [],
-        groupsList: [],
+        channelsList: [],
         loading: false,
         lastMessages: {},
       };

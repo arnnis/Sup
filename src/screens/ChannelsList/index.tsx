@@ -1,13 +1,6 @@
 import React, {PureComponent, Component} from 'react';
 import {DispatchProp} from 'react-redux';
-import {
-  View,
-  StyleSheet,
-  Button,
-  FlatList,
-  ActivityIndicator,
-  Platform,
-} from 'react-native';
+import {View, StyleSheet, Button, FlatList, ActivityIndicator, Platform} from 'react-native';
 import {connect} from 'react-redux';
 import ChatCell from '../ChatsList/ChatCell';
 import {RootState} from '../../reducers';
@@ -20,7 +13,7 @@ type Props = ReturnType<typeof mapStateToProps> &
   DispatchProp<any> &
   NavigationInjectedProps;
 
-class GroupsList extends PureComponent<Props> {
+class ChannelsList extends PureComponent<Props> {
   renderLoading() {
     return (
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
@@ -34,14 +27,10 @@ class GroupsList extends PureComponent<Props> {
   };
 
   render() {
-    let {groupsList, theme} = this.props;
+    let {channelsList, theme} = this.props;
 
     return (
-      <View
-        style={[
-          styles.container,
-          {backgroundColor: theme.backgroundColorDarker1},
-        ]}>
+      <View style={[styles.container, {backgroundColor: theme.backgroundColorDarker1}]}>
         {/* <Button
           onPress={() => this.props.dispatch(signinTeam())}
           title="login"
@@ -50,7 +39,7 @@ class GroupsList extends PureComponent<Props> {
           this.renderLoading()
         ) : (
           <FlatList
-            data={groupsList}
+            data={channelsList}
             renderItem={this.renderGroupCell}
             getItemLayout={(data, index) => ({
               length: px(72),
@@ -72,8 +61,8 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state: RootState) => ({
-  groupsList: state.chats.groupsList,
+  channelsList: state.chats.channelsList,
   loading: state.chats.loading,
 });
 
-export default connect(mapStateToProps)(withNavigation(withTheme(GroupsList)));
+export default connect(mapStateToProps)(withNavigation(withTheme(ChannelsList)));

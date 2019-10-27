@@ -4,7 +4,7 @@ import {TabView, TabBar, SceneMap} from 'react-native-tab-view';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import px from '../../utils/normalizePixel';
 import ChatsList from '../ChatsList';
-import GroupsList from '../GroupsList';
+import ChannelsList from '../ChannelsList';
 
 const ScrollableTabView = () => {
   let [scrollableTabState, setScrollableTabState] = useState({
@@ -25,7 +25,7 @@ const ScrollableTabView = () => {
 
   let _renderScrollableTabScene = SceneMap({
     directs: ChatsList,
-    channels: GroupsList,
+    channels: ChannelsList,
   } as any);
 
   let _renderTabIcon = ({route, focused, color}) => (
