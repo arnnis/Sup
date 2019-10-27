@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: 'rgba(0, 0, 0, 0.75)',
   },
   panelContainer: {
     position: 'absolute',
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   panel: {
-    height: dims.height - 100,
+    height: dims.height - 50,
     width: dims.width - dims.width / 2,
     paddingHorizontal: 5,
     backgroundColor: 'rgb(72.0, 32.0, 70.0)',

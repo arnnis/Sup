@@ -72,7 +72,7 @@ class Bubble extends Component<Props> {
 
 const styles = StyleSheet.create({
   container: {
-    maxWidth: rem(250),
+    maxWidth: '50%',
     borderRadius: px(5),
     padding: px(5),
     paddingHorizontal: px(7.5),
