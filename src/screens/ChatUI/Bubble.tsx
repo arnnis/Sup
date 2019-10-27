@@ -8,14 +8,16 @@ import MessageImages from './MessageImages';
 import MessageFiles from './MessageFiles';
 import MessageVideos from './MessageVideos';
 import Replies from './Replies';
+import withStylesheet, {StyleSheetInjectedProps} from '../../utils/stylesheet/withStylesheet';
 
-type Props = ThemeInjectedProps & {
-  messageId: string;
-  userId: string;
-  sameUser: boolean;
-  isMe: boolean;
-  pending: boolean;
-};
+type Props = ThemeInjectedProps &
+  StyleSheetInjectedProps & {
+    messageId: string;
+    userId: string;
+    sameUser: boolean;
+    isMe: boolean;
+    pending: boolean;
+  };
 
 class Bubble extends Component<Props> {
   renderMessageText() {
@@ -43,12 +45,13 @@ class Bubble extends Component<Props> {
   }
 
   render() {
-    let {sameUser, isMe, pending, theme} = this.props;
+    let {sameUser, isMe, pending, theme, dynamicStyles} = this.props;
 
     return (
       <View
         style={[
           styles.container,
+          dynamicStyles.container,
           {backgroundColor: theme.backgroundColor},
           isMe && styles.right,
           !sameUser && {
@@ -72,7 +75,7 @@ class Bubble extends Component<Props> {
 
 const styles = StyleSheet.create({
   container: {
-    maxWidth: px(350),
+    maxWidth: 450,
     borderRadius: px(5),
     padding: px(5),
     paddingHorizontal: px(7.5),
@@ -82,4 +85,16 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withTheme(Bubble);
+const dynamicStyles = {
+  container: {
+    maxWidth: '68%',
+    media: [
+      {orientation: 'landscape'},
+      {
+        maxWidth: 450,
+      },
+    ],
+  },
+};
+
+export default withTheme(withStylesheet(dynamicStyles)(Bubble));
