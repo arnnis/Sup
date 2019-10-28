@@ -8,8 +8,8 @@ import MembersList from '../MembersList';
 import FilesList from '../FilesList';
 import UserProfile from '../UserProfile';
 import {RootState} from '../../reducers';
-import {meSelector} from '../ChatUI/Message';
 import {connect} from 'react-redux';
+import {meSelector} from '../../reducers/teams';
 
 type Props = ReturnType<typeof mapStateToProps>;
 

@@ -2,10 +2,10 @@ import React, {Component} from 'react';
 import {MessageFile} from '../ChatUI/MessageFiles';
 import {RootState} from '../../reducers';
 import {connect} from 'react-redux';
-import {currentTeamTokenSelector} from '../ChatUI/MessageImages';
 import {View, StyleSheet} from 'react-native';
 import px from '../../utils/normalizePixel';
 import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
+import {currentTeamTokenSelector} from '../../reducers/teams';
 
 type Props = ReturnType<typeof mapStateToProps> &
   ThemeInjectedProps & {

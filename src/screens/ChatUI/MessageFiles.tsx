@@ -10,7 +10,7 @@ import {Message, MessageAttachement} from '../../models';
 import {View, StyleSheet, Text, ToastAndroid, Platform, ViewStyle, TextStyle} from 'react-native';
 import px from '../../utils/normalizePixel';
 import Touchable from '../../components/Touchable';
-import {currentTeamTokenSelector} from './MessageImages';
+import {currentTeamTokenSelector} from '../../reducers/teams';
 
 type Props = ReturnType<typeof mapStateToProps> & {
   messageId: string;

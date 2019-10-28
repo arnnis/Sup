@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {createSelector} from 'reselect';
 import {isSameUser} from './utils';
 import {RootState} from '../../reducers';
 import Bubble from './Bubble';
@@ -10,6 +9,7 @@ import px from '../../utils/normalizePixel';
 import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 import {NavigationInjectedProps, withNavigation} from 'react-navigation';
 import Day from './Day';
+import {meSelector} from '../../reducers/teams';
 
 type Props = ReturnType<typeof mapStateToProps> &
   NavigationInjectedProps &
@@ -128,14 +128,6 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
 });
-
-export const meSelector = createSelector(
-  (state: RootState) => state,
-  state =>
-    state.entities.users.byId[
-      state.teams.list.find(tm => tm.id === state.teams.currentTeam)?.userId
-    ],
-);
 
 const mapStateToProps = (state: RootState, ownProps) => ({
   currentMessage: state.entities.messages.byId[ownProps.messageId],

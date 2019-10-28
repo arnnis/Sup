@@ -12,7 +12,7 @@ import {ActivityIndicator} from 'react-native-paper';
 import withTheme, {ThemeInjectedProps} from '../contexts/theme/withTheme';
 import Touchable from '../components/Touchable';
 import FastImage from 'react-native-fast-image';
-import {currentTeamTokenSelector} from './ChatUI/MessageImages';
+import {currentTeamTokenSelector} from '../reducers/teams';
 
 type Props = ReturnType<typeof mapStateToProps> &
   ThemeInjectedProps &

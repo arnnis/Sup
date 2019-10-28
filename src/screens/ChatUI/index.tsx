@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {View, SafeAreaView, StyleSheet, FlatList, ActivityIndicator} from 'react-native';
 import {RootState} from '../../reducers';
 import {connect, DispatchProp} from 'react-redux';
-import Message, {meSelector} from './Message';
+import Message from './Message';
 import {NavigationInjectedProps, withNavigation} from 'react-navigation';
 import {addMessageToChat} from '../../actions/messages';
 import {getMessagesByChatId, getRepliesByThreadId} from '../../actions/messages/thunks';
@@ -12,6 +12,7 @@ import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 import InputToolbar from './InputToolbar';
 import {getMember} from '../../actions/members/thunks';
 import isLandscape from '../../utils/stylesheet/isLandscape';
+import { meSelector } from '../../reducers/teams';
 
 type ChatType = 'direct' | 'channel' | 'thread';
 

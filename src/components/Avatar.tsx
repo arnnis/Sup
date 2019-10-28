@@ -1,12 +1,12 @@
-import React, {Component, PureComponent} from 'react';
-import {View, Text, StyleSheet, ViewStyle, TouchableOpacity} from 'react-native';
+import React, {PureComponent} from 'react';
+import {View, StyleSheet, ViewStyle, TouchableOpacity} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import px from '../utils/normalizePixel';
 import FastImage from 'react-native-fast-image';
 import {connect, DispatchProp} from 'react-redux';
 import {RootState} from '../reducers';
-import {currentTeamTokenSelector} from '../screens/ChatUI/MessageImages';
 import {getMember} from '../actions/members/thunks';
+import {currentTeamTokenSelector} from '../reducers/teams';
 
 type Props = ReturnType<typeof mapStateToProps> &
   DispatchProp<any> & {

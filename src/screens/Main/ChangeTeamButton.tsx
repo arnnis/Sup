@@ -1,11 +1,11 @@
 import React, {FC} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {RootState} from '../../reducers';
-import {currentTeamSelector} from '.';
 import {connect} from 'react-redux';
 import Touchable from '../../components/Touchable';
 import FastImage from 'react-native-fast-image';
 import px from '../../utils/normalizePixel';
+import {currentTeamSelector} from '../../reducers/teams';
 
 type Props = ReturnType<typeof mapStateToProps> & {
   onPress(): void;
