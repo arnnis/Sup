@@ -119,7 +119,7 @@ const reconnect = () => {
     console.log('[socket] reconnecting...');
     init();
     isReconnect = true;
-  }, 3000);
+  }, 5000);
 };
 
 const stopReconnect = () => {
