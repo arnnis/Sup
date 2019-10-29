@@ -22,7 +22,7 @@ export const getMembers = () => async (dispatch, getState) => {
     let {members}: {members: User[]} = await http({
       path: '/users.list',
       body: {
-        limit: 1500,
+        limit: 500,
         presence: true,
       },
       isFormData: true,

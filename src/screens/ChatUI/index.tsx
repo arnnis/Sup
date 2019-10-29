@@ -139,7 +139,7 @@ class ChatUI extends Component<Props> {
         initialNumToRender={3}
         inverted
         keyExtractor={this.keyExtractor}
-        onEndReachedThreshold={0.25}
+        onEndReachedThreshold={0.5}
         onEndReached={this.getOlderMessages}
         ListFooterComponent={this.renderLoadingMore}
       />

@@ -19,7 +19,7 @@ export const getMessagesByChatId = (chatId: string) => async (dispatch, getState
       path: '/conversations.history',
       body: {
         channel: chatId,
-        limit: 20,
+        limit: 50,
         latest: cursor,
       },
     });

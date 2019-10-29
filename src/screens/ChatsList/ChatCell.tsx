@@ -25,30 +25,30 @@ type Props = ReturnType<typeof mapStateToProps> &
     chatId: string;
   };
 
-class ChatCell extends Component<Props> {
+class ChatCell extends PureComponent<Props> {
   static whyDidYouRender = true;
   componentDidMount() {
     let {chatId} = this.props;
     this.props.dispatch(getChatLastMessage(chatId));
   }
 
-  shouldComponentUpdate(nextProps: Props) {
-    let currentChat = this.props.chat
-    let nextChat = nextProps.chat
-    let currentUser = this.props.user
-    let nextUser = nextProps.user
+  // shouldComponentUpdate(nextProps: Props) {
+  //   let currentChat = this.props.chat
+  //   let nextChat = nextProps.chat
+  //   let currentUser = this.props.user
+  //   let nextUser = nextProps.user
 
-    if (
-      (currentChat?.unread_count !== nextChat?.unread_count) || 
-      (currentChat?.dm_count !== nextChat?.dm_count) ||
-      (currentChat?.name !== nextChat?.name) ||
-      (currentUser?.profile?.display_name_normalized !== nextUser?.profile?.display_name_normalized ) ||
-      (currentUser?.profile?.real_name_normalized !== nextUser?.profile?.real_name_normalized ) || 
-      (this.props.chatLastMessageStatus?.loading !== nextProps.chatLastMessageStatus?.loading)
-    ) 
-      return true
-    return false
-  }
+  //   if (
+  //     (currentChat?.unread_count !== nextChat?.unread_count) ||
+  //     (currentChat?.dm_count !== nextChat?.dm_count) ||
+  //     (currentChat?.name !== nextChat?.name) ||
+  //     (currentUser?.profile?.display_name_normalized !== nextUser?.profile?.display_name_normalized ) ||
+  //     (currentUser?.profile?.real_name_normalized !== nextUser?.profile?.real_name_normalized ) ||
+  //     (this.props.chatLastMessageStatus?.loading !== nextProps.chatLastMessageStatus?.loading)
+  //   )
+  //     return true
+  //   return false
+  // }
 
   handlePress = () => {
     if (getCurrentOrientaion() === 'landscape')

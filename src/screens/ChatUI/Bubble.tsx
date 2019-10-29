@@ -75,7 +75,6 @@ class Bubble extends Component<Props> {
 
 const styles = StyleSheet.create({
   container: {
-    maxWidth: 450,
     borderRadius: px(5),
     padding: px(5),
     paddingHorizontal: px(7.5),
@@ -91,7 +90,7 @@ const dynamicStyles = {
     media: [
       {orientation: 'landscape'},
       {
-        maxWidth: 450,
+        maxWidth: '62%',
       },
     ],
   },
