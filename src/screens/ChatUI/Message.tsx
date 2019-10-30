@@ -16,6 +16,7 @@ type Props = ReturnType<typeof mapStateToProps> &
   ThemeInjectedProps & {
     messageId: string;
     prevMessageId: string;
+    inverted: boolean;
   };
 
 class Message extends Component<Props> {
@@ -81,11 +82,12 @@ class Message extends Component<Props> {
   }
 
   render() {
-    let {currentMessage, prevMessage, me} = this.props;
+    let {currentMessage, prevMessage, me, inverted} = this.props;
     let sameUser = isSameUser(currentMessage, prevMessage);
     let isMe = me && me.id === currentMessage.user;
     return (
       <>
+        {!inverted && this.renderDay()}
         <View
           style={[
             styles.container,
@@ -106,7 +108,7 @@ class Message extends Component<Props> {
             </>
           )}
         </View>
-        {this.renderDay()}
+        {inverted && this.renderDay()}
       </>
     );
   }

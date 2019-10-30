@@ -27,16 +27,19 @@ const BottomSheet: FC<Props> = ({bottomSheet, dispatch}) => {
   };
 
   let content = () => (
-    <TouchableWithoutFeedback onPress={_handleBackgroundPress}>
-      <View style={styles.panelContainer} pointerEvents="box-only">
-        <View style={styles.panel} pointerEvents="none">
+    <>
+      <TouchableWithoutFeedback onPress={_handleBackgroundPress}>
+        <View style={StyleSheet.absoluteFill} />
+      </TouchableWithoutFeedback>
+      <View style={styles.panelContainer} pointerEvents="box-none">
+        <View style={styles.panel}>
           <View style={styles.panelHeader}>
             <View style={styles.panelHandle} />
           </View>
           {_renderScene()}
         </View>
       </View>
-    </TouchableWithoutFeedback>
+    </>
   );
 
   return (
@@ -46,6 +49,7 @@ const BottomSheet: FC<Props> = ({bottomSheet, dispatch}) => {
         animationType="slide"
         transparent
         supportedOrientations={['landscape', 'portrait']}
+        // to fix margin on web
         style={{margin: 0}}>
         {content()}
       </Modal>
