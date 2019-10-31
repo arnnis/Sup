@@ -47,6 +47,7 @@ export const appReducer: Reducer<AppState, RootAction> = (state = initialState, 
 
     case 'CLOSE_BOTTOM_SHEET': {
       return {
+        ...state,
         bottomSheet: {
           screen: undefined,
           params: null,

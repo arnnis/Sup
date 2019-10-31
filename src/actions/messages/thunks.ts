@@ -71,7 +71,7 @@ export const getRepliesByThreadId = (threadId: string, chatId: string) => async 
       dispatch(storeEntities('messages', messages));
     });
 
-    return messages;
+    return Promise.resolve(messages);
   } catch (err) {
     console.log(err);
     dispatch(getMessagesFail(threadId));
