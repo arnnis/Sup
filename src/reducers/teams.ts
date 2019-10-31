@@ -16,12 +16,6 @@ export type TeamsState = Readonly<{
 const initialState: TeamsState = {
   currentTeam: 'TMYS2CUFQ',
   list: [
-    {
-      id: 'TMYS2CUFQ',
-      token:
-        'xoxs-746886436534-738318706257-784909639730-42d0b8a08e6a523683929b0628b3473608f8106eafc5ae2186f8d5fed7a484eb',
-      userId: 'UMQ9CLS7K',
-    },
   ],
   loading: {},
 };
