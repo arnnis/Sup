@@ -156,7 +156,7 @@ class ChatUI extends Component<Props> {
   renderPresense() {
     let {chatType, currentUser} = this.props;
     if (chatType === "direct") {
-      return <Text style={styles.membersCount}>{currentUser?.presence === "online"? 'online' : 'offline'}</Text>
+      return <Text style={styles.membersCount}>{currentUser?.presence === "active"? 'online' : 'offline'}</Text>
     }
     return null
   }
@@ -190,6 +190,7 @@ class ChatUI extends Component<Props> {
       <View style={{alignItems: 'center'}}>
         {this.renderChatName()}
         {this.renderMembersCount()}
+        {this.renderPresense()}
       </View>
     )
 

@@ -1,11 +1,15 @@
 import React, {Component} from 'react';
 import {View, StyleSheet, SafeAreaView} from 'react-native';
+import {InfoBox} from '../../components/InfoBox';
+import Avatar from '../../components/Avatar';
 
 class ChatDetails extends Component {
   render() {
     return (
       <SafeAreaView style={styles.container}>
-        <View style={styles.box}></View>
+        <InfoBox style={{flexDirection: 'row'}}>
+          <Avatar />
+        </InfoBox>
       </SafeAreaView>
     );
   }
