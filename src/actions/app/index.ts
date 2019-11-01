@@ -1,4 +1,5 @@
 import {action} from 'typesafe-actions';
+import {AppState} from '../../reducers/app';
 
 export type ConnectionStatus = 'connected' | 'connecting' | 'disconnected';
 
@@ -15,3 +16,5 @@ export const openBottomSheet = (screen: string, params: any) =>
   action('OPEN_BOTTOM_SHEET', {screen, params});
 
 export const closeBottomSheet = () => action('CLOSE_BOTTOM_SHEET');
+
+export const toggleToast = (toast: AppState['toast']) => action('TOGGLE_TOAST', {toast});

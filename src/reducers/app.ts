@@ -9,6 +9,11 @@ export type AppState = Readonly<{
     screen: string;
     params: any;
   };
+  toast: {
+    message: string;
+    userId?: string; // used when toast is about a community member (e.g. presense change)
+    icon?: 'success' | 'fail';
+  };
 }>;
 
 const initialState: AppState = {
@@ -17,6 +22,11 @@ const initialState: AppState = {
   bottomSheet: {
     screen: undefined,
     params: null,
+  },
+  toast: {
+    message: '',
+    userId: '',
+    icon: '',
   },
 };
 
@@ -52,6 +62,13 @@ export const appReducer: Reducer<AppState, RootAction> = (state = initialState, 
           screen: undefined,
           params: null,
         },
+      };
+    }
+
+    case 'TOGGLE_TOAST': {
+      return {
+        ...state,
+        toast: action.payload.toast,
       };
     }
 

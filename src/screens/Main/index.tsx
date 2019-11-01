@@ -19,6 +19,8 @@ import ChatUI from '../ChatUI';
 import ChatEmptyPlaceholder from './ChatEmptyPlaceholder';
 import BottomSheet from './BottomSheet';
 import {currentTeamSelector} from '../../reducers/teams';
+import Toast from '../../components/Toast';
+import {toggleToast} from '../../actions/app';
 
 type Props = ReturnType<typeof mapStateToProps> & DispatchProp<any> & ThemeInjectedProps;
 
@@ -30,6 +32,7 @@ const Main = React.memo(
     useEffect(() => {
       dispatch(initTeam());
       StatusBar.setBarStyle('light-content');
+      global['toast'] = toast => dispatch(toggleToast(toast));
     }, []);
 
     let _renderChangeTeamButton = () => (
@@ -89,6 +92,7 @@ const Main = React.memo(
           </View>
         </DrawerLayout>
         <BottomSheet />
+        <Toast />
       </SafeAreaView>
     );
   },

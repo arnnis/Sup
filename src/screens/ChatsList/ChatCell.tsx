@@ -15,6 +15,7 @@ import {NavigationInjectedProps, withNavigation} from 'react-navigation';
 import MessageText from '../ChatUI/MessageText';
 import {setCurrentChat} from '../../actions/chats';
 import getCurrentOrientaion from '../../utils/stylesheet/getCurrentOrientaion';
+import isLandscape from '../../utils/stylesheet/isLandscape';
 
 dayjs.extend(utc);
 
@@ -51,9 +52,9 @@ class ChatCell extends PureComponent<Props> {
   // }
 
   handlePress = () => {
-    if (getCurrentOrientaion() === 'landscape')
-      this.props.dispatch(setCurrentChat(this.props.chatId));
-    else this.props.navigation.navigate('ChatUI', {chatId: this.props.chatId});
+    this.props.dispatch(setCurrentChat(this.props.chatId));
+    if (getCurrentOrientaion() === 'portrait')
+      this.props.navigation.navigate('ChatUI', {chatId: this.props.chatId});
   };
 
   renderAvatar() {
@@ -187,7 +188,8 @@ class ChatCell extends PureComponent<Props> {
         style={[
           styles.container,
           {
-            backgroundColor: selected ? 'rgba(72.0, 32.0, 70.0, 1)' : theme.backgroundColor,
+            backgroundColor:
+              selected && isLandscape() ? 'rgba(72.0, 32.0, 70.0, 1)' : theme.backgroundColor,
             borderColor: theme.backgroundColorLess1,
           },
         ]}
