@@ -200,7 +200,7 @@ class ChatUI extends Component<Props> {
     let {theme, currentChat} = this.props;
     if (!currentChat) return null;
     return (
-      <SafeAreaView style={[styles.container, {backgroundColor: theme.backgroundColorDarker2}]}>
+      <SafeAreaView style={[styles.container, {backgroundColor: theme.backgroundColorDarker1}]}>
         {this.renderHeader()}
         {this.renderList()}
         {this.renderInputToolbar()}
@@ -211,8 +211,7 @@ class ChatUI extends Component<Props> {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#3A1C39',
+    flex: 1
   },
   chatName: {
     color: '#fff',

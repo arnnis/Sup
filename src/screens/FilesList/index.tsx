@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
 import {View, StyleSheet, FlatList, ActivityIndicator, Platform} from 'react-native';
 import {RootState} from '../../reducers';
-import {connect} from 'react-redux';
+import {connect, DispatchProp} from 'react-redux';
 import FileCell from './FileCell';
 import px from '../../utils/normalizePixel';
 import {getFiles} from '../../actions/files/thunks';
+import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 
-type Props = ReturnType<typeof mapStateToProps>;
+type Props = ReturnType<typeof mapStateToProps> & ThemeInjectedProps & DispatchProp<any>;
 
 class FilesList extends Component<Props> {
   componentDidMount() {
@@ -32,9 +33,9 @@ class FilesList extends Component<Props> {
   renderCell = ({item: fileId, index}) => <FileCell fileId={fileId} />;
 
   render() {
-    let {filesList, loading} = this.props;
+    let {filesList, loading, theme} = this.props;
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
         {loading && filesList.length === 0 ? (
           this.renderLoading()
         ) : (
@@ -63,4 +64,4 @@ const mapStateToProps = (state: RootState) => ({
   loading: state.files.listLoading,
 });
 
-export default connect(mapStateToProps)(FilesList);
+export default connect(mapStateToProps)(withTheme(FilesList));
