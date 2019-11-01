@@ -22,3 +22,8 @@ export const setUserTyping = (userId: string, chatId: string) =>
 export const setCurrentChat = (chatId: string) => action('SET_CURRENT_CHAT', {chatId});
 
 export const setCurrentThread = (threadId: string) => action('SET_CURRENT_THREAD', {threadId});
+
+export const getChatInfoStart = (chatId: string) => action('GET_CHAT_INFO_START', {chatId});
+export const getChatInfoSuccess = (chatId: string, chat: Chat) =>
+  action('GET_CHAT_INFO_SUCCESS', {chatId});
+export const getChatInfoFail = (chatId: string) => action('GET_CHAT_INFO_FAIL', {chatId});

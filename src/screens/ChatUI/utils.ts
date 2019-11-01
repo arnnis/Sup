@@ -14,9 +14,7 @@ export function isSameDay(currentMessage: Message, diffMessage: Message | null |
   }
 
   const currentCreatedAt = dayjs.unix(Number(currentMessage.ts.split('.')[0])).local();
-  debugger;
   const diffCreatedAt = dayjs.unix(Number(diffMessage.ts.split('.')[0])).local();
-  debugger;
   // if (!currentCreatedAt.isValid() || !diffCreatedAt.isValid()) {
   //   return false;
   // }

@@ -31,7 +31,7 @@ export const getMessagesByChatId = (chatId: string) => async (dispatch, getState
       dispatch(storeEntities('messages', messages));
     });
 
-    return messages;
+    return Promise.resolve(messages);
   } catch (err) {
     console.log(err);
     dispatch(getMessagesFail(chatId));

@@ -9,6 +9,9 @@ import {
   getChatLastMessageSuccess,
   getChatLastMessageFail,
   fetchChatsFail,
+  getChatInfoStart,
+  getChatInfoSuccess,
+  getChatInfoFail,
 } from '.';
 import {RootState} from '../../reducers';
 import imsDirects from '../../utils/filterIms';
@@ -126,6 +129,34 @@ export const markChatAsRead = (chatId: string, messageId: string) => async dispa
     return Promise.resolve(ok);
   } catch (err) {
     console.log(err);
+    return Promise.reject(err);
+  }
+};
+
+export const getChatInfo = (chatId: string) => async (dispatch, getState) => {
+  let state: RootState = getState();
+  let alreadyLoaded = state.chats.chatInfo[chatId]?.loaded ?? false
+  let loading = state.chats.chatInfo[chatId]?.loading ?? false
+  if (alreadyLoaded || loading) return
+  dispatch(getChatInfoStart(chatId));
+  try {
+    let {channel}: {channel: Chat} = await http({
+      path: '/conversations.info',
+      body: {
+        channel: chatId,
+        include_num_members: true,
+      },
+    });
+
+    batch(() => {
+      dispatch(storeEntities('chats', [channel]));
+      dispatch(getChatInfoSuccess(chatId, channel));
+    });
+
+    return Promise.resolve(channel);
+  } catch (err) {
+    console.log(err);
+    dispatch(getChatInfoFail(chatId));
     return Promise.reject(err);
   }
 };

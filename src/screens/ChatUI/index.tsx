@@ -1,18 +1,19 @@
 import React, {Component} from 'react';
-import {View, SafeAreaView, StyleSheet, FlatList, ActivityIndicator} from 'react-native';
+import {View, SafeAreaView, StyleSheet, FlatList, ActivityIndicator, Text} from 'react-native';
 import {RootState} from '../../reducers';
 import {connect, DispatchProp} from 'react-redux';
 import Message from './Message';
 import {NavigationInjectedProps, withNavigation} from 'react-navigation';
 import {addMessageToChat} from '../../actions/messages';
 import {getMessagesByChatId, getRepliesByThreadId} from '../../actions/messages/thunks';
-import {markChatAsRead} from '../../actions/chats/thunks';
+import {markChatAsRead, getChatInfo} from '../../actions/chats/thunks';
 import Header from '../../components/Header';
 import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 import InputToolbar from './InputToolbar';
 import {getMember} from '../../actions/members/thunks';
 import isLandscape from '../../utils/stylesheet/isLandscape';
 import { meSelector } from '../../reducers/teams';
+import px from '../../utils/normalizePixel';
 
 type ChatType = 'direct' | 'channel' | 'thread';
 
@@ -26,9 +27,10 @@ type Props = ReturnType<typeof mapStateToProps> &
   };
 class ChatUI extends Component<Props> {
   async componentDidMount() {
-    let {chatType} = this.props;
+    let {chatType, chatId, dispatch} = this.props;
     if (chatType === 'channel' || chatType === 'direct') {
       this.getMessage();
+      dispatch(getChatInfo(chatId))
     }
 
     if (chatType === 'thread') {
@@ -90,7 +92,7 @@ class ChatUI extends Component<Props> {
   }
 
   getReplies() {
-    let {navigation, dispatch, threadId, chatId} = this.props;
+    let {dispatch, threadId, chatId} = this.props;
 
     dispatch(getRepliesByThreadId(threadId, chatId));
   }
@@ -107,7 +109,7 @@ class ChatUI extends Component<Props> {
   };
 
   markChatAsRead = () => {
-    let {dispatch, navigation, chatId} = this.props;
+    let {dispatch, chatId} = this.props;
     dispatch(markChatAsRead(chatId, this.props.messagesList[0]));
   };
 
@@ -151,16 +153,47 @@ class ChatUI extends Component<Props> {
     return <InputToolbar chatId={this.props.currentChat.id} />;
   }
 
-  renderHeader() {
-    let {chatType, currentChat, currentUser} = this.props;
-    let chatName =
-    chatType === 'channel'
-      ? `#${currentChat.name_normalized}`
-      : chatType === 'direct'
-      ? currentUser.profile.display_name_normalized || currentUser.profile.real_name_normalized
-      : 'Thread';
+  renderPresense() {
+    let {chatType, currentUser} = this.props;
+    if (chatType === "direct") {
+      return <Text style={styles.membersCount}>{currentUser?.presence === "online"? 'online' : 'offline'}</Text>
+    }
+    return null
+  }
 
-    return <Header center={chatName} left={isLandscape()? undefined : "back"} />
+  renderMembersCount() {
+    let {chatType, chatInfo, currentChat} = this.props;
+    if (chatType === "channel") {
+      return <Text style={styles.membersCount}>{chatInfo?.loading? '...' : chatInfo?.loaded? `${currentChat?.num_members}`: ''} members</Text>
+    }
+    return null
+  }
+
+  renderChatName() {
+    let {chatType, currentChat, currentUser} = this.props;
+
+    if (chatType === "channel" || chatType === "direct") {
+      let chatName =
+      chatType === 'channel'
+        ? `#${currentChat.name_normalized}`
+        : chatType === 'direct'
+        ? currentUser.profile.display_name_normalized || currentUser.profile.real_name_normalized
+        : 'Thread';
+      return <Text style={styles.chatName}>{chatName}</Text>
+    }
+
+    return null
+  }
+
+  renderHeader() {
+    let center = (
+      <View style={{alignItems: 'center'}}>
+        {this.renderChatName()}
+        {this.renderMembersCount()}
+      </View>
+    )
+
+    return <Header center={center} left={isLandscape()? undefined : "back"} />
   }
 
   render() {
@@ -181,6 +214,21 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#3A1C39',
   },
+  chatName: {
+    color: '#fff',
+    fontSize: px(15.5),
+    fontWeight: 'bold'
+  },
+  membersCount: {
+    color: '#fff',
+    marginTop: px(2.5),
+    fontSize: px(13.5),
+  },
+  presense: {
+    color: '#fff',
+    marginTop: px(2.5),
+    fontSize: px(13.5)
+  }
 });
 
 let defaultList = [];
@@ -214,6 +262,7 @@ const mapStateToProps = (state: RootState, ownProps) => {
       ],
     me,
     currentTeamToken: state.teams.list.find(ws => ws.id === state.teams.currentTeam).token,
+    chatInfo: state.chats.chatInfo[chatId]
   };
 };
 

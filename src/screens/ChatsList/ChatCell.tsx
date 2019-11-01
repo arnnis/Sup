@@ -99,8 +99,7 @@ class ChatCell extends PureComponent<Props> {
       );
     }
     return (
-      <Text
-        style={[styles.name, {color: selected ? theme.backgroundColor : theme.foregroundColor}]}>
+      <Text style={[styles.name, {color: selected ? '#fff' : theme.foregroundColor}]}>
         {isGroup
           ? chat.name
           : user.profile.display_name_normalized || user.profile.real_name_normalized}

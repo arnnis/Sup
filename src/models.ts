@@ -87,6 +87,7 @@ export interface Chat {
   name_normalized: string;
   unread_count: number;
   unread_count_display: number;
+  num_members: number;
 }
 
 export interface Message {

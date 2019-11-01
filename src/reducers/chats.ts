@@ -12,6 +12,7 @@ export type DirectsState = Readonly<{
   };
   nextCursor: string;
   typingsUsers: {[chatId: string]: Array<string>};
+  chatInfo: {[chatId: string]: {loading: boolean; loaded: boolean}};
 }>;
 
 const initialState: DirectsState = {
@@ -23,6 +24,7 @@ const initialState: DirectsState = {
   lastMessages: {},
   nextCursor: '',
   typingsUsers: {},
+  chatInfo: {},
 };
 
 export const chatsReducer: Reducer<DirectsState, RootAction> = (state = initialState, action) => {
@@ -126,6 +128,48 @@ export const chatsReducer: Reducer<DirectsState, RootAction> = (state = initialS
       return {
         ...state,
         currentThreadId: threadId,
+      };
+    }
+
+    case 'GET_CHAT_INFO_START': {
+      let {chatId} = action.payload;
+      return {
+        ...state,
+        chatInfo: {
+          ...state.chatInfo,
+          [chatId]: {
+            loading: true,
+            loaded: false,
+          },
+        },
+      };
+    }
+
+    case 'GET_CHAT_INFO_SUCCESS': {
+      let {chatId} = action.payload;
+      return {
+        ...state,
+        chatInfo: {
+          ...state.chatInfo,
+          [chatId]: {
+            loading: false,
+            loaded: true,
+          },
+        },
+      };
+    }
+
+    case 'GET_CHAT_INFO_FAIL': {
+      let {chatId} = action.payload;
+      return {
+        ...state,
+        chatInfo: {
+          ...state.chatInfo,
+          [chatId]: {
+            loading: false,
+            loaded: false,
+          },
+        },
       };
     }
 
