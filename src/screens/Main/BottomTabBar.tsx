@@ -40,7 +40,7 @@ const BottomTabbar: FC<Props> = ({currentUser}) => {
   };
 
   let _renderTabIcon = ({route, focused}) => (
-    <MaterialCommunityIcons name={route.icon} color={focused ? '#fff' : '#ccc'} size={px(19)} />
+    <MaterialCommunityIcons name={route.icon} color={focused ? '#fff' : '#ccc'} size={px(20)} />
   );
 
   return (
@@ -76,6 +76,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#3D2037',
     height: px(52.5),
     flexDirection: 'row',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+    elevation: 4,
   },
   tab: {
     flex: 1,

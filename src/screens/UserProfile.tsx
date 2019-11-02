@@ -42,7 +42,7 @@ class UserProfile extends Component<Props> {
     this.setState({isOpeningChat: true});
     try {
       let chatId = await dispatch(openChat([userId]));
-      navigation.push('ChatUI', {chatId}, NavigationActions.NAVIGATE);
+      navigation.navigate('ChatUI', {chatId});
     } catch (err) {
       console.log(err);
     } finally {

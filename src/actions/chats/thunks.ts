@@ -12,6 +12,9 @@ import {
   getChatInfoStart,
   getChatInfoSuccess,
   getChatInfoFail,
+  getChannelMembersStart,
+  getChannelMembersFail,
+  getChannelMembersSuccess,
 } from '.';
 import {RootState} from '../../reducers';
 import imsDirects from '../../utils/filterIms';
@@ -135,8 +138,8 @@ export const markChatAsRead = (chatId: string, messageId: string) => async dispa
 
 export const getChatInfo = (chatId: string) => async (dispatch, getState) => {
   let state: RootState = getState();
-  let alreadyLoaded = state.chats.chatInfo[chatId]?.loaded ?? false
-  let loading = state.chats.chatInfo[chatId]?.loading ?? false
+  let alreadyLoaded = state.chats.fullLoad[chatId]?.loaded ?? false
+  let loading = state.chats.fullLoad[chatId]?.loading ?? false
   if (alreadyLoaded || loading) return
   dispatch(getChatInfoStart(chatId));
   try {
@@ -160,3 +163,28 @@ export const getChatInfo = (chatId: string) => async (dispatch, getState) => {
     return Promise.reject(err);
   }
 };
+
+export const getChannelMembers = (chatId: string) => async (dispatch, getState) => {
+  let state: RootState = getState();
+  let loading = state.chats.membersListLoading[chatId]
+  if (loading) return
+  dispatch(getChannelMembersStart(chatId));
+  try {
+    let {members}: {members: Array<string>} = await http({
+      path: '/conversations.members',
+      body: {
+        channel: chatId,
+        include_num_members: true,
+      },
+    });
+    batch(() => {
+      dispatch(getChannelMembersSuccess(chatId, members));
+    });
+
+    return Promise.resolve(members);
+  } catch (err) {
+    console.log(err);
+    dispatch(getChannelMembersFail(chatId));
+    return Promise.reject(err);
+  }
+}

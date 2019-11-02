@@ -12,10 +12,13 @@ import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 import InputToolbar from './InputToolbar';
 import {getMember} from '../../actions/members/thunks';
 import isLandscape from '../../utils/stylesheet/isLandscape';
-import { meSelector } from '../../reducers/teams';
+import { meSelector, currentTeamTokenSelector } from '../../reducers/teams';
 import px from '../../utils/normalizePixel';
+import Touchable from '../../components/Touchable';
+import ChannelMembersCount from './ChannelMembersCount';
+import DirectPresense from './DirectPresense';
 
-type ChatType = 'direct' | 'channel' | 'thread';
+export type ChatType = 'direct' | 'channel' | 'thread';
 
 type Props = ReturnType<typeof mapStateToProps> &
   NavigationInjectedProps &
@@ -113,6 +116,14 @@ class ChatUI extends Component<Props> {
     dispatch(markChatAsRead(chatId, this.props.messagesList[0]));
   };
 
+  openChatDetails = () => {
+    let {chatId, chatType, currentUser} = this.props;
+    if (chatType === "channel")
+      this.props.navigation.navigate('ChannelDetails', { chatId })
+    if (chatType === "direct")
+      this.props.navigation.navigate('UserProfile', { userId: currentUser.id })
+  }
+
   renderMessageCell = ({item: messageId, index}) => {
     let { chatType } = this.props
     let prevMessageId = this.props.messagesList[index - 1];
@@ -154,17 +165,17 @@ class ChatUI extends Component<Props> {
   }
 
   renderPresense() {
-    let {chatType, currentUser} = this.props;
+    let {chatType, chatId} = this.props;
     if (chatType === "direct") {
-      return <Text style={styles.membersCount}>{currentUser?.presence === "active"? 'online' : 'offline'}</Text>
+      return <DirectPresense chatId={chatId} />
     }
     return null
   }
 
   renderMembersCount() {
-    let {chatType, chatInfo, currentChat} = this.props;
+    let {chatType, chatId} = this.props;
     if (chatType === "channel") {
-      return <Text style={styles.membersCount}>{chatInfo?.loading? '...' : chatInfo?.loaded? `${currentChat?.num_members}`: ''} members</Text>
+      return <ChannelMembersCount chatId={chatId} />
     }
     return null
   }
@@ -187,11 +198,11 @@ class ChatUI extends Component<Props> {
 
   renderHeader() {
     let center = (
-      <View style={{alignItems: 'center'}}>
+      <Touchable onPress={this.openChatDetails} style={{alignItems: 'center'}}>
         {this.renderChatName()}
         {this.renderMembersCount()}
         {this.renderPresense()}
-      </View>
+      </Touchable>
     )
 
     return <Header center={center} left={isLandscape()? undefined : "back"} />
@@ -219,11 +230,7 @@ const styles = StyleSheet.create({
     fontSize: px(15.5),
     fontWeight: 'bold'
   },
-  membersCount: {
-    color: '#fff',
-    marginTop: px(2.5),
-    fontSize: px(13.5),
-  },
+
   presense: {
     color: '#fff',
     marginTop: px(2.5),
@@ -261,8 +268,7 @@ const mapStateToProps = (state: RootState, ownProps) => {
         lastMessageStatus && lastMessageStatus.messageId && lastMessageStatus.messageId
       ],
     me,
-    currentTeamToken: state.teams.list.find(ws => ws.id === state.teams.currentTeam).token,
-    chatInfo: state.chats.chatInfo[chatId]
+    currentTeamToken: currentTeamTokenSelector(state),
   };
 };
 

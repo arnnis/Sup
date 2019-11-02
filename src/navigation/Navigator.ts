@@ -7,6 +7,7 @@ import Main from '../screens/Main';
 import ChatUI from '../screens/ChatUI';
 import Auth from '../screens/Auth';
 import UserProfile from '../screens/UserProfile';
+import ChannelDetails from '../screens/ChannelDetails';
 
 const AppStack = createStackNavigator(
   {
@@ -16,6 +17,7 @@ const AppStack = createStackNavigator(
     ChatUI,
     Auth,
     UserProfile,
+    ChannelDetails,
   },
   {
     headerMode: 'none',

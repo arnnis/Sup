@@ -27,3 +27,10 @@ export const getChatInfoStart = (chatId: string) => action('GET_CHAT_INFO_START'
 export const getChatInfoSuccess = (chatId: string, chat: Chat) =>
   action('GET_CHAT_INFO_SUCCESS', {chatId});
 export const getChatInfoFail = (chatId: string) => action('GET_CHAT_INFO_FAIL', {chatId});
+
+export const getChannelMembersStart = (chatId: string) =>
+  action('GET_CHANNEL_MEMBERS_START', {chatId});
+export const getChannelMembersSuccess = (chatId: string, members: Array<string>) =>
+  action('GET_CHANNEL_MEMBERS_SUCCESS', {chatId, members});
+export const getChannelMembersFail = (chatId: string) =>
+  action('GET_CHANNEL_MEMBERS_FAIL', {chatId});

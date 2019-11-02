@@ -15,10 +15,6 @@ const PopupMenu: FC<Props> = ({dispatch}) => {
     showMenu(
       [
         {
-          title: 'Settings',
-          onPress: () => {},
-        },
-        {
           title: 'Logout',
           onPress: () => dispatch(logoutFromCurrentTeam()),
         },

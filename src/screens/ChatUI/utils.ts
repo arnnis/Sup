@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
-import {Message} from '../../models';
+import {Message, Chat} from '../../models';
+import { ChatType } from '.'
 
 dayjs.extend(utc);
 
@@ -22,4 +23,8 @@ export function isSameDay(currentMessage: Message, diffMessage: Message | null |
   let same = currentCreatedAt.isSame(diffCreatedAt, 'day');
 
   return same;
+}
+
+export function getChatType(chat: Chat): ChatType {
+  return chat?.is_im ? 'direct' : 'channel'
 }

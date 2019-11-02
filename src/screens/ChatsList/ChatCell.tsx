@@ -16,6 +16,7 @@ import MessageText from '../ChatUI/MessageText';
 import {setCurrentChat} from '../../actions/chats';
 import getCurrentOrientaion from '../../utils/stylesheet/getCurrentOrientaion';
 import isLandscape from '../../utils/stylesheet/isLandscape';
+import ChatAvatar from './ChatAvatar';
 
 dayjs.extend(utc);
 
@@ -58,37 +59,13 @@ class ChatCell extends PureComponent<Props> {
   };
 
   renderAvatar() {
-    let {isGroup, theme, chat, selected} = this.props;
-    if (isGroup) {
-      return (
-        <View
-          style={{
-            width: px(50),
-            height: px(50),
-            justifyContent: 'center',
-            alignItems: 'center',
-            borderRadius: px(25),
-            borderColor: '#ccc',
-            borderWidth: StyleSheet.hairlineWidth,
-          }}>
-          <Text
-            style={{
-              fontWeight: 'bold',
-              fontSize: px(16),
-              color: selected ? theme.backgroundColor : theme.foregroundColor,
-            }}>
-            #
-          </Text>
-        </View>
-      );
-    }
-
-    return <Avatar userId={chat.user_id} />;
+    let {chatId, selected} = this.props;
+    return <ChatAvatar chatId={chatId} selected={selected} />;
   }
 
   renderName(user: User) {
-    let {chat, isGroup, theme, selected} = this.props;
-    if (!isGroup && !user) {
+    let {chat, isChannel, theme, selected} = this.props;
+    if (!isChannel && !user) {
       return (
         <AnimatedEllipsis
           style={{
@@ -101,7 +78,7 @@ class ChatCell extends PureComponent<Props> {
     }
     return (
       <Text style={[styles.name, {color: selected ? '#fff' : theme.foregroundColor}]}>
-        {isGroup
+        {isChannel
           ? chat.name
           : user.profile.display_name_normalized || user.profile.real_name_normalized}
       </Text>
@@ -168,8 +145,8 @@ class ChatCell extends PureComponent<Props> {
   }
 
   renderUnreadCount() {
-    let {chat, isGroup, selected} = this.props;
-    let unread = isGroup ? chat.unread_count : chat.dm_count;
+    let {chat, isChannel, selected} = this.props;
+    let unread = isChannel ? chat.unread_count : chat.dm_count;
 
     if (!unread) return null;
     return (
@@ -182,7 +159,7 @@ class ChatCell extends PureComponent<Props> {
   }
 
   render() {
-    let {user, chat, theme, selected} = this.props;
+    let {user, theme, selected} = this.props;
     return (
       <Touchable
         style={[
@@ -264,7 +241,7 @@ const mapStateToProps = (state: RootState, ownProps) => {
   return {
     chat,
     user,
-    isGroup: !chat.is_im,
+    isChannel: !chat.is_im,
     chatLastMessageStatus,
     lastMessage,
     selected: ownProps.chatId === state.chats.currentChatId,

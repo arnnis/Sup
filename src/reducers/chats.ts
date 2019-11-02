@@ -12,7 +12,9 @@ export type DirectsState = Readonly<{
   };
   nextCursor: string;
   typingsUsers: {[chatId: string]: Array<string>};
-  chatInfo: {[chatId: string]: {loading: boolean; loaded: boolean}};
+  fullLoad: {[chatId: string]: {loading: boolean; loaded: boolean}};
+  membersList: {[chatId: string]: Array<string>};
+  membersListLoading: {[chatId: string]: boolean};
 }>;
 
 const initialState: DirectsState = {
@@ -24,7 +26,9 @@ const initialState: DirectsState = {
   lastMessages: {},
   nextCursor: '',
   typingsUsers: {},
-  chatInfo: {},
+  fullLoad: {},
+  membersList: {},
+  membersListLoading: {},
 };
 
 export const chatsReducer: Reducer<DirectsState, RootAction> = (state = initialState, action) => {
@@ -135,8 +139,8 @@ export const chatsReducer: Reducer<DirectsState, RootAction> = (state = initialS
       let {chatId} = action.payload;
       return {
         ...state,
-        chatInfo: {
-          ...state.chatInfo,
+        fullLoad: {
+          ...state.fullLoad,
           [chatId]: {
             loading: true,
             loaded: false,
@@ -149,8 +153,8 @@ export const chatsReducer: Reducer<DirectsState, RootAction> = (state = initialS
       let {chatId} = action.payload;
       return {
         ...state,
-        chatInfo: {
-          ...state.chatInfo,
+        fullLoad: {
+          ...state.fullLoad,
           [chatId]: {
             loading: false,
             loaded: true,
@@ -163,8 +167,8 @@ export const chatsReducer: Reducer<DirectsState, RootAction> = (state = initialS
       let {chatId} = action.payload;
       return {
         ...state,
-        chatInfo: {
-          ...state.chatInfo,
+        fullLoad: {
+          ...state.fullLoad,
           [chatId]: {
             loading: false,
             loaded: false,
@@ -173,16 +177,45 @@ export const chatsReducer: Reducer<DirectsState, RootAction> = (state = initialS
       };
     }
 
-    case 'SET_CURRENT_TEAM': {
+    case 'GET_CHANNEL_MEMBERS_START': {
+      let {chatId} = action.payload;
       return {
         ...state,
-        currentChatId: '',
-        currentThreadId: '',
-        directsList: [],
-        channelsList: [],
-        loading: false,
-        lastMessages: {},
+        membersListLoading: {
+          ...state.fullLoad,
+          [chatId]: true,
+        },
       };
+    }
+
+    case 'GET_CHANNEL_MEMBERS_SUCCESS': {
+      let {chatId, members} = action.payload;
+      return {
+        ...state,
+        membersList: {
+          ...state.membersList,
+          [chatId]: [...(state.membersList[chatId] || []), ...members],
+        },
+        membersListLoading: {
+          ...state.fullLoad,
+          [chatId]: false,
+        },
+      };
+    }
+
+    case 'GET_CHANNEL_MEMBERS_FAIL': {
+      let {chatId} = action.payload;
+      return {
+        ...state,
+        membersListLoading: {
+          ...state.fullLoad,
+          [chatId]: false,
+        },
+      };
+    }
+
+    case 'SET_CURRENT_TEAM': {
+      return initialState;
     }
 
     default:

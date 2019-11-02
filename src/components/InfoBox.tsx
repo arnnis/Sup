@@ -20,5 +20,8 @@ const styles = StyleSheet.create({
   container: {
     marginHorizontal: px(25),
     borderRadius: px(15),
+    paddingHorizontal: px(17.5),
+    paddingVertical: px(12.5),
+    marginTop: px(30),
   },
 });
