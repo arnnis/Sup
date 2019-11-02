@@ -84,6 +84,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: px(7.5),
     paddingTop: px(15),
     height: px(150),
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.18,
+    shadowRadius: 1.0,
+
+    elevation: 1,
   },
   name: {
     fontWeight: '700',

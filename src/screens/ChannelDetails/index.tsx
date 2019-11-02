@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Text, StyleSheet, SafeAreaView, View, FlatList} from 'react-native';
-import {InfoBox} from '../../components/InfoBox';
+import {InfoBox, InfoRow} from '../../components/InfoBox';
 import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 import Header from '../../components/Header';
 import ChatAvatar from '../DirectsList/ChatAvatar';
@@ -62,8 +62,9 @@ class ChatDetails extends Component<Props> {
       </View>
      </InfoBox>
      <InfoBox style={{flexDirection: 'row', marginBottom: px(30)}}>
-      <Text style={{color: theme.foregroundColor, fontSize: px(14.5)}}>{chat.purpose.value}</Text>
+      <InfoRow title="purpose">{chat?.purpose?.value}</InfoRow>
      </InfoBox>
+     <Text style={{fontSize: px(12), marginBottom: px(5), color: theme.foregroundColorMuted65, marginLeft: px(40)}}>{chat?.num_members} MEMBERS</Text>
       </>
 
     )
