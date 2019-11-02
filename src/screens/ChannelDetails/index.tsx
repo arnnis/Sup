@@ -3,7 +3,7 @@ import {Text, StyleSheet, SafeAreaView, View} from 'react-native';
 import {InfoBox} from '../../components/InfoBox';
 import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 import Header from '../../components/Header';
-import ChatAvatar from '../ChatsList/ChatAvatar';
+import ChatAvatar from '../DirectsList/ChatAvatar';
 import { RootState } from '../../reducers';
 import { connect } from 'react-redux';
 import px from '../../utils/normalizePixel';

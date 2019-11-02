@@ -3,7 +3,7 @@ import {View, Dimensions} from 'react-native';
 import {TabView, TabBar, SceneMap} from 'react-native-tab-view';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import px from '../../utils/normalizePixel';
-import ChatsList from '../ChatsList';
+import DirectsList from '../DirectsList';
 import ChannelsList from '../ChannelsList';
 
 const ScrollableTabView = () => {
@@ -24,7 +24,7 @@ const ScrollableTabView = () => {
     setScrollableTabState({...scrollableTabState, index});
 
   let _renderScrollableTabScene = SceneMap({
-    directs: ChatsList,
+    directs: DirectsList,
     channels: ChannelsList,
   } as any);
 

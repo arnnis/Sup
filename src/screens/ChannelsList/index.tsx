@@ -2,7 +2,7 @@ import React, {PureComponent, Component} from 'react';
 import {DispatchProp} from 'react-redux';
 import {View, StyleSheet, Button, FlatList, ActivityIndicator, Platform} from 'react-native';
 import {connect} from 'react-redux';
-import ChatCell from '../ChatsList/ChatCell';
+import ChatCell from '../DirectsList/ChatCell';
 import {RootState} from '../../reducers';
 import {NavigationInjectedProps, withNavigation} from 'react-navigation';
 import px from '../../utils/normalizePixel';

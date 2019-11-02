@@ -13,7 +13,7 @@ type Props = ReturnType<typeof mapStateToProps> &
   DispatchProp<any> &
   NavigationInjectedProps;
 
-class ChatsList extends PureComponent<Props> {
+class DirectsList extends PureComponent<Props> {
   static whyDidYouRender = true;
   renderLoading() {
     return (
@@ -71,4 +71,4 @@ const mapStateToProps = (state: RootState) => ({
   loading: state.chats.loading,
 });
 
-export default connect(mapStateToProps)(withNavigation(withTheme(ChatsList)));
+export default connect(mapStateToProps)(withNavigation(withTheme(DirectsList)));

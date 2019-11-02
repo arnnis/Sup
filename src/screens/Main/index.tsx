@@ -10,7 +10,6 @@ import TeamsList from '../TeamsList';
 import {initTeam} from '../../actions/teams/thunks';
 import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 import BottomTabbar from './BottomTabBar';
-import {createSelector} from 'reselect';
 import TeamEmptyPlaceholder from './TeamEmptyPlaceholder';
 import ChangeTeamButton from './ChangeTeamButton';
 import PopupMenu from './PopupMenu';
