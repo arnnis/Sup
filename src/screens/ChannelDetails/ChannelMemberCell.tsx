@@ -9,11 +9,15 @@ import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 import Touchable from '../../components/Touchable';
 import {NavigationInjectedProps, withNavigation} from 'react-navigation';
 
+const dims = Dimensions.get('window');
+
 type Props = ReturnType<typeof mapStateToProps> &
   NavigationInjectedProps &
   ThemeInjectedProps &
   DispatchProp<any> & {
     memberId: string;
+    isFirst: boolean;
+    isLast: boolean;
   };
 
 class ChannelMemberCell extends PureComponent<Props> {
@@ -23,9 +27,7 @@ class ChannelMemberCell extends PureComponent<Props> {
     });
 
   renderAvatar(user: User) {
-    return (
-      <Avatar userId={user.id} width={px(67.5)} style={{borderRadius: px(15)}} containerStyle />
-    );
+    return <Avatar userId={user.id} width={px(42)} containerStyle={{marginLeft: px(7.5)}} />;
   }
 
   renderName(member: User) {
@@ -46,20 +48,36 @@ class ChannelMemberCell extends PureComponent<Props> {
       <View>
         <Text style={[styles.jobTitle, {color: theme.backgroundColorLess5}]} numberOfLines={2}>
           {member.profile.title}
+          {member.is_bot && 'bot'}
         </Text>
       </View>
     );
   }
 
   render() {
-    let {member, theme} = this.props;
+    let {member, isFirst, isLast, theme} = this.props;
 
     if (!member) return null;
 
     return (
-      <Touchable style={styles.container} onPress={this.handlePress}>
+      <Touchable
+        style={[
+          styles.container,
+          {backgroundColor: theme.backgroundColor},
+          isFirst && {borderTopRightRadius: px(15), borderTopLeftRadius: px(15)},
+          isLast && {borderBottomRightRadius: px(15), borderBottomLeftRadius: px(15)},
+        ]}
+        onPress={this.handlePress}>
         {this.renderAvatar(member)}
-        <View style={{flex: 1, alignItems: 'center'}}>
+        <View
+          style={{
+            flex: 1,
+            height: '100%',
+            justifyContent: 'center',
+            marginLeft: px(15),
+            borderBottomWidth: StyleSheet.hairlineWidth,
+            borderBottomColor: theme.backgroundColorLess2,
+          }}>
           {this.renderName(member)}
           {this.renderJobTitle(member)}
         </View>
@@ -70,22 +88,20 @@ class ChannelMemberCell extends PureComponent<Props> {
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
+    width: dims.width - px(50),
     alignItems: 'center',
     paddingHorizontal: px(7.5),
-    paddingTop: px(15),
-    height: px(50),
-    backgroundColor: 'red',
+    height: px(55),
     flexDirection: 'row',
+    marginHorizontal: px(25),
   },
   name: {
     fontWeight: '700',
     fontSize: px(14),
-    marginTop: px(12.5),
   },
   jobTitle: {
     color: '#8B8B8B',
-    marginTop: px(5),
+    marginTop: px(2.5),
     fontSize: px(13),
   },
 });

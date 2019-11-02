@@ -1,22 +1,27 @@
 import React, {Component} from 'react';
-import {Text, StyleSheet, SafeAreaView, View} from 'react-native';
+import {Text, StyleSheet, SafeAreaView, View, FlatList} from 'react-native';
 import {InfoBox} from '../../components/InfoBox';
 import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 import Header from '../../components/Header';
 import ChatAvatar from '../DirectsList/ChatAvatar';
 import { RootState } from '../../reducers';
-import { connect } from 'react-redux';
+import { connect, DispatchProp } from 'react-redux';
 import px from '../../utils/normalizePixel';
 import DirectPresense from '../ChatUI/DirectPresense';
 import { getChatType } from '../ChatUI/utils';
 import ChannelMembersCount from '../ChatUI/ChannelMembersCount';
-import ChannelMembersList from './ChannelMembersList';
+import ChannelMemberCell from './ChannelMemberCell';
+import { getChannelMembers } from '../../actions/chats/thunks';
 
-type Props = ReturnType<typeof mapStateToProps> & ThemeInjectedProps & {
+type Props = ReturnType<typeof mapStateToProps> & ThemeInjectedProps & DispatchProp<any> & {
   chatId?: string
 }
 
 class ChatDetails extends Component<Props> {
+  componentDidMount() {
+    this.props.dispatch(getChannelMembers(this.props.chatId));
+  }
+  
   renderChatName() {
     let {chat, chatType, user, theme} = this.props;
     return (
@@ -29,31 +34,51 @@ class ChatDetails extends Component<Props> {
   }
 
   renderMembersCount() {
-    let {chatType} = this.props;
-    return chatType === "channel" && <ChannelMembersCount />
+    let {chatType, chatId} = this.props;
+    return chatType === "channel" && <ChannelMembersCount chatId={chatId} />
   }
 
   renderPresense() {
-    let {chatType} = this.props;
-    return chatType === "direct" && <DirectPresense />
+    let {chatType, chatId} = this.props;
+    return chatType === "direct" && <DirectPresense chatId={chatId} />
+  }
+
+  renderMemberCell = ({item: memberId, index}) => {
+    const isFirst = index === 0
+    const isLast = index === this.props.membersList.length - 1
+    return <ChannelMemberCell memberId={memberId} isFirst={isFirst} isLast={isLast} />
+  }
+
+  renderListHeader = () => {
+    let {chatId, chat, theme} = this.props;
+    return (
+      <>
+            <InfoBox style={{flexDirection: 'row'}}>
+      <ChatAvatar chatId={chatId} size={px(67)} />
+      <View style={{flex: 1, justifyContent: 'center', paddingLeft: px(15)}}>
+        {this.renderChatName()}
+        {this.renderPresense()}
+        {this.renderMembersCount()}
+      </View>
+     </InfoBox>
+     <InfoBox style={{flexDirection: 'row', marginBottom: px(30)}}>
+      <Text style={{color: theme.foregroundColor, fontSize: px(14.5)}}>{chat.purpose.value}</Text>
+     </InfoBox>
+      </>
+
+    )
   }
 
   render() {
-    let {theme, chatId} = this.props;
+    let {theme, membersList} = this.props;
     return (
       <SafeAreaView style={[styles.container, {backgroundColor: theme.backgroundColorDarker1}]}>
-        <Header left="back" center="Info" />
-        <InfoBox style={{flexDirection: 'row'}}>
-          <ChatAvatar chatId={chatId} size={px(67)} />
-          <View style={{flex: 1, justifyContent: 'center', paddingLeft: px(15)}}>
-            {this.renderChatName()}
-            {this.renderPresense()}
-            {this.renderMembersCount()}
-          </View>
-        </InfoBox>
-        <InfoBox>
-          <ChannelMembersList chatId={chatId} />
-        </InfoBox>
+        <Header left="back" center="Channel Info" />
+        <FlatList 
+          data={membersList}
+          renderItem={this.renderMemberCell}
+          ListHeaderComponent={this.renderListHeader()}
+        />
       </SafeAreaView>
     );
   }
@@ -65,7 +90,7 @@ const styles = StyleSheet.create({
   },
   name: {
     fontWeight: '700',
-    fontSize: px(15),
+    fontSize: px(16),
   },
 });
 
@@ -78,7 +103,10 @@ const mapStateToProps = (state: RootState, ownProps) => {
     chatId,
     chat,
     chatType,
-    user
+    user,
+
+    membersList: state.chats.membersList[chatId],
+    membersListLoading: state.chats.membersListLoading[chatId],
   }
 }
 
