@@ -1,4 +1,4 @@
-package com.whatslack;
+package com.sup;
 
 import android.app.Application;
 import android.content.Context;
@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Arrays;
 
 // Unimodules
-import com.whatslack.generated.BasePackageList;
+import com.sup.generated.BasePackageList;
 import org.unimodules.adapters.react.ModuleRegistryAdapter;
 import org.unimodules.adapters.react.ReactModuleRegistryProvider;
 import org.unimodules.core.interfaces.SingletonModule;

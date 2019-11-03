@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		00E356F31AD99517003FC87E /* WhatslackTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* WhatslackTests.m */; };
-		0DD9476449AE5519EAB02B6C /* libPods-Whatslack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CD673A0C4C64D6371EFBE89 /* libPods-Whatslack.a */; };
+		00E356F31AD99517003FC87E /* SupTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* SupTests.m */; };
+		0DD9476449AE5519EAB02B6C /* libPods-Sup.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CD673A0C4C64D6371EFBE89 /* libPods-Sup.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
@@ -16,11 +16,11 @@
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		2DCD954D1E0B4F2C00145EB5 /* WhatslackTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* WhatslackTests.m */; };
-		72011F969771A2FAC995C365 /* libPods-WhatslackTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 46CEFDC51863BA194EDD0EB0 /* libPods-WhatslackTests.a */; };
+		2DCD954D1E0B4F2C00145EB5 /* SupTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* SupTests.m */; };
+		72011F969771A2FAC995C365 /* libPods-SupTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 46CEFDC51863BA194EDD0EB0 /* libPods-SupTests.a */; };
 		7E6C8B659C55461AB1748893 /* Lucida Console.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7903FFF9023C41C7A7635670 /* Lucida Console.ttf */; };
-		808BAE2CCC52EE128CF5890A /* libPods-Whatslack-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DB5822A41363E5C1225F694 /* libPods-Whatslack-tvOSTests.a */; };
-		BA474C064B4CC987A5E2C5DD /* libPods-Whatslack-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93F359A10941DD33054B6647 /* libPods-Whatslack-tvOS.a */; };
+		808BAE2CCC52EE128CF5890A /* libPods-Sup-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DB5822A41363E5C1225F694 /* libPods-Sup-tvOSTests.a */; };
+		BA474C064B4CC987A5E2C5DD /* libPods-Sup-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93F359A10941DD33054B6647 /* libPods-Sup-tvOS.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,45 +29,45 @@
 			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
-			remoteInfo = Whatslack;
+			remoteInfo = Sup;
 		};
 		2D02E4911E0B4A5D006451C7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 2D02E47A1E0B4A5D006451C7;
-			remoteInfo = "Whatslack-tvOS";
+			remoteInfo = "Sup-tvOS";
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
-		00E356EE1AD99517003FC87E /* WhatslackTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WhatslackTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		00E356EE1AD99517003FC87E /* SupTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SupTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		00E356F21AD99517003FC87E /* WhatslackTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WhatslackTests.m; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* Whatslack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Whatslack.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Whatslack/AppDelegate.h; sourceTree = "<group>"; };
-		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = Whatslack/AppDelegate.m; sourceTree = "<group>"; };
+		00E356F21AD99517003FC87E /* SupTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SupTests.m; sourceTree = "<group>"; };
+		13B07F961A680F5B00A75B9A /* Sup.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sup.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Sup/AppDelegate.h; sourceTree = "<group>"; };
+		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = Sup/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB21A68108700A75B9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Whatslack/Images.xcassets; sourceTree = "<group>"; };
-		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Whatslack/Info.plist; sourceTree = "<group>"; };
-		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Whatslack/main.m; sourceTree = "<group>"; };
-		157F5FE2D6E56A93550AF293 /* Pods-Whatslack-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Whatslack-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-Whatslack-tvOSTests/Pods-Whatslack-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
-		2D02E47B1E0B4A5D006451C7 /* Whatslack-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Whatslack-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		2D02E4901E0B4A5D006451C7 /* Whatslack-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Whatslack-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		2DB5822A41363E5C1225F694 /* libPods-Whatslack-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Whatslack-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		46CEFDC51863BA194EDD0EB0 /* libPods-WhatslackTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-WhatslackTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		4DE691EA67169D094DCEB7EF /* Pods-Whatslack-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Whatslack-tvOS.release.xcconfig"; path = "Target Support Files/Pods-Whatslack-tvOS/Pods-Whatslack-tvOS.release.xcconfig"; sourceTree = "<group>"; };
-		6543A227E1AC332C3A4DC555 /* Pods-WhatslackTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WhatslackTests.debug.xcconfig"; path = "Target Support Files/Pods-WhatslackTests/Pods-WhatslackTests.debug.xcconfig"; sourceTree = "<group>"; };
-		6CD673A0C4C64D6371EFBE89 /* libPods-Whatslack.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Whatslack.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		72C70F52075DCC1215BF11FC /* Pods-WhatslackTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WhatslackTests.release.xcconfig"; path = "Target Support Files/Pods-WhatslackTests/Pods-WhatslackTests.release.xcconfig"; sourceTree = "<group>"; };
+		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Sup/Images.xcassets; sourceTree = "<group>"; };
+		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Sup/Info.plist; sourceTree = "<group>"; };
+		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Sup/main.m; sourceTree = "<group>"; };
+		157F5FE2D6E56A93550AF293 /* Pods-Sup-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sup-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-Sup-tvOSTests/Pods-Sup-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
+		2D02E47B1E0B4A5D006451C7 /* Sup-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Sup-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2D02E4901E0B4A5D006451C7 /* Sup-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Sup-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2DB5822A41363E5C1225F694 /* libPods-Sup-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Sup-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		46CEFDC51863BA194EDD0EB0 /* libPods-SupTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SupTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4DE691EA67169D094DCEB7EF /* Pods-Sup-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sup-tvOS.release.xcconfig"; path = "Target Support Files/Pods-Sup-tvOS/Pods-Sup-tvOS.release.xcconfig"; sourceTree = "<group>"; };
+		6543A227E1AC332C3A4DC555 /* Pods-SupTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SupTests.debug.xcconfig"; path = "Target Support Files/Pods-SupTests/Pods-SupTests.debug.xcconfig"; sourceTree = "<group>"; };
+		6CD673A0C4C64D6371EFBE89 /* libPods-Sup.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Sup.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		72C70F52075DCC1215BF11FC /* Pods-SupTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SupTests.release.xcconfig"; path = "Target Support Files/Pods-SupTests/Pods-SupTests.release.xcconfig"; sourceTree = "<group>"; };
 		7903FFF9023C41C7A7635670 /* Lucida Console.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lucida Console.ttf"; path = "../src/assets/fonts/Lucida Console.ttf"; sourceTree = "<group>"; };
-		7B496B04EA58D6A48E82E8F4 /* Pods-Whatslack.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Whatslack.debug.xcconfig"; path = "Target Support Files/Pods-Whatslack/Pods-Whatslack.debug.xcconfig"; sourceTree = "<group>"; };
-		7DCBD916991D08CF4A72FD2A /* Pods-Whatslack-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Whatslack-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-Whatslack-tvOS/Pods-Whatslack-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
-		8BCD8A3E236070D000FE9959 /* Whatslack.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Whatslack.entitlements; path = Whatslack/Whatslack.entitlements; sourceTree = "<group>"; };
-		93F359A10941DD33054B6647 /* libPods-Whatslack-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Whatslack-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		BAF267EF13F47ED7F3336039 /* Pods-Whatslack.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Whatslack.release.xcconfig"; path = "Target Support Files/Pods-Whatslack/Pods-Whatslack.release.xcconfig"; sourceTree = "<group>"; };
-		DEC017900DC9470591E5C0EE /* Pods-Whatslack-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Whatslack-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-Whatslack-tvOSTests/Pods-Whatslack-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
+		7B496B04EA58D6A48E82E8F4 /* Pods-Sup.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sup.debug.xcconfig"; path = "Target Support Files/Pods-Sup/Pods-Sup.debug.xcconfig"; sourceTree = "<group>"; };
+		7DCBD916991D08CF4A72FD2A /* Pods-Sup-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sup-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-Sup-tvOS/Pods-Sup-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
+		8BCD8A3E236070D000FE9959 /* Sup.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Sup.entitlements; path = Sup/Sup.entitlements; sourceTree = "<group>"; };
+		93F359A10941DD33054B6647 /* libPods-Sup-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Sup-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BAF267EF13F47ED7F3336039 /* Pods-Sup.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sup.release.xcconfig"; path = "Target Support Files/Pods-Sup/Pods-Sup.release.xcconfig"; sourceTree = "<group>"; };
+		DEC017900DC9470591E5C0EE /* Pods-Sup-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sup-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-Sup-tvOSTests/Pods-Sup-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
@@ -77,7 +77,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				72011F969771A2FAC995C365 /* libPods-WhatslackTests.a in Frameworks */,
+				72011F969771A2FAC995C365 /* libPods-SupTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -85,7 +85,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0DD9476449AE5519EAB02B6C /* libPods-Whatslack.a in Frameworks */,
+				0DD9476449AE5519EAB02B6C /* libPods-Sup.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -93,7 +93,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BA474C064B4CC987A5E2C5DD /* libPods-Whatslack-tvOS.a in Frameworks */,
+				BA474C064B4CC987A5E2C5DD /* libPods-Sup-tvOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -101,20 +101,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				808BAE2CCC52EE128CF5890A /* libPods-Whatslack-tvOSTests.a in Frameworks */,
+				808BAE2CCC52EE128CF5890A /* libPods-Sup-tvOSTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		00E356EF1AD99517003FC87E /* WhatslackTests */ = {
+		00E356EF1AD99517003FC87E /* SupTests */ = {
 			isa = PBXGroup;
 			children = (
-				00E356F21AD99517003FC87E /* WhatslackTests.m */,
+				00E356F21AD99517003FC87E /* SupTests.m */,
 				00E356F01AD99517003FC87E /* Supporting Files */,
 			);
-			path = WhatslackTests;
+			path = SupTests;
 			sourceTree = "<group>";
 		};
 		00E356F01AD99517003FC87E /* Supporting Files */ = {
@@ -125,10 +125,10 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		13B07FAE1A68108700A75B9A /* Whatslack */ = {
+		13B07FAE1A68108700A75B9A /* Sup */ = {
 			isa = PBXGroup;
 			children = (
-				8BCD8A3E236070D000FE9959 /* Whatslack.entitlements */,
+				8BCD8A3E236070D000FE9959 /* Sup.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -137,7 +137,7 @@
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
-			name = Whatslack;
+			name = Sup;
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
@@ -145,10 +145,10 @@
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
-				6CD673A0C4C64D6371EFBE89 /* libPods-Whatslack.a */,
-				93F359A10941DD33054B6647 /* libPods-Whatslack-tvOS.a */,
-				2DB5822A41363E5C1225F694 /* libPods-Whatslack-tvOSTests.a */,
-				46CEFDC51863BA194EDD0EB0 /* libPods-WhatslackTests.a */,
+				6CD673A0C4C64D6371EFBE89 /* libPods-Sup.a */,
+				93F359A10941DD33054B6647 /* libPods-Sup-tvOS.a */,
+				2DB5822A41363E5C1225F694 /* libPods-Sup-tvOSTests.a */,
+				46CEFDC51863BA194EDD0EB0 /* libPods-SupTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -163,9 +163,9 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				13B07FAE1A68108700A75B9A /* Whatslack */,
+				13B07FAE1A68108700A75B9A /* Sup */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
-				00E356EF1AD99517003FC87E /* WhatslackTests */,
+				00E356EF1AD99517003FC87E /* SupTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				C853AE1E677B15EA58ABAC7C /* Pods */,
@@ -179,10 +179,10 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* Whatslack.app */,
-				00E356EE1AD99517003FC87E /* WhatslackTests.xctest */,
-				2D02E47B1E0B4A5D006451C7 /* Whatslack-tvOS.app */,
-				2D02E4901E0B4A5D006451C7 /* Whatslack-tvOSTests.xctest */,
+				13B07F961A680F5B00A75B9A /* Sup.app */,
+				00E356EE1AD99517003FC87E /* SupTests.xctest */,
+				2D02E47B1E0B4A5D006451C7 /* Sup-tvOS.app */,
+				2D02E4901E0B4A5D006451C7 /* Sup-tvOSTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -190,14 +190,14 @@
 		C853AE1E677B15EA58ABAC7C /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				7B496B04EA58D6A48E82E8F4 /* Pods-Whatslack.debug.xcconfig */,
-				BAF267EF13F47ED7F3336039 /* Pods-Whatslack.release.xcconfig */,
-				7DCBD916991D08CF4A72FD2A /* Pods-Whatslack-tvOS.debug.xcconfig */,
-				4DE691EA67169D094DCEB7EF /* Pods-Whatslack-tvOS.release.xcconfig */,
-				157F5FE2D6E56A93550AF293 /* Pods-Whatslack-tvOSTests.debug.xcconfig */,
-				DEC017900DC9470591E5C0EE /* Pods-Whatslack-tvOSTests.release.xcconfig */,
-				6543A227E1AC332C3A4DC555 /* Pods-WhatslackTests.debug.xcconfig */,
-				72C70F52075DCC1215BF11FC /* Pods-WhatslackTests.release.xcconfig */,
+				7B496B04EA58D6A48E82E8F4 /* Pods-Sup.debug.xcconfig */,
+				BAF267EF13F47ED7F3336039 /* Pods-Sup.release.xcconfig */,
+				7DCBD916991D08CF4A72FD2A /* Pods-Sup-tvOS.debug.xcconfig */,
+				4DE691EA67169D094DCEB7EF /* Pods-Sup-tvOS.release.xcconfig */,
+				157F5FE2D6E56A93550AF293 /* Pods-Sup-tvOSTests.debug.xcconfig */,
+				DEC017900DC9470591E5C0EE /* Pods-Sup-tvOSTests.release.xcconfig */,
+				6543A227E1AC332C3A4DC555 /* Pods-SupTests.debug.xcconfig */,
+				72C70F52075DCC1215BF11FC /* Pods-SupTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -213,9 +213,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		00E356ED1AD99517003FC87E /* WhatslackTests */ = {
+		00E356ED1AD99517003FC87E /* SupTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "WhatslackTests" */;
+			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "SupTests" */;
 			buildPhases = (
 				A9F12F9187A52406DF6FE282 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
@@ -227,14 +227,14 @@
 			dependencies = (
 				00E356F51AD99517003FC87E /* PBXTargetDependency */,
 			);
-			name = WhatslackTests;
-			productName = WhatslackTests;
-			productReference = 00E356EE1AD99517003FC87E /* WhatslackTests.xctest */;
+			name = SupTests;
+			productName = SupTests;
+			productReference = 00E356EE1AD99517003FC87E /* SupTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		13B07F861A680F5B00A75B9A /* Whatslack */ = {
+		13B07F861A680F5B00A75B9A /* Sup */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Whatslack" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Sup" */;
 			buildPhases = (
 				9BB084452DC964EC3101C373 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
@@ -248,14 +248,14 @@
 			);
 			dependencies = (
 			);
-			name = Whatslack;
-			productName = Whatslack;
-			productReference = 13B07F961A680F5B00A75B9A /* Whatslack.app */;
+			name = Sup;
+			productName = Sup;
+			productReference = 13B07F961A680F5B00A75B9A /* Sup.app */;
 			productType = "com.apple.product-type.application";
 		};
-		2D02E47A1E0B4A5D006451C7 /* Whatslack-tvOS */ = {
+		2D02E47A1E0B4A5D006451C7 /* Sup-tvOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "Whatslack-tvOS" */;
+			buildConfigurationList = 2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "Sup-tvOS" */;
 			buildPhases = (
 				5C6C978264A9C20C61EA69DA /* [CP] Check Pods Manifest.lock */,
 				FD10A7F122414F3F0027D42C /* Start Packager */,
@@ -268,14 +268,14 @@
 			);
 			dependencies = (
 			);
-			name = "Whatslack-tvOS";
-			productName = "Whatslack-tvOS";
-			productReference = 2D02E47B1E0B4A5D006451C7 /* Whatslack-tvOS.app */;
+			name = "Sup-tvOS";
+			productName = "Sup-tvOS";
+			productReference = 2D02E47B1E0B4A5D006451C7 /* Sup-tvOS.app */;
 			productType = "com.apple.product-type.application";
 		};
-		2D02E48F1E0B4A5D006451C7 /* Whatslack-tvOSTests */ = {
+		2D02E48F1E0B4A5D006451C7 /* Sup-tvOSTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "Whatslack-tvOSTests" */;
+			buildConfigurationList = 2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "Sup-tvOSTests" */;
 			buildPhases = (
 				95ED3CC763E5C5C211A8A0ED /* [CP] Check Pods Manifest.lock */,
 				2D02E48C1E0B4A5D006451C7 /* Sources */,
@@ -287,9 +287,9 @@
 			dependencies = (
 				2D02E4921E0B4A5D006451C7 /* PBXTargetDependency */,
 			);
-			name = "Whatslack-tvOSTests";
-			productName = "Whatslack-tvOSTests";
-			productReference = 2D02E4901E0B4A5D006451C7 /* Whatslack-tvOSTests.xctest */;
+			name = "Sup-tvOSTests";
+			productName = "Sup-tvOSTests";
+			productReference = 2D02E4901E0B4A5D006451C7 /* Sup-tvOSTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -316,7 +316,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Whatslack" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Sup" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -330,10 +330,10 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				13B07F861A680F5B00A75B9A /* Whatslack */,
-				00E356ED1AD99517003FC87E /* WhatslackTests */,
-				2D02E47A1E0B4A5D006451C7 /* Whatslack-tvOS */,
-				2D02E48F1E0B4A5D006451C7 /* Whatslack-tvOSTests */,
+				13B07F861A680F5B00A75B9A /* Sup */,
+				00E356ED1AD99517003FC87E /* SupTests */,
+				2D02E47A1E0B4A5D006451C7 /* Sup-tvOS */,
+				2D02E48F1E0B4A5D006451C7 /* Sup-tvOSTests */,
 			);
 		};
 /* End PBXProject section */
@@ -408,7 +408,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Whatslack/Pods-Whatslack-resources.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-Sup/Pods-Sup-resources.sh",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf",
@@ -447,7 +447,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Whatslack/Pods-Whatslack-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Sup/Pods-Sup-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		5C6C978264A9C20C61EA69DA /* [CP] Check Pods Manifest.lock */ = {
@@ -465,7 +465,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Whatslack-tvOS-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-Sup-tvOS-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -487,7 +487,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Whatslack-tvOSTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-Sup-tvOSTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -509,7 +509,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Whatslack-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-Sup-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -531,7 +531,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-WhatslackTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-SupTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -583,7 +583,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00E356F31AD99517003FC87E /* WhatslackTests.m in Sources */,
+				00E356F31AD99517003FC87E /* SupTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -609,7 +609,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2DCD954D1E0B4F2C00145EB5 /* WhatslackTests.m in Sources */,
+				2DCD954D1E0B4F2C00145EB5 /* SupTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -618,12 +618,12 @@
 /* Begin PBXTargetDependency section */
 		00E356F51AD99517003FC87E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 13B07F861A680F5B00A75B9A /* Whatslack */;
+			target = 13B07F861A680F5B00A75B9A /* Sup */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
 		};
 		2D02E4921E0B4A5D006451C7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 2D02E47A1E0B4A5D006451C7 /* Whatslack-tvOS */;
+			target = 2D02E47A1E0B4A5D006451C7 /* Sup-tvOS */;
 			targetProxy = 2D02E4911E0B4A5D006451C7 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -635,7 +635,7 @@
 				13B07FB21A68108700A75B9A /* Base */,
 			);
 			name = LaunchScreen.xib;
-			path = Whatslack;
+			path = Sup;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -643,14 +643,14 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6543A227E1AC332C3A4DC555 /* Pods-WhatslackTests.debug.xcconfig */;
+			baseConfigurationReference = 6543A227E1AC332C3A4DC555 /* Pods-SupTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = WhatslackTests/Info.plist;
+				INFOPLIST_FILE = SupTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -660,17 +660,17 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Whatslack.app/Whatslack";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Sup.app/Sup";
 			};
 			name = Debug;
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 72C70F52075DCC1215BF11FC /* Pods-WhatslackTests.release.xcconfig */;
+			baseConfigurationReference = 72C70F52075DCC1215BF11FC /* Pods-SupTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
-				INFOPLIST_FILE = WhatslackTests/Info.plist;
+				INFOPLIST_FILE = SupTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -680,20 +680,20 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Whatslack.app/Whatslack";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Sup.app/Sup";
 			};
 			name = Release;
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7B496B04EA58D6A48E82E8F4 /* Pods-Whatslack.debug.xcconfig */;
+			baseConfigurationReference = 7B496B04EA58D6A48E82E8F4 /* Pods-Sup.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = Whatslack/Whatslack.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Sup/Sup.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
-				INFOPLIST_FILE = Whatslack/Info.plist;
+				INFOPLIST_FILE = Sup/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -701,7 +701,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = Whatslack;
+				PRODUCT_NAME = Sup;
 				SUPPORTS_MACCATALYST = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -710,13 +710,13 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BAF267EF13F47ED7F3336039 /* Pods-Whatslack.release.xcconfig */;
+			baseConfigurationReference = BAF267EF13F47ED7F3336039 /* Pods-Sup.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = Whatslack/Whatslack.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Sup/Sup.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
-				INFOPLIST_FILE = Whatslack/Info.plist;
+				INFOPLIST_FILE = Sup/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -724,7 +724,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = Whatslack;
+				PRODUCT_NAME = Sup;
 				SUPPORTS_MACCATALYST = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -733,7 +733,7 @@
 		};
 		2D02E4971E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7DCBD916991D08CF4A72FD2A /* Pods-Whatslack-tvOS.debug.xcconfig */;
+			baseConfigurationReference = 7DCBD916991D08CF4A72FD2A /* Pods-Sup-tvOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -744,14 +744,14 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_TESTABILITY = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "Whatslack-tvOS/Info.plist";
+				INFOPLIST_FILE = "Sup-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.Whatslack-tvOS";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.Sup-tvOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				TARGETED_DEVICE_FAMILY = 3;
@@ -761,7 +761,7 @@
 		};
 		2D02E4981E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4DE691EA67169D094DCEB7EF /* Pods-Whatslack-tvOS.release.xcconfig */;
+			baseConfigurationReference = 4DE691EA67169D094DCEB7EF /* Pods-Sup-tvOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -772,14 +772,14 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "Whatslack-tvOS/Info.plist";
+				INFOPLIST_FILE = "Sup-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.Whatslack-tvOS";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.Sup-tvOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				TARGETED_DEVICE_FAMILY = 3;
@@ -789,7 +789,7 @@
 		};
 		2D02E4991E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 157F5FE2D6E56A93550AF293 /* Pods-Whatslack-tvOSTests.debug.xcconfig */;
+			baseConfigurationReference = 157F5FE2D6E56A93550AF293 /* Pods-Sup-tvOSTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -799,24 +799,24 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_TESTABILITY = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "Whatslack-tvOSTests/Info.plist";
+				INFOPLIST_FILE = "Sup-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.Whatslack-tvOSTests";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.Sup-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Whatslack-tvOS.app/Whatslack-tvOS";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Sup-tvOS.app/Sup-tvOS";
 				TVOS_DEPLOYMENT_TARGET = 10.1;
 			};
 			name = Debug;
 		};
 		2D02E49A1E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DEC017900DC9470591E5C0EE /* Pods-Whatslack-tvOSTests.release.xcconfig */;
+			baseConfigurationReference = DEC017900DC9470591E5C0EE /* Pods-Sup-tvOSTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -826,17 +826,17 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "Whatslack-tvOSTests/Info.plist";
+				INFOPLIST_FILE = "Sup-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.Whatslack-tvOSTests";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.Sup-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Whatslack-tvOS.app/Whatslack-tvOS";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Sup-tvOS.app/Sup-tvOS";
 				TVOS_DEPLOYMENT_TARGET = 10.1;
 			};
 			name = Release;
@@ -943,7 +943,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "WhatslackTests" */ = {
+		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "SupTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				00E356F61AD99517003FC87E /* Debug */,
@@ -952,7 +952,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Whatslack" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Sup" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
@@ -961,7 +961,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "Whatslack-tvOS" */ = {
+		2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "Sup-tvOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2D02E4971E0B4A5E006451C7 /* Debug */,
@@ -970,7 +970,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "Whatslack-tvOSTests" */ = {
+		2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "Sup-tvOSTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2D02E4991E0B4A5E006451C7 /* Debug */,
@@ -979,7 +979,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Whatslack" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Sup" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
