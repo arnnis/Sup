@@ -45,7 +45,7 @@ export const getRepliesByThreadId = (threadId: string, chatId: string) => async 
 ) => {
   let store: RootState = getState();
   let messageList = store.messages.list[threadId] || [];
-  let cursor = messageList[messageList.length - 1] || '0';
+  let cursor = messageList[messageList.length - 1];
   let alreadyLoading = store.messages.loading[threadId];
   if (cursor === 'end' || alreadyLoading) return;
 
@@ -56,9 +56,8 @@ export const getRepliesByThreadId = (threadId: string, chatId: string) => async 
       body: {
         channel: chatId,
         ts: threadId,
-        limit: 10,
-        oldest: cursor,
-        latest: 'now',
+        limit: 41,
+        oldest: cursor || threadId,
       },
     });
 
