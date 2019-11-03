@@ -52,7 +52,7 @@ const Main = React.memo(
         ? connectionStatus === 'connected'
           ? currentTeam && currentTeam.name
           : 'Connecting...'
-        : 'No team selected';
+        : 'Sup';
 
     let _renderMenu = () => currentTeam && <PopupMenu />;
 
