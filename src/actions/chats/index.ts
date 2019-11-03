@@ -30,7 +30,10 @@ export const getChatInfoFail = (chatId: string) => action('GET_CHAT_INFO_FAIL', 
 
 export const getChannelMembersStart = (chatId: string) =>
   action('GET_CHANNEL_MEMBERS_START', {chatId});
-export const getChannelMembersSuccess = (chatId: string, members: Array<string>) =>
-  action('GET_CHANNEL_MEMBERS_SUCCESS', {chatId, members});
+export const getChannelMembersSuccess = (
+  chatId: string,
+  members: Array<string>,
+  nextCursor: string,
+) => action('GET_CHANNEL_MEMBERS_SUCCESS', {chatId, members, nextCursor});
 export const getChannelMembersFail = (chatId: string) =>
   action('GET_CHANNEL_MEMBERS_FAIL', {chatId});

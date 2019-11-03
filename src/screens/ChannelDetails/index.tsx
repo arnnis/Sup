@@ -19,6 +19,10 @@ type Props = ReturnType<typeof mapStateToProps> & ThemeInjectedProps & DispatchP
 
 class ChatDetails extends Component<Props> {
   componentDidMount() {
+    this.getChannelMembers()
+  }
+
+  getChannelMembers = () => {
     this.props.dispatch(getChannelMembers(this.props.chatId));
   }
   
@@ -87,6 +91,8 @@ class ChatDetails extends Component<Props> {
           data={membersList}
           renderItem={this.renderMemberCell}
           ListHeaderComponent={this.renderListHeader()}
+          onEndReached={this.getChannelMembers}
+          onEndReachedThreshold={0.5}
         />
       </SafeAreaView>
     );
@@ -115,7 +121,7 @@ const mapStateToProps = (state: RootState, ownProps) => {
     user,
 
     membersList: state.chats.membersList[chatId],
-    membersListLoading: state.chats.membersListLoading[chatId],
+    membersListLoading: state.chats.membersListLoadStatus[chatId]?.loading ?? false,
   }
 }
 

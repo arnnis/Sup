@@ -14,7 +14,7 @@ export type DirectsState = Readonly<{
   typingsUsers: {[chatId: string]: Array<string>};
   fullLoad: {[chatId: string]: {loading: boolean; loaded: boolean}};
   membersList: {[chatId: string]: Array<string>};
-  membersListLoading: {[chatId: string]: boolean};
+  membersListLoadStatus: {[chatId: string]: {loading: boolean; nextCursor: string}};
 }>;
 
 const initialState: DirectsState = {
@@ -28,7 +28,7 @@ const initialState: DirectsState = {
   typingsUsers: {},
   fullLoad: {},
   membersList: {},
-  membersListLoading: {},
+  membersListLoadStatus: {},
 };
 
 export const chatsReducer: Reducer<DirectsState, RootAction> = (state = initialState, action) => {
@@ -181,24 +181,30 @@ export const chatsReducer: Reducer<DirectsState, RootAction> = (state = initialS
       let {chatId} = action.payload;
       return {
         ...state,
-        membersListLoading: {
-          ...state.fullLoad,
-          [chatId]: true,
+        membersListLoadStatus: {
+          ...state.membersListLoadStatus,
+          [chatId]: {
+            ...state.membersListLoadStatus[chatId],
+            loading: true,
+          },
         },
       };
     }
 
     case 'GET_CHANNEL_MEMBERS_SUCCESS': {
-      let {chatId, members} = action.payload;
+      let {chatId, members, nextCursor} = action.payload;
       return {
         ...state,
         membersList: {
           ...state.membersList,
           [chatId]: [...(state.membersList[chatId] || []), ...members],
         },
-        membersListLoading: {
-          ...state.fullLoad,
-          [chatId]: false,
+        membersListLoadStatus: {
+          ...state.membersListLoadStatus,
+          [chatId]: {
+            loading: false,
+            nextCursor,
+          },
         },
       };
     }
@@ -207,9 +213,12 @@ export const chatsReducer: Reducer<DirectsState, RootAction> = (state = initialS
       let {chatId} = action.payload;
       return {
         ...state,
-        membersListLoading: {
-          ...state.fullLoad,
-          [chatId]: false,
+        membersListLoadStatus: {
+          ...state.membersListLoadStatus,
+          [chatId]: {
+            ...state.membersListLoadStatus[chatId],
+            loading: false,
+          },
         },
       };
     }

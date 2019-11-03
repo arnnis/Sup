@@ -166,19 +166,24 @@ export const getChatInfo = (chatId: string) => async (dispatch, getState) => {
 
 export const getChannelMembers = (chatId: string) => async (dispatch, getState) => {
   let state: RootState = getState();
-  let loading = state.chats.membersListLoading[chatId]
-  if (loading) return
+  let loadStatus = state.chats.membersListLoadStatus[chatId]
+  if (loadStatus?.loading || loadStatus?.nextCursor === "end") return
   dispatch(getChannelMembersStart(chatId));
   try {
-    let {members}: {members: Array<string>} = await http({
+    let {members, response_metadata}: {members: Array<string>} & PaginationResult = await http({
       path: '/conversations.members',
       body: {
         channel: chatId,
         include_num_members: true,
+        limit: 5,
+        cursor: loadStatus?.nextCursor ?? ''
       },
     });
+
+    let next_cursor = response_metadata && response_metadata.next_cursor ? response_metadata.next_cursor : 'end';
+
     batch(() => {
-      dispatch(getChannelMembersSuccess(chatId, members));
+      dispatch(getChannelMembersSuccess(chatId, members, next_cursor));
     });
 
     return Promise.resolve(members);
