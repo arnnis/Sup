@@ -12,6 +12,7 @@ import { getChatType } from '../ChatUI/utils';
 import ChannelMembersCount from '../ChatUI/ChannelMembersCount';
 import ChannelMemberCell from './ChannelMemberCell';
 import { getChannelMembers } from '../../actions/chats/thunks';
+import Screen from '../../components/Screen';
 
 type Props = ReturnType<typeof mapStateToProps> & ThemeInjectedProps & DispatchProp<any> & {
   chatId?: string
@@ -85,16 +86,16 @@ class ChatDetails extends Component<Props> {
   render() {
     let {theme, membersList} = this.props;
     return (
-      <SafeAreaView style={[styles.container, {backgroundColor: theme.backgroundColorDarker1}]}>
-        <Header left="back" center="Channel Info" />
-        <FlatList 
-          data={membersList}
-          renderItem={this.renderMemberCell}
-          ListHeaderComponent={this.renderListHeader()}
-          onEndReached={this.getChannelMembers}
-          onEndReachedThreshold={0.5}
-        />
-      </SafeAreaView>
+        <Screen>
+          <Header left="back" center="Channel Info" />
+          <FlatList 
+            data={membersList}
+            renderItem={this.renderMemberCell}
+            ListHeaderComponent={this.renderListHeader()}
+            onEndReached={this.getChannelMembers}
+            onEndReachedThreshold={0.5}
+          />
+        </Screen>
     );
   }
 }

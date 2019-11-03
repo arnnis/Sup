@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, SafeAreaView, StyleSheet, FlatList, ActivityIndicator, Text} from 'react-native';
+import {View, SafeAreaView, StyleSheet, FlatList, ActivityIndicator, Text, StatusBar} from 'react-native';
 import {RootState} from '../../reducers';
 import {connect, DispatchProp} from 'react-redux';
 import Message from './Message';
@@ -17,6 +17,7 @@ import px from '../../utils/normalizePixel';
 import Touchable from '../../components/Touchable';
 import ChannelMembersCount from './ChannelMembersCount';
 import DirectPresense from './DirectPresense';
+import Screen from '../../components/Screen';
 
 export type ChatType = 'direct' | 'channel' | 'thread';
 
@@ -212,11 +213,11 @@ class ChatUI extends Component<Props> {
     let {theme, currentChat} = this.props;
     if (!currentChat) return null;
     return (
-      <SafeAreaView style={[styles.container, {backgroundColor: theme.backgroundColorDarker1}]}>
+      <Screen>
         {this.renderHeader()}
         {this.renderList()}
         {this.renderInputToolbar()}
-      </SafeAreaView>
+      </Screen>
     );
   }
 }

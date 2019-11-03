@@ -20,6 +20,7 @@ import BottomSheet from './BottomSheet';
 import {currentTeamSelector} from '../../reducers/teams';
 import Toast from '../../components/Toast';
 import {toggleToast} from '../../actions/app';
+import Screen from '../../components/Screen';
 
 type Props = ReturnType<typeof mapStateToProps> & DispatchProp<any> & ThemeInjectedProps;
 
@@ -57,7 +58,7 @@ const Main = React.memo(
     let _renderMenu = () => currentTeam && <PopupMenu />;
 
     return (
-      <SafeAreaView style={styles.container}>
+      <Screen>
         <DrawerLayout
           ref={ref => (drawerRef.current = ref)}
           drawerType="slide"
@@ -92,7 +93,7 @@ const Main = React.memo(
         </DrawerLayout>
         <BottomSheet />
         <Toast />
-      </SafeAreaView>
+      </Screen>
     );
   },
 );

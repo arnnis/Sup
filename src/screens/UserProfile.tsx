@@ -13,6 +13,7 @@ import withTheme, {ThemeInjectedProps} from '../contexts/theme/withTheme';
 import Touchable from '../components/Touchable';
 import FastImage from 'react-native-fast-image';
 import {currentTeamTokenSelector} from '../reducers/teams';
+import Screen from '../components/Screen';
 
 type Props = ReturnType<typeof mapStateToProps> &
   ThemeInjectedProps &
@@ -165,7 +166,7 @@ class UserProfile extends Component<Props> {
     return (
       <>
         <Background />
-        <SafeAreaView style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
+        <Screen>
           {!isMe && (
             <Header
               center={`${user.profile.real_name_normalized ||
@@ -180,7 +181,7 @@ class UserProfile extends Component<Props> {
             {!isMe && this.renderUserInfoRows(user)}
             {/* {this.renderInfoRow()} */}
           </ScrollView>
-        </SafeAreaView>
+        </Screen>
       </>
     );
   }
