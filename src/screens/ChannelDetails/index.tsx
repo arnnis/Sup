@@ -43,6 +43,16 @@ class ChatDetails extends Component<Props> {
     return chatType === "direct" && <DirectPresense chatId={chatId} />
   }
 
+  renderPurpose() {
+    let {chat} = this.props;
+    if (!chat?.purpose?.value) return null
+    return (
+      <InfoBox style={{flexDirection: 'row'}}>
+      <InfoRow title="purpose">{chat.purpose.value}</InfoRow>
+     </InfoBox>
+    )
+  }
+
   renderMemberCell = ({item: memberId, index}) => {
     const isFirst = index === 0
     const isLast = index === this.props.membersList.length - 1
@@ -53,7 +63,7 @@ class ChatDetails extends Component<Props> {
     let {chatId, chat, theme} = this.props;
     return (
       <>
-            <InfoBox style={{flexDirection: 'row'}}>
+      <InfoBox style={{flexDirection: 'row'}}>
       <ChatAvatar chatId={chatId} size={px(67)} />
       <View style={{flex: 1, justifyContent: 'center', paddingLeft: px(15)}}>
         {this.renderChatName()}
@@ -61,10 +71,8 @@ class ChatDetails extends Component<Props> {
         {this.renderMembersCount()}
       </View>
      </InfoBox>
-     <InfoBox style={{flexDirection: 'row', marginBottom: px(30)}}>
-      <InfoRow title="purpose">{chat?.purpose?.value}</InfoRow>
-     </InfoBox>
-     <Text style={{fontSize: px(12), marginBottom: px(5), color: theme.foregroundColorMuted65, marginLeft: px(40)}}>{chat?.num_members} MEMBERS</Text>
+      {this.renderPurpose()}
+     <Text style={{fontSize: px(12), marginBottom: px(5), color: theme.foregroundColorMuted65, marginLeft: px(40), marginTop: 25}}>{chat?.num_members} MEMBERS</Text>
       </>
 
     )
