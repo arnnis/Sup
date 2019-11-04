@@ -142,7 +142,16 @@ class ChatUI extends Component<Props> {
     let { chatType } = this.props
     let prevMessageId = this.props.messagesList[index - 1];
     let isThreadMainMsg = chatType === "thread" && index === 0
-    return <Message messageId={messageId} prevMessageId={prevMessageId} inverted={chatType !== "thread"} divider={isThreadMainMsg} chatType={chatType} />;
+    return (
+      <Message 
+        messageId={messageId} 
+        prevMessageId={prevMessageId} 
+        inverted={chatType !== "thread"} 
+        showDivider={isThreadMainMsg}         
+        hideReplies={chatType === 'thread'}
+        hideAvatar={chatType === 'direct'} 
+      />
+    ) ;
   };
 
   renderLoadingMore = () => {

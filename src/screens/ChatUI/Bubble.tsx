@@ -19,7 +19,8 @@ type Props = ThemeInjectedProps &
     sameUser: boolean;
     isMe: boolean;
     pending: boolean;
-    chatType: ChatType;
+    hideAvatar?: boolean;
+    hideReplies?: boolean;
   };
 
 class Bubble extends Component<Props> {
@@ -44,7 +45,7 @@ class Bubble extends Component<Props> {
   }
 
   renderReplies() {
-    if (this.props.chatType === 'thread') return null;
+    if (this.props.hideReplies) return null;
     return <Replies messageId={this.props.messageId} />;
   }
 
@@ -53,7 +54,7 @@ class Bubble extends Component<Props> {
   }
 
   render() {
-    let {sameUser, isMe, pending, theme, dynamicStyles} = this.props;
+    let {sameUser, isMe, pending, theme, hideAvatar, dynamicStyles} = this.props;
 
     return (
       <View
@@ -69,6 +70,11 @@ class Bubble extends Component<Props> {
           pending && {
             opacity: 0.5,
           },
+          hideAvatar &&
+            sameUser && {
+              marginLeft: !isMe ? px(7.5) : 0,
+              marginRight: isMe ? px(7.5) : 0,
+            },
         ]}>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           {this.renderName()}

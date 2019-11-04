@@ -19,8 +19,9 @@ type Props = ReturnType<typeof mapStateToProps> &
     messageId: string;
     prevMessageId: string;
     inverted: boolean;
-    divider?: boolean;
-    chatType: ChatType;
+    showDivider?: boolean;
+    hideAvatar?: boolean;
+    hideReplies?: boolean;
   };
 
 class Message extends Component<Props> {
@@ -29,6 +30,8 @@ class Message extends Component<Props> {
   };
 
   renderAvatar(isMe, sameUser) {
+    let {hideAvatar} = this.props;
+    if (hideAvatar) return null;
     // If same author of previous message, render a placeholder instead of avatar
     if (sameUser)
       return (
@@ -53,7 +56,8 @@ class Message extends Component<Props> {
         pending={this.props.currentMessage.pending}
         isMe={isMe}
         sameUser={sameUser}
-        chatType={this.props.chatType}
+        hideReplies={this.props.hideReplies}
+        hideAvatar={this.props.hideAvatar}
       />
     );
   }
@@ -87,7 +91,7 @@ class Message extends Component<Props> {
   }
 
   renderDivder() {
-    if (!this.props.divider) return null;
+    if (!this.props.showDivider) return null;
     return (
       <View
         style={{
