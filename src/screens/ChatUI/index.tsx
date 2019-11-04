@@ -129,7 +129,8 @@ class ChatUI extends Component<Props> {
   renderMessageCell = ({item: messageId, index}) => {
     let { chatType } = this.props
     let prevMessageId = this.props.messagesList[index - 1];
-    return <Message messageId={messageId} prevMessageId={prevMessageId} inverted={chatType !== "thread"} />;
+    let isThreadMainMsg = chatType === "thread" && index === 0
+    return <Message messageId={messageId} prevMessageId={prevMessageId} inverted={chatType !== "thread"} divider={isThreadMainMsg} />;
   };
 
   renderLoadingMore = () => {
@@ -152,7 +153,7 @@ class ChatUI extends Component<Props> {
         data={messagesList}
         renderItem={this.renderMessageCell}
         bounces={false}
-        initialNumToRender={3}
+        initialNumToRender={6}
         inverted={chatType !== 'thread'}
         keyExtractor={this.keyExtractor}
         onEndReachedThreshold={0.5}

@@ -58,10 +58,8 @@ export const entitiesReducer: Reducer<EntitiesState, RootAction> = (
 
     case 'SET_CURRENT_TEAM': {
       return {
-        ...state,
-        users: {byId: {}},
-        chats: {byId: {}},
-        messages: {byId: {}},
+        ...initialState,
+        teams: state.teams,
       };
     }
 

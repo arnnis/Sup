@@ -108,13 +108,7 @@ export const messagesReducer: Reducer<MessagesState, RootAction> = (
     }
 
     case 'SET_CURRENT_TEAM': {
-      return {
-        ...state,
-        list: {},
-        loading: {},
-        nextCursor: {},
-        pendingMessages: {},
-      };
+      return initialState;
     }
 
     default:

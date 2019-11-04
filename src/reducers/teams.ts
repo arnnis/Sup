@@ -14,7 +14,7 @@ export type TeamsState = Readonly<{
 }>;
 
 const initialState: TeamsState = {
-  currentTeam: 'TMYS2CUFQ',
+  currentTeam: '',
   list: [
   ],
   loading: {},

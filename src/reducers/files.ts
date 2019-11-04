@@ -34,10 +34,7 @@ export const filesReducer: Reducer<UsersState, RootAction> = (state = initialSta
       };
     }
     case 'SET_CURRENT_TEAM': {
-      return {
-        list: [],
-        listLoading: false,
-      };
+      return initialState;
     }
 
     default:

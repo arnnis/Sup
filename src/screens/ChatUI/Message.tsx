@@ -10,6 +10,7 @@ import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 import {NavigationInjectedProps, withNavigation} from 'react-navigation';
 import Day from './Day';
 import {meSelector} from '../../reducers/teams';
+import rem from '../../utils/stylesheet/rem';
 
 type Props = ReturnType<typeof mapStateToProps> &
   NavigationInjectedProps &
@@ -17,6 +18,7 @@ type Props = ReturnType<typeof mapStateToProps> &
     messageId: string;
     prevMessageId: string;
     inverted: boolean;
+    divider?: boolean;
   };
 
 class Message extends Component<Props> {
@@ -81,6 +83,21 @@ class Message extends Component<Props> {
     return <Day currentMessage={currentMessage} prevMessage={prevMessage} />;
   }
 
+  renderDivder() {
+    if (!this.props.divider) return null;
+    return (
+      <View
+        style={{
+          width: rem(150),
+          marginBottom: px(10),
+          height: StyleSheet.hairlineWidth,
+          backgroundColor: this.props.theme.backgroundColorLess4,
+          alignSelf: 'center',
+        }}
+      />
+    );
+  }
+
   render() {
     let {currentMessage, prevMessage, me, inverted} = this.props;
     let sameUser = isSameUser(currentMessage, prevMessage);
@@ -108,6 +125,7 @@ class Message extends Component<Props> {
             </>
           )}
         </View>
+        {this.renderDivder()}
         {inverted && this.renderDay()}
       </>
     );

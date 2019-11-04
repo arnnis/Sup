@@ -61,8 +61,6 @@ export const getRepliesByThreadId = (threadId: string, chatId: string) => async 
       },
     });
 
-    messages = messages.filter(msg => msg.ts !== threadId);
-
     let nextCursor = response_metadata ? response_metadata.next_cursor : 'end';
 
     batch(() => {

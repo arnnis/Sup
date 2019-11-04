@@ -15,6 +15,7 @@ import px from '../../utils/normalizePixel';
 import {DispatchProp, connect} from 'react-redux';
 import {signinTeam} from '../../actions/teams/thunks';
 import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
+import rem from '../../utils/stylesheet/rem';
 
 type Props = ThemeInjectedProps & DispatchProp<any>;
 
@@ -44,7 +45,7 @@ class Auth extends Component<Props> {
         </Defs>
         <Path
           data-name="Path 1"
-          d={`M23 224.095s97.5 ${px(37.06)} ${px(194.587)} 0 ${px(180.413)} 0 ${px(
+          d={`M23 224.095s97.5 ${rem(37.06)} ${rem(194.587)} 0 ${rem(180.413)} 0 ${rem(
             180.413,
           )} 0V2.865H23z`}
           transform="translate(-23 -2.865)"

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import MessageText from './MessageText';
 import px from '../../utils/normalizePixel';
 import Name from './Name';
@@ -9,6 +9,7 @@ import MessageFiles from './MessageFiles';
 import MessageVideos from './MessageVideos';
 import Replies from './Replies';
 import withStylesheet, {StyleSheetInjectedProps} from '../../utils/stylesheet/withStylesheet';
+import MessageDate from './MessageDate';
 
 type Props = ThemeInjectedProps &
   StyleSheetInjectedProps & {
@@ -44,6 +45,10 @@ class Bubble extends Component<Props> {
     return <Replies messageId={this.props.messageId} />;
   }
 
+  renderSendDate() {
+    return <MessageDate messageId={this.props.messageId} />;
+  }
+
   render() {
     let {sameUser, isMe, pending, theme, dynamicStyles} = this.props;
 
@@ -62,7 +67,11 @@ class Bubble extends Component<Props> {
             opacity: 0.5,
           },
         ]}>
-        {this.renderName()}
+        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+          {this.renderName()}
+          {this.renderSendDate()}
+        </View>
+
         {this.renderMessageText()}
         {this.renderMessageImages()}
         {this.renderMessageVideos()}
