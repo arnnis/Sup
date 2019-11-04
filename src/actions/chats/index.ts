@@ -18,6 +18,8 @@ export const getChatLastMessageFail = (directId: string) =>
 
 export const setUserTyping = (userId: string, chatId: string) =>
   action('SET_USER_TYPING', {userId, chatId});
+export const unsetUserTyping = (userId: string, chatId: string) =>
+  action('UNSET_USER_TYPING', {userId, chatId});
 
 export const setCurrentChat = (chatId: string) => action('SET_CURRENT_CHAT', {chatId});
 

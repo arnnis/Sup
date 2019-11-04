@@ -2,6 +2,7 @@ import {store} from '../../App';
 
 import {setUserTyping} from '../../actions/chats';
 import {updateEntity} from '../../actions/entities';
+import {setTyping} from '../../actions/chats/thunks';
 
 export const handleChatsMarkedAsSeen = data => {
   let chatId = data.channel;
@@ -18,5 +19,5 @@ export const handleChatsMarkedAsSeen = data => {
 export const handleUserTyping = data => {
   let userId = data.user;
   let chatId = data.channel;
-  store.dispatch(setUserTyping(userId, chatId));
+  store.dispatch(setTyping(userId, chatId) as any);
 };

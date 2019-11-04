@@ -15,6 +15,8 @@ import {
   getChannelMembersStart,
   getChannelMembersFail,
   getChannelMembersSuccess,
+  setUserTyping,
+  unsetUserTyping
 } from '.';
 import {RootState} from '../../reducers';
 import imsDirects from '../../utils/filterIms';
@@ -192,4 +194,13 @@ export const getChannelMembers = (chatId: string) => async (dispatch, getState) 
     dispatch(getChannelMembersFail(chatId));
     return Promise.reject(err);
   }
+}
+
+export const setTyping = (userId: string, chatId: string) => (dispatch, getState) => {
+  let state = getState() as RootState
+  if (state.chats.typingsUsers[chatId]?.includes(userId)) return
+  dispatch(setUserTyping(userId, chatId))
+  setTimeout(() => {
+    dispatch(unsetUserTyping(userId, chatId))
+  }, 5000)
 }

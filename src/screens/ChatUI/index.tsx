@@ -18,6 +18,7 @@ import Touchable from '../../components/Touchable';
 import ChannelMembersCount from './ChannelMembersCount';
 import DirectPresense from './DirectPresense';
 import Screen from '../../components/Screen';
+import Typing from './Typing';
 
 export type ChatType = 'direct' | 'channel' | 'thread';
 
@@ -166,16 +167,16 @@ class ChatUI extends Component<Props> {
   }
 
   renderPresense() {
-    let {chatType, chatId} = this.props;
-    if (chatType === "direct") {
+    let {chatType, chatId, typingUsersCount} = this.props;
+    if (chatType === "direct" && typingUsersCount === 0) {
       return <DirectPresense chatId={chatId} />
     }
     return null
   }
 
   renderMembersCount() {
-    let {chatType, chatId} = this.props;
-    if (chatType === "channel") {
+    let {chatType, chatId, typingUsersCount} = this.props;
+    if (chatType === "channel" && typingUsersCount === 0) {
       return <ChannelMembersCount chatId={chatId} />
     }
     return null
@@ -197,12 +198,18 @@ class ChatUI extends Component<Props> {
     return null
   }
 
+  renderTyping() {
+    return <Typing chatId={this.props.chatId} />
+  }
+
   renderHeader() {
+    
     let center = (
       <Touchable onPress={this.openChatDetails} style={{alignItems: 'center'}}>
         {this.renderChatName()}
         {this.renderMembersCount()}
         {this.renderPresense()}
+        {this.renderTyping()}
       </Touchable>
     )
 
@@ -270,6 +277,7 @@ const mapStateToProps = (state: RootState, ownProps) => {
       ],
     me,
     currentTeamToken: currentTeamTokenSelector(state),
+    typingUsersCount: state.chats.typingsUsers[chatId]?.length ?? 0
   };
 };
 

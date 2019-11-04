@@ -116,6 +116,21 @@ export const chatsReducer: Reducer<DirectsState, RootAction> = (state = initialS
       let {chatId, userId} = action.payload;
       return {
         ...state,
+        typingsUsers: {
+          ...state.typingsUsers,
+          [chatId]: [...(state.typingsUsers[chatId] || []), userId],
+        },
+      };
+    }
+
+    case 'UNSET_USER_TYPING': {
+      let {chatId, userId} = action.payload;
+      return {
+        ...state,
+        typingsUsers: {
+          ...state.typingsUsers,
+          [chatId]: state.typingsUsers[chatId].filter(uId => uId !== userId),
+        },
       };
     }
 
