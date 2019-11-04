@@ -185,17 +185,13 @@ class ChatUI extends Component<Props> {
   renderChatName() {
     let {chatType, currentChat, currentUser} = this.props;
 
-    if (chatType === "channel" || chatType === "direct") {
-      let chatName =
-      chatType === 'channel'
-        ? `#${currentChat.name_normalized}`
-        : chatType === 'direct'
-        ? currentUser.profile.display_name_normalized || currentUser.profile.real_name_normalized
-        : 'Thread';
-      return <Text style={styles.chatName}>{chatName}</Text>
-    }
-
-    return null
+    let chatName =
+    chatType === 'channel'
+      ? `#${currentChat.name_normalized}`
+      : chatType === 'direct'
+      ? currentUser.profile.display_name_normalized || currentUser.profile.real_name_normalized
+      : 'Thread';
+    return <Text style={styles.chatName}>{chatName}</Text>
   }
 
   renderTyping() {

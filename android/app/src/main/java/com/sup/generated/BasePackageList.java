@@ -1,4 +1,4 @@
-package com.whatslack.generated;
+package com.sup.generated;
 
 import java.util.Arrays;
 import java.util.List;
