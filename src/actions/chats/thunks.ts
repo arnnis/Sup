@@ -175,7 +175,7 @@ export const getChannelMembers = (chatId: string) => async (dispatch, getState) 
       body: {
         channel: chatId,
         include_num_members: true,
-        limit: 5,
+        limit: 100,
         cursor: loadStatus?.nextCursor ?? ''
       },
     });
