@@ -1,4 +1,4 @@
-import React, {FC, useRef} from 'react';
+import React, {FC, useRef, useEffect} from 'react';
 import {Modal, TouchableWithoutFeedback} from 'react-native';
 import ChatUI from '../ChatUI';
 import {RootState} from '../../reducers';
@@ -6,12 +6,18 @@ import {connect, DispatchProp} from 'react-redux';
 import {View, Dimensions, StyleSheet} from 'react-native';
 import UserProfile from '../UserProfile';
 import {closeBottomSheet} from '../../actions/app';
+import {setCurrentThread} from '../../actions/chats';
 
 const dims = Dimensions.get('window');
 
 type Props = ReturnType<typeof mapStateToProps> & DispatchProp<any>;
 
 const BottomSheet: FC<Props> = ({bottomSheet, dispatch}) => {
+  useEffect(() => {
+    return () => {
+      dispatch(setCurrentThread(''));
+    };
+  });
   if (!bottomSheet.screen) return null;
   const _handleBackgroundPress = () => {
     dispatch(closeBottomSheet());

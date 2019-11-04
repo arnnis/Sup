@@ -19,6 +19,7 @@ import ChannelMembersCount from './ChannelMembersCount';
 import DirectPresense from './DirectPresense';
 import Screen from '../../components/Screen';
 import Typing from './Typing';
+import { setCurrentChat, setCurrentThread } from '../../actions/chats';
 
 export type ChatType = 'direct' | 'channel' | 'thread';
 
@@ -71,6 +72,17 @@ class ChatUI extends Component<Props> {
     let chatChanged = this.props.chatId !== prevProps.chatId
     if (chatChanged) {
       this.componentDidMount()
+    }
+  }
+
+  componentWillUnmount() {
+    let {chatType, dispatch} = this.props
+    if (chatType === 'channel' || chatType === 'direct') {
+      dispatch(setCurrentChat(''))
+    }
+
+    if (chatType === 'thread') {
+      dispatch(setCurrentThread(''))
     }
   }
 
@@ -130,7 +142,7 @@ class ChatUI extends Component<Props> {
     let { chatType } = this.props
     let prevMessageId = this.props.messagesList[index - 1];
     let isThreadMainMsg = chatType === "thread" && index === 0
-    return <Message messageId={messageId} prevMessageId={prevMessageId} inverted={chatType !== "thread"} divider={isThreadMainMsg} />;
+    return <Message messageId={messageId} prevMessageId={prevMessageId} inverted={chatType !== "thread"} divider={isThreadMainMsg} chatType={chatType} />;
   };
 
   renderLoadingMore = () => {

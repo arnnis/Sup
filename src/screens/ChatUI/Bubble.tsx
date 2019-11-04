@@ -10,6 +10,7 @@ import MessageVideos from './MessageVideos';
 import Replies from './Replies';
 import withStylesheet, {StyleSheetInjectedProps} from '../../utils/stylesheet/withStylesheet';
 import MessageDate from './MessageDate';
+import {ChatType} from '.';
 
 type Props = ThemeInjectedProps &
   StyleSheetInjectedProps & {
@@ -18,6 +19,7 @@ type Props = ThemeInjectedProps &
     sameUser: boolean;
     isMe: boolean;
     pending: boolean;
+    chatType: ChatType;
   };
 
 class Bubble extends Component<Props> {
@@ -42,6 +44,7 @@ class Bubble extends Component<Props> {
   }
 
   renderReplies() {
+    if (this.props.chatType === 'thread') return null;
     return <Replies messageId={this.props.messageId} />;
   }
 

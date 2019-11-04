@@ -11,6 +11,7 @@ import {NavigationInjectedProps, withNavigation} from 'react-navigation';
 import Day from './Day';
 import {meSelector} from '../../reducers/teams';
 import rem from '../../utils/stylesheet/rem';
+import {ChatType} from '.';
 
 type Props = ReturnType<typeof mapStateToProps> &
   NavigationInjectedProps &
@@ -19,6 +20,7 @@ type Props = ReturnType<typeof mapStateToProps> &
     prevMessageId: string;
     inverted: boolean;
     divider?: boolean;
+    chatType: ChatType;
   };
 
 class Message extends Component<Props> {
@@ -51,6 +53,7 @@ class Message extends Component<Props> {
         pending={this.props.currentMessage.pending}
         isMe={isMe}
         sameUser={sameUser}
+        chatType={this.props.chatType}
       />
     );
   }

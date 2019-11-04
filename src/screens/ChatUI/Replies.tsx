@@ -9,6 +9,7 @@ import {withNavigation, NavigationInjectedProps} from 'react-navigation';
 import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 import isLandscape from '../../utils/stylesheet/isLandscape';
 import {openBottomSheet} from '../../actions/app';
+import {setCurrentThread} from '../../actions/chats';
 
 type Props = ReturnType<typeof mapStateToProps> &
   ThemeInjectedProps &
@@ -27,6 +28,7 @@ class Replies extends PureComponent<Props> {
     };
     if (isLandscape()) this.props.dispatch(openBottomSheet('ChatUI', params));
     else this.props.navigation.push('ChatUI', params);
+    this.props.dispatch(setCurrentThread(this.props.message.ts));
   };
 
   renderParticipantsAvatar() {
