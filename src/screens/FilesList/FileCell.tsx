@@ -14,13 +14,13 @@ type Props = ReturnType<typeof mapStateToProps> &
 
 class FileCell extends Component<Props> {
   renderAllFile = () => {
-    let {file, token} = this.props;
+    let {file, token, theme} = this.props;
     return (
       <MessageFile
         file={file}
         token={token}
         containerStyle={{width: '100%'}}
-        textStyle={{color: '#333333'}}
+        textStyle={{color: theme.foregroundColor}}
       />
     );
   };

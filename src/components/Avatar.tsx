@@ -76,16 +76,19 @@ class Avatar extends PureComponent<Props> {
   }
 
   renderPlaceholder() {
-    let {width} = this.props;
+    let {width, style} = this.props;
     return (
       <View
-        style={{
-          flex: 1,
-          backgroundColor: '#562E52',
-          borderRadius: px(360),
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
+        style={[
+          {
+            flex: 1,
+            backgroundColor: '#562E52',
+            borderRadius: px(360),
+            justifyContent: 'center',
+            alignItems: 'center',
+          },
+          style,
+        ]}>
         <MaterialCommunityIcons name="slack" size={width / 2} color="#fff" />
       </View>
     );
