@@ -32,7 +32,7 @@ export const InfoRow: FC<InfoRowProps> = ({title, children}) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: px(25),
+    marginHorizontal: px(20),
     borderRadius: px(15),
     paddingHorizontal: px(17.5),
     paddingVertical: px(12.5),

@@ -88,12 +88,12 @@ class ChannelMemberCell extends PureComponent<Props> {
 
 const styles = StyleSheet.create({
   container: {
-    width: dims.width - px(50),
+    width: dims.width - px(40),
     alignItems: 'center',
     paddingHorizontal: px(7.5),
     height: px(55),
     flexDirection: 'row',
-    marginHorizontal: px(25),
+    marginHorizontal: px(20),
   },
   name: {
     fontWeight: '700',

@@ -10,6 +10,10 @@ import Code from './Code';
 import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 
 const WWW_URL_PATTERN = /^www\./i;
+const USERNAME_PATTERN = /\<@(.*?)\>/i;
+const EMOJI_PATTREN = /:[A-z, 0-9]+:+/i;
+const CODE_PATTERN = /\```(.*?)\```/i;
+const LINK_PATTERN = /<([^<>]+)>/i;
 
 type Props = ReturnType<typeof mapStateToProps> &
   ThemeInjectedProps & {
@@ -67,8 +71,12 @@ class MessageText extends Component<Props> {
   }
 
   render() {
-    let {text, isMe, textProps, style, theme} = this.props;
-    if (!text) return null;
+    let {text, filesCount, isMe, textProps, style, theme} = this.props;
+    if (!text) {
+      if (filesCount && filesCount > 0)
+        text = 'File'
+    }
+
     return (
       <View style={styles.container}>
         <ParsedText
@@ -79,21 +87,20 @@ class MessageText extends Component<Props> {
             style,
           ]}
           parse={[
-            // {type: 'url', style: styles.linkStyle, onPress: this.onUrlPress},
             {
-              pattern: /\<@(.*?)\>/i,
+              pattern: USERNAME_PATTERN,
               renderText: this.renderUsername,
             },
             {
-              pattern: /:[A-z, 0-9]+:+/i,
+              pattern: EMOJI_PATTREN,
               renderText: this.renderEmoji,
             },
             {
-              pattern: /\```(.*?)\```/i,
+              pattern: CODE_PATTERN,
               renderText: this.renderCode,
             },
             {
-              pattern: /<([^<>]+)>/i,
+              pattern: LINK_PATTERN,
               renderText: this.renderLink,
             },
           ]}
@@ -128,8 +135,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state: RootState, ownProps) => ({
   text:
-    state.entities.messages.byId[ownProps.messageId] &&
-    state.entities.messages.byId[ownProps.messageId].text,
+    state.entities.messages.byId[ownProps.messageId]?.text,
+  filesCount: state.entities.messages.byId[ownProps.messageId]?.files?.length
 });
 
 export default connect(mapStateToProps)(withTheme(MessageText));
