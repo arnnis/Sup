@@ -12,7 +12,7 @@ import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 const WWW_URL_PATTERN = /^www\./i;
 const USERNAME_PATTERN = /\<@(.*?)\>/i;
 const EMOJI_PATTREN = /\:(.*?)\:/i;
-const CODE_PATTERN = /\```(.*?)\```/i;
+const CODE_PATTERN = /(```[a-z]*\n[\s\S]*?\n```)/i;
 const LINK_PATTERN = /<([^<>]+)>/i;
 
 type Props = ReturnType<typeof mapStateToProps> &
@@ -47,9 +47,7 @@ class MessageText extends Component<Props> {
   }
 
   renderEmoji(name) {
-    debugger
     name = name.replace(/:/g, '');
-    debugger
     if (name.includes('skin-tone-')) return null
     return <Emoji name={name} />;
   }
@@ -106,6 +104,7 @@ class MessageText extends Component<Props> {
               pattern: LINK_PATTERN,
               renderText: this.renderLink,
             },
+
           ]}
           {...textProps}>
           {text}
