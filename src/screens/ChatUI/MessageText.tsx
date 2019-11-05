@@ -11,7 +11,7 @@ import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 
 const WWW_URL_PATTERN = /^www\./i;
 const USERNAME_PATTERN = /\<@(.*?)\>/i;
-const EMOJI_PATTREN = /:[A-z, 0-9]+:+/i;
+const EMOJI_PATTREN = /\:(.*?)\:/i;
 const CODE_PATTERN = /\```(.*?)\```/i;
 const LINK_PATTERN = /<([^<>]+)>/i;
 
@@ -47,7 +47,10 @@ class MessageText extends Component<Props> {
   }
 
   renderEmoji(name) {
+    debugger
     name = name.replace(/:/g, '');
+    debugger
+    if (name.includes('skin-tone-')) return null
     return <Emoji name={name} />;
   }
 
