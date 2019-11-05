@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, Linking, TextProps, TextStyle} from 'react-native';
+import {View, Text, StyleSheet, Linking, TextProps, TextStyle} from 'react-native';
 import ParsedText from 'react-native-parsed-text';
 import {connect} from 'react-redux';
 import {RootState} from '../../reducers';
@@ -52,6 +52,20 @@ class MessageText extends Component<Props> {
     return <Code text={text} />;
   }
 
+  renderLink(text) {
+    let display, content;
+    text.replace(/<([^<>]+)>/g, (_, p1) => {
+      let [d, c] = p1.split('|');
+      display = d;
+      content = c;
+    });
+    return (
+      <Text style={{textDecorationLine: 'underline'}} onPress={() => this.onUrlPress(content)}>
+        {display}
+      </Text>
+    );
+  }
+
   render() {
     let {text, isMe, textProps, style, theme} = this.props;
     if (!text) return null;
@@ -65,18 +79,22 @@ class MessageText extends Component<Props> {
             style,
           ]}
           parse={[
-            {type: 'url', style: styles.linkStyle, onPress: this.onUrlPress},
+            // {type: 'url', style: styles.linkStyle, onPress: this.onUrlPress},
             {
-              pattern: /\<@(.*?)\>/gm,
+              pattern: /\<@(.*?)\>/i,
               renderText: this.renderUsername,
             },
             {
-              pattern: RegExp(/:[A-z, 0-9]+:+/g, 'g'),
+              pattern: /:[A-z, 0-9]+:+/i,
               renderText: this.renderEmoji,
             },
             {
-              pattern: /\```(.*?)\```/g,
+              pattern: /\```(.*?)\```/i,
               renderText: this.renderCode,
+            },
+            {
+              pattern: /<([^<>]+)>/i,
+              renderText: this.renderLink,
             },
           ]}
           {...textProps}>

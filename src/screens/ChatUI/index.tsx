@@ -20,6 +20,7 @@ import DirectPresense from './DirectPresense';
 import Screen from '../../components/Screen';
 import Typing from './Typing';
 import { setCurrentChat, setCurrentThread } from '../../actions/chats';
+import select from '../../utils/select';
 
 export type ChatType = 'direct' | 'channel' | 'thread';
 
@@ -207,12 +208,12 @@ class ChatUI extends Component<Props> {
   renderChatName() {
     let {chatType, currentChat, currentUser} = this.props;
 
-    let chatName =
-    chatType === 'channel'
-      ? `#${currentChat.name_normalized}`
-      : chatType === 'direct'
-      ? currentUser.profile.display_name_normalized || currentUser.profile.real_name_normalized
-      : 'Thread';
+    let chatName = select(chatType, {
+      channel: `#${currentChat?.name_normalized}`,
+      direct: currentUser?.profile.display_name_normalized || currentUser?.profile.real_name_normalized,
+      thread: 'Thread'
+    })
+
     return <Text style={styles.chatName}>{chatName}</Text>
   }
 
