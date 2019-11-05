@@ -13,7 +13,7 @@ class ThemeProvider extends Component<unknown, State> {
   constructor(props) {
     super(props);
     this.state = {
-      themeName: 'darkBlack',
+      themeName: 'lightWhite',
     };
   }
 

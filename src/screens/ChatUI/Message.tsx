@@ -12,6 +12,7 @@ import Day from './Day';
 import {meSelector} from '../../reducers/teams';
 import rem from '../../utils/stylesheet/rem';
 import {ChatType} from '.';
+import Reactions from './Reactions';
 
 type Props = ReturnType<typeof mapStateToProps> &
   NavigationInjectedProps &
@@ -105,6 +106,10 @@ class Message extends Component<Props> {
     );
   }
 
+  renderReaction() {
+    return <Reactions messageId={this.props.messageId} hideAvatar={this.props.hideAvatar} />;
+  }
+
   render() {
     let {currentMessage, prevMessage, me, inverted} = this.props;
     let sameUser = isSameUser(currentMessage, prevMessage);
@@ -112,6 +117,7 @@ class Message extends Component<Props> {
     return (
       <>
         {!inverted && this.renderDay()}
+        {inverted && this.renderReaction()}
         <View
           style={[
             styles.container,
@@ -132,6 +138,7 @@ class Message extends Component<Props> {
             </>
           )}
         </View>
+        {!inverted && this.renderReaction()}
         {this.renderDivder()}
         {inverted && this.renderDay()}
       </>
