@@ -14,7 +14,7 @@ export const sendMessage = (message: MessageInput) => {
   if (message.type === 'message') {
     let state: RootState = store.getState();
     let currentTeam = state.teams.currentTeam;
-    let meId = state.teams.list.find(ws => (ws.id = currentTeam)).userId;
+    let meId = state.teams.list.find(ws => (ws.id === currentTeam)).userId;
     let pendingMessage = {
       ...message,
       user: meId,
@@ -46,7 +46,7 @@ export const handleMessageRecieved = data => {
     // Increase chat unread count
     let state = store.getState() as RootState;
     let chat = state.entities.chats.byId[chatId];
-    let isMe = userId === state.teams.list.find(tm => tm.id === state.teams.currentTeam).userId;
+    let isMe = userId === state.teams.list.find(tm => tm.id === state.teams.currentTeam)?.userId;
     if (!isMe)
       store.dispatch(
         updateEntity('chats', chatId, {
@@ -59,16 +59,16 @@ export const handleMessageRecieved = data => {
 
 export const handleSendMessageAckRecieved = data => {
   let state: RootState = store.getState();
-  let messages = state.messages.list;
+  let messageLists = state.messages.list;
   let currentTeam = state.teams.currentTeam;
 
-  let meId = state.teams.list.find(ws => (ws.id = currentTeam)).userId;
+  let meId = state.teams.list.find(ws => (ws.id === currentTeam)).userId;
 
   // Check this ack is for a pending message
-  for (let chatId in messages) {
-    let index = messages[chatId].indexOf(data.reply_to);
+  for (let chatId in messageLists) {
+    let index = messageLists[chatId].indexOf(data.reply_to);
     if (index > -1) {
-      let pendingId = messages[chatId][index] as number;
+      let pendingId = messageLists[chatId][index] as number;
       batch(() => {
         store.dispatch(removePendingMessage(pendingId, chatId));
         store.dispatch(storeEntities('messages', [{...data, user: meId}]));

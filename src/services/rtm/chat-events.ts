@@ -8,7 +8,7 @@ export const handleChatsMarkedAsSeen = data => {
   let chatId = data.channel;
   let dmCount = data.dm_count;
   let unreadCount = data.unread_count_display;
-  return store.dispatch(
+  store.dispatch(
     updateEntity('chats', chatId, {
       dm_count: dmCount,
       unread_count: unreadCount,

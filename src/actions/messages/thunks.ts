@@ -10,8 +10,10 @@ export const getMessagesByChatId = (chatId: string) => async (dispatch, getState
   let store: RootState = getState();
   let messageList = store.messages.list[chatId] || [];
   let cursor = messageList[messageList.length - 1] || '';
+  let hasNextPage =
+    store.messages.nextCursor[chatId] && store.messages.nextCursor[chatId] === 'end';
   let alreadyLoading = store.messages.loading[chatId];
-  if (cursor === 'end' || alreadyLoading) return;
+  if (hasNextPage || alreadyLoading) return;
 
   try {
     dispatch(getMessagesStart(chatId));
@@ -46,8 +48,10 @@ export const getRepliesByThreadId = (threadId: string, chatId: string) => async 
   let store: RootState = getState();
   let messageList = store.messages.list[threadId] || [];
   let cursor = messageList[messageList.length - 1];
+  let hasNextPage =
+    store.messages.nextCursor[chatId] && store.messages.nextCursor[chatId] === 'end';
   let alreadyLoading = store.messages.loading[threadId];
-  if (cursor === 'end' || alreadyLoading) return;
+  if (hasNextPage || alreadyLoading) return;
 
   try {
     dispatch(getMessagesStart(threadId));

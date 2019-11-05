@@ -8,7 +8,6 @@ export const storeEntities = (
   data: (User & Chat & Message & Team)[] | object,
 ) => {
   if (Array.isArray(data)) {
-    if (!data.length) return;
     data = data.reduce(
       (preValue, curValue) => ({
         ...preValue,
