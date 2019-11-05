@@ -49,7 +49,7 @@ export const getRepliesByThreadId = (threadId: string, chatId: string) => async 
   let messageList = store.messages.list[threadId] || [];
   let cursor = messageList[messageList.length - 1];
   let hasNextPage =
-    store.messages.nextCursor[chatId] && store.messages.nextCursor[chatId] === 'end';
+    store.messages.nextCursor[threadId] && store.messages.nextCursor[threadId] === 'end';
   let alreadyLoading = store.messages.loading[threadId];
   if (hasNextPage || alreadyLoading) return;
 

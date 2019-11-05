@@ -10,7 +10,7 @@ import {Message, MessageAttachement} from '../../models';
 import {View, StyleSheet, Text, ToastAndroid, Platform, ViewStyle, TextStyle} from 'react-native';
 import px from '../../utils/normalizePixel';
 import Touchable from '../../components/Touchable';
-import {currentTeamTokenSelector} from '../../reducers/teams';
+import {currentTeamTokenSelector, meSelector} from '../../reducers/teams';
 
 type Props = ReturnType<typeof mapStateToProps> & {
   messageId: string;
@@ -18,12 +18,12 @@ type Props = ReturnType<typeof mapStateToProps> & {
 // For all files (including sounds) except videos and images.
 class MessageFilesList extends Component<Props> {
   render() {
-    let {message, files} = this.props;
+    let {message, files, isMe} = this.props;
     if (!message || !files || files.length === 0) return null;
     return (
       <View style={styles.container}>
         {files.map(file => (
-          <MessageFile file={file} token={this.props.token} />
+          <MessageFile file={file} token={this.props.token} isMe={isMe} />
         ))}
       </View>
     );
@@ -34,7 +34,8 @@ interface MessageFileProps {
   token: string;
   file: MessageAttachement;
   containerStyle?: ViewStyle;
-  textStyle: TextStyle;
+  textStyle?: TextStyle;
+  isMe?: boolean
 }
 
 interface MessageFileState {
@@ -161,28 +162,33 @@ export class MessageFile extends Component<MessageFileProps, MessageFileState> {
   }
 
   renderPlayIcon() {
-    return <MaterialCommunityIcons name="play" size={px(26)} color="#fff" />;
+    let {isMe} = this.props
+    return <MaterialCommunityIcons name="play" size={px(26)} color={isMe? 'purple' : "#fff"} />;
   }
 
   renderPauseIcon() {
-    return <MaterialCommunityIcons name="pause" size={px(26)} color="#fff" />;
+    let {isMe} = this.props
+    return <MaterialCommunityIcons name="pause" size={px(26)} color={isMe? 'purple' : "#fff"} />;
   }
 
   renderFileIcon() {
-    return <MaterialCommunityIcons name="file" size={px(22)} color="#fff" />;
+    let {isMe} = this.props
+    return <MaterialCommunityIcons name="file" size={px(22)} color={isMe? 'purple' : "#fff"} />;
   }
 
   renderStopDownloadIcon() {
+    let {isMe} = this.props
     return (
-      <MaterialCommunityIcons name="close" size={px(22)} color="#fff" style={{marginTop: px(5)}} />
+      <MaterialCommunityIcons name="close" size={px(22)} color={isMe? 'purple' : "#fff"} style={{marginTop: px(5)}} />
     );
   }
 
   renderActionButton() {
     let {playing, isSound, downloading} = this.state;
+    let {isMe} = this.props
     return (
       <>
-        <Touchable style={styles.actionButton} onPress={() => this.handleActionButtonPress()}>
+        <Touchable style={[styles.actionButton, isMe && { backgroundColor: '#fff' }]} onPress={() => this.handleActionButtonPress()}>
           {downloading ? (
             <>
               {this.renderStopDownloadIcon()}
@@ -204,7 +210,7 @@ export class MessageFile extends Component<MessageFileProps, MessageFileState> {
 
   renderDownloadProgress() {
     return (
-      <Text style={styles.downloadProgress}>{this.state.downloadProgress.toFixed(1) + '%'}</Text>
+      <Text style={[styles.downloadProgress, this.props.isMe && { color: 'purple' }]}>{this.state.downloadProgress.toFixed(1) + '%'}</Text>
     );
   }
 
@@ -297,6 +303,7 @@ const mapStateToProps = (state: RootState, ownProps) => {
     message,
     files: messageFilesSelector(message),
     token: currentTeamTokenSelector(state),
+    isMe: meSelector(state)?.id === message.user
   };
 };
 

@@ -35,6 +35,7 @@ type Props = ReturnType<typeof mapStateToProps> &
 class ChatUI extends Component<Props> {
   async componentDidMount() {
     let {chatType, chatId, dispatch} = this.props;
+    
     if (chatType === 'channel' || chatType === 'direct') {
       this.getMessage();
       dispatch(getChatInfo(chatId))

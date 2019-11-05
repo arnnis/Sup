@@ -70,7 +70,7 @@ const Main = React.memo(
               }}
             />
           )}
-          drawerWidth={px(160)}>
+          drawerWidth={px(185)}>
           <View style={{flex: 1, flexDirection: 'row'}}>
             <MasterView>
               <Header

@@ -72,10 +72,10 @@ class MessageText extends Component<Props> {
 
   render() {
     let {text, filesCount, isMe, textProps, style, theme} = this.props;
-    if (!text) {
-      if (filesCount && filesCount > 0)
-        text = 'File'
-    }
+    // if (!text) {
+    //   if (filesCount && filesCount > 0)
+    //     text = 'File'
+    // }
 
     return (
       <View style={styles.container}>
