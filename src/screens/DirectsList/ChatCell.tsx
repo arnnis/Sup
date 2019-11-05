@@ -105,7 +105,7 @@ class ChatCell extends PureComponent<Props> {
     if (!lastMessage) return null;
 
     return (
-      <View>
+      <View pointerEvents="none">
         <MessageText
           messageId={lastMessage.ts}
           style={[styles.lastMessage, {color: theme.backgroundColorLess5}]}
