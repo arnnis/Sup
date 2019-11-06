@@ -96,6 +96,14 @@ const styles = StyleSheet.create({
     borderRadius: px(5),
     padding: px(5),
     paddingHorizontal: px(7.5),
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 0.5,
+    elevation: 0.6,
   },
   right: {
     backgroundColor: 'purple',
