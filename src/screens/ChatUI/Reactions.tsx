@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Text, View, StyleSheet} from 'react-native';
+import {Text, View, StyleSheet, Platform} from 'react-native';
 import Touchable from '../../components/Touchable';
 import {RootState} from '../../reducers';
 import {connect} from 'react-redux';
@@ -45,7 +45,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     marginBottom: px(7.5),
-    marginTop: px(-5),
+    marginTop: Platform.select({
+      ios: px(-5),
+      default: px(-1)
+    }) ,
   },
   reactionsRight: {
     justifyContent: 'flex-end',
