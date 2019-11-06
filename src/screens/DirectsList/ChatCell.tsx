@@ -165,8 +165,7 @@ class ChatCell extends PureComponent<Props> {
         style={[
           styles.container,
           {
-            backgroundColor:
-              selected && isLandscape() ? 'rgba(72.0, 32.0, 70.0, 1)' : theme.backgroundColor,
+            backgroundColor: selected ? 'rgba(72.0, 32.0, 70.0, 1)' : theme.backgroundColor,
             borderColor: theme.backgroundColorLess1,
           },
         ]}
@@ -244,7 +243,7 @@ const mapStateToProps = (state: RootState, ownProps) => {
     isChannel: !chat.is_im,
     chatLastMessageStatus,
     lastMessage,
-    selected: ownProps.chatId === state.chats.currentChatId,
+    selected: ownProps.chatId === state.chats.currentChatId && isLandscape(),
   };
 };
 

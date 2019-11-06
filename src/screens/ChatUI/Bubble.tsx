@@ -101,9 +101,10 @@ const styles = StyleSheet.create({
       width: 0,
       height: 1,
     },
-    shadowOpacity: 0.1,
+    shadowOpacity: 0.09,
     shadowRadius: 0.5,
-    elevation: 0.6,
+
+    elevation: 0.5,
   },
   right: {
     backgroundColor: 'purple',

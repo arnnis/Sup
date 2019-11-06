@@ -14,6 +14,7 @@ import Touchable from '../components/Touchable';
 import FastImage from 'react-native-fast-image';
 import {currentTeamTokenSelector} from '../reducers/teams';
 import Screen from '../components/Screen';
+import {InfoBox, InfoRow, ActionRow} from '../components/InfoBox';
 
 type Props = ReturnType<typeof mapStateToProps> &
   ThemeInjectedProps &
@@ -87,7 +88,6 @@ class UserProfile extends Component<Props> {
           flexDirection: 'row',
           justifyContent: 'center',
           marginTop: px(17.5),
-          marginBottom: px(35),
         }}>
         {isMe && (
           <Touchable style={[styles.button, {backgroundColor: theme.backgroundColorLess2}]}>
@@ -141,18 +141,26 @@ class UserProfile extends Component<Props> {
   renderMeOptions() {
     return (
       <>
-        {this.renderInfoRow('Set a status', '', 'face')}
-        {this.renderInfoRow('Prefrences', '', 'settings-outline')}
+        <InfoBox>
+          {/* {this.renderInfoRow('Set a status', '', 'face')} */}
+          <ActionRow icon="face" onPress={() => alert('Set a status')}>
+            Set a status
+          </ActionRow>
+          <ActionRow icon="settings-outline" onPress={() => alert('Set a status')}>
+            Prefrences
+          </ActionRow>
+          {/* {this.renderInfoRow('Prefrences', '', 'settings-outline')} */}
+        </InfoBox>
       </>
     );
   }
 
   renderUserInfoRows(user: User) {
     return (
-      <>
-        {this.renderInfoRow('Timezone', user.tz_label)}
-        {user.profile.email && this.renderInfoRow('Email', user.profile.email)}
-      </>
+      <InfoBox>
+        <InfoRow title="Timezone">{user.tz_label}</InfoRow>
+        <InfoRow title="Email">{user.profile.email}</InfoRow>
+      </InfoBox>
     );
   }
 
@@ -223,6 +231,15 @@ const styles = StyleSheet.create({
     borderRadius: px(70),
     backgroundColor: '#ccc',
     marginTop: px(50),
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+
+    elevation: 3,
   },
   name: {
     fontSize: px(16.5),
