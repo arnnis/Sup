@@ -27,11 +27,10 @@ class Reactions extends Component<Props> {
 
   render() {
     let {isMe, reactions, hideAvatar} = this.props;
+    if (!reactions || !reactions.length) return null
     return (
       <View style={[styles.container, isMe && styles.reactionsRight, !hideAvatar && { paddingHorizontal: px(40) }]}>
-        {reactions &&
-          reactions.length &&
-          reactions.map(reaction => {
+        {reactions.map(reaction => {
             return this.renderReactionCell(reaction);
           })}
       </View>
@@ -42,11 +41,11 @@ class Reactions extends Component<Props> {
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    paddingHorizontal: px(10),
+    paddingHorizontal: px(15),
     flexDirection: 'row',
     flexWrap: 'wrap',
     marginBottom: px(7.5),
-    marginTop: px(-5)
+    marginTop: px(-5),
   },
   reactionsRight: {
     justifyContent: 'flex-end',

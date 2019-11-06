@@ -1,10 +1,9 @@
 import {store} from '../../App';
-
-import {setUserTyping} from '../../actions/chats';
 import {updateEntity} from '../../actions/entities';
 import {setTyping} from '../../actions/chats/thunks';
+import {UserTypingEvent, ChatMarkedEvent} from './types';
 
-export const handleChatsMarkedAsSeen = data => {
+export const handleChatsMarkedAsSeen = (data: ChatMarkedEvent) => {
   let chatId = data.channel;
   let dmCount = data.dm_count;
   let unreadCount = data.unread_count_display;
@@ -16,7 +15,7 @@ export const handleChatsMarkedAsSeen = data => {
   );
 };
 
-export const handleUserTyping = data => {
+export const handleUserTyping = (data: UserTypingEvent) => {
   let userId = data.user;
   let chatId = data.channel;
   store.dispatch(setTyping(userId, chatId) as any);

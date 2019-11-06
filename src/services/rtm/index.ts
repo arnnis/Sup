@@ -4,7 +4,13 @@ import {batch} from 'react-redux';
 import {setConnectionStatus} from '../../actions/app';
 import {getCurrentUser} from '../../actions/app/thunks';
 import {getChats} from '../../actions/chats/thunks';
-import {sendMessage, handleMessageRecieved, handleSendMessageAckRecieved} from './message-events';
+import {
+  sendMessage,
+  handleMessageRecieved,
+  handleSendMessageAckRecieved,
+  handleReactionAdded,
+  handleReactionRemoved,
+} from './message-events';
 import {handleUserTyping, handleChatsMarkedAsSeen} from './chat-events';
 
 export let socket: WebSocket = null;
@@ -59,6 +65,10 @@ export const init = async () => {
 
     if (data.type === 'user_typing') handleUserTyping(data);
 
+    if (data.type === 'reaction_added') handleReactionAdded(data);
+
+    if (data.type === 'reaction_removed') handleReactionRemoved(data);
+
     // Chat was seen by current user.
     if (data.type === 'im_marked' || data.type === 'channel_marked' || data.type === 'group_marked')
       handleChatsMarkedAsSeen(data);
@@ -80,7 +90,7 @@ export const init = async () => {
     store.dispatch(setConnectionStatus('disconnected'));
     connected = false;
 
-    reconnect();
+    !__DEV__ && reconnect();
   };
 
   socket.onerror = error => {

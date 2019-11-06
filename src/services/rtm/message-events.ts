@@ -7,6 +7,7 @@ import {storeEntities, updateEntity} from '../../actions/entities';
 import {RootState} from '../../reducers';
 import {getMember} from '../../actions/members/thunks';
 import dayjs from 'dayjs';
+import { ReactionAddedEvent, MessageEvent } from './types';
 
 export const sendMessage = (message: MessageInput) => {
   let fingerprint = Math.random() * 100000000000000000;
@@ -31,7 +32,7 @@ export const sendMessage = (message: MessageInput) => {
   return message;
 };
 
-export const handleMessageRecieved = data => {
+export const handleMessageRecieved = (data: MessageEvent) => {
   let messageId = data.ts;
   let chatId = data.channel;
   let userId = data.user;
@@ -46,7 +47,7 @@ export const handleMessageRecieved = data => {
     // Increase chat unread count
     let state = store.getState() as RootState;
     let chat = state.entities.chats.byId[chatId];
-    let isMe = userId === state.teams.list.find(tm => tm.id === state.teams.currentTeam)?.userId;
+    let isMe = userId === (state.teams.list.find(tm => tm.id === state.teams.currentTeam)?.userId);
     if (!isMe)
       store.dispatch(
         updateEntity('chats', chatId, {
@@ -77,3 +78,62 @@ export const handleSendMessageAckRecieved = data => {
     }
   }
 };
+
+
+export const handleReactionAdded = (data: ReactionAddedEvent) => {
+  let { item: { ts: messageId } } = data
+  const state: RootState = store.getState() as any
+  let message = state.entities.messages.byId[messageId]
+
+  // Message not loaded. so no need to update reaction
+  if (!message) return
+
+  let reactions = message.reactions
+
+  // Reaction already exist. so only increase count
+  if (reactions && reactions.some(reaction => reaction.name === data.reaction))
+    store.dispatch(
+      updateEntity('messages', messageId, {
+        reactions: reactions.map(reaction => reaction.name === data.reaction? {
+          ...reaction,
+          count: reaction.count + 1
+        } : reaction)
+      }),
+    );
+  else
+    store.dispatch(
+      updateEntity('messages', messageId, {
+        reactions: [...(reactions || []), { name: data.reaction, users: [data.user], count: 1 }]
+      }),
+    );
+}
+
+export const handleReactionRemoved = (data: ReactionAddedEvent) => {
+  let { item: { ts: messageId } } = data
+  const state: RootState = store.getState() as any
+  let message = state.entities.messages.byId[messageId]
+
+  // Message not loaded. so no need to update reaction
+  if (!message) return
+
+  const reactions = message.reactions
+
+  const reaction = message.reactions?.find(reaction => reaction.name === data.reaction)
+
+  // Check reaction exists
+  if (!reaction) return
+
+  // Count is 1, so we should remove reaction object, otherwise decrease count by 1
+  if (reaction.count === 1)
+    store.dispatch(
+      updateEntity('messages', messageId, {
+        reactions: reactions.filter(reaction => reaction.name !== data.reaction)
+      }),
+    );
+  else
+    store.dispatch(
+      updateEntity('messages', messageId, {
+        reactions: reactions.map(reaction => reaction.name === data.reaction? ({ ...reaction, count: reaction.count - 1 }): reaction)
+      }),
+    );
+}
