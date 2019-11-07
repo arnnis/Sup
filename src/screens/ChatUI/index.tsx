@@ -187,7 +187,7 @@ class ChatUI extends Component<Props> {
   }
 
   renderInputToolbar() {
-    return <InputToolbar chatId={this.props.currentChat.id} />;
+    return <InputToolbar chatId={this.props.chatId} threadId={this.props.threadId} />;
   }
 
   renderPresense() {

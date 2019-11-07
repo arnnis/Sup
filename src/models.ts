@@ -97,6 +97,8 @@ export interface Message {
   user: string;
   text: string;
   ts: string;
+  channel?: string;
+  thread_ts?: string;
   edited?: {
     user: string;
     ts: string;
@@ -107,9 +109,9 @@ export interface Message {
   pinned_to?: string[];
   reactions?: MessageReaction[];
   files?: MessageAttachement[];
-  reply_count: number;
-  reply_users: string[];
-  reply_users_count: number;
+  reply_count?: number;
+  reply_users?: string[];
+  reply_users_count?: number;
 }
 
 export type MessageSubType =
@@ -207,11 +209,11 @@ interface AttachmentField {
   short: boolean;
 }
 
-export type MessageInput = SocketMessageResult & {
-  id?: number;
+export type SendInput = SocketMessageResult & {
   type: 'message' | 'ping';
   channel?: string;
   text?: string;
+  thread_ts?: string;
 };
 
 export interface SocketMessageResult {
@@ -220,8 +222,11 @@ export interface SocketMessageResult {
   ts?: string;
 }
 
-export type PendingMessage = Message &
-  MessageInput & {
-    id: string;
-    pending: boolean;
-  };
+export type PendingMessage = Message & {
+  id: number;
+  pending: boolean;
+};
+
+export type PingMessage = SendInput & {
+  id: number;
+};

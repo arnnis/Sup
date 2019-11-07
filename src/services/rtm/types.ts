@@ -4,6 +4,7 @@ export interface MessageEvent {
   user: string;
   text: string;
   ts: string;
+  thread_ts?: string;
 }
 
 export interface UserTypingEvent {

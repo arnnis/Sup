@@ -60,9 +60,21 @@ export const messagesReducer: Reducer<MessagesState, RootAction> = (
     }
 
     case 'ADD_MESSAGE_TO_CHAT': {
-      let {chatId, messageId} = action.payload;
+      let {chatId, messageId, threadId} = action.payload;
 
-      if ((state.list[chatId] || []).includes(messageId)) return state;
+      if ((state.list[threadId || chatId] || []).includes(messageId)) return state;
+
+      // When message is for a thread,
+      // we add the message to end of array,
+      // because thread list is not reverted in ui.
+      if (threadId)
+        return {
+          ...state,
+          list: {
+            ...state.list,
+            [threadId]: [...(state.list[threadId] || []), messageId],
+          },
+        };
 
       return {
         ...state,
@@ -87,6 +99,17 @@ export const messagesReducer: Reducer<MessagesState, RootAction> = (
     case 'ADD_PENDING_MESSAGE': {
       let {message} = action.payload;
       let chatId = message.channel;
+      let threadId = message.thread_ts;
+
+      if (threadId)
+        return {
+          ...state,
+          list: {
+            ...state.list,
+            [threadId]: [...(state.list[threadId] || []), message.id],
+          },
+        };
+
       return {
         ...state,
         list: {

@@ -11,6 +11,7 @@ import {sendMessage} from '../../services/rtm';
 
 interface Props {
   chatId: string;
+  threadId: string;
 }
 
 class InputToolbar extends Component<Props> {
@@ -26,6 +27,7 @@ class InputToolbar extends Component<Props> {
       type: 'message',
       text: this.state.text,
       channel: this.props.chatId,
+      thread_ts: this.props.threadId,
     });
     this.setState({text: ''});
   };

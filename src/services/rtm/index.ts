@@ -61,7 +61,12 @@ export const init = async () => {
 
     console.log(`[message] Data received from server:`, data);
 
-    if (data.type === 'message') handleMessageRecieved(data);
+    if (data.type === 'message') {
+      // Ignoring this subtype,
+      // because the main message for thread is being sent exactly after this, with an extra thread_ts
+      if (data.subtype === 'message_replied') return;
+      handleMessageRecieved(data);
+    }
 
     if (data.type === 'user_typing') handleUserTyping(data);
 
