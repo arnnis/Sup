@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   reaction: {
-    borderRadius: px(15),
+    borderRadius: px(5),
     backgroundColor: '#eee',
     marginLeft: px(7.5),
     justifyContent: 'center',
