@@ -59,10 +59,15 @@ export const messagesReducer: Reducer<MessagesState, RootAction> = (
       };
     }
 
+    // Adds a message to a chat (regular chat or thread)
     case 'ADD_MESSAGE_TO_CHAT': {
       let {chatId, messageId, threadId} = action.payload;
 
+      // Check for possible duplication in list
       if ((state.list[threadId || chatId] || []).includes(messageId)) return state;
+
+      // pagination must be ended for this thread: if not it will break pagination. (pagination uses last message ts to load older messages)
+      if (threadId && state.nextCursor[threadId] !== 'end') return;
 
       // When message is for a thread,
       // we add the message to end of array,
