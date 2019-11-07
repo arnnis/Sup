@@ -50,7 +50,13 @@ class InputToolbar extends Component<Props> {
   };
 
   renderComposer() {
-    return <Composer text={this.state.text} onTextChanged={this.handleTextChanged} />;
+    return (
+      <Composer
+        text={this.state.text}
+        onTextChanged={this.handleTextChanged}
+        isThread={!!this.props.threadId}
+      />
+    );
   }
 
   renderSend() {

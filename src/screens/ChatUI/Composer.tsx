@@ -5,6 +5,7 @@ import px from '../../utils/normalizePixel';
 interface Props {
   text: string;
   onTextChanged(text: string): void;
+  isThread: boolean;
 }
 
 class Composer extends Component<Props> {
@@ -33,11 +34,13 @@ class Composer extends Component<Props> {
   };
 
   render() {
+    const {isThread} = this.props;
+    const placeholder = `Type a ${isThread ? 'reply' : 'message'}...`;
     return (
       <TextInput
         accessible
-        accessibilityLabel="Type a message..."
-        placeholder="Type a message..."
+        accessibilityLabel={placeholder}
+        placeholder={placeholder}
         placeholderTextColor="#ccc"
         multiline
         onChange={this.onContentSizeChange}
