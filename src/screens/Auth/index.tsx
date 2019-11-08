@@ -16,6 +16,9 @@ import {DispatchProp, connect} from 'react-redux';
 import {signinTeam} from '../../actions/teams/thunks';
 import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 import rem from '../../utils/stylesheet/rem';
+import Touchable from '../../components/Touchable';
+import Header from '../../components/Header';
+import Screen from '../../components/Screen';
 
 type Props = ThemeInjectedProps & DispatchProp<any>;
 
@@ -30,7 +33,7 @@ class Auth extends Component<Props> {
 
   renderHeader() {
     return (
-      <Svg style={{width: '100%', marginTop: -px(25)}}>
+      <Svg style={{width: '100%', marginTop: -px(10)}}>
         <Defs>
           <LinearGradient
             id="prefix__a"
@@ -45,16 +48,18 @@ class Auth extends Component<Props> {
         </Defs>
         <Path
           data-name="Path 1"
-          d={`M23 224.095s97.5 ${rem(37.06)} ${rem(194.587)} 0 ${rem(180.413)} 0 ${rem(
+          d={`M23 125.095s97.5 ${rem(37.06)} ${rem(194.587)} 0 ${rem(180.413)} 0 ${rem(
             180.413,
           )} 0V2.865H23z`}
           transform="translate(-23 -2.865)"
           fill="url(#prefix__a)"
         />
-        <View style={styles.headerContainer}>
-          <Text style={styles.appTitle}>WhatSlack</Text>
-          <Text style={styles.authMode}>signin</Text>
-        </View>
+        <>
+          <View style={styles.headerContainer}>
+            <Text style={styles.appTitle}>Sup</Text>
+            <Text style={styles.authMode}>signin</Text>
+          </View>
+        </>
       </Svg>
     );
   }
@@ -180,34 +185,65 @@ class Auth extends Component<Props> {
     );
   }
 
+  renderSigninToPlayground() {
+    let {theme, dispatch} = this.props;
+    return (
+      <Touchable
+        onPress={() => {
+          this.setState({
+            domain: 'supplayground',
+            email: 'arnnnnnis@gmail.com',
+            password: 'abc161920',
+          });
+        }}
+        style={{
+          width: px(175),
+          borderRadius: px(10),
+          borderWidth: px(1),
+          padding: px(2.5),
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginTop: px(15),
+          borderColor: theme.foregroundColorTransparent10,
+        }}>
+        <Text style={{color: theme.foregroundColor}}>fill with sample team</Text>
+      </Touchable>
+    );
+  }
+
   render() {
     let {theme} = this.props;
     return (
-      <ScrollView style={{flex: 1, backgroundColor: theme.backgroundColor}}>
-        <KeyboardAvoidingView style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
-          {this.renderHeader()}
-          {this.renderDomainInput()}
-          {this.renderDivider()}
-          {this.renderInput('email', 'Email', 'Enter your email', (email: string) =>
-            this.setState({email}),
-          )}
-          {this.renderInput(
-            'password',
-            'Password',
-            'Enter your password',
-            (password: string) => this.setState({password}),
-            true,
-          )}
-          {this.renderInput(
-            'pin',
-            '2FA Pin (if enabled)',
-            'Enter your 2fa pin',
-            (pin: string) => this.setState({pin}),
-            true,
-          )}
-          {this.renderSubmitButton()}
-        </KeyboardAvoidingView>
-      </ScrollView>
+      <Screen>
+        <Header left="back" style={{backgroundColor: '#517AC2'}} />
+        <ScrollView bounces={false} style={{flex: 1, backgroundColor: theme.backgroundColor}}>
+          <KeyboardAvoidingView
+            style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
+            {this.renderHeader()}
+            {this.renderDomainInput()}
+            {this.renderDivider()}
+            {this.renderInput('email', 'Email', 'Enter your email', (email: string) =>
+              this.setState({email}),
+            )}
+            {this.renderInput(
+              'password',
+              'Password',
+              'Enter your password',
+              (password: string) => this.setState({password}),
+              true,
+            )}
+            {this.renderInput(
+              'pin',
+              '2FA Pin (if enabled)',
+              'Enter your 2fa pin',
+              (pin: string) => this.setState({pin}),
+              true,
+            )}
+            {this.renderSubmitButton()}
+            {this.renderSigninToPlayground()}
+          </KeyboardAvoidingView>
+        </ScrollView>
+      </Screen>
     );
   }
 }
@@ -221,7 +257,7 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     width: '100%',
-    height: px(250),
+    height: px(150),
     justifyContent: 'center',
     alignItems: 'center',
   },
