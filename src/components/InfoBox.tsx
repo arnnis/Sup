@@ -4,8 +4,6 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import px from '../utils/normalizePixel';
 import ThemeContext from '../contexts/theme';
 import Touchable from './Touchable';
-import {DispatchProp} from 'react-redux';
-import {togglePresence} from '../actions/app/thunks';
 
 interface Props {
   style?: ViewStyle;
@@ -25,7 +23,11 @@ export const InfoBox: FC<Props> = ({children, style}) => {
             {React.cloneElement(child, {
               isFirst: i === 0,
               isLast: React.Children.count(children) === i + 1,
-              style: {paddingBottom: !isLast ? px(10) : 0, paddingTop: !isFirst ? px(10) : 0},
+              style: {
+                paddingBottom: !isLast ? px(10) : 0,
+                paddingTop: !isFirst ? px(10) : 0,
+                minHeight: px(50),
+              },
             })}
             {!isLast && (
               <View
