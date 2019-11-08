@@ -67,7 +67,7 @@ export const messagesReducer: Reducer<MessagesState, RootAction> = (
       if ((state.list[threadId || chatId] || []).includes(messageId)) return state;
 
       // pagination must be ended for this thread: if not it will break pagination. (pagination uses last message ts to load older messages)
-      if (threadId && state.nextCursor[threadId] !== 'end') return;
+      if (threadId && state.nextCursor[threadId] !== 'end') return state;
 
       // When message is for a thread,
       // we add the message to end of array,

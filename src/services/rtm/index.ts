@@ -62,9 +62,8 @@ export const init = async () => {
     console.log(`[message] Data received from server:`, data);
 
     if (data.type === 'message') {
-      // Ignoring this subtype,
-      // because the main message for thread is being sent exactly after this, with an extra thread_ts
-      if (data.subtype === 'message_replied') return;
+      // Ingoring all subtype. this event is only for new messages for chat or thread
+      if (data.subtype) return;
       handleMessageRecieved(data);
     }
 
