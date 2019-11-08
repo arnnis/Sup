@@ -62,7 +62,7 @@ export const init = async () => {
     console.log(`[message] Data received from server:`, data);
 
     if (data.type === 'message') {
-      // Ingoring all subtype. this event is only for new messages for chat or thread
+      // Ingoring all subtype. only handling new message for chat or thread here.
       if (data.subtype) return;
       handleMessageRecieved(data);
     }
