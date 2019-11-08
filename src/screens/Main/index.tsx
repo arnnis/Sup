@@ -35,18 +35,17 @@ const Main = React.memo(
       global['toast'] = toast => dispatch(toggleToast(toast));
     }, []);
 
-    let _renderChangeTeamButton = () => (
-      <ChangeTeamButton
-        onPress={() => {
-          if (drawerOpen) {
-            drawerRef.current.closeDrawer();
-          } else {
-            drawerRef.current.openDrawer();
-          }
-          setDrawerOpen(!drawerOpen);
-        }}
-      />
-    );
+    let _toggleDrawer = () => {
+      if (drawerOpen) {
+        drawerRef.current.closeDrawer();
+        setDrawerOpen(false);
+      } else {
+        drawerRef.current.openDrawer();
+        setDrawerOpen(true);
+      }
+    };
+
+    let _renderChangeTeamButton = () => <ChangeTeamButton onPress={_toggleDrawer} />;
 
     let _renderConnectionStatus = () =>
       currentTeam
@@ -62,15 +61,10 @@ const Main = React.memo(
         <DrawerLayout
           ref={ref => (drawerRef.current = ref)}
           drawerType="slide"
-          renderNavigationView={() => (
-            <TeamsList
-              onTeamSelect={() => {
-                if (drawerOpen) drawerRef.current.closeDrawer();
-                else drawerRef.current.openDrawer();
-              }}
-            />
-          )}
-          drawerWidth={px(185)}>
+          renderNavigationView={() => <TeamsList onTeamSelect={_toggleDrawer} />}
+          drawerWidth={px(185)}
+          onDrawerClose={() => setDrawerOpen(false)}
+          onDrawerOpen={() => setDrawerOpen(true)}>
           <View style={{flex: 1, flexDirection: 'row'}}>
             <MasterView>
               <Header
