@@ -209,6 +209,8 @@ interface AttachmentField {
   short: boolean;
 }
 
+export type Presence = 'away' | 'auto';
+
 export type SendInput = SocketMessageResult & {
   type: 'message' | 'ping';
   channel?: string;

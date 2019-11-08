@@ -1,9 +1,11 @@
 import React, {useContext, FC} from 'react';
-import {View, StyleSheet, ViewStyle, Text} from 'react-native';
+import {View, StyleSheet, ViewStyle, Text, Switch, ActivityIndicator, Platform} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import px from '../utils/normalizePixel';
 import ThemeContext from '../contexts/theme';
 import Touchable from './Touchable';
+import {DispatchProp} from 'react-redux';
+import {togglePresence} from '../actions/app/thunks';
 
 interface Props {
   style?: ViewStyle;
@@ -14,10 +16,24 @@ export const InfoBox: FC<Props> = ({children, style}) => {
   return (
     <View style={[styles.container, {backgroundColor: theme.backgroundColor}, style]}>
       {React.Children.map(children, (child, i) => {
-        return React.cloneElement(child, {
-          isFirst: i === 0,
-          isLast: React.Children.count(children) === i + 1,
-        });
+        const isFirst = i === 0;
+        const isLast = React.Children.count(children) === i + 1;
+        if (!React.isValidElement(child)) return null;
+        // Adds a Divider and padding to each child. ( all child Must have a style propery for parent )
+        return (
+          <View>
+            {React.cloneElement(child, {
+              isFirst: i === 0,
+              isLast: React.Children.count(children) === i + 1,
+              style: {paddingBottom: !isLast ? px(10) : 0, paddingTop: !isFirst ? px(10) : 0},
+            })}
+            {!isLast && (
+              <View
+                style={{width: '100%', height: StyleSheet.hairlineWidth, backgroundColor: '#ccc'}}
+              />
+            )}
+          </View>
+        );
       })}
     </View>
   );
@@ -27,21 +43,17 @@ interface InfoRowProps {
   title: string;
   isLast?: boolean;
   isFirst?: boolean;
+  style?: ViewStyle;
 }
 
-export const InfoRow: FC<InfoRowProps> = ({title, isLast, isFirst, children}) => {
+export const InfoRow: FC<InfoRowProps> = ({title, isLast, isFirst, style, children}) => {
   let {theme} = useContext(ThemeContext);
   return (
     <>
-      <View
-        style={{
-          marginTop: !isFirst ? px(10) : 0,
-          marginBottom: isFirst ? px(10) : 0,
-        }}>
+      <View style={style}>
         <Text style={styles.infoTitle}>{title}</Text>
         <Text style={[styles.infoBody, {color: theme.foregroundColor}]}>{children}</Text>
       </View>
-      {!isLast && <View style={{width: '100%', height: px(1), backgroundColor: '#ccc'}} />}
     </>
   );
 };
@@ -51,37 +63,87 @@ interface ActionRowProps {
   onPress?(): void;
   isLast?: boolean;
   isFirst?: boolean;
+  style?: ViewStyle;
 }
 
-export const ActionRow: FC<ActionRowProps> = ({icon, onPress, isFirst, isLast, children}) => {
+export const ActionRow: FC<ActionRowProps> = ({icon, onPress, style, children}) => {
   let {theme} = useContext(ThemeContext);
   return (
-    <View>
-      <Touchable
-        onPress={onPress}
-        style={{
+    <Touchable
+      onPress={onPress}
+      style={[
+        style,
+        {
           flexDirection: 'row',
           justifyContent: 'space-between',
           alignItems: 'center',
-          marginTop: !isFirst ? px(10) : px(0),
-          marginBottom: isFirst ? px(10) : 0,
-        }}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          {icon && (
-            <MaterialCommunityIcons
-              name={icon}
-              size={px(20)}
-              style={{marginRight: px(5)}}
-              color={theme.foregroundColor}
-            />
-          )}
-          <Text style={[styles.actionTitle, {color: theme.foregroundColor}]}>{children}</Text>
-        </View>
+        },
+      ]}>
+      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        {icon && (
+          <MaterialCommunityIcons
+            name={icon}
+            size={px(20)}
+            style={{marginRight: px(5)}}
+            color={theme.foregroundColor}
+          />
+        )}
+        <Text style={[styles.actionTitle, {color: theme.foregroundColor}]}>{children}</Text>
+      </View>
 
-        <MaterialCommunityIcons name="chevron-right" size={px(25)} color={theme.foregroundColor} />
-      </Touchable>
-      {!isLast && <View style={{width: '100%', height: px(1), backgroundColor: '#ccc'}} />}
-    </View>
+      <MaterialCommunityIcons name="chevron-right" size={px(25)} color={theme.foregroundColor} />
+    </Touchable>
+  );
+};
+
+type SwitchRowProps = {
+  icon?: string;
+  isLast?: boolean;
+  isFirst?: boolean;
+  style?: ViewStyle;
+  value: boolean;
+  onValueChange(value: boolean): void;
+  changing?: boolean;
+};
+
+export const SwitchRow: FC<SwitchRowProps> = ({
+  icon,
+  style,
+  value,
+  onValueChange,
+  changing,
+  children,
+}) => {
+  let {theme} = useContext(ThemeContext);
+  return (
+    <Touchable
+      onPress={() => onValueChange(!value)}
+      style={[
+        style,
+        {
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        },
+      ]}>
+      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        {icon && (
+          <MaterialCommunityIcons
+            name={icon}
+            size={px(20)}
+            style={{marginRight: px(5)}}
+            color={theme.foregroundColor}
+          />
+        )}
+        <Text style={[styles.actionTitle, {color: theme.foregroundColor}]}>{children}</Text>
+      </View>
+
+      {!changing ? (
+        <Switch onValueChange={onValueChange} value={value || false} />
+      ) : (
+        <ActivityIndicator size={'small'} color={theme.foregroundColor} />
+      )}
+    </Touchable>
   );
 };
 

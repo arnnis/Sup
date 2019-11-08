@@ -1,5 +1,6 @@
 import {action} from 'typesafe-actions';
 import {AppState} from '../../reducers/app';
+import {Presence} from '../../models';
 
 export type ConnectionStatus = 'connected' | 'connecting' | 'disconnected';
 
@@ -18,3 +19,5 @@ export const openBottomSheet = (screen: string, params: any) =>
 export const closeBottomSheet = () => action('CLOSE_BOTTOM_SHEET');
 
 export const toggleToast = (toast: AppState['toast']) => action('TOGGLE_TOAST', {toast});
+
+export const setPresence = (presence: Presence) => action('SET_PRESENCE', {presence});

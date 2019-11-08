@@ -14,8 +14,9 @@ import Touchable from '../components/Touchable';
 import FastImage from 'react-native-fast-image';
 import {currentTeamTokenSelector} from '../reducers/teams';
 import Screen from '../components/Screen';
-import {InfoBox, InfoRow, ActionRow} from '../components/InfoBox';
+import {InfoBox, InfoRow, ActionRow, SwitchRow} from '../components/InfoBox';
 import withStylesheet, {StyleSheetInjectedProps} from '../utils/stylesheet/withStylesheet';
+import {togglePresence} from '../actions/app/thunks';
 
 type Props = ReturnType<typeof mapStateToProps> &
   StyleSheetInjectedProps &
@@ -29,6 +30,7 @@ type Props = ReturnType<typeof mapStateToProps> &
 class UserProfile extends Component<Props> {
   state = {
     isOpeningChat: false,
+    changingPresence: false,
   };
 
   componentDidMount() {
@@ -143,17 +145,28 @@ class UserProfile extends Component<Props> {
   }
 
   renderMeOptions() {
+    let _togglePresence = async () => {
+      this.setState({changingPresence: true});
+      await this.props.dispatch(togglePresence());
+      this.setState({changingPresence: false});
+    };
     return (
       <>
         <InfoBox>
           {/* {this.renderInfoRow('Set a status', '', 'face')} */}
-          <ActionRow icon="face" onPress={() => alert('Set a status')}>
-            Set a status
+          <SwitchRow
+            icon="face"
+            onValueChange={_togglePresence}
+            value={this.props.presence === 'auto'}
+            changing={this.state.changingPresence}>
+            Presence ({this.props.presence})
+          </SwitchRow>
+          <ActionRow icon="settings-outline" onPress={() => alert('Set a status')}>
+            Theme
           </ActionRow>
           <ActionRow icon="settings-outline" onPress={() => alert('Set a status')}>
-            Prefrences
+            Do not disturb
           </ActionRow>
-          {/* {this.renderInfoRow('Prefrences', '', 'settings-outline')} */}
         </InfoBox>
       </>
     );
@@ -323,6 +336,7 @@ const dynamicStyles = {
 const mapStateToProps = (state: RootState) => ({
   entities: state.entities,
   token: currentTeamTokenSelector(state),
+  presence: state.app.presence,
 });
 
 export default connect(mapStateToProps)(

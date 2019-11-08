@@ -1,6 +1,7 @@
 import {Reducer} from 'redux';
 import {RootAction} from '../actions';
 import {ConnectionStatus} from '../actions/app';
+import {Presence} from '../models';
 
 export type AppState = Readonly<{
   drawerOpen: boolean;
@@ -14,6 +15,7 @@ export type AppState = Readonly<{
     userId?: string; // used when toast is about a community member (e.g. presense change)
     icon?: 'success' | 'fail';
   };
+  presence: Presence;
 }>;
 
 const initialState: AppState = {
@@ -26,8 +28,8 @@ const initialState: AppState = {
   toast: {
     message: '',
     userId: '',
-    icon: '',
   },
+  presence: 'auto',
 };
 
 export const appReducer: Reducer<AppState, RootAction> = (state = initialState, action) => {
@@ -69,6 +71,13 @@ export const appReducer: Reducer<AppState, RootAction> = (state = initialState, 
       return {
         ...state,
         toast: action.payload.toast,
+      };
+    }
+
+    case 'SET_PRESENCE': {
+      return {
+        ...state,
+        presence: action.payload.presence,
       };
     }
 
