@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, ScrollView, SafeAreaView} from 'react-native';
+import {View, Text, StyleSheet, ScrollView} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Header from '../components/Header';
 import {RootState} from '../reducers';
 import {connect, DispatchProp} from 'react-redux';
-import {NavigationInjectedProps, withNavigation, NavigationActions} from 'react-navigation';
+import {NavigationInjectedProps, withNavigation} from 'react-navigation';
 import px from '../utils/normalizePixel';
 import {User} from '../models';
 import {openChat} from '../actions/chats/thunks';
@@ -15,8 +15,10 @@ import FastImage from 'react-native-fast-image';
 import {currentTeamTokenSelector} from '../reducers/teams';
 import Screen from '../components/Screen';
 import {InfoBox, InfoRow, ActionRow} from '../components/InfoBox';
+import withStylesheet, {StyleSheetInjectedProps} from '../utils/stylesheet/withStylesheet';
 
 type Props = ReturnType<typeof mapStateToProps> &
+  StyleSheetInjectedProps &
   ThemeInjectedProps &
   NavigationInjectedProps &
   DispatchProp<any> & {
@@ -90,7 +92,9 @@ class UserProfile extends Component<Props> {
           marginTop: px(17.5),
         }}>
         {isMe && (
-          <Touchable style={[styles.button, {backgroundColor: theme.backgroundColorLess2}]}>
+          <Touchable
+            disabled
+            style={[styles.button, {backgroundColor: theme.backgroundColorLess2}]}>
             <Text style={[styles.buttonTitle, {color: theme.foregroundColor}]}>Edit Profile</Text>
           </Touchable>
         )}
@@ -165,7 +169,7 @@ class UserProfile extends Component<Props> {
   }
 
   render() {
-    let {entities, navigation, isMe, theme} = this.props;
+    let {entities, navigation, isMe, dynamicStyles} = this.props;
     let userId = navigation.getParam('userId') || this.props.userId;
     let user = entities.users.byId[userId];
 
@@ -182,7 +186,7 @@ class UserProfile extends Component<Props> {
               left="back"
             />
           )}
-          <ScrollView>
+          <ScrollView contentContainerStyle={dynamicStyles.scrollViewContent}>
             {this.renderHeader(user)}
             {this.renderButtons(user)}
             {isMe && this.renderMeOptions()}
@@ -303,9 +307,24 @@ const styles = StyleSheet.create({
   },
 });
 
+const dynamicStyles = {
+  scrollViewContent: {
+    width: '100%',
+    media: [
+      {orientation: 'landscape'},
+      {
+        width: '60%',
+        marginHorizontal: '20%',
+      },
+    ],
+  },
+};
+
 const mapStateToProps = (state: RootState) => ({
   entities: state.entities,
   token: currentTeamTokenSelector(state),
 });
 
-export default connect(mapStateToProps)(withNavigation(withTheme(UserProfile)));
+export default connect(mapStateToProps)(
+  withStylesheet(dynamicStyles)(withNavigation(withTheme(UserProfile))),
+);

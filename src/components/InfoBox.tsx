@@ -68,12 +68,17 @@ export const ActionRow: FC<ActionRowProps> = ({icon, onPress, isFirst, isLast, c
         }}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           {icon && (
-            <MaterialCommunityIcons name={icon} size={px(20)} style={{marginRight: px(5)}} />
+            <MaterialCommunityIcons
+              name={icon}
+              size={px(20)}
+              style={{marginRight: px(5)}}
+              color={theme.foregroundColor}
+            />
           )}
-          <Text style={styles.actionTitle}>{children}</Text>
+          <Text style={[styles.actionTitle, {color: theme.foregroundColor}]}>{children}</Text>
         </View>
 
-        <MaterialCommunityIcons name="chevron-right" size={px(25)} />
+        <MaterialCommunityIcons name="chevron-right" size={px(25)} color={theme.foregroundColor} />
       </Touchable>
       {!isLast && <View style={{width: '100%', height: px(1), backgroundColor: '#ccc'}} />}
     </View>
