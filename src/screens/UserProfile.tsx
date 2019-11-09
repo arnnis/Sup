@@ -202,7 +202,7 @@ class UserProfile extends Component<Props> {
               left="back"
             />
           )}
-          <ScrollView contentContainerStyle={dynamicStyles.scrollViewContent}>
+          <ScrollView contentContainerStyle={!isMe && dynamicStyles.scrollViewContent}>
             {this.renderHeader(user)}
             {this.renderButtons(user)}
             {isMe && this.renderMeOptions()}
