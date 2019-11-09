@@ -19,8 +19,9 @@ import rem from '../../utils/stylesheet/rem';
 import Touchable from '../../components/Touchable';
 import Header from '../../components/Header';
 import Screen from '../../components/Screen';
+import withStylesheet, {StyleSheetInjectedProps} from '../../utils/stylesheet/withStylesheet';
 
-type Props = ThemeInjectedProps & DispatchProp<any>;
+type Props = ThemeInjectedProps & StyleSheetInjectedProps & DispatchProp<any>;
 
 class Auth extends Component<Props> {
   state = {
@@ -192,8 +193,8 @@ class Auth extends Component<Props> {
         onPress={() => {
           this.setState({
             domain: 'supplayground',
-            email: 'arnnnnnis@gmail.com',
-            password: 'abc161920',
+            email: 'arnnnnis@gmail.com',
+            password: 'abc123456',
           });
         }}
         style={{
@@ -212,11 +213,14 @@ class Auth extends Component<Props> {
   }
 
   render() {
-    let {theme} = this.props;
+    let {theme, dynamicStyles} = this.props;
     return (
       <Screen>
         <Header left="back" style={{backgroundColor: '#517AC2'}} />
-        <ScrollView bounces={false} style={{flex: 1, backgroundColor: theme.backgroundColor}}>
+        <ScrollView
+          bounces={false}
+          style={{flex: 1, backgroundColor: theme.backgroundColor}}
+          contentContainerStyle={dynamicStyles.scrollView}>
           <KeyboardAvoidingView
             style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
             {this.renderHeader()}
@@ -289,4 +293,11 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect()(withTheme(Auth));
+const dynamicStyles = {
+  scrollView: {
+    width: '100%',
+    media: [{orientation: 'landscape'}, {width: '60%', marginHorizontal: '20%'}],
+  },
+};
+
+export default connect()(withTheme(withStylesheet(dynamicStyles)(Auth)));
