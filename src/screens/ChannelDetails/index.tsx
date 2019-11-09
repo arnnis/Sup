@@ -13,8 +13,9 @@ import ChannelMembersCount from '../ChatUI/ChannelMembersCount';
 import ChannelMemberCell from './ChannelMemberCell';
 import { getChannelMembers } from '../../actions/chats/thunks';
 import Screen from '../../components/Screen';
+import withStylesheet, { StyleSheetInjectedProps } from '../../utils/stylesheet/withStylesheet';
 
-type Props = ReturnType<typeof mapStateToProps> & ThemeInjectedProps & DispatchProp<any> & {
+type Props = ReturnType<typeof mapStateToProps> & ThemeInjectedProps & DispatchProp<any> & StyleSheetInjectedProps & {
   chatId?: string
 }
 
@@ -84,7 +85,7 @@ class ChatDetails extends Component<Props> {
   }
 
   render() {
-    let {theme, membersList} = this.props;
+    let {theme, membersList, dynamicStyles} = this.props;
     return (
         <Screen>
           <Header left="back" center="Channel Info" />
@@ -94,6 +95,7 @@ class ChatDetails extends Component<Props> {
             ListHeaderComponent={this.renderListHeader()}
             onEndReached={this.getChannelMembers}
             onEndReachedThreshold={0.5}
+            contentContainerStyle={dynamicStyles.scrollViewContent}
           />
         </Screen>
     );
@@ -109,6 +111,19 @@ const styles = StyleSheet.create({
     fontSize: px(16),
   },
 });
+
+const dynamicStyles = {
+  scrollViewContent: {
+    width: '100%',
+    media: [
+      {orientation: 'landscape'},
+      {
+        width: '60%',
+        marginHorizontal: '20%',
+      },
+    ],
+  },
+};
 
 const mapStateToProps = (state: RootState, ownProps) => {
   let chatId = ownProps.chatId ?? ownProps?.navigation.getParam('chatId')
@@ -126,4 +141,4 @@ const mapStateToProps = (state: RootState, ownProps) => {
   }
 }
 
-export default connect(mapStateToProps)(withTheme(ChatDetails)) 
+export default connect(mapStateToProps)(withTheme(withStylesheet(dynamicStyles)(ChatDetails) )) 
