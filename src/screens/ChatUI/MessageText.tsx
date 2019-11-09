@@ -78,6 +78,8 @@ class MessageText extends Component<Props> {
     //     text = 'File'
     // }
 
+    if (!text) return null
+
     return (
       <View style={styles.container}>
         <ParsedText

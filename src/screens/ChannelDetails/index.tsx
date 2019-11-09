@@ -40,8 +40,8 @@ class ChatDetails extends Component<Props> {
   }
 
   renderMembersCount() {
-    let {chatType, chatId} = this.props;
-    return chatType === "channel" && <ChannelMembersCount chatId={chatId} />
+    let {chatType, chatId, theme} = this.props;
+    return chatType === "channel" && <ChannelMembersCount chatId={chatId} style={{color: theme.foregroundColor}} />
   }
 
   renderPresense() {
@@ -69,7 +69,7 @@ class ChatDetails extends Component<Props> {
     let {chatId, chat, theme} = this.props;
     return (
       <>
-      <InfoBox style={{flexDirection: 'row'}}>
+      <InfoBox isList={false} style={{flexDirection: 'row'}}>
       <ChatAvatar chatId={chatId} size={px(67)} />
       <View style={{flex: 1, justifyContent: 'center', paddingLeft: px(15)}}>
         {this.renderChatName()}

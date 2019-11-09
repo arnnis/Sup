@@ -11,8 +11,9 @@ import {View, StyleSheet, Text, ToastAndroid, Platform, ViewStyle, TextStyle} fr
 import px from '../../utils/normalizePixel';
 import Touchable from '../../components/Touchable';
 import {currentTeamTokenSelector, meSelector} from '../../reducers/teams';
+import withTheme, { ThemeInjectedProps } from '../../contexts/theme/withTheme';
 
-type Props = ReturnType<typeof mapStateToProps> & {
+type Props = ReturnType<typeof mapStateToProps> & ThemeInjectedProps & {
   messageId: string;
 };
 // For all files (including sounds) except videos and images.
@@ -20,17 +21,18 @@ class MessageFilesList extends Component<Props> {
   render() {
     let {message, files, isMe} = this.props;
     if (!message || !files || files.length === 0) return null;
+    let File = withTheme(MessageFile)
     return (
       <View style={styles.container}>
         {files.map(file => (
-          <MessageFile file={file} token={this.props.token} isMe={isMe} />
+          <File file={file} token={this.props.token} isMe={isMe} />
         ))}
       </View>
     );
   }
 }
 
-interface MessageFileProps {
+type MessageFileProps = ThemeInjectedProps & {
   token: string;
   file: MessageAttachement;
   containerStyle?: ViewStyle;
@@ -215,18 +217,18 @@ export class MessageFile extends Component<MessageFileProps, MessageFileState> {
   }
 
   renderName() {
-    let {file, textStyle} = this.props;
+    let {file, textStyle, theme, isMe} = this.props;
     return (
-      <Text style={[styles.fileName, textStyle]} numberOfLines={2}>
+      <Text style={[styles.fileName, {color: theme.foregroundColor}, isMe && {color: '#fff'}, textStyle]} numberOfLines={2}>
         {file.name}
       </Text>
     );
   }
 
   renderFileSizeAndType() {
-    let {file, textStyle} = this.props;
+    let {file, textStyle, theme, isMe} = this.props;
     return (
-      <Text style={[styles.fileSizeAndType, textStyle]}>
+      <Text style={[styles.fileSizeAndType, {color: theme.foregroundColor}, isMe && {color: '#fff'}, textStyle]}>
         {bytes(file.size)} {file.filetype.toUpperCase()}
       </Text>
     );
@@ -307,4 +309,4 @@ const mapStateToProps = (state: RootState, ownProps) => {
   };
 };
 
-export default connect(mapStateToProps)(MessageFilesList);
+export default connect(mapStateToProps)(withTheme(MessageFilesList) );

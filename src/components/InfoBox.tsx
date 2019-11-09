@@ -9,32 +9,39 @@ import {togglePresence} from '../actions/app/thunks';
 
 interface Props {
   style?: ViewStyle;
+  isList?: boolean;
 }
 
-export const InfoBox: FC<Props> = ({children, style}) => {
+export const InfoBox: FC<Props> = ({children, style, isList = true}) => {
   let {theme} = useContext(ThemeContext);
   return (
     <View style={[styles.container, {backgroundColor: theme.backgroundColor}, style]}>
-      {React.Children.map(children, (child, i) => {
-        const isFirst = i === 0;
-        const isLast = React.Children.count(children) === i + 1;
-        if (!React.isValidElement(child)) return null;
-        // Adds a Divider and padding to each child. ( all child Must have a style propery for parent )
-        return (
-          <View>
-            {React.cloneElement(child, {
-              isFirst: i === 0,
-              isLast: React.Children.count(children) === i + 1,
-              style: {paddingBottom: !isLast ? px(10) : 0, paddingTop: !isFirst ? px(10) : 0},
-            })}
-            {!isLast && (
-              <View
-                style={{width: '100%', height: StyleSheet.hairlineWidth, backgroundColor: '#ccc'}}
-              />
-            )}
-          </View>
-        );
-      })}
+      {isList
+        ? React.Children.map(children, (child, i) => {
+            const isFirst = i === 0;
+            const isLast = React.Children.count(children) === i + 1;
+            if (!React.isValidElement(child)) return null;
+            // Adds a Divider and padding to each child. ( all child Must have a style propery for parent )
+            return (
+              <>
+                {React.cloneElement(child, {
+                  isFirst: i === 0,
+                  isLast: React.Children.count(children) === i + 1,
+                  style: {paddingBottom: !isLast ? px(10) : 0, paddingTop: !isFirst ? px(10) : 0},
+                })}
+                {!isLast && (
+                  <View
+                    style={{
+                      width: '100%',
+                      height: StyleSheet.hairlineWidth,
+                      backgroundColor: '#ccc',
+                    }}
+                  />
+                )}
+              </>
+            );
+          })
+        : children}
     </View>
   );
 };

@@ -1,13 +1,15 @@
 import React, { FC } from 'react';
 import {RootState} from '../../reducers';
 import { connect } from 'react-redux';
-import { Text, StyleSheet } from 'react-native';
+import { Text, StyleSheet, TextStyle } from 'react-native';
 import px from '../../utils/normalizePixel';
 
-type Props = ReturnType<typeof mapStateToProps>
+type Props = ReturnType<typeof mapStateToProps> & {
+  style?: TextStyle
+}
 
-const ChatMembersCount: FC<Props> = ({fullLoad, chat}) => {
-  return <Text style={styles.membersCount}>{fullLoad?.loading? '...' : fullLoad?.loaded? `${chat?.num_members}`: ''} members</Text>
+const ChatMembersCount: FC<Props> = ({fullLoad, chat, style}) => {
+  return <Text style={[styles.membersCount, style]}>{fullLoad?.loading? '...' : fullLoad?.loaded? `${chat?.num_members}`: ''} members</Text>
 };
 
 const styles = StyleSheet.create({
