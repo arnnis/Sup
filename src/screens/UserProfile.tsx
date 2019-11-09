@@ -167,9 +167,9 @@ class UserProfile extends Component<Props> {
             onPress={() => this.props.navigation.navigate('SelectTheme')}>
             Theme ({theme.displayName})
           </ActionRow>
-          <ActionRow icon="settings-outline" onPress={() => alert('Set a status')}>
+          {/* <ActionRow icon="settings-outline" onPress={() => alert('Set a status')}>
             Do not disturb
-          </ActionRow>
+          </ActionRow> */}
         </InfoBox>
       </>
     );
