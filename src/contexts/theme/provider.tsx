@@ -21,7 +21,8 @@ class ThemeProvider extends Component<unknown, State> {
 
   async componentDidMount() {
     let themeKey = (await AsyncStorage.getItem('themeKey')) as ThemeKey;
-    themeKey && (await this.setState({themeKey, isLoadingTheme: false}));
+    themeKey && (await this.setState({themeKey}));
+    this.setState({isLoadingTheme: false});
     //this.setStatusbar();
   }
 
