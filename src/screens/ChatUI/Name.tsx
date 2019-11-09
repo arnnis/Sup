@@ -1,5 +1,5 @@
 import React, {FC, memo} from 'react';
-import {Text, StyleSheet} from 'react-native';
+import {Text, StyleSheet, TextStyle} from 'react-native';
 import {connect} from 'react-redux';
 import {RootState} from '../../reducers';
 import px from '../../utils/normalizePixel';
@@ -9,10 +9,11 @@ type Props = ReturnType<typeof mapStateToProps> &
   ThemeInjectedProps & {
     userId: string;
     isMe: boolean;
+    style?: TextStyle;
   };
 
-const Name: FC<Props> = memo(({name, isMe, theme}) => (
-  <Text style={[styles.text, {color: isMe ? '#fff' : theme.foregroundColor}]}>
+const Name: FC<Props> = memo(({name, isMe, style, theme}) => (
+  <Text style={[styles.text, {color: isMe ? '#fff' : theme.foregroundColor}, style]}>
     {name || 'loading...'}
   </Text>
 ));

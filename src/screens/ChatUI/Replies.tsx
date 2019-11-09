@@ -16,6 +16,7 @@ type Props = ReturnType<typeof mapStateToProps> &
   DispatchProp<any> &
   NavigationInjectedProps & {
     messageId: string;
+    isMe: boolean;
   };
 
 class Replies extends PureComponent<Props> {
@@ -48,9 +49,9 @@ class Replies extends PureComponent<Props> {
   }
 
   renderRepliesCount() {
-    let {message, theme} = this.props;
+    let {message, isMe, theme} = this.props;
     return (
-      <Text style={[styles.repliesCountText, {color: theme.foregroundColor}]}>
+      <Text style={[styles.repliesCountText, {color: isMe ? '#fff' : theme.foregroundColor}]}>
         {message.reply_count} replies
       </Text>
     );

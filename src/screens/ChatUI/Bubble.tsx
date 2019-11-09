@@ -46,7 +46,7 @@ class Bubble extends Component<Props> {
 
   renderReplies() {
     if (this.props.hideReplies) return null;
-    return <Replies messageId={this.props.messageId} />;
+    return <Replies messageId={this.props.messageId} isMe={this.props.isMe} />;
   }
 
   renderSendDate() {

@@ -14,7 +14,7 @@ const Typing: FC<Props> = ({typingUsers}) => {
       <View style={styles.container}>
         <Text style={styles.text}>
           {typingUsers.slice(0, 2).map(userId => (
-            <Name userId={userId} />
+            <Name userId={userId} style={{color: '#fff'}} />
           ))}{' '}
           {typingUsers.length > 2 ? 'and' + (typingUsers.length - 2) + 'other' : ''} typing...
         </Text>
