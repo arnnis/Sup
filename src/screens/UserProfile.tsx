@@ -145,6 +145,7 @@ class UserProfile extends Component<Props> {
   }
 
   renderMeOptions() {
+    let {theme} = this.props;
     let _togglePresence = async () => {
       this.setState({changingPresence: true});
       await this.props.dispatch(togglePresence());
@@ -161,8 +162,10 @@ class UserProfile extends Component<Props> {
             changing={this.state.changingPresence}>
             Presence ({this.props.presence})
           </SwitchRow>
-          <ActionRow icon="settings-outline" onPress={() => alert('Set a status')}>
-            Theme
+          <ActionRow
+            icon="settings-outline"
+            onPress={() => this.props.navigation.navigate('SelectTheme')}>
+            Theme ({theme.displayName})
           </ActionRow>
           <ActionRow icon="settings-outline" onPress={() => alert('Set a status')}>
             Do not disturb

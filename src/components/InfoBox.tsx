@@ -104,6 +104,7 @@ type SwitchRowProps = {
   value: boolean;
   onValueChange(value: boolean): void;
   changing?: boolean;
+  type?: 'switch' | 'tick';
 };
 
 export const SwitchRow: FC<SwitchRowProps> = ({
@@ -112,6 +113,7 @@ export const SwitchRow: FC<SwitchRowProps> = ({
   value,
   onValueChange,
   changing,
+  type,
   children,
 }) => {
   let {theme} = useContext(ThemeContext);
@@ -139,7 +141,18 @@ export const SwitchRow: FC<SwitchRowProps> = ({
       </View>
 
       {!changing ? (
-        <Switch onValueChange={onValueChange} value={value || false} />
+        type !== 'tick' ? (
+          <Switch onValueChange={onValueChange} value={value || false} />
+        ) : (
+          value && (
+            <MaterialCommunityIcons
+              name={'check'}
+              size={px(18)}
+              style={{marginRight: px(5)}}
+              color="green"
+            />
+          )
+        )
       ) : (
         <ActivityIndicator size={'small'} color={theme.foregroundColor} />
       )}

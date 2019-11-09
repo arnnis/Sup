@@ -8,6 +8,7 @@ import ChatUI from '../screens/ChatUI';
 import Auth from '../screens/Auth';
 import UserProfile from '../screens/UserProfile';
 import ChannelDetails from '../screens/ChannelDetails';
+import SelectTheme from '../screens/SelectTheme';
 
 const AppStack = createStackNavigator(
   {
@@ -18,6 +19,7 @@ const AppStack = createStackNavigator(
     Auth,
     UserProfile,
     ChannelDetails,
+    SelectTheme,
   },
   {
     headerMode: 'none',

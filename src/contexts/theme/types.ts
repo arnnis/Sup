@@ -1,10 +1,10 @@
 import getStaticColors from './static-colors';
 import * as themes from './themes';
 
-export type ThemeName = keyof typeof themes;
+export type ThemeKey = keyof typeof themes;
 
 export interface ThemePair {
-  id: ThemeName;
+  id: ThemeKey;
   color?: string;
 }
 
@@ -48,7 +48,7 @@ export interface ThemeColors extends StaticThemeColors {
 }
 
 export interface Theme extends ThemeColors {
-  id: ThemeName;
+  id: ThemeKey;
   displayName: string;
   isDark: boolean;
 }
