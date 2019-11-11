@@ -121,29 +121,6 @@ class UserProfile extends Component<Props> {
     );
   }
 
-  renderInfoRow(title: string, text: string, icon?: string, onPress?: any) {
-    let {theme} = this.props;
-    return (
-      <Touchable disabled={!onPress} style={styles.infoRow} onPress={onPress}>
-        <View style={{flexDirection: 'row'}}>
-          {icon ? (
-            <MaterialCommunityIcons
-              name={icon}
-              size={px(22)}
-              color="#707070"
-              style={{marginRight: px(8), marginTop: -px(1)}}
-            />
-          ) : null}
-          <Text style={[styles.infoRowTitle, {color: theme.foregroundColor}]}>{title}</Text>
-        </View>
-        {text ? (
-          <Text style={[styles.infoRowText, {color: theme.backgroundColorLess4}]}>{text}</Text>
-        ) : null}
-        <View style={[styles.divider, {backgroundColor: theme.backgroundColorLess4}]} />
-      </Touchable>
-    );
-  }
-
   renderMeOptions() {
     let {theme} = this.props;
     let _togglePresence = async () => {
@@ -154,7 +131,6 @@ class UserProfile extends Component<Props> {
     return (
       <>
         <InfoBox>
-          {/* {this.renderInfoRow('Set a status', '', 'face')} */}
           <SwitchRow
             icon="face"
             onValueChange={_togglePresence}
@@ -179,7 +155,7 @@ class UserProfile extends Component<Props> {
     return (
       <InfoBox>
         <InfoRow title="Timezone">{user.tz_label}</InfoRow>
-        <InfoRow title="Email">{user.profile.email}</InfoRow>
+        {user.profile.email ? <InfoRow title="Email">{user.profile.email}</InfoRow> : null}
       </InfoBox>
     );
   }
@@ -207,7 +183,6 @@ class UserProfile extends Component<Props> {
             {this.renderButtons(user)}
             {isMe && this.renderMeOptions()}
             {!isMe && this.renderUserInfoRows(user)}
-            {/* {this.renderInfoRow()} */}
           </ScrollView>
         </Screen>
       </>

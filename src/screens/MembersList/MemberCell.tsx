@@ -109,6 +109,7 @@ const styles = StyleSheet.create({
     color: '#8B8B8B',
     marginTop: px(5),
     fontSize: px(13),
+    textAlign: 'center',
   },
 });
 
