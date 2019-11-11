@@ -78,11 +78,12 @@ const MessageImage: FC<MessageImage> = ({uri, desiredHeight, mainSize}) => {
       source={{uri, headers: {Authorization: 'Bearer ' + token}}}
       style={{
         width: mainSize.width * (desiredHeight / mainSize.height),
+        maxWidth: '100%',
         height: desiredHeight,
         marginBottom: px(7.5),
         marginRight: px(2.5),
       }}
-      resizeMode="cover"
+      resizeMode="contain"
     />
   );
 };
