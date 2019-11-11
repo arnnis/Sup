@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, StyleSheet, TouchableWithoutFeedback} from 'react-native';
 import MessageText from './MessageText';
 import px from '../../utils/normalizePixel';
 import Name from './Name';
@@ -84,8 +84,7 @@ class Bubble extends Component<Props> {
     let {sameUser, isMe, pending, theme, hideAvatar, dynamicStyles} = this.props;
 
     return (
-      <TouchableOpacity
-        onLongPress={this.openMessageContextMenu}
+      <View
         ref="bubble"
         style={[
           styles.container,
@@ -105,17 +104,21 @@ class Bubble extends Component<Props> {
               marginRight: isMe ? px(7.5) : 0,
             },
         ]}>
-        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-          {this.renderName()}
-          {this.renderSendDate()}
-        </View>
+        <TouchableWithoutFeedback onLongPress={this.openMessageContextMenu}>
+          <View>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              {this.renderName()}
+              {this.renderSendDate()}
+            </View>
 
-        {this.renderMessageText()}
-        {this.renderMessageImages()}
-        {this.renderMessageVideos()}
-        {this.renderMessageFiles()}
-        {this.renderReplies()}
-      </TouchableOpacity>
+            {this.renderMessageText()}
+            {this.renderMessageImages()}
+            {this.renderMessageVideos()}
+            {this.renderMessageFiles()}
+            {this.renderReplies()}
+          </View>
+        </TouchableWithoutFeedback>
+      </View>
     );
   }
 }

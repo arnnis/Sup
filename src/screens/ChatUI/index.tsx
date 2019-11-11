@@ -171,17 +171,19 @@ class ChatUI extends Component<Props> {
 
   renderList() {
     let {messagesList, chatType} = this.props;
+    const inverted = chatType !== 'thread'
     return (
       <FlatList
         data={messagesList}
         renderItem={this.renderMessageCell}
         bounces={false}
         initialNumToRender={6}
-        inverted={chatType !== 'thread'}
+        inverted={inverted}
         keyExtractor={this.keyExtractor}
         onEndReachedThreshold={0.5}
         onEndReached={this.getOlderMessages}
         ListFooterComponent={this.renderLoadingMore}
+        contentContainerStyle={{paddingTop: inverted? 0 : px(10), paddingBottom: inverted? px(10) : 0}}
       />
     );
   }
