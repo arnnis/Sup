@@ -150,6 +150,9 @@ export interface MessageReaction {
 }
 
 export interface MessageAttachement {
+  thumb_480: string;
+  thumb_480_w: number;
+  thumb_480_h: number;
   name: string;
   fallback: string;
   color: string;
