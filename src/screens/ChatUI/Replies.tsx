@@ -7,9 +7,7 @@ import px from '../../utils/normalizePixel';
 import Touchable from '../../components/Touchable';
 import {withNavigation, NavigationInjectedProps} from 'react-navigation';
 import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
-import isLandscape from '../../utils/stylesheet/isLandscape';
-import {openBottomSheet} from '../../actions/app';
-import {setCurrentThread} from '../../actions/chats';
+import {openThread} from '../../actions/chats/thunks';
 
 type Props = ReturnType<typeof mapStateToProps> &
   ThemeInjectedProps &
@@ -21,15 +19,7 @@ type Props = ReturnType<typeof mapStateToProps> &
 
 class Replies extends PureComponent<Props> {
   handlePress = () => {
-    let chatId = this.props.navigation.getParam('chatId');
-    let params = {
-      chatType: 'thread',
-      threadId: this.props.message.ts,
-      chatId: chatId || this.props.currentChatId,
-    };
-    if (isLandscape()) this.props.dispatch(openBottomSheet('ChatUI', params));
-    else this.props.navigation.push('ChatUI', params);
-    this.props.dispatch(setCurrentThread(this.props.message.ts));
+    this.props.dispatch(openThread(this.props.message.ts, this.props.navigation));
   };
 
   renderParticipantsAvatar() {

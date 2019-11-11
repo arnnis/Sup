@@ -1,4 +1,9 @@
-import {createAppContainer} from 'react-navigation';
+import {
+  createAppContainer,
+  NavigationNavigator,
+  NavigationNavigatorProps,
+  NavigationContainer,
+} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 import {createBrowserApp} from '@react-navigation/web';
 import {NavigationActions} from 'react-navigation';
@@ -32,7 +37,7 @@ const AppStack = createStackNavigator(
 
 export default isNative() ? createAppContainer(AppStack) : createBrowserApp(AppStack);
 
-let _navigator;
+let _navigator: NavigationContainer;
 
 function setTopLevelNavigator(navigatorRef) {
   _navigator = navigatorRef;
@@ -46,7 +51,25 @@ function navigate(routeName, params?) {
     }),
   );
 }
+
+function push(routeName, params?) {
+  _navigator.dispatch(
+    NavigationActions.push({
+      routeName,
+      params,
+    }),
+  );
+}
+
+function getParam(key) {
+  const routes = _navigator.state.nav.routes;
+  const route = routes[routes.length - 1];
+  return route.params[key];
+}
+
 export const NavigationService = {
   setTopLevelNavigator,
   navigate,
+  push,
+  getParam,
 };

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import MessageText from './MessageText';
 import px from '../../utils/normalizePixel';
 import Name from './Name';
@@ -10,10 +10,17 @@ import MessageVideos from './MessageVideos';
 import Replies from './Replies';
 import withStylesheet, {StyleSheetInjectedProps} from '../../utils/stylesheet/withStylesheet';
 import MessageDate from './MessageDate';
-import {ChatType} from '.';
+import showMenu from '../../utils/showMenu';
+import {withNavigation, NavigationInjectedProps} from 'react-navigation';
+import {connect, DispatchProp} from 'react-redux';
+import {RootState} from '../../reducers';
+import {openThread} from '../../actions/chats/thunks';
 
 type Props = ThemeInjectedProps &
-  StyleSheetInjectedProps & {
+  StyleSheetInjectedProps &
+  NavigationInjectedProps &
+  DispatchProp<any> &
+  ReturnType<typeof mapStateToProps> & {
     messageId: string;
     userId: string;
     sameUser: boolean;
@@ -24,6 +31,26 @@ type Props = ThemeInjectedProps &
   };
 
 class Bubble extends Component<Props> {
+  goToThread = () => {
+    this.props.dispatch(openThread(this.props.messageId, this.props.navigation));
+  };
+
+  openMessageContextMenu = () => {
+    showMenu(
+      [
+        {
+          title: 'Reply',
+          onPress: this.goToThread,
+        },
+        {
+          title: 'Edit',
+          onPress: () => alert('Edit?'),
+        },
+      ],
+      this.refs['bubble'],
+    );
+  };
+
   renderMessageText() {
     return <MessageText messageId={this.props.messageId} isMe={this.props.isMe} />;
   }
@@ -57,7 +84,9 @@ class Bubble extends Component<Props> {
     let {sameUser, isMe, pending, theme, hideAvatar, dynamicStyles} = this.props;
 
     return (
-      <View
+      <TouchableOpacity
+        onLongPress={this.openMessageContextMenu}
+        ref="bubble"
         style={[
           styles.container,
           dynamicStyles.container,
@@ -86,7 +115,7 @@ class Bubble extends Component<Props> {
         {this.renderMessageVideos()}
         {this.renderMessageFiles()}
         {this.renderReplies()}
-      </View>
+      </TouchableOpacity>
     );
   }
 }
@@ -123,4 +152,10 @@ const dynamicStyles = {
   },
 };
 
-export default withTheme(withStylesheet(dynamicStyles)(Bubble));
+const mapStateToProps = (state: RootState) => ({
+  currentChatId: state.chats.currentChatId,
+});
+
+export default connect(mapStateToProps)(
+  withTheme(withStylesheet(dynamicStyles)(withNavigation(Bubble))),
+);

@@ -16,12 +16,17 @@ import {
   getChannelMembersFail,
   getChannelMembersSuccess,
   setUserTyping,
-  unsetUserTyping
+  unsetUserTyping,
+  setCurrentThread
 } from '.';
 import {RootState} from '../../reducers';
 import imsDirects from '../../utils/filterIms';
 import {getMember} from '../members/thunks';
 import { queryPresences } from '../../services/rtm/members-events';
+import isLandscape from '../../utils/stylesheet/isLandscape';
+import { openBottomSheet } from '../app';
+import { NavigationService } from '../../navigation/Navigator';
+import { NavigationInjectedProps } from 'react-navigation';
 
 export const getChats = () => async (dispatch, getState) => {
   let store: RootState = getState();
@@ -206,4 +211,17 @@ export const setTyping = (userId: string, chatId: string) => (dispatch, getState
   setTimeout(() => {
     dispatch(unsetUserTyping(userId, chatId))
   }, 5000)
+}
+
+export const openThread = (threadId, navigation: NavigationInjectedProps["navigation"]) => (dispatch, getState) => {
+  const state: RootState = getState()
+  let chatId = navigation.getParam('chatId');
+  let params = {
+    chatType: 'thread',
+    threadId,
+    chatId: chatId || state.chats.currentChatId,
+  };
+  if (isLandscape()) dispatch(openBottomSheet('ChatUI', params));
+  else navigation.push('ChatUI', params);
+  dispatch(setCurrentThread(threadId));
 }
