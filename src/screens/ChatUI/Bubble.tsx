@@ -42,10 +42,10 @@ class Bubble extends Component<Props> {
           title: 'Reply',
           onPress: this.goToThread,
         },
-        {
-          title: 'Edit',
-          onPress: () => alert('Edit?'),
-        },
+        // {
+        //   title: 'Edit',
+        //   onPress: () => alert('Edit?'),
+        // },
       ],
       this.refs['bubble'],
     );
