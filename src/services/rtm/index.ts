@@ -10,6 +10,7 @@ import {
   handleSendMessageAckRecieved,
   handleReactionAdded,
   handleReactionRemoved,
+  handleReplyAdded,
 } from './message-events';
 import {handleUserTyping, handleChatsMarkedAsSeen} from './chat-events';
 import {handleUserPresenceChange} from './members-events';
@@ -42,10 +43,11 @@ export const init = async () => {
     data = JSON.parse(data);
 
     if (data.type === 'hello') {
-      batch(() => {
-        store.dispatch(getCurrentUser() as any);
-        store.dispatch(getChats() as any);
-      });
+      if (isReconnect)
+        batch(() => {
+          store.dispatch(getCurrentUser() as any);
+          store.dispatch(getChats() as any);
+        });
     }
 
     if (data.type === 'pong') {
@@ -60,10 +62,11 @@ export const init = async () => {
     console.log(`[message] Data received from server:`, data);
 
     if (data.type === 'message') {
-      // Ingoring all subtype. only handling new message for chat or thread here.
-      if (data.subtype) return;
-      handleMessageRecieved(data);
+      // Ingoring hidden message events. here we only add thread and chat regular messages.
+      if (!data.hidden) handleMessageRecieved(data);
     }
+
+    if (data.type === 'message' && data.subtype === 'message_replied') handleReplyAdded(data);
 
     if (data.type === 'user_typing') handleUserTyping(data);
 

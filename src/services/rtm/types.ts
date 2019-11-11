@@ -58,3 +58,26 @@ export interface PresenceChangeEvent {
 
   user: string;
 }
+
+export interface MessageReplyEvent {
+  type: 'message';
+  message: {
+    type: 'message';
+    user: string;
+    text: string;
+    thread_ts: string;
+    reply_count: 1;
+    replies: [
+      {
+        user: string;
+        ts: string;
+      },
+    ];
+    ts: string;
+  };
+  subtype: 'message_replied';
+  hidden: true;
+  channel: string;
+  event_ts: string;
+  ts: string;
+}

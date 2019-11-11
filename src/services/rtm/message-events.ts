@@ -7,7 +7,7 @@ import {storeEntities, updateEntity} from '../../actions/entities';
 import {RootState} from '../../reducers';
 import {getMember} from '../../actions/members/thunks';
 import dayjs from 'dayjs';
-import { ReactionAddedEvent, MessageEvent } from './types';
+import { ReactionAddedEvent, MessageEvent, MessageReplyEvent } from './types';
 import { meSelector } from '../../reducers/teams';
 
 export const sendMessage = (input: SendInput) => {
@@ -152,4 +152,11 @@ export const handleReactionRemoved = (data: ReactionAddedEvent) => {
         reactions: reactions.map(reaction => reaction.name === data.reaction? ({ ...reaction, count: reaction.count - 1 }): reaction)
       }),
     );
+}
+
+export const handleReplyAdded = (data: MessageReplyEvent) => {
+  const { message } = data
+  store.dispatch(
+    updateEntity('messages', message.thread_ts, message),
+  );
 }
