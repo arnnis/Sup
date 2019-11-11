@@ -25,9 +25,7 @@ class MemberCell extends PureComponent<Props> {
     });
 
   renderAvatar(user: User) {
-    return (
-      <Avatar userId={user.id} width={px(67.5)} style={{borderRadius: px(15)}} containerStyle />
-    );
+    return <Avatar userId={user.id} width={px(67.5)} style={{borderRadius: px(15)}} />;
   }
 
   renderName(member: User) {
@@ -79,7 +77,7 @@ class MemberCell extends PureComponent<Props> {
 
 const styles = StyleSheet.create({
   container: {
-    width: width / 3 - 10,
+    flex: 1,
     alignItems: 'center',
     paddingHorizontal: px(7.5),
     paddingTop: px(15),
