@@ -12,6 +12,7 @@ import {batch} from 'react-redux';
 import {User} from '../../models';
 import filterMembers from '../../utils/filterMembers';
 import {RootState} from '../../reducers';
+import {queryPresences} from '../../services/rtm/members-events';
 
 export const getMembers = () => async (dispatch, getState) => {
   let state: RootState = getState();
@@ -23,7 +24,7 @@ export const getMembers = () => async (dispatch, getState) => {
       path: '/users.list',
       body: {
         limit: 500,
-        presence: true,
+        presence: 1,
       },
       isFormData: true,
     });
@@ -84,6 +85,7 @@ export const getMember = (userId: string) => async (dispatch, getState) => {
       path: '/users.info',
       body: {
         user: userId,
+        presence: 1,
       },
       silent: true,
     });

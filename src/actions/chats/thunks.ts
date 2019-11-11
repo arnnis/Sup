@@ -21,6 +21,7 @@ import {
 import {RootState} from '../../reducers';
 import imsDirects from '../../utils/filterIms';
 import {getMember} from '../members/thunks';
+import { queryPresences } from '../../services/rtm/members-events';
 
 export const getChats = () => async (dispatch, getState) => {
   let store: RootState = getState();
@@ -55,6 +56,8 @@ export const getChats = () => async (dispatch, getState) => {
     batch(() => {
       dispatch(storeEntities('chats', [...ims, ...channels, ...groups]));
       dispatch(fetchChatsSuccess(ims, [...channels, ...groups], nextCursor));
+
+      //queryPresences(ims.map(im => im.user_id));
     });
 
     return [...ims, ...channels, ...groups];

@@ -12,6 +12,7 @@ import {
   handleReactionRemoved,
 } from './message-events';
 import {handleUserTyping, handleChatsMarkedAsSeen} from './chat-events';
+import {handleUserPresenceChange} from './members-events';
 
 export let socket: WebSocket = null;
 export let connected = false;
@@ -35,19 +36,16 @@ export const init = async () => {
 
     startPing();
     stopReconnect();
-
-    if (isReconnect) {
-      batch(() => {
-        store.dispatch(getCurrentUser() as any);
-        store.dispatch(getChats() as any);
-      });
-    }
   };
 
   socket.onmessage = ({data}) => {
     data = JSON.parse(data);
 
     if (data.type === 'hello') {
+      batch(() => {
+        store.dispatch(getCurrentUser() as any);
+        store.dispatch(getChats() as any);
+      });
     }
 
     if (data.type === 'pong') {
@@ -76,6 +74,8 @@ export const init = async () => {
     // Chat was seen by current user.
     if (data.type === 'im_marked' || data.type === 'channel_marked' || data.type === 'group_marked')
       handleChatsMarkedAsSeen(data);
+
+    if (data.type === 'presence_change') handleUserPresenceChange(data);
 
     // Handle server ack messages
     if (data.reply_to) {

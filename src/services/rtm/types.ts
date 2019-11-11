@@ -46,3 +46,15 @@ export interface ReactionRemovedEvent {
   };
   event_ts: string;
 }
+
+export interface PresencesQueryRequest {
+  type: 'presence_query';
+  ids: string[];
+}
+
+export interface PresenceChangeEvent {
+  type: 'presence_change';
+  presence: 'away';
+
+  user: string;
+}
