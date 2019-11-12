@@ -1,5 +1,13 @@
 import React, {Component} from 'react';
-import {View, SafeAreaView, StyleSheet, FlatList, ActivityIndicator, Text, StatusBar} from 'react-native';
+import {
+  View,
+  SafeAreaView,
+  StyleSheet,
+  FlatList,
+  ActivityIndicator,
+  Text,
+  StatusBar,
+} from 'react-native';
 import {RootState} from '../../reducers';
 import {connect, DispatchProp} from 'react-redux';
 import Message from './Message';
@@ -12,14 +20,14 @@ import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 import InputToolbar from './InputToolbar';
 import {getMember} from '../../actions/members/thunks';
 import isLandscape from '../../utils/stylesheet/isLandscape';
-import { meSelector, currentTeamTokenSelector } from '../../reducers/teams';
+import {meSelector, currentTeamTokenSelector} from '../../reducers/teams';
 import px from '../../utils/normalizePixel';
 import Touchable from '../../components/Touchable';
 import ChannelMembersCount from './ChannelMembersCount';
 import DirectPresense from './DirectPresense';
 import Screen from '../../components/Screen';
 import Typing from './Typing';
-import { setCurrentChat, setCurrentThread } from '../../actions/chats';
+import {setCurrentChat, setCurrentThread} from '../../actions/chats';
 import select from '../../utils/select';
 
 export type ChatType = 'direct' | 'channel' | 'thread';
@@ -35,10 +43,10 @@ type Props = ReturnType<typeof mapStateToProps> &
 class ChatUI extends Component<Props> {
   async componentDidMount() {
     let {chatType, chatId, dispatch} = this.props;
-    
+
     if (chatType === 'channel' || chatType === 'direct') {
       this.getMessage();
-      dispatch(getChatInfo(chatId))
+      dispatch(getChatInfo(chatId));
     }
 
     if (chatType === 'thread') {
@@ -71,20 +79,20 @@ class ChatUI extends Component<Props> {
       this.markChatAsRead();
     }
 
-    let chatChanged = this.props.chatId !== prevProps.chatId
+    let chatChanged = this.props.chatId !== prevProps.chatId;
     if (chatChanged) {
-      this.componentDidMount()
+      this.componentDidMount();
     }
   }
 
   componentWillUnmount() {
-    let {chatType, dispatch} = this.props
+    let {chatType, dispatch} = this.props;
     if (chatType === 'channel' || chatType === 'direct') {
-      dispatch(setCurrentChat(''))
+      dispatch(setCurrentChat(''));
     }
 
     if (chatType === 'thread') {
-      dispatch(setCurrentThread(''))
+      dispatch(setCurrentThread(''));
     }
   }
 
@@ -113,6 +121,8 @@ class ChatUI extends Component<Props> {
   getReplies() {
     let {dispatch, threadId, chatId} = this.props;
 
+    dispatch(addMessageToChat(threadId, threadId));
+
     dispatch(getRepliesByThreadId(threadId, chatId));
   }
 
@@ -134,26 +144,25 @@ class ChatUI extends Component<Props> {
 
   openChatDetails = () => {
     let {chatId, chatType, currentUser} = this.props;
-    if (chatType === "channel")
-      this.props.navigation.navigate('ChannelDetails', { chatId })
-    if (chatType === "direct")
-      this.props.navigation.navigate('UserProfile', { userId: currentUser.id })
-  }
+    if (chatType === 'channel') this.props.navigation.navigate('ChannelDetails', {chatId});
+    if (chatType === 'direct')
+      this.props.navigation.navigate('UserProfile', {userId: currentUser.id});
+  };
 
   renderMessageCell = ({item: messageId, index}) => {
-    let { chatType } = this.props
+    let {chatType} = this.props;
     let prevMessageId = this.props.messagesList[index - 1];
-    let isThreadMainMsg = chatType === "thread" && index === 0
+    let isThreadMainMsg = chatType === 'thread' && index === 0;
     return (
-      <Message 
-        messageId={messageId} 
-        prevMessageId={prevMessageId} 
-        inverted={chatType !== "thread"} 
-        showDivider={isThreadMainMsg}         
+      <Message
+        messageId={messageId}
+        prevMessageId={prevMessageId}
+        inverted={chatType !== 'thread'}
+        showDivider={isThreadMainMsg}
         hideReplies={chatType === 'thread'}
-        hideAvatar={chatType === 'direct'} 
+        hideAvatar={chatType === 'direct'}
       />
-    ) ;
+    );
   };
 
   renderLoadingMore = () => {
@@ -171,7 +180,7 @@ class ChatUI extends Component<Props> {
 
   renderList() {
     let {messagesList, chatType} = this.props;
-    const inverted = chatType !== 'thread'
+    const inverted = chatType !== 'thread';
     return (
       <FlatList
         data={messagesList}
@@ -183,7 +192,10 @@ class ChatUI extends Component<Props> {
         onEndReachedThreshold={0.5}
         onEndReached={this.getOlderMessages}
         ListFooterComponent={this.renderLoadingMore}
-        contentContainerStyle={{paddingTop: inverted? 0 : px(10), paddingBottom: inverted? px(10) : 0}}
+        contentContainerStyle={{
+          paddingTop: inverted ? 0 : px(10),
+          paddingBottom: inverted ? px(10) : 0,
+        }}
       />
     );
   }
@@ -194,18 +206,18 @@ class ChatUI extends Component<Props> {
 
   renderPresense() {
     let {chatType, chatId, typingUsersCount} = this.props;
-    if (chatType === "direct" && typingUsersCount === 0) {
-      return <DirectPresense chatId={chatId} />
+    if (chatType === 'direct' && typingUsersCount === 0) {
+      return <DirectPresense chatId={chatId} />;
     }
-    return null
+    return null;
   }
 
   renderMembersCount() {
     let {chatType, chatId, typingUsersCount} = this.props;
-    if (chatType === "channel" && typingUsersCount === 0) {
-      return <ChannelMembersCount chatId={chatId} />
+    if (chatType === 'channel' && typingUsersCount === 0) {
+      return <ChannelMembersCount chatId={chatId} />;
     }
-    return null
+    return null;
   }
 
   renderChatName() {
@@ -213,19 +225,19 @@ class ChatUI extends Component<Props> {
 
     let chatName = select(chatType, {
       channel: `#${currentChat?.name_normalized}`,
-      direct: currentUser?.profile.display_name_normalized || currentUser?.profile.real_name_normalized,
-      thread: 'Thread'
-    })
+      direct:
+        currentUser?.profile.display_name_normalized || currentUser?.profile.real_name_normalized,
+      thread: 'Thread',
+    });
 
-    return <Text style={styles.chatName}>{chatName}</Text>
+    return <Text style={styles.chatName}>{chatName}</Text>;
   }
 
   renderTyping() {
-    return <Typing chatId={this.props.chatId} />
+    return <Typing chatId={this.props.chatId} />;
   }
 
   renderHeader() {
-    
     let center = (
       <Touchable onPress={this.openChatDetails} style={{alignItems: 'center'}}>
         {this.renderChatName()}
@@ -233,9 +245,9 @@ class ChatUI extends Component<Props> {
         {this.renderPresense()}
         {this.renderTyping()}
       </Touchable>
-    )
+    );
 
-    return <Header center={center} left={isLandscape()? undefined : "back"} />
+    return <Header center={center} left={isLandscape() ? undefined : 'back'} />;
   }
 
   render() {
@@ -253,19 +265,19 @@ class ChatUI extends Component<Props> {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
   },
   chatName: {
     color: '#fff',
     fontSize: px(15.5),
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
 
   presense: {
     color: '#fff',
     marginTop: px(2.5),
-    fontSize: px(13.5)
-  }
+    fontSize: px(13.5),
+  },
 });
 
 let defaultList = [];
@@ -299,7 +311,7 @@ const mapStateToProps = (state: RootState, ownProps) => {
       ],
     me,
     currentTeamToken: currentTeamTokenSelector(state),
-    typingUsersCount: state.chats.typingsUsers[chatId]?.length ?? 0
+    typingUsersCount: state.chats.typingsUsers[chatId]?.length ?? 0,
   };
 };
 
