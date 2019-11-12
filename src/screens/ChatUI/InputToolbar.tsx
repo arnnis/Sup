@@ -8,11 +8,12 @@ import Send from './Send';
 import EmojiPicker from './EmojiPicker';
 import Touchable from '../../components/Touchable';
 import {sendMessage} from '../../services/rtm';
+import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 
-interface Props {
+type Props = ThemeInjectedProps & {
   chatId: string;
   threadId: string;
-}
+};
 
 class InputToolbar extends Component<Props> {
   state = {
@@ -75,12 +76,13 @@ class InputToolbar extends Component<Props> {
   }
 
   renderEmojiButton() {
+    let {theme} = this.props;
     return (
       <Touchable style={styles.emojiButton} onPress={this.handleEmojiButtonPress}>
         <MaterialCommunityIcons
           name="emoticon"
           size={px(21)}
-          color="#fff"
+          color={theme.foregroundColorMuted65}
           style={{marginTop: px(2.5), marginLeft: px(1)}}
         />
       </Touchable>
@@ -88,10 +90,11 @@ class InputToolbar extends Component<Props> {
   }
 
   render() {
+    let {theme} = this.props;
     return (
       <View style={styles.container}>
         <View style={styles.wrapper}>
-          <View style={styles.emojiAndComposeWrapper}>
+          <View style={[styles.emojiAndComposeWrapper, {backgroundColor: theme.backgroundColor}]}>
             {this.renderEmojiButton()}
             {this.renderComposer()}
           </View>
@@ -130,4 +133,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default InputToolbar;
+export default withTheme(InputToolbar);

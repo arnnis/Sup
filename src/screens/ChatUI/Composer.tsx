@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, TextInput} from 'react-native';
 import px from '../../utils/normalizePixel';
+import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 
-interface Props {
+type Props = ThemeInjectedProps & {
   text: string;
   onTextChanged(text: string): void;
   isThread: boolean;
-}
+};
 
 class Composer extends Component<Props> {
   contentSize?: {width: number; height: number} = undefined;
@@ -34,14 +35,14 @@ class Composer extends Component<Props> {
   };
 
   render() {
-    const {isThread} = this.props;
+    const {isThread, theme} = this.props;
     const placeholder = `Type a ${isThread ? 'reply' : 'message'}...`;
     return (
       <TextInput
         accessible
         accessibilityLabel={placeholder}
         placeholder={placeholder}
-        placeholderTextColor="#ccc"
+        placeholderTextColor={theme.foregroundColorMuted40}
         multiline
         onChange={this.onContentSizeChange}
         onContentSizeChange={this.onContentSizeChange}
@@ -57,6 +58,7 @@ class Composer extends Component<Props> {
               },
             }),
           },
+          {color: theme.foregroundColor},
         ]}
         autoFocus={false}
         value={this.props.text}
@@ -86,4 +88,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Composer;
+export default withTheme(Composer);

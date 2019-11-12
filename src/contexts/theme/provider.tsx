@@ -24,6 +24,7 @@ class ThemeProvider extends Component<unknown, State> {
     themeKey && (await this.setState({themeKey}));
     this.setState({isLoadingTheme: false});
     //this.setStatusbar();
+    StatusBar.setBackgroundColor('#3A1C39');
   }
 
   setStatusbar = () => {
@@ -41,6 +42,7 @@ class ThemeProvider extends Component<unknown, State> {
     await this.setState({themeKey});
     AsyncStorage.setItem('themeKey', themeKey);
     //this.setStatusbar();
+    StatusBar.setBackgroundColor('#3A1C39');
   };
 
   render() {
