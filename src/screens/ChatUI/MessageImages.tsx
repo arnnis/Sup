@@ -1,18 +1,32 @@
 import React, {Component, FC, useState, useEffect} from 'react';
-import {View, StyleSheet, Image} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Modal,
+  TouchableWithoutFeedback,
+  ActivityIndicator,
+} from 'react-native';
+import ImageViewer from 'react-native-image-zoom-viewer';
 import FastImage from 'react-native-fast-image';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {RootState} from '../../reducers';
 import {createSelector} from 'reselect';
 import {Message, MessageAttachement} from '../../models';
 import px from '../../utils/normalizePixel';
 import {connect, useSelector} from 'react-redux';
 import {currentTeamTokenSelector} from '../../reducers/teams';
+import Touchable from '../../components/Touchable';
 
 type Props = ReturnType<typeof mapStateToProps> & {
   messageId: string;
 };
 
 class MessageImages extends Component<Props> {
+  state = {
+    imageViewerVisible: false,
+  };
+
   renderImage(image: MessageAttachement, isSingle) {
     console.log(image);
     let desiredHeight: number, uri: string, mainSize: {width: number; height: number};
@@ -32,17 +46,64 @@ class MessageImages extends Component<Props> {
         height: image.thumb_480_h || image.thumb_360_h,
       };
     }
-    return <MessageImage uri={uri} desiredHeight={desiredHeight} mainSize={mainSize} />;
+    return (
+      <MessageImage
+        uri={uri}
+        desiredHeight={desiredHeight}
+        mainSize={mainSize}
+        onPress={() => this.setState({imageViewerVisible: true})}
+      />
+    );
   }
 
   render() {
-    let {images} = this.props;
+    let {images, token} = this.props;
     if (!images) return null;
 
     const isSingle = !images.length;
 
     return (
-      <View style={styles.container}>{images.map(image => this.renderImage(image, isSingle))}</View>
+      <>
+        <View style={styles.container}>
+          {images.map(image => this.renderImage(image, isSingle))}
+        </View>
+        <Modal
+          visible={this.state.imageViewerVisible}
+          transparent
+          animationType="fade"
+          style={{margin: 0}}>
+          <ImageViewer
+            imageUrls={images.map(img => ({
+              url: img.url_private_download,
+              props: {headers: {Authorization: 'Bearer ' + token}},
+            }))}
+            onCancel={() => this.setState({imageViewerVisible: false})}
+            loadingRender={() => <ActivityIndicator size="large" color="#fff" />}
+            enableSwipeDown
+            onSwipeDown={() => this.setState({imageViewerVisible: false})}
+          />
+          <Touchable
+            onPress={() => this.setState({imageViewerVisible: false})}
+            style={{
+              position: 'absolute',
+              top: px(25),
+              left: px(15),
+              backgroundColor: 'purple',
+              justifyContent: 'center',
+              alignItems: 'center',
+              width: px(30),
+              height: px(30),
+              borderRadius: px(15),
+            }}>
+            <MaterialCommunityIcons
+              name="close"
+              color="#fff"
+              size={px(18)}
+              style={{marginTop: px(2.5)}}
+            />
+          </Touchable>
+        </Modal>
+      </>
     );
   }
 }
@@ -54,9 +115,10 @@ interface MessageImage {
     width: number;
     height: number;
   };
+  onPress(): void;
 }
 
-const MessageImage: FC<MessageImage> = ({uri, desiredHeight, mainSize}) => {
+const MessageImage: FC<MessageImage> = ({uri, desiredHeight, mainSize, onPress}) => {
   // let [size, setSize] = useState({width: 1, height: 1});
   let token = useSelector(currentTeamTokenSelector);
   // useEffect(() => {
@@ -74,17 +136,19 @@ const MessageImage: FC<MessageImage> = ({uri, desiredHeight, mainSize}) => {
   );
 
   return (
-    <FastImage
-      source={{uri, headers: {Authorization: 'Bearer ' + token}}}
-      style={{
-        width: mainSize.width * (desiredHeight / mainSize.height),
-        maxWidth: '100%',
-        height: desiredHeight,
-        marginBottom: px(7.5),
-        marginRight: px(2.5),
-      }}
-      resizeMode="contain"
-    />
+    <TouchableWithoutFeedback onPress={onPress}>
+      <FastImage
+        source={{uri, headers: {Authorization: 'Bearer ' + token}}}
+        style={{
+          width: mainSize.width * (desiredHeight / mainSize.height),
+          maxWidth: '100%',
+          height: desiredHeight,
+          marginBottom: px(7.5),
+          marginRight: px(2.5),
+        }}
+        resizeMode="contain"
+      />
+    </TouchableWithoutFeedback>
   );
 };
 
