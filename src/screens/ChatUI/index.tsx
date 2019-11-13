@@ -1,13 +1,5 @@
-import React, {Component} from 'react';
-import {
-  View,
-  SafeAreaView,
-  StyleSheet,
-  FlatList,
-  ActivityIndicator,
-  Text,
-  StatusBar,
-} from 'react-native';
+import React, {Component, Ref} from 'react';
+import {View, StyleSheet, FlatList, ActivityIndicator, Text} from 'react-native';
 import {RootState} from '../../reducers';
 import {connect, DispatchProp} from 'react-redux';
 import Message from './Message';
@@ -41,6 +33,9 @@ type Props = ReturnType<typeof mapStateToProps> &
     chatType: ChatType;
   };
 class ChatUI extends Component<Props> {
+  _flatlistRef: any;
+  _scrollNode: any;
+
   async componentDidMount() {
     let {chatType, chatId, dispatch} = this.props;
 
@@ -52,6 +47,8 @@ class ChatUI extends Component<Props> {
     if (chatType === 'thread') {
       this.getReplies();
     }
+
+    this.isInverted() && this.registerScrollHandlder();
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -95,6 +92,26 @@ class ChatUI extends Component<Props> {
       dispatch(setCurrentThread(''));
     }
   }
+
+  // Fixes inverted scroll on web
+  registerScrollHandlder() {
+    this._scrollNode = this._flatlistRef.getScrollableNode();
+    this._scrollNode.addEventListener('wheel', this._invertedWheelEvent);
+
+    // enable hardware acceleration
+    // makes scrolling fast in safari and firefox
+    // https://stackoverflow.com/a/24157294
+    this._flatlistRef.setNativeProps({
+      style: {
+        transform: 'translate3d(0,0,0) scaleY(-1)',
+      },
+    });
+  }
+
+  _invertedWheelEvent = e => {
+    this._scrollNode.scrollTop -= e.deltaY;
+    e.preventDefault();
+  };
 
   async getMessage() {
     let {
@@ -149,6 +166,8 @@ class ChatUI extends Component<Props> {
       this.props.navigation.navigate('UserProfile', {userId: currentUser.id});
   };
 
+  isInverted = () => this.props.chatType !== 'thread';
+
   renderMessageCell = ({item: messageId, index}) => {
     let {chatType} = this.props;
     let prevMessageId = this.props.messagesList[index - 1];
@@ -180,9 +199,10 @@ class ChatUI extends Component<Props> {
 
   renderList() {
     let {messagesList, chatType} = this.props;
-    const inverted = chatType !== 'thread';
+    const inverted = this.isInverted();
     return (
       <FlatList
+        ref={ref => (this._flatlistRef = ref)}
         data={messagesList}
         renderItem={this.renderMessageCell}
         bounces={false}
@@ -292,7 +312,6 @@ const mapStateToProps = (state: RootState, ownProps) => {
   let me = meSelector(state);
 
   let messagesList = state.messages.list[threadId || chatId] || defaultList;
-
   let lastMessageStatus = state.chats.lastMessages[chatId];
 
   return {
