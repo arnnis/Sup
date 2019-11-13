@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
   name: {
     marginLeft: px(8),
     color: '#fff',
-    fontWeight: '600',
+    fontWeight: '700',
   },
 });
 
