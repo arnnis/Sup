@@ -21,6 +21,7 @@ type Props = ReturnType<typeof mapStateToProps> &
     isMe: boolean;
     textProps: TextProps;
     style: TextStyle;
+    placeholder?: string;
   };
 
 class MessageText extends Component<Props> {
@@ -48,7 +49,7 @@ class MessageText extends Component<Props> {
 
   renderEmoji(name) {
     name = name.replace(/:/g, '');
-    if (name.includes('skin-tone-')) return null
+    if (name.includes('skin-tone-')) return null;
     return <Emoji name={name} />;
   }
 
@@ -72,13 +73,11 @@ class MessageText extends Component<Props> {
   }
 
   render() {
-    let {text, filesCount, isMe, textProps, style, theme} = this.props;
+    let {text, placeholder, filesCount, isMe, textProps, style, theme} = this.props;
     // if (!text) {
     //   if (filesCount && filesCount > 0)
     //     text = 'File'
     // }
-
-    if (!text) return null
 
     return (
       <View style={styles.container}>
@@ -106,10 +105,9 @@ class MessageText extends Component<Props> {
               pattern: LINK_PATTERN,
               renderText: this.renderLink,
             },
-
           ]}
           {...textProps}>
-          {text}
+          {placeholder ? placeholder : text}
         </ParsedText>
       </View>
     );
@@ -138,9 +136,8 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state: RootState, ownProps) => ({
-  text:
-    state.entities.messages.byId[ownProps.messageId]?.text,
-  filesCount: state.entities.messages.byId[ownProps.messageId]?.files?.length
+  text: state.entities.messages.byId[ownProps.messageId]?.text,
+  filesCount: state.entities.messages.byId[ownProps.messageId]?.files?.length,
 });
 
 export default connect(mapStateToProps)(withTheme(MessageText));

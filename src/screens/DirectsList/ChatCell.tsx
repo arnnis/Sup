@@ -87,10 +87,11 @@ class ChatCell extends PureComponent<Props> {
 
   renderLastMessage() {
     let {chatLastMessageStatus, lastMessage, chat, theme} = this.props;
+    let messageText = '';
 
-    if (!chatLastMessageStatus) return null;
+    ///if (!chatLastMessageStatus) return null;
 
-    if (chatLastMessageStatus.loading) {
+    if (chatLastMessageStatus && chatLastMessageStatus.loading) {
       return (
         <AnimatedEllipsis
           style={{
@@ -102,12 +103,21 @@ class ChatCell extends PureComponent<Props> {
       );
     }
 
-    if (!lastMessage) return null;
+    if (!lastMessage) messageText = 'No history';
 
+    if (lastMessage?.files?.length > 1) messageText = 'Several files';
+
+    if (lastMessage?.files?.length === 1) {
+      const file = lastMessage?.files[0];
+      messageText = 'File';
+      if (file?.mimetype?.startsWith('image')) messageText = 'Image';
+      if (file?.mimetype?.startsWith('video')) messageText = 'Video';
+    }
     return (
       <View pointerEvents="none">
         <MessageText
-          messageId={lastMessage.ts}
+          messageId={lastMessage?.ts}
+          placeholder={messageText}
           style={[styles.lastMessage, {color: theme.backgroundColorLess5}]}
           textProps={{numberOfLines: 1}}
         />
