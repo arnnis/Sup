@@ -130,6 +130,15 @@ const styles = StyleSheet.create({
     flex: 1,
     borderRadius: px(20),
     alignItems: 'flex-end',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.18,
+    shadowRadius: 1.0,
+
+    elevation: 1,
   },
 });
 
