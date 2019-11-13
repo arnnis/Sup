@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
   KeyboardAvoidingView,
   ScrollView,
+  StatusBar,
 } from 'react-native';
 import Svg, {Defs, Path, Stop, LinearGradient} from 'react-native-svg';
 
@@ -216,7 +217,8 @@ class Auth extends Component<Props> {
     let {theme, dynamicStyles} = this.props;
     return (
       <Screen>
-        <Header left="back" style={{backgroundColor: '#517AC2'}} />
+        <StatusBar backgroundColor="#517AC2" animated />
+        <Header left="back" style={{backgroundColor: '#517AC2', elevation: 0}} />
         <ScrollView
           bounces={false}
           style={{flex: 1, backgroundColor: theme.backgroundColor}}

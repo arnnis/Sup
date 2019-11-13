@@ -58,6 +58,7 @@ const Main = React.memo(
 
     return (
       <Screen>
+        <StatusBar backgroundColor="#3A1C39" animated />
         <DrawerLayout
           ref={ref => (drawerRef.current = ref)}
           drawerType="slide"

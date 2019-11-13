@@ -187,7 +187,7 @@ class ChatCell extends PureComponent<Props> {
             marginLeft: px(65),
             marginRight: px(7.5),
             height: StyleSheet.hairlineWidth,
-            backgroundColor: theme.foregroundColorMuted10,
+            backgroundColor: theme.backgroundColorLess2,
           }}
         />
       </>

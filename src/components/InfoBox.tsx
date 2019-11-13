@@ -33,8 +33,8 @@ export const InfoBox: FC<Props> = ({children, style, isList = true}) => {
                   <View
                     style={{
                       width: '100%',
-                      height: StyleSheet.hairlineWidth,
-                      backgroundColor: '#ccc',
+                      height: px(1),
+                      backgroundColor: theme.backgroundColorLess2,
                     }}
                   />
                 )}
