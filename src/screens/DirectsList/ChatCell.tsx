@@ -91,7 +91,7 @@ class ChatCell extends PureComponent<Props> {
 
     ///if (!chatLastMessageStatus) return null;
 
-    if (chatLastMessageStatus && chatLastMessageStatus.loading) {
+    if (!lastMessage && chatLastMessageStatus && chatLastMessageStatus.loading) {
       return (
         <AnimatedEllipsis
           style={{
@@ -132,15 +132,6 @@ class ChatCell extends PureComponent<Props> {
 
     if (chatLastMessageStatus.loading) {
       return null;
-      return (
-        <AnimatedEllipsis
-          style={{
-            marginBottom: -px(3),
-            fontSize: px(15),
-            color: theme.purple,
-          }}
-        />
-      );
     }
 
     let data =
@@ -192,9 +183,9 @@ class ChatCell extends PureComponent<Props> {
         </Touchable>
         <View
           style={{
-            width: '80%',
-            marginLeft: '17%',
-            marginRight: '3%',
+            flex: 1,
+            marginLeft: px(65),
+            marginRight: px(7.5),
             height: StyleSheet.hairlineWidth,
             backgroundColor: theme.foregroundColorMuted10,
           }}

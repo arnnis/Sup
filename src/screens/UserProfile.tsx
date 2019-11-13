@@ -144,9 +144,7 @@ class UserProfile extends Component<Props> {
             onPress={() => this.props.navigation.navigate('SelectTheme')}>
             Theme ({theme.displayName})
           </ActionRow>
-          <ActionRow
-            icon="settings-outline"
-            onPress={() => this.props.dispatch(logoutFromCurrentTeam())}>
+          <ActionRow icon="logout" onPress={() => this.props.dispatch(logoutFromCurrentTeam())}>
             Logout
           </ActionRow>
           {/* <ActionRow icon="settings-outline" onPress={() => alert('Set a status')}>
