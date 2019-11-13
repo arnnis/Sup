@@ -36,7 +36,7 @@ class DirectsList extends PureComponent<Props> {
   render() {
     let {directsList, loading, theme} = this.props;
     return (
-      <View style={[styles.container, {backgroundColor: theme.backgroundColorDarker1}]}>
+      <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
         {loading && directsList.length === 0 ? (
           this.renderLoading()
         ) : (

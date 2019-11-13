@@ -30,7 +30,7 @@ class ChannelsList extends PureComponent<Props> {
     let {channelsList, theme} = this.props;
 
     return (
-      <View style={[styles.container, {backgroundColor: theme.backgroundColorDarker1}]}>
+      <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
         {/* <Button
           onPress={() => this.props.dispatch(signinTeam())}
           title="login"

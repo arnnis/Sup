@@ -161,25 +161,35 @@ class ChatCell extends PureComponent<Props> {
   render() {
     let {user, theme, selected} = this.props;
     return (
-      <Touchable
-        style={[
-          styles.container,
-          {
-            backgroundColor: selected ? 'rgba(72.0, 32.0, 70.0, 1)' : theme.backgroundColor,
-            borderColor: theme.backgroundColorLess1,
-          },
-        ]}
-        onPress={this.handlePress}>
-        {this.renderAvatar()}
-        <View style={{flex: 1, marginLeft: px(10), paddingRight: px(15)}}>
-          {this.renderName(user)}
-          {this.renderLastMessage()}
-        </View>
-        <View style={styles.rightContainer}>
-          {this.renderUnreadCount()}
-          {this.renderDate()}
-        </View>
-      </Touchable>
+      <>
+        <Touchable
+          style={[
+            styles.container,
+            {
+              backgroundColor: selected ? 'rgba(72.0, 32.0, 70.0, 1)' : theme.backgroundColor,
+            },
+          ]}
+          onPress={this.handlePress}>
+          {this.renderAvatar()}
+          <View style={{flex: 1, marginLeft: px(10), paddingRight: px(15)}}>
+            {this.renderName(user)}
+            {this.renderLastMessage()}
+          </View>
+          <View style={styles.rightContainer}>
+            {this.renderUnreadCount()}
+            {this.renderDate()}
+          </View>
+        </Touchable>
+        <View
+          style={{
+            width: '80%',
+            marginLeft: '17%',
+            marginRight: '3%',
+            height: StyleSheet.hairlineWidth,
+            backgroundColor: theme.foregroundColorMuted10,
+          }}
+        />
+      </>
     );
   }
 }
@@ -192,8 +202,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: px(7.5),
-    borderBottomWidth: px(1),
-    borderColor: '#eee',
   },
   name: {
     fontWeight: '700',
