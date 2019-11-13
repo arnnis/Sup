@@ -17,6 +17,7 @@ import Screen from '../components/Screen';
 import {InfoBox, InfoRow, ActionRow, SwitchRow} from '../components/InfoBox';
 import withStylesheet, {StyleSheetInjectedProps} from '../utils/stylesheet/withStylesheet';
 import {togglePresence} from '../actions/app/thunks';
+import {logoutFromCurrentTeam} from '../actions/teams/thunks';
 
 type Props = ReturnType<typeof mapStateToProps> &
   StyleSheetInjectedProps &
@@ -143,6 +144,11 @@ class UserProfile extends Component<Props> {
             onPress={() => this.props.navigation.navigate('SelectTheme')}>
             Theme ({theme.displayName})
           </ActionRow>
+          <ActionRow
+            icon="settings-outline"
+            onPress={() => this.props.dispatch(logoutFromCurrentTeam())}>
+            Logout
+          </ActionRow>
           {/* <ActionRow icon="settings-outline" onPress={() => alert('Set a status')}>
             Do not disturb
           </ActionRow> */}
@@ -154,7 +160,7 @@ class UserProfile extends Component<Props> {
   renderUserInfoRows(user: User) {
     return (
       <InfoBox>
-        <InfoRow title="Timezone">{user.tz_label}</InfoRow>
+        {user.tz_label ? <InfoRow title="Timezone">{user.tz_label}</InfoRow> : null}
         {user.profile.email ? <InfoRow title="Email">{user.profile.email}</InfoRow> : null}
       </InfoBox>
     );
@@ -174,7 +180,7 @@ class UserProfile extends Component<Props> {
           {!isMe && (
             <Header
               center={`${user.profile.real_name_normalized ||
-                user.profile.display_name_normalized}'s Profile`}
+                user.profile.display_name_normalized}`}
               left="back"
             />
           )}
