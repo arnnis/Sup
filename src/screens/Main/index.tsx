@@ -71,6 +71,7 @@ const Main = React.memo(
                 center={_renderConnectionStatus()}
                 left={_renderChangeTeamButton()}
                 right={_renderMenu()}
+                style={{elevation: 0}}
               />
               {currentTeam ? <BottomTabbar /> : <TeamEmptyPlaceholder />}
             </MasterView>
