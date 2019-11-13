@@ -15,8 +15,9 @@ type Props = ReturnType<typeof mapStateToProps> &
 class FileCell extends Component<Props> {
   renderAllFile = () => {
     let {file, token, theme} = this.props;
+    let File = withTheme(MessageFile);
     return (
-      <MessageFile
+      <File
         file={file}
         token={token}
         containerStyle={{width: '100%'}}
