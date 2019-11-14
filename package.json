@@ -46,7 +46,7 @@
     "react-native-parsed-text": "taskrabbit/react-native-parsed-text",
     "react-native-reanimated": "kmagiera/react-native-reanimated",
     "react-native-responsive-ui": "^2.1.1",
-    "react-native-screens": "^2.0.0-alpha.4",
+    "react-native-screens": "^2.0.0-alpha.10",
     "react-native-svg": "^9.11.1",
     "react-native-tab-view": "^2.10.0",
     "react-native-unimodules": "^0.7.0-rc.1",

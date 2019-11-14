@@ -1,7 +1,7 @@
 import React from 'react';
 import {AppRegistry, Platform} from 'react-native';
 import 'react-native-gesture-handler';
-import {useScreens} from 'react-native-screens';
+import {enableScreens} from 'react-native-screens';
 import App from './src/App';
 
 const appName = 'Sup';
@@ -11,7 +11,7 @@ if (process.env.NODE_ENV !== 'production') {
   whyDidYouRender(React);
 }
 
-useScreens();
+enableScreens();
 
 AppRegistry.registerComponent(appName, () => App);
 

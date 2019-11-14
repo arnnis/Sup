@@ -4,7 +4,7 @@ import {
   NavigationNavigatorProps,
   NavigationContainer,
 } from 'react-navigation';
-import {createStackNavigator} from 'react-navigation-stack';
+import createNativeStackNavigator from 'react-native-screens/createNativeStackNavigator';
 import {createBrowserApp} from '@react-navigation/web';
 import {NavigationActions} from 'react-navigation';
 import isNative from '../utils/isNative';
@@ -14,8 +14,15 @@ import Auth from '../screens/Auth';
 import UserProfile from '../screens/UserProfile';
 import ChannelDetails from '../screens/ChannelDetails';
 import SelectTheme from '../screens/SelectTheme';
+import {Platform} from 'react-native';
+import {createStackNavigator} from 'react-navigation-stack';
 
-const AppStack = createStackNavigator(
+const _createStackNavigator = Platform.select({
+  ios: createNativeStackNavigator,
+  default: createStackNavigator,
+});
+
+const AppStack = _createStackNavigator(
   {
     // You could add another route here for authentication.
     // Read more at https://reactnavigation.org/docs/en/auth-flow.html
