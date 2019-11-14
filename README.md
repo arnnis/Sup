@@ -14,10 +14,10 @@ missing features.**
 ## Install
 
 - [Android](https://github.com/release/android.apk) - Android apk
-- [Web](https://arnnis.github.io/sup) - web version using react-native-web
-- [Mac](https://github.com/release/mac.dmg) - desktop version using electron
-- [Windows](https://github.com/release/windows.exe) - desktop version using electron
-- [Linux](https://github.com/release/linux.deb) - desktop version using electron
+- [Web](https://arnnis.github.io/sup) - Web version using react-native-web
+- [Mac](https://github.com/release/mac.dmg) - Mac version using electron
+- [Windows](https://github.com/release/windows.exe) - Windows version using electron
+- [Linux](https://github.com/release/linux.deb) - Linux version using electron
 
 [mobilegif]: https://user-images.githubusercontent.com/57195792/68873270-a065fc00-0714-11ea-81f6-ff6c7c79fc56.gif
 [tabletgif]: https://user-images.githubusercontent.com/57195792/68874586-b379cb80-0716-11ea-8adb-5f22f2fb8634.gif
