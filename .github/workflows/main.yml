@@ -40,10 +40,19 @@ jobs:
     - name: Build android
       run: cd android && ./gradlew assembleRelease
     
-    - name: Deploy to gh-page
-      run: yarn deploy
+    - name: Build web
+      run: yarn run web:build
     
-    - name: Release
+    - name: Deploy to github pages
+      if: success()
+      uses: crazy-max/ghaction-github-pages@v1
+      with:
+        target_branch: gh-pages
+        build_dir: web/build
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Release artifacts
       uses: "marvinpinto/action-automatic-releases@latest"
       with:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
