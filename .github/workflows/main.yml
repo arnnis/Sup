@@ -1,6 +1,9 @@
 name: CI
 
-on: [push]
+on:
+  push:
+    tags:
+      - "v*"
 
 jobs:
   build:
@@ -14,7 +17,7 @@ jobs:
       with:
         node-version: 12.x
     
-    - name: Copy Dependecies from cache
+    - name: Cache node_modules dependecies
       uses: actions/cache@v1
       with:
         path: ~/.cache/yarn
@@ -39,3 +42,13 @@ jobs:
     
     - name: Build android
       run: cd android && ./gradlew assembleRelease
+    
+    - name: Deploy to gh-page
+      run: yarn deploy
+    
+    - name: Release
+      uses: "marvinpinto/action-automatic-releases@latest"
+      with:
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        prerelease: false
+        files: android/app/build/output/apk/release/*.apk
