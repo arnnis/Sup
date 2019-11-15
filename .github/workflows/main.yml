@@ -25,6 +25,8 @@ jobs:
     - name: Install dependencies
       run: yarn install
     
+    - name: Patch workers (fixes android build)
+      run: sudo sysctl fs.inotify.max_user_instances=524288 && sudo sysctl fs.inotify.max_user_watches=524288 && sudo sysctl fs.inotify.max_queued_events=524288 && sudo sysctl -p
     - name: Setup java 8
       uses: actions/setup-java@v1
       with:
