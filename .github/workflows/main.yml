@@ -47,6 +47,6 @@ jobs:
       uses: "marvinpinto/action-automatic-releases@latest"
       with:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
-        prerelease: false
         automatic_release_tag: true
-        files: android/app/build/output/apk/release/*.apk
+        files: | 
+          android/app/build/output/apk/release/*.apk
