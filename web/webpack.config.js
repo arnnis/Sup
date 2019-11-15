@@ -3,7 +3,7 @@ const webpack = require('webpack');
 const HtmlPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
-const chalk = require('chalk')
+const chalk = require('chalk');
 
 const appDirectory = path.resolve(__dirname, '../');
 const isProd = process.env.NODE_ENV === 'production';
@@ -19,7 +19,7 @@ const modules = [
   '@expo',
   '@unimodules',
   'native-base',
-]
+];
 
 function packageNameFromPath(inputPath) {
   const modules = inputPath.split('node_modules/');
@@ -88,6 +88,17 @@ const config = {
         test: /\.css$/i,
         use: ['style-loader', 'css-loader'],
       },
+      {
+        test: /\.svg$/,
+        use: [
+          {
+            loader: '@svgr/webpack',
+            options: {
+              icon: true,
+            },
+          },
+        ],
+      },
     ],
   },
 
@@ -117,6 +128,7 @@ const config = {
       'react-native$': 'react-native-web',
       '@react-native-community/netinfo': 'react-native-web/dist/exports/NetInfo',
       'react-native-fast-image': 'react-native-web/dist/exports/Image',
+      'react-native-web/dist/exports/Modal': 'modal-enhanced-react-native-web',
     },
     extensions: ['.web.js', '.js', '.web.ts', '.web.tsx', '.ts', '.tsx', '.json'],
   },
@@ -134,6 +146,7 @@ if (isProd) {
     compress: true,
     stats: 'errors-only',
     overlay: true,
+    hot: true,
   };
 }
 

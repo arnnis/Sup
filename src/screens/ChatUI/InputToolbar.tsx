@@ -8,10 +8,12 @@ import Send from './Send';
 import EmojiPicker from './EmojiPicker';
 import Touchable from '../../components/Touchable';
 import {sendMessage} from '../../services/rtm';
+import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 
-interface Props {
+type Props = ThemeInjectedProps & {
   chatId: string;
-}
+  threadId: string;
+};
 
 class InputToolbar extends Component<Props> {
   state = {
@@ -26,7 +28,9 @@ class InputToolbar extends Component<Props> {
       type: 'message',
       text: this.state.text,
       channel: this.props.chatId,
+      thread_ts: this.props.threadId,
     });
+    this.setState({text: ''});
   };
 
   handleEmojiButtonPress = () => {
@@ -47,7 +51,13 @@ class InputToolbar extends Component<Props> {
   };
 
   renderComposer() {
-    return <Composer text={this.state.text} onTextChanged={this.handleTextChanged} />;
+    return (
+      <Composer
+        text={this.state.text}
+        onTextChanged={this.handleTextChanged}
+        isThread={!!this.props.threadId}
+      />
+    );
   }
 
   renderSend() {
@@ -66,12 +76,13 @@ class InputToolbar extends Component<Props> {
   }
 
   renderEmojiButton() {
+    let {theme} = this.props;
     return (
       <Touchable style={styles.emojiButton} onPress={this.handleEmojiButtonPress}>
         <MaterialCommunityIcons
           name="emoticon"
           size={px(21)}
-          color="#fff"
+          color={theme.foregroundColorMuted65}
           style={{marginTop: px(2.5), marginLeft: px(1)}}
         />
       </Touchable>
@@ -79,10 +90,11 @@ class InputToolbar extends Component<Props> {
   }
 
   render() {
+    let {theme} = this.props;
     return (
       <View style={styles.container}>
         <View style={styles.wrapper}>
-          <View style={styles.emojiAndComposeWrapper}>
+          <View style={[styles.emojiAndComposeWrapper, {backgroundColor: theme.backgroundColor}]}>
             {this.renderEmojiButton()}
             {this.renderComposer()}
           </View>
@@ -109,8 +121,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: px(5),
-    paddingBottom: Platform.select({ios: px(7.5), default: px(11)}),
+    marginLeft: px(10),
+    paddingBottom: Platform.select({ios: px(7.5), web: px(7.5), default: px(11)}),
   },
   emojiAndComposeWrapper: {
     backgroundColor: '#333333',
@@ -118,7 +130,16 @@ const styles = StyleSheet.create({
     flex: 1,
     borderRadius: px(20),
     alignItems: 'flex-end',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.18,
+    shadowRadius: 1.0,
+
+    elevation: 1,
   },
 });
 
-export default InputToolbar;
+export default withTheme(InputToolbar);

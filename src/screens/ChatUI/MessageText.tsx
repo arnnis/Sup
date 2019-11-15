@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, Linking, TextProps, TextStyle} from 'react-native';
+import {View, Text, StyleSheet, Linking, TextProps, TextStyle} from 'react-native';
 import ParsedText from 'react-native-parsed-text';
 import {connect} from 'react-redux';
 import {RootState} from '../../reducers';
@@ -7,15 +7,22 @@ import px from '../../utils/normalizePixel';
 import Emoji from './Emoji';
 import Username from './Username';
 import Code from './Code';
+import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 
 const WWW_URL_PATTERN = /^www\./i;
+const USERNAME_PATTERN = /\<@(.*?)\>/i;
+const EMOJI_PATTREN = /\:(.*?)\:/i;
+const CODE_PATTERN = /(```[a-z]*\n[\s\S]*?\n```)/i;
+const LINK_PATTERN = /<([^<>]+)>/i;
 
-type Props = ReturnType<typeof mapStateToProps> & {
-  messageId: string;
-  isMe: boolean;
-  textProps: TextProps;
-  style: TextStyle;
-};
+type Props = ReturnType<typeof mapStateToProps> &
+  ThemeInjectedProps & {
+    messageId: string;
+    isMe: boolean;
+    textProps: TextProps;
+    style: TextStyle;
+    placeholder?: string;
+  };
 
 class MessageText extends Component<Props> {
   onUrlPress = url => {
@@ -42,6 +49,7 @@ class MessageText extends Component<Props> {
 
   renderEmoji(name) {
     name = name.replace(/:/g, '');
+    if (name.includes('skin-tone-')) return null;
     return <Emoji name={name} />;
   }
 
@@ -50,30 +58,56 @@ class MessageText extends Component<Props> {
     return <Code text={text} />;
   }
 
+  renderLink(text) {
+    let display, content;
+    text.replace(/<([^<>]+)>/g, (_, p1) => {
+      let [d, c] = p1.split('|');
+      display = d;
+      content = c;
+    });
+    return (
+      <Text style={{textDecorationLine: 'underline'}} onPress={() => this.onUrlPress(content)}>
+        {display}
+      </Text>
+    );
+  }
+
   render() {
-    let {text, isMe, textProps, style} = this.props;
-    if (!text) return null;
+    let {text, placeholder, filesCount, isMe, textProps, style, theme} = this.props;
+    // if (!text) {
+    //   if (filesCount && filesCount > 0)
+    //     text = 'File'
+    // }
+
     return (
       <View style={styles.container}>
         <ParsedText
-          style={[styles.text, isMe ? styles.textRight : styles.textLeft, style]}
+          style={[
+            styles.text,
+            isMe ? styles.textRight : styles.textLeft,
+            {color: isMe ? '#fff' : theme.foregroundColor},
+            style,
+          ]}
           parse={[
-            {type: 'url', style: styles.linkStyle, onPress: this.onUrlPress},
             {
-              pattern: /\<@(.*?)\>/gm,
+              pattern: USERNAME_PATTERN,
               renderText: this.renderUsername,
             },
             {
-              pattern: RegExp(/:[A-z, 0-9]+:+/g, 'g'),
+              pattern: EMOJI_PATTREN,
               renderText: this.renderEmoji,
             },
             {
-              pattern: /\```(.*?)\```/g,
+              pattern: CODE_PATTERN,
               renderText: this.renderCode,
+            },
+            {
+              pattern: LINK_PATTERN,
+              renderText: this.renderLink,
             },
           ]}
           {...textProps}>
-          {text}
+          {placeholder ? placeholder : text}
         </ParsedText>
       </View>
     );
@@ -102,9 +136,8 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state: RootState, ownProps) => ({
-  text:
-    state.entities.messages.byId[ownProps.messageId] &&
-    state.entities.messages.byId[ownProps.messageId].text,
+  text: state.entities.messages.byId[ownProps.messageId]?.text,
+  filesCount: state.entities.messages.byId[ownProps.messageId]?.files?.length,
 });
 
-export default connect(mapStateToProps)(MessageText);
+export default connect(mapStateToProps)(withTheme(MessageText));

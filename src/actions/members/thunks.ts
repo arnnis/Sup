@@ -12,6 +12,7 @@ import {batch} from 'react-redux';
 import {User} from '../../models';
 import filterMembers from '../../utils/filterMembers';
 import {RootState} from '../../reducers';
+import {queryPresences} from '../../services/rtm/members-events';
 
 export const getMembers = () => async (dispatch, getState) => {
   let state: RootState = getState();
@@ -22,8 +23,8 @@ export const getMembers = () => async (dispatch, getState) => {
     let {members}: {members: User[]} = await http({
       path: '/users.list',
       body: {
-        limit: 1500,
-        presence: true,
+        limit: 500,
+        presence: 1,
       },
       isFormData: true,
     });
@@ -48,10 +49,7 @@ export const getMembers = () => async (dispatch, getState) => {
   }
 };
 
-export const getMembersByUserIds = (userIds: Array<string>) => async (
-  dispatch,
-  getState,
-) => {
+export const getMembersByUserIds = (userIds: Array<string>) => async (dispatch, getState) => {
   let state: RootState = getState();
 
   userIds.forEach(async userId => {
@@ -77,21 +75,27 @@ export const getMember = (userId: string) => async (dispatch, getState) => {
 
   let loading = state.members.loading[userId];
   let alreadyLoaded = state.entities.users.byId[userId];
-  if (loading || alreadyLoaded) return;
+  let loadingList = state.members.loadingList;
+  if (loading || alreadyLoaded || loadingList) return;
+
+  dispatch(getMemberStart(userId));
 
   try {
     let {user}: {user: User} = await http({
       path: '/users.info',
       body: {
         user: userId,
+        presence: 1,
       },
       silent: true,
     });
 
     batch(() => {
       dispatch(storeEntities('users', [user]));
+      dispatch(getMemberSuccess(userId));
     });
   } catch (err) {
     console.log(err);
+    dispatch(getMemberFail(userId));
   }
 };

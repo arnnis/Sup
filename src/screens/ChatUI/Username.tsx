@@ -1,16 +1,22 @@
-import React, {FC, memo} from 'react';
+import React, {FC, memo, useEffect} from 'react';
 import {Text, StyleSheet} from 'react-native';
-import {connect} from 'react-redux';
+import {connect, DispatchProp} from 'react-redux';
 import {RootState} from '../../reducers';
 import px from '../../utils/normalizePixel';
 import {NavigationInjectedProps, withNavigation} from 'react-navigation';
+import { getMember } from '../../actions/members/thunks';
 
-type Props = ReturnType<typeof mapStateToProps> &
+type Props = ReturnType<typeof mapStateToProps> & DispatchProp<any> &
   NavigationInjectedProps & {
     userId: string;
   };
 
-const Username: FC<Props> = memo(({userId, name, navigation}) => {
+const Username: FC<Props> = memo(({userId, name, navigation, dispatch}) => {
+  useEffect(() =>  {
+    if (!name) {
+      dispatch(getMember(userId))
+    }
+  },[])
   let handlePress = () => navigation.push('UserProfile', {userId});
 
   return (
@@ -31,7 +37,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state: RootState, ownProps) => {
   let user = state.entities.users.byId[ownProps.userId];
   return {
-    name: user && user.name,
+    name: user?.name,
   };
 };
 

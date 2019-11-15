@@ -6,6 +6,7 @@ import {appReducer} from './app';
 import {chatsReducer} from './chats';
 import {messagesReducer} from './messages';
 import {membersReducer} from './members';
+import {filesReducer} from './files';
 
 const rootReducer = combineReducers({
   entities: entitiesReducer,
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   members: membersReducer,
   app: appReducer,
   teams: teamsReducer,
+  files: filesReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

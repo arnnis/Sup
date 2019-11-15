@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {createSelector} from 'reselect';
 import {isSameUser} from './utils';
 import {RootState} from '../../reducers';
 import Bubble from './Bubble';
@@ -10,12 +9,20 @@ import px from '../../utils/normalizePixel';
 import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 import {NavigationInjectedProps, withNavigation} from 'react-navigation';
 import Day from './Day';
+import {meSelector} from '../../reducers/teams';
+import rem from '../../utils/stylesheet/rem';
+import {ChatType} from '.';
+import Reactions from './Reactions';
 
 type Props = ReturnType<typeof mapStateToProps> &
   NavigationInjectedProps &
   ThemeInjectedProps & {
     messageId: string;
     prevMessageId: string;
+    inverted: boolean;
+    showDivider?: boolean;
+    hideAvatar?: boolean;
+    hideReplies?: boolean;
   };
 
 class Message extends Component<Props> {
@@ -24,6 +31,8 @@ class Message extends Component<Props> {
   };
 
   renderAvatar(isMe, sameUser) {
+    let {hideAvatar} = this.props;
+    if (hideAvatar) return null;
     // If same author of previous message, render a placeholder instead of avatar
     if (sameUser)
       return (
@@ -41,7 +50,17 @@ class Message extends Component<Props> {
   }
 
   renderBubble(isMe: boolean, sameUser: boolean) {
-    return <Bubble currentMessage={this.props.currentMessage} isMe={isMe} sameUser={sameUser} />;
+    return (
+      <Bubble
+        messageId={this.props.messageId}
+        userId={this.props.currentMessage.user}
+        pending={this.props.currentMessage.pending}
+        isMe={isMe}
+        sameUser={sameUser}
+        hideReplies={this.props.hideReplies}
+        hideAvatar={this.props.hideAvatar}
+      />
+    );
   }
 
   renderAnchor(isMe, sameUser) {
@@ -72,12 +91,33 @@ class Message extends Component<Props> {
     return <Day currentMessage={currentMessage} prevMessage={prevMessage} />;
   }
 
+  renderDivder() {
+    if (!this.props.showDivider) return null;
+    return (
+      <View
+        style={{
+          width: rem(150),
+          marginBottom: px(10),
+          height: StyleSheet.hairlineWidth,
+          backgroundColor: this.props.theme.backgroundColorLess4,
+          alignSelf: 'center',
+        }}
+      />
+    );
+  }
+
+  renderReaction() {
+    return <Reactions messageId={this.props.messageId} hideAvatar={this.props.hideAvatar} />;
+  }
+
   render() {
-    let {currentMessage, prevMessage, me} = this.props;
+    let {currentMessage, prevMessage, me, inverted} = this.props;
     let sameUser = isSameUser(currentMessage, prevMessage);
-    let isMe = me.id === currentMessage.user;
+    let isMe = me && me.id === currentMessage.user;
     return (
       <>
+        {!inverted && this.renderDay()}
+        {inverted && this.renderReaction()}
         <View
           style={[
             styles.container,
@@ -98,7 +138,9 @@ class Message extends Component<Props> {
             </>
           )}
         </View>
-        {this.renderDay()}
+        {!inverted && this.renderReaction()}
+        {this.renderDivder()}
+        {inverted && this.renderDay()}
       </>
     );
   }
@@ -120,14 +162,6 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
 });
-
-export const meSelector = createSelector(
-  (state: RootState) => state,
-  state =>
-    state.entities.users.byId[
-      state.teams.list.find(tm => tm.id === state.teams.currentTeam).userId
-    ],
-);
 
 const mapStateToProps = (state: RootState, ownProps) => ({
   currentMessage: state.entities.messages.byId[ownProps.messageId],

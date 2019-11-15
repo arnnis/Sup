@@ -1,21 +1,16 @@
 import {Reducer} from 'redux';
 import {RootAction} from '../actions';
-import {PendingMessage} from '../models';
 
 export type MessagesState = Readonly<{
-  list: {[chatId: string]: Array<string>};
-  loading: {[chatId: string]: boolean};
+  list: {[chatIdOrThreadId: string]: Array<string | number>}; // Number for pending message local fingerprint, string for regular messages
+  loading: {[chatIdOrThreadId: string]: boolean};
   nextCursor: {[chatId: string]: string};
-  pendingMessages: {
-    [chatId: string]: Array<PendingMessage>;
-  };
 }>;
 
 const initialState: MessagesState = {
   list: {},
   loading: {},
   nextCursor: {},
-  pendingMessages: {},
 };
 
 export const messagesReducer: Reducer<MessagesState, RootAction> = (
@@ -40,10 +35,7 @@ export const messagesReducer: Reducer<MessagesState, RootAction> = (
         ...state,
         list: {
           ...state.list,
-          [chatId]: [
-            ...(state.list[chatId] || []),
-            ...messages.map(msg => msg.ts),
-          ],
+          [chatId]: [...(state.list[chatId] || []), ...messages.map(msg => msg.ts)],
         },
         loading: {
           ...state.loading,
@@ -67,10 +59,27 @@ export const messagesReducer: Reducer<MessagesState, RootAction> = (
       };
     }
 
+    // Adds a message to a chat (regular chat or thread)
     case 'ADD_MESSAGE_TO_CHAT': {
-      let {chatId, messageId} = action.payload;
+      let {chatId, messageId, threadId} = action.payload;
 
-      if ((state.list[chatId] || []).includes(messageId)) return state;
+      // Check for possible duplication in list
+      if ((state.list[threadId || chatId] || []).includes(messageId)) return state;
+
+      // pagination must be ended for this thread: if not it will break pagination. (pagination uses last message ts to load older messages)
+      if (threadId && state.nextCursor[threadId] !== 'end') return state;
+
+      // When message is for a thread,
+      // we add the message to end of array,
+      // because thread list is not reverted in ui.
+      if (threadId)
+        return {
+          ...state,
+          list: {
+            ...state.list,
+            [threadId]: [...(state.list[threadId] || []), messageId],
+          },
+        };
 
       return {
         ...state,
@@ -95,11 +104,22 @@ export const messagesReducer: Reducer<MessagesState, RootAction> = (
     case 'ADD_PENDING_MESSAGE': {
       let {message} = action.payload;
       let chatId = message.channel;
+      let threadId = message.thread_ts;
+
+      if (threadId)
+        return {
+          ...state,
+          list: {
+            ...state.list,
+            [threadId]: [...(state.list[threadId] || []), message.id],
+          },
+        };
+
       return {
         ...state,
-        pendingMessages: {
-          ...state.pendingMessages,
-          [chatId]: [...(state.pendingMessages[chatId] || []), message],
+        list: {
+          ...state.list,
+          [chatId]: [message.id, ...(state.list[chatId] || [])],
         },
       };
     }
@@ -108,23 +128,15 @@ export const messagesReducer: Reducer<MessagesState, RootAction> = (
       let {pendingId, chatId} = action.payload;
       return {
         ...state,
-        pendingMessages: {
-          ...state.pendingMessages,
-          [chatId]: state.pendingMessages[chatId].filter(
-            pendingMessage => pendingMessage.id !== pendingId,
-          ),
+        list: {
+          ...state.list,
+          [chatId]: state.list[chatId].filter(id => id !== pendingId),
         },
       };
     }
 
     case 'SET_CURRENT_TEAM': {
-      return {
-        ...state,
-        list: {},
-        loading: {},
-        nextCursor: {},
-        pendingMessages: {},
-      };
+      return initialState;
     }
 
     default:

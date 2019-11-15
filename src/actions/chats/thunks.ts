@@ -9,10 +9,24 @@ import {
   getChatLastMessageSuccess,
   getChatLastMessageFail,
   fetchChatsFail,
+  getChatInfoStart,
+  getChatInfoSuccess,
+  getChatInfoFail,
+  getChannelMembersStart,
+  getChannelMembersFail,
+  getChannelMembersSuccess,
+  setUserTyping,
+  unsetUserTyping,
+  setCurrentThread
 } from '.';
 import {RootState} from '../../reducers';
 import imsDirects from '../../utils/filterIms';
 import {getMember} from '../members/thunks';
+import { queryPresences } from '../../services/rtm/members-events';
+import isLandscape from '../../utils/stylesheet/isLandscape';
+import { openBottomSheet } from '../app';
+import { NavigationService } from '../../navigation/Navigator';
+import { NavigationInjectedProps } from 'react-navigation';
 
 export const getChats = () => async (dispatch, getState) => {
   let store: RootState = getState();
@@ -47,6 +61,8 @@ export const getChats = () => async (dispatch, getState) => {
     batch(() => {
       dispatch(storeEntities('chats', [...ims, ...channels, ...groups]));
       dispatch(fetchChatsSuccess(ims, [...channels, ...groups], nextCursor));
+
+      //queryPresences(ims.map(im => im.user_id));
     });
 
     return [...ims, ...channels, ...groups];
@@ -56,27 +72,17 @@ export const getChats = () => async (dispatch, getState) => {
   }
 };
 
-export const getChatLastMessage = (chatId: string) => async (
-  dispatch,
-  getState,
-) => {
+export const getChatLastMessage = (chatId: string) => async (dispatch, getState) => {
   let store: RootState = getState();
 
   // If already is loading or already loaded break.
-  let loading =
-    store.chats.lastMessages[chatId] &&
-    store.chats.lastMessages[chatId].loading;
-  let loaded =
-    store.chats.lastMessages[chatId] &&
-    store.chats.lastMessages[chatId].messageId;
+  let loading = store.chats.lastMessages[chatId] && store.chats.lastMessages[chatId].loading;
+  let loaded = store.chats.lastMessages[chatId] && store.chats.lastMessages[chatId].messageId;
   if (loading || loaded) return;
 
   try {
     dispatch(getChatLastMessageStart(chatId));
-    let {
-      messages,
-      response_metadata,
-    }: {messages: Array<Message>} & PaginationResult = await http({
+    let {messages, response_metadata}: {messages: Array<Message>} & PaginationResult = await http({
       path: '/conversations.history',
       body: {
         channel: chatId,
@@ -124,10 +130,7 @@ export const openChat = (userIds: Array<string>) => async dispatch => {
   return channel.id;
 };
 
-export const markChatAsRead = (
-  chatId: string,
-  messageId: string,
-) => async dispatch => {
+export const markChatAsRead = (chatId: string, messageId: string) => async dispatch => {
   try {
     let {ok} = await http({
       path: '/conversations.mark',
@@ -136,8 +139,89 @@ export const markChatAsRead = (
         ts: messageId,
       },
     });
-    return ok;
+    return Promise.resolve(ok);
   } catch (err) {
     console.log(err);
+    return Promise.reject(err);
   }
 };
+
+export const getChatInfo = (chatId: string) => async (dispatch, getState) => {
+  let state: RootState = getState();
+  let alreadyLoaded = state.chats.fullLoad[chatId]?.loaded ?? false
+  let loading = state.chats.fullLoad[chatId]?.loading ?? false
+  if (alreadyLoaded || loading) return
+  dispatch(getChatInfoStart(chatId));
+  try {
+    let {channel}: {channel: Chat} = await http({
+      path: '/conversations.info',
+      body: {
+        channel: chatId,
+        include_num_members: true,
+      },
+    });
+
+    batch(() => {
+      dispatch(storeEntities('chats', [channel]));
+      dispatch(getChatInfoSuccess(chatId, channel));
+    });
+
+    return Promise.resolve(channel);
+  } catch (err) {
+    console.log(err);
+    dispatch(getChatInfoFail(chatId));
+    return Promise.reject(err);
+  }
+};
+
+export const getChannelMembers = (chatId: string) => async (dispatch, getState) => {
+  let state: RootState = getState();
+  let loadStatus = state.chats.membersListLoadStatus[chatId]
+  if (loadStatus?.loading || loadStatus?.nextCursor === "end") return
+  dispatch(getChannelMembersStart(chatId));
+  try {
+    let {members, response_metadata}: {members: Array<string>} & PaginationResult = await http({
+      path: '/conversations.members',
+      body: {
+        channel: chatId,
+        include_num_members: true,
+        limit: 100,
+        cursor: loadStatus?.nextCursor ?? ''
+      },
+    });
+
+    let next_cursor = response_metadata && response_metadata.next_cursor ? response_metadata.next_cursor : 'end';
+
+    batch(() => {
+      dispatch(getChannelMembersSuccess(chatId, members, next_cursor));
+    });
+
+    return Promise.resolve(members);
+  } catch (err) {
+    console.log(err);
+    dispatch(getChannelMembersFail(chatId));
+    return Promise.reject(err);
+  }
+}
+
+export const setTyping = (userId: string, chatId: string) => (dispatch, getState) => {
+  let state = getState() as RootState
+  if (state.chats.typingsUsers[chatId]?.includes(userId)) return
+  dispatch(setUserTyping(userId, chatId))
+  setTimeout(() => {
+    dispatch(unsetUserTyping(userId, chatId))
+  }, 5000)
+}
+
+export const openThread = (threadId, navigation: NavigationInjectedProps["navigation"]) => (dispatch, getState) => {
+  const state: RootState = getState()
+  let chatId = navigation.getParam('chatId');
+  let params = {
+    chatType: 'thread',
+    threadId,
+    chatId: chatId || state.chats.currentChatId,
+  };
+  if (isLandscape()) dispatch(openBottomSheet('ChatUI', params));
+  else navigation.push('ChatUI', params);
+  dispatch(setCurrentThread(threadId));
+}

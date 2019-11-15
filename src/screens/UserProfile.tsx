@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, ScrollView, SafeAreaView} from 'react-native';
+import {View, Text, StyleSheet, ScrollView} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Header from '../components/Header';
 import {RootState} from '../reducers';
 import {connect, DispatchProp} from 'react-redux';
-import {NavigationInjectedProps, withNavigation, NavigationActions} from 'react-navigation';
+import {NavigationInjectedProps, withNavigation} from 'react-navigation';
 import px from '../utils/normalizePixel';
 import {User} from '../models';
 import {openChat} from '../actions/chats/thunks';
@@ -12,9 +12,15 @@ import {ActivityIndicator} from 'react-native-paper';
 import withTheme, {ThemeInjectedProps} from '../contexts/theme/withTheme';
 import Touchable from '../components/Touchable';
 import FastImage from 'react-native-fast-image';
-import {currentTeamTokenSelector} from './ChatUI/MessageImages';
+import {currentTeamTokenSelector} from '../reducers/teams';
+import Screen from '../components/Screen';
+import {InfoBox, InfoRow, ActionRow, SwitchRow} from '../components/InfoBox';
+import withStylesheet, {StyleSheetInjectedProps} from '../utils/stylesheet/withStylesheet';
+import {togglePresence} from '../actions/app/thunks';
+import {logoutFromCurrentTeam} from '../actions/teams/thunks';
 
 type Props = ReturnType<typeof mapStateToProps> &
+  StyleSheetInjectedProps &
   ThemeInjectedProps &
   NavigationInjectedProps &
   DispatchProp<any> & {
@@ -25,6 +31,7 @@ type Props = ReturnType<typeof mapStateToProps> &
 class UserProfile extends Component<Props> {
   state = {
     isOpeningChat: false,
+    changingPresence: false,
   };
 
   componentDidMount() {
@@ -42,7 +49,7 @@ class UserProfile extends Component<Props> {
     this.setState({isOpeningChat: true});
     try {
       let chatId = await dispatch(openChat([userId]));
-      navigation.push('ChatUI', {chatId}, NavigationActions.NAVIGATE);
+      navigation.navigate('ChatUI', {chatId});
     } catch (err) {
       console.log(err);
     } finally {
@@ -86,10 +93,11 @@ class UserProfile extends Component<Props> {
           flexDirection: 'row',
           justifyContent: 'center',
           marginTop: px(17.5),
-          marginBottom: px(35),
         }}>
         {isMe && (
-          <Touchable style={[styles.button, {backgroundColor: theme.backgroundColorLess2}]}>
+          <Touchable
+            disabled
+            style={[styles.button, {backgroundColor: theme.backgroundColorLess2}]}>
             <Text style={[styles.buttonTitle, {color: theme.foregroundColor}]}>Edit Profile</Text>
           </Touchable>
         )}
@@ -114,49 +122,50 @@ class UserProfile extends Component<Props> {
     );
   }
 
-  renderInfoRow(title: string, text: string, icon?: string, onPress?: any) {
-    let {theme} = this.props;
-    return (
-      <Touchable disabled={!onPress} style={styles.infoRow} onPress={onPress}>
-        <View style={{flexDirection: 'row'}}>
-          {icon ? (
-            <MaterialCommunityIcons
-              name={icon}
-              size={px(22)}
-              color="#707070"
-              style={{marginRight: px(8), marginTop: -px(1)}}
-            />
-          ) : null}
-          <Text style={[styles.infoRowTitle, {color: theme.foregroundColor}]}>{title}</Text>
-        </View>
-        {text ? (
-          <Text style={[styles.infoRowText, {color: theme.backgroundColorLess4}]}>{text}</Text>
-        ) : null}
-        <View style={[styles.divider, {backgroundColor: theme.backgroundColorLess4}]} />
-      </Touchable>
-    );
-  }
-
   renderMeOptions() {
+    let {theme} = this.props;
+    let _togglePresence = async () => {
+      this.setState({changingPresence: true});
+      await this.props.dispatch(togglePresence());
+      this.setState({changingPresence: false});
+    };
     return (
       <>
-        {this.renderInfoRow('Set a status', '', 'face')}
-        {this.renderInfoRow('Prefrences', '', 'settings-outline')}
+        <InfoBox>
+          <SwitchRow
+            icon="face"
+            onValueChange={_togglePresence}
+            value={this.props.presence === 'auto'}
+            changing={this.state.changingPresence}>
+            Presence ({this.props.presence})
+          </SwitchRow>
+          <ActionRow
+            icon="settings-outline"
+            onPress={() => this.props.navigation.navigate('SelectTheme')}>
+            Theme ({theme.displayName})
+          </ActionRow>
+          <ActionRow icon="logout" onPress={() => this.props.dispatch(logoutFromCurrentTeam())}>
+            Logout
+          </ActionRow>
+          {/* <ActionRow icon="settings-outline" onPress={() => alert('Set a status')}>
+            Do not disturb
+          </ActionRow> */}
+        </InfoBox>
       </>
     );
   }
 
   renderUserInfoRows(user: User) {
     return (
-      <>
-        {this.renderInfoRow('Timezone', user.tz_label)}
-        {user.profile.email && this.renderInfoRow('Email', user.profile.email)}
-      </>
+      <InfoBox>
+        {user.tz_label ? <InfoRow title="Timezone">{user.tz_label}</InfoRow> : null}
+        {user.profile.email ? <InfoRow title="Email">{user.profile.email}</InfoRow> : null}
+      </InfoBox>
     );
   }
 
   render() {
-    let {entities, navigation, isMe, theme} = this.props;
+    let {entities, navigation, isMe, dynamicStyles} = this.props;
     let userId = navigation.getParam('userId') || this.props.userId;
     let user = entities.users.byId[userId];
 
@@ -165,22 +174,21 @@ class UserProfile extends Component<Props> {
     return (
       <>
         <Background />
-        <SafeAreaView style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
+        <Screen>
           {!isMe && (
             <Header
               center={`${user.profile.real_name_normalized ||
-                user.profile.display_name_normalized}'s Profile`}
+                user.profile.display_name_normalized}`}
               left="back"
             />
           )}
-          <ScrollView>
+          <ScrollView contentContainerStyle={!isMe && dynamicStyles.scrollViewContent}>
             {this.renderHeader(user)}
             {this.renderButtons(user)}
             {isMe && this.renderMeOptions()}
             {!isMe && this.renderUserInfoRows(user)}
-            {/* {this.renderInfoRow()} */}
           </ScrollView>
-        </SafeAreaView>
+        </Screen>
       </>
     );
   }
@@ -222,6 +230,15 @@ const styles = StyleSheet.create({
     borderRadius: px(70),
     backgroundColor: '#ccc',
     marginTop: px(50),
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+
+    elevation: 3,
   },
   name: {
     fontSize: px(16.5),
@@ -285,9 +302,25 @@ const styles = StyleSheet.create({
   },
 });
 
+const dynamicStyles = {
+  scrollViewContent: {
+    width: '100%',
+    media: [
+      {orientation: 'landscape'},
+      {
+        width: '60%',
+        marginHorizontal: '20%',
+      },
+    ],
+  },
+};
+
 const mapStateToProps = (state: RootState) => ({
   entities: state.entities,
   token: currentTeamTokenSelector(state),
+  presence: state.app.presence,
 });
 
-export default connect(mapStateToProps)(withNavigation(withTheme(UserProfile)));
+export default connect(mapStateToProps)(
+  withStylesheet(dynamicStyles)(withNavigation(withTheme(UserProfile))),
+);

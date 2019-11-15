@@ -1,13 +1,14 @@
 import {Reducer} from 'redux';
 import merge from 'lodash/merge';
 import {RootAction} from '../actions';
-import {User, Message, Chat, Team} from '../models';
+import {User, Message, Chat, Team, PendingMessage, MessageAttachement} from '../models';
 
 export type EntitiesState = Readonly<{
   users: {byId: {[userId: string]: User}};
   teams: {byId: {[teamId: string]: Team}};
   chats: {byId: {[chatId: string]: Chat}};
-  messages: {byId: {[messageId: string]: Message}};
+  messages: {byId: {[messageId: string]: Message | PendingMessage}};
+  files: {byId: {[fileId: string]: MessageAttachement}};
   emojis: {byId: {[emojiId: string]: string}};
 }>;
 
@@ -16,6 +17,7 @@ const initialState: EntitiesState = {
   teams: {byId: {}},
   chats: {byId: {}},
   messages: {byId: {}},
+  files: {byId: {}},
   emojis: {byId: {}},
 };
 
@@ -56,10 +58,8 @@ export const entitiesReducer: Reducer<EntitiesState, RootAction> = (
 
     case 'SET_CURRENT_TEAM': {
       return {
-        ...state,
-        users: {byId: {}},
-        chats: {byId: {}},
-        messages: {byId: {}},
+        ...initialState,
+        teams: state.teams,
       };
     }
 

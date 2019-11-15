@@ -2,23 +2,33 @@ import React, {Component} from 'react';
 
 import ThemeContext from '.';
 import * as themes from './themes';
-import {ThemeName, Theme} from './types';
-import {StatusBar, Platform} from 'react-native';
+import {ThemeKey, Theme} from './types';
+import {StatusBar, Platform, AsyncStorage} from 'react-native';
 
 interface State {
-  themeName: ThemeName;
+  themeKey: ThemeKey;
+  isLoadingTheme: boolean;
 }
 
 class ThemeProvider extends Component<unknown, State> {
   constructor(props) {
     super(props);
     this.state = {
-      themeName: 'darkBlueTheme',
+      themeKey: 'lightWhite',
+      isLoadingTheme: true,
     };
   }
 
-  componentDidMount() {
-    let theme: Theme = themes[this.state.themeName];
+  async componentDidMount() {
+    let themeKey = (await AsyncStorage.getItem('themeKey')) as ThemeKey;
+    themeKey && (await this.setState({themeKey}));
+    this.setState({isLoadingTheme: false});
+    //this.setStatusbar();
+    StatusBar.setBackgroundColor('#3A1C39');
+  }
+
+  setStatusbar = () => {
+    let theme: Theme = themes[this.state.themeKey];
     if (theme.isDark) {
       StatusBar.setBarStyle('dark-content');
       Platform.OS === 'android' && StatusBar.setBackgroundColor('#3A1C39');
@@ -26,16 +36,24 @@ class ThemeProvider extends Component<unknown, State> {
       StatusBar.setBarStyle('light-content');
       Platform.OS === 'android' && StatusBar.setBackgroundColor('#3A1C39');
     }
-  }
+  };
+
+  toggleTheme = async (themeKey: ThemeKey) => {
+    await this.setState({themeKey});
+    AsyncStorage.setItem('themeKey', themeKey);
+    //this.setStatusbar();
+    StatusBar.setBackgroundColor('#3A1C39');
+  };
 
   render() {
+    let {isLoadingTheme} = this.state;
     return (
       <ThemeContext.Provider
         value={{
-          theme: themes[this.state.themeName],
-          toggleTheme: (themeName: ThemeName) => this.setState({themeName}),
+          theme: themes[this.state.themeKey],
+          toggleTheme: this.toggleTheme,
         }}>
-        {this.props.children}
+        {!isLoadingTheme && this.props.children}
       </ThemeContext.Provider>
     );
   }

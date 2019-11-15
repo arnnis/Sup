@@ -1,46 +1,156 @@
-import React, {Component} from 'react';
-import {View, StyleSheet} from 'react-native';
+import React, {Component, FC, useState, useEffect} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Modal,
+  TouchableWithoutFeedback,
+  ActivityIndicator,
+} from 'react-native';
+import ImageViewer from 'react-native-image-zoom-viewer';
 import FastImage from 'react-native-fast-image';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {RootState} from '../../reducers';
 import {createSelector} from 'reselect';
-import {Message, Team} from '../../models';
+import {Message, MessageAttachement} from '../../models';
 import px from '../../utils/normalizePixel';
-import {connect} from 'react-redux';
+import {connect, useSelector} from 'react-redux';
+import {currentTeamTokenSelector} from '../../reducers/teams';
+import Touchable from '../../components/Touchable';
 
 type Props = ReturnType<typeof mapStateToProps> & {
   messageId: string;
 };
 
 class MessageImages extends Component<Props> {
-  renderImage(uri, width, height) {
-    let {token} = this.props;
+  state = {
+    imageViewerVisible: false,
+  };
+
+  renderImage(image: MessageAttachement, isSingle) {
+    console.log(image);
+    let desiredHeight: number, uri: string, mainSize: {width: number; height: number};
+
+    if (isSingle) {
+      desiredHeight = px(200);
+      uri = image.thumb_360;
+      mainSize = {
+        width: image.thumb_360_w,
+        height: image.thumb_360_h,
+      };
+    } else {
+      desiredHeight = px(125);
+      uri = image.thumb_480 || image.thumb_360;
+      mainSize = {
+        width: image.thumb_480_w || image.thumb_360_w,
+        height: image.thumb_480_h || image.thumb_360_h,
+      };
+    }
     return (
-      <FastImage
-        source={{uri, headers: {Authorization: 'Bearer ' + token}}}
-        style={{width: width, height: height, marginBottom: px(7.5)}}
-        resizeMode="cover"
+      <MessageImage
+        uri={uri}
+        desiredHeight={desiredHeight}
+        mainSize={mainSize}
+        onPress={() => this.setState({imageViewerVisible: true})}
       />
     );
   }
 
   render() {
-    let {images} = this.props;
+    let {images, token} = this.props;
     if (!images) return null;
 
-    let imageWidth = '100%';
-    let imageHeight = px(200);
-    if (images.length > 1) {
-      imageWidth = '50%';
-      imageHeight = px(125);
-    }
+    const isSingle = !images.length;
 
     return (
-      <View style={styles.container}>
-        {images.map(image => this.renderImage(images.length > 1? image.thumb_360 : image.thumb_160, imageWidth, imageHeight))}
-      </View>
+      <>
+        <View style={styles.container}>
+          {images.map(image => this.renderImage(image, isSingle))}
+        </View>
+        <Modal
+          visible={this.state.imageViewerVisible}
+          transparent
+          animationType="fade"
+          style={{margin: 0}}>
+          <ImageViewer
+            imageUrls={images.map(img => ({
+              url: img.url_private_download,
+              props: {headers: {Authorization: 'Bearer ' + token}},
+            }))}
+            onCancel={() => this.setState({imageViewerVisible: false})}
+            loadingRender={() => <ActivityIndicator size="large" color="#fff" />}
+            enableSwipeDown
+            onSwipeDown={() => this.setState({imageViewerVisible: false})}
+          />
+          <Touchable
+            onPress={() => this.setState({imageViewerVisible: false})}
+            style={{
+              position: 'absolute',
+              top: px(25),
+              left: px(15),
+              backgroundColor: 'purple',
+              justifyContent: 'center',
+              alignItems: 'center',
+              width: px(30),
+              height: px(30),
+              borderRadius: px(15),
+            }}>
+            <MaterialCommunityIcons
+              name="close"
+              color="#fff"
+              size={px(18)}
+              style={{marginTop: px(2.5)}}
+            />
+          </Touchable>
+        </Modal>
+      </>
     );
   }
 }
+
+interface MessageImage {
+  uri: string;
+  desiredHeight: number;
+  mainSize: {
+    width: number;
+    height: number;
+  };
+  onPress(): void;
+}
+
+const MessageImage: FC<MessageImage> = ({uri, desiredHeight, mainSize, onPress}) => {
+  // let [size, setSize] = useState({width: 1, height: 1});
+  let token = useSelector(currentTeamTokenSelector);
+  // useEffect(() => {
+  //   Image.getSizeWithHeaders(uri, {Authorization: 'Bearer ' + token}, (width, height) => {
+  //     console.log('fetched width:', width, 'fetched height: ', height);
+  //     setSize({width, height});
+  //   });
+  // }, []);
+  console.log('fetched size:', mainSize);
+  console.log(
+    'width:',
+    mainSize.width * (desiredHeight / mainSize.height),
+    'height: ',
+    desiredHeight,
+  );
+
+  return (
+    <TouchableWithoutFeedback onPress={onPress}>
+      <FastImage
+        source={{uri, headers: {Authorization: 'Bearer ' + token}}}
+        style={{
+          width: mainSize.width * (desiredHeight / mainSize.height),
+          maxWidth: '100%',
+          height: desiredHeight,
+          marginBottom: px(7.5),
+          marginRight: px(2.5),
+        }}
+        resizeMode="contain"
+      />
+    </TouchableWithoutFeedback>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -53,11 +163,6 @@ const styles = StyleSheet.create({
 const messageImagesSelector = createSelector(
   (message: Message) => message,
   message => message.files && message.files.filter(file => file.mimetype.startsWith('image')),
-);
-
-export const currentTeamTokenSelector = createSelector(
-  [(state: RootState) => state.teams.list, (state: RootState) => state.teams.currentTeam],
-  (teamsList, currentTeamId) => teamsList.find(tm => tm.id === currentTeamId)?.token,
 );
 
 const mapStateToProps = (state: RootState, ownProps) => {

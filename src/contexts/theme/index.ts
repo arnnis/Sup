@@ -1,10 +1,10 @@
 import React from 'react';
 import * as themes from './themes';
-import {ThemeName} from './types';
+import {ThemeKey} from './types';
 
 const ThemeContext = React.createContext({
   theme: themes.darkBlueTheme,
-  toggleTheme: (themeName: ThemeName) => {},
+  toggleTheme: (themeName: ThemeKey) => {},
 });
 
 export default ThemeContext;

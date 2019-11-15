@@ -8,7 +8,7 @@ import {Message} from '../../models';
 import {RootState} from '../../reducers';
 import {connect} from 'react-redux';
 import px from '../../utils/normalizePixel';
-import {currentTeamTokenSelector} from './MessageImages';
+import {currentTeamTokenSelector} from '../../reducers/teams';
 
 type Props = ReturnType<typeof mapStateToProps> & {
   messageId: string;

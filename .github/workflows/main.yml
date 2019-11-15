@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+      
+    - name: Setup Node.js 12
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12.x
+    
+    - name: Cache node_modules dependecies
+      uses: actions/cache@v1
+      with:
+        path: ~/.cache/yarn
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-yarn-
+    
+    - name: Install dependencies
+      run: yarn install
+    
+    - name: Patch workers (fixes android build)
+      run: sudo sysctl fs.inotify.max_user_instances=524288 && sudo sysctl fs.inotify.max_user_watches=524288 && sudo sysctl fs.inotify.max_queued_events=524288 && sudo sysctl -p
+    
+    - name: Run jettifier
+      run: npx jetify
+      
+    - name: Setup java 8
+      uses: actions/setup-java@v1
+      with:
+        java-version: '1.8'
+        architecture: x64 // (x64 or x86) - defaults to x64
+    
+    - name: Build android
+      run: cd android && ./gradlew assembleRelease
+    
+    - name: Deploy to gh-page
+      run: yarn deploy
+    
+    - name: Release
+      uses: "marvinpinto/action-automatic-releases@latest"
+      with:
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        prerelease: false
+        files: android/app/build/output/apk/release/*.apk

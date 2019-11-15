@@ -1,14 +1,22 @@
 import React, {FC, memo} from 'react';
-import {Text, StyleSheet} from 'react-native';
+import {Text, StyleSheet, TextStyle} from 'react-native';
 import {connect} from 'react-redux';
 import {RootState} from '../../reducers';
 import px from '../../utils/normalizePixel';
+import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 
-type Props = ReturnType<typeof mapStateToProps> & {
-  userId: string;
-};
+type Props = ReturnType<typeof mapStateToProps> &
+  ThemeInjectedProps & {
+    userId: string;
+    isMe: boolean;
+    style?: TextStyle;
+  };
 
-const Name: FC<Props> = memo(({name}) => <Text style={styles.text}>{name || 'loading...'}</Text>);
+const Name: FC<Props> = memo(({name, isMe, style, theme}) => (
+  <Text style={[styles.text, {color: isMe ? '#fff' : theme.foregroundColor}, style]}>
+    {name || 'loading...'}
+  </Text>
+));
 
 const styles = StyleSheet.create({
   text: {
@@ -26,4 +34,4 @@ const mapStateToProps = (state: RootState, ownProps) => {
   };
 };
 
-export default connect(mapStateToProps)(Name);
+export default connect(mapStateToProps)(withTheme(Name));

@@ -1,14 +1,13 @@
 import {action} from 'typesafe-actions';
 import {User, Chat, Message, Team} from '../models';
 
-type EntityType = 'users' | 'chats' | 'messages' | 'teams' | 'emojis';
+type EntityType = 'users' | 'chats' | 'messages' | 'pendingMessages' | 'teams' | 'files' | 'emojis';
 
 export const storeEntities = (
   entity: EntityType,
   data: (User & Chat & Message & Team)[] | object,
 ) => {
   if (Array.isArray(data)) {
-    if (!data.length) return;
     data = data.reduce(
       (preValue, curValue) => ({
         ...preValue,

@@ -13,6 +13,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Lucida Console',
     backgroundColor: 'gray',
     color: '#fff',
+    fontSize: px(14),
   },
 });
 

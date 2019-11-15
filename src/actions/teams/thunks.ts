@@ -22,13 +22,25 @@ import {getChats} from '../chats/thunks';
 import {closeSocket, init as initRTM} from '../../services/rtm';
 import {getCurrentUser} from '../app/thunks';
 import {getMembers} from '../members/thunks';
+import {SlackError} from '../../utils/errors';
+import {Alert} from 'react-native';
+import {currentTeamSelector} from '../../reducers/teams';
 
-export const signinTeam = (
-  domain: string,
-  email: string,
-  password: string,
-  pin?: string,
-) => async dispatch => {
+export const signinTeam = (domain: string, email: string, password: string, pin?: string) => async (
+  dispatch,
+  getState,
+) => {
+  let state: RootState = getState();
+
+  if (
+    state.teams.list
+      .map(tm => state.entities.teams.byId[tm.id])
+      .some(team => team.domain === domain)
+  ) {
+    alert('You have already signed into this team.');
+    return;
+  }
+
   try {
     dispatch(signinTeamStart());
 
@@ -57,6 +69,12 @@ export const signinTeam = (
     return Promise.resolve();
   } catch (err) {
     dispatch(signinTeamFail());
+    if (err instanceof SlackError) {
+      err.message === 'team_not_found' && alert('Team not found');
+      err.message === 'missing_pin' && alert('Please enter 2FA pin and try again');
+      err.message === 'user_not_found' && alert('User with this email not found in this team');
+      err.message === 'incorrect_password' && alert('Password is incorrect');
+    }
     console.log(err);
   }
 };
@@ -118,9 +136,26 @@ export const switchTeam = (teamId: string) => dispatch => {
 
 export const logoutFromCurrentTeam = () => (dispatch, getState) => {
   let state: RootState = getState();
-  let currentTeam = state.teams.currentTeam;
-  dispatch(logout(currentTeam));
-  closeSocket();
+  Alert.alert(
+    'Logout from ' + currentTeamSelector(state)?.name,
+    'Do you want to logout?',
+    [
+      {
+        text: 'Cancel',
+      },
+      {
+        text: 'Logout',
+        onPress: () => {
+          let currentTeam = state.teams.currentTeam;
+          closeSocket();
+          return dispatch(logout(currentTeam));
+        },
+      },
+    ],
+    {
+      cancelable: true,
+    },
+  );
 };
 
 export const getEmojis = () => async dispatch => {

@@ -4,7 +4,7 @@ import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 
 import {createWhitelistFilter} from 'redux-persist-transform-filter';
 
-const entitiesFilter = createWhitelistFilter('entities', ['teams']);
+const entitiesFilter = createWhitelistFilter('entities', ['teams', 'users']);
 
 const teamsFilter = createWhitelistFilter('teams', ['list', 'currentTeam']);
 

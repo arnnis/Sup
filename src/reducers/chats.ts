@@ -2,29 +2,36 @@ import {Reducer} from 'redux';
 import {RootAction} from '../actions';
 
 export type DirectsState = Readonly<{
+  currentChatId: string;
+  currentThreadId: string;
   directsList: Array<string>;
-  groupsList: Array<string>;
+  channelsList: Array<string>;
   loading: boolean;
   lastMessages: {
     [directId: string]: {loading: boolean; messageId?: string};
   };
   nextCursor: string;
   typingsUsers: {[chatId: string]: Array<string>};
+  fullLoad: {[chatId: string]: {loading: boolean; loaded: boolean}};
+  membersList: {[chatId: string]: Array<string>};
+  membersListLoadStatus: {[chatId: string]: {loading: boolean; nextCursor: string}};
 }>;
 
 const initialState: DirectsState = {
+  currentChatId: '',
+  currentThreadId: '',
   directsList: [],
-  groupsList: [],
+  channelsList: [],
   loading: false,
   lastMessages: {},
   nextCursor: '',
   typingsUsers: {},
+  fullLoad: {},
+  membersList: {},
+  membersListLoadStatus: {},
 };
 
-export const chatsReducer: Reducer<DirectsState, RootAction> = (
-  state = initialState,
-  action,
-) => {
+export const chatsReducer: Reducer<DirectsState, RootAction> = (state = initialState, action) => {
   switch (action.type) {
     case 'FETCH_CHATS_START': {
       return {
@@ -38,7 +45,7 @@ export const chatsReducer: Reducer<DirectsState, RootAction> = (
       return {
         ...state,
         directsList: ims.map(im => im.id),
-        groupsList: groups.map(group => group.id),
+        channelsList: groups.map(group => group.id),
         loading: false,
       };
     }
@@ -109,17 +116,130 @@ export const chatsReducer: Reducer<DirectsState, RootAction> = (
       let {chatId, userId} = action.payload;
       return {
         ...state,
+        typingsUsers: {
+          ...state.typingsUsers,
+          [chatId]: [...(state.typingsUsers[chatId] || []), userId],
+        },
+      };
+    }
+
+    case 'UNSET_USER_TYPING': {
+      let {chatId, userId} = action.payload;
+      return {
+        ...state,
+        typingsUsers: {
+          ...state.typingsUsers,
+          [chatId]: state.typingsUsers[chatId].filter(uId => uId !== userId),
+        },
+      };
+    }
+
+    case 'SET_CURRENT_CHAT': {
+      let {chatId} = action.payload;
+      return {
+        ...state,
+        currentChatId: chatId,
+      };
+    }
+
+    case 'SET_CURRENT_THREAD': {
+      let {threadId} = action.payload;
+      return {
+        ...state,
+        currentThreadId: threadId,
+      };
+    }
+
+    case 'GET_CHAT_INFO_START': {
+      let {chatId} = action.payload;
+      return {
+        ...state,
+        fullLoad: {
+          ...state.fullLoad,
+          [chatId]: {
+            loading: true,
+            loaded: false,
+          },
+        },
+      };
+    }
+
+    case 'GET_CHAT_INFO_SUCCESS': {
+      let {chatId} = action.payload;
+      return {
+        ...state,
+        fullLoad: {
+          ...state.fullLoad,
+          [chatId]: {
+            loading: false,
+            loaded: true,
+          },
+        },
+      };
+    }
+
+    case 'GET_CHAT_INFO_FAIL': {
+      let {chatId} = action.payload;
+      return {
+        ...state,
+        fullLoad: {
+          ...state.fullLoad,
+          [chatId]: {
+            loading: false,
+            loaded: false,
+          },
+        },
+      };
+    }
+
+    case 'GET_CHANNEL_MEMBERS_START': {
+      let {chatId} = action.payload;
+      return {
+        ...state,
+        membersListLoadStatus: {
+          ...state.membersListLoadStatus,
+          [chatId]: {
+            ...state.membersListLoadStatus[chatId],
+            loading: true,
+          },
+        },
+      };
+    }
+
+    case 'GET_CHANNEL_MEMBERS_SUCCESS': {
+      let {chatId, members, nextCursor} = action.payload;
+      return {
+        ...state,
+        membersList: {
+          ...state.membersList,
+          [chatId]: [...(state.membersList[chatId] || []), ...members],
+        },
+        membersListLoadStatus: {
+          ...state.membersListLoadStatus,
+          [chatId]: {
+            loading: false,
+            nextCursor,
+          },
+        },
+      };
+    }
+
+    case 'GET_CHANNEL_MEMBERS_FAIL': {
+      let {chatId} = action.payload;
+      return {
+        ...state,
+        membersListLoadStatus: {
+          ...state.membersListLoadStatus,
+          [chatId]: {
+            ...state.membersListLoadStatus[chatId],
+            loading: false,
+          },
+        },
       };
     }
 
     case 'SET_CURRENT_TEAM': {
-      return {
-        ...state,
-        directsList: [],
-        groupsList: [],
-        loading: false,
-        lastMessages: {},
-      };
+      return initialState;
     }
 
     default:

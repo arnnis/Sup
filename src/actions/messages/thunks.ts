@@ -6,12 +6,14 @@ import http from '../../utils/http';
 import {RootState} from '../../reducers';
 import {getMember, getMembersByUserIds} from '../members/thunks';
 
-export const getMessages = (chatId: string) => async (dispatch, getState) => {
+export const getMessagesByChatId = (chatId: string) => async (dispatch, getState) => {
   let store: RootState = getState();
   let messageList = store.messages.list[chatId] || [];
   let cursor = messageList[messageList.length - 1] || '';
+  let hasNextPage =
+    store.messages.nextCursor[chatId] && store.messages.nextCursor[chatId] === 'end';
   let alreadyLoading = store.messages.loading[chatId];
-  if (cursor === 'end' || alreadyLoading) return;
+  if (hasNextPage || alreadyLoading) return;
 
   try {
     dispatch(getMessagesStart(chatId));
@@ -19,7 +21,7 @@ export const getMessages = (chatId: string) => async (dispatch, getState) => {
       path: '/conversations.history',
       body: {
         channel: chatId,
-        limit: 20,
+        limit: 50,
         latest: cursor,
       },
     });
@@ -31,12 +33,52 @@ export const getMessages = (chatId: string) => async (dispatch, getState) => {
       dispatch(storeEntities('messages', messages));
     });
 
-    dispatch(getMembersByUserIds(messages.map(msg => msg.user)));
-
-    return messages;
+    return Promise.resolve(messages);
   } catch (err) {
     console.log(err);
     dispatch(getMessagesFail(chatId));
+    return Promise.reject(err);
+  }
+};
+
+export const getRepliesByThreadId = (threadId: string, chatId: string) => async (
+  dispatch,
+  getState,
+) => {
+  let store: RootState = getState();
+  let messageList = store.messages.list[threadId] || [];
+  let cursor = messageList[messageList.length - 1];
+  let hasNextPage =
+    store.messages.nextCursor[threadId] && store.messages.nextCursor[threadId] === 'end';
+  let alreadyLoading = store.messages.loading[threadId];
+  if (hasNextPage || alreadyLoading) return;
+
+  try {
+    dispatch(getMessagesStart(threadId));
+    let {messages, response_metadata}: {messages: Array<Message>} & PaginationResult = await http({
+      path: '/conversations.replies',
+      body: {
+        channel: chatId,
+        ts: threadId,
+        limit: 41,
+        oldest: cursor || threadId,
+      },
+    });
+
+    messages = messages.filter(msg => msg.ts !== threadId);
+
+    let nextCursor = response_metadata ? response_metadata.next_cursor : 'end';
+
+    batch(() => {
+      dispatch(getMessagesSuccess(threadId, messages, nextCursor));
+      dispatch(storeEntities('messages', messages));
+    });
+
+    return Promise.resolve(messages);
+  } catch (err) {
+    console.log(err);
+    dispatch(getMessagesFail(threadId));
+    return Promise.reject(err);
   }
 };
 

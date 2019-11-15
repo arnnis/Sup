@@ -1,21 +1,37 @@
-import React, {Component} from 'react';
-import {View, Text, StyleSheet, ViewStyle, TouchableOpacity} from 'react-native';
+import React, {PureComponent} from 'react';
+import {View, StyleSheet, ViewStyle, TouchableOpacity} from 'react-native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import px from '../utils/normalizePixel';
 import FastImage from 'react-native-fast-image';
-import {connect} from 'react-redux';
+import {connect, DispatchProp} from 'react-redux';
 import {RootState} from '../reducers';
+import {getMember} from '../actions/members/thunks';
+import {currentTeamTokenSelector} from '../reducers/teams';
 
-type Props = ReturnType<typeof mapStateToProps> & {
-  userId: string;
-  width?: number;
-  style?: ViewStyle;
-  onPress?(): void;
-};
+type Props = ReturnType<typeof mapStateToProps> &
+  DispatchProp<any> & {
+    userId: string;
+    width?: number;
+    style?: ViewStyle;
+    onPress?(): void;
+    containerStyle?: ViewStyle;
+    hideOnlineBadge: boolean;
+  };
 
-class Avatar extends Component<Props> {
+class Avatar extends PureComponent<Props> {
   static defaultProps = {
     width: px(50),
   };
+
+  state = {
+    errored: false,
+  };
+
+  componentDidMount() {
+    if (!this.props.user) this.props.dispatch(getMember(this.props.userId));
+  }
+
+  onError = () => this.setState({errored: true});
 
   renderImage() {
     let {user, width} = this.props;
@@ -41,15 +57,41 @@ class Avatar extends Component<Props> {
         uri = profile.image_512;
     }
 
-    return <FastImage source={{uri}} style={[styles.image, {borderRadius: width / 2}]} />;
+    return (
+      <FastImage
+        source={{uri, headers: {Authorization: 'Bearer ' + this.props.token}}}
+        style={[styles.image, {borderRadius: width / 2}, this.props.style]}
+        onError={this.onError}
+      />
+    );
   }
 
   renderOnlineBadge() {
-    let {user, width} = this.props;
+    let {user, hideOnlineBadge} = this.props;
+    if (hideOnlineBadge) return null;
 
     if (user && user.hasOwnProperty('presence') && user.presence === 'active')
       return <View style={styles.onlineBadge} />;
     return null;
+  }
+
+  renderPlaceholder() {
+    let {width, style} = this.props;
+    return (
+      <View
+        style={[
+          {
+            flex: 1,
+            backgroundColor: '#562E52',
+            borderRadius: px(360),
+            justifyContent: 'center',
+            alignItems: 'center',
+          },
+          style,
+        ]}>
+        <MaterialCommunityIcons name="slack" size={width / 2} color="#fff" />
+      </View>
+    );
   }
 
   render() {
@@ -62,10 +104,16 @@ class Avatar extends Component<Props> {
         style={[
           styles.container,
           {width, height: width, borderRadius: width / 2},
-          this.props.style,
+          this.props.containerStyle,
         ]}>
-        {this.renderImage()}
-        {this.renderOnlineBadge()}
+        {this.state.errored ? (
+          this.renderPlaceholder()
+        ) : (
+          <>
+            {this.renderImage()}
+            {this.renderOnlineBadge()}
+          </>
+        )}
       </TouchableOpacity>
     );
   }
@@ -92,6 +140,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state: RootState, ownProps) => ({
   user: state.entities.users.byId[ownProps.userId],
+  token: currentTeamTokenSelector(state),
 });
 
 export default connect(mapStateToProps)(Avatar);

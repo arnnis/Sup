@@ -1,12 +1,4 @@
-import {
-  darken,
-  getLuminance,
-  hsl,
-  lighten,
-  parseToHsl,
-  rgba,
-  setLightness,
-} from 'polished';
+import {darken, getLuminance, hsl, lighten, parseToHsl, rgba, setLightness} from 'polished';
 import {Theme, ThemeColors} from './types';
 import getStaticColors from './static-colors';
 
@@ -29,15 +21,11 @@ export function createThemeFromColor(
   let primaryForegroundColor = '#70CADB';
 
   if (override) {
-    if (override.primaryBackgroundColor)
-      primaryBackgroundColor = override.primaryBackgroundColor;
+    if (override.primaryBackgroundColor) primaryBackgroundColor = override.primaryBackgroundColor;
 
-    if (override.primaryForegroundColor)
-      primaryForegroundColor = override.primaryForegroundColor;
+    if (override.primaryForegroundColor) primaryForegroundColor = override.primaryForegroundColor;
     else if (override.primaryBackgroundColor) {
-      primaryForegroundColor = isDark
-        ? darken(0.05, color)
-        : lighten(0.05, color);
+      primaryForegroundColor = isDark ? darken(0.05, color) : lighten(0.05, color);
     }
   }
 
@@ -50,7 +38,7 @@ export function createThemeFromColor(
   const backgroundColor = hsl(h, s, l);
 
   const backgroundColorDarker1 = hsl(h, s, Math.max(0, l - 0.05));
-  const backgroundColorDarker2 = hsl(h, s, Math.max(0, l - 0.09));
+  const backgroundColorDarker2 = hsl(h, s, Math.max(0, l - 0.1));
   const backgroundColorDarker3 = hsl(h, s, Math.max(0, l - 0.2));
   const backgroundColorDarker4 = hsl(h, s, Math.max(0, l - 0.3));
   const backgroundColorDarker5 = hsl(h, s, Math.max(0, l - 0.5));
@@ -61,37 +49,17 @@ export function createThemeFromColor(
   const backgroundColorLighther4 = hsl(h, s, Math.min(l + 0.3, 1));
   const backgroundColorLighther5 = hsl(h, s, Math.min(l + 0.5, 1));
 
-  const backgroundColorMore1 = isDark
-    ? backgroundColorDarker1
-    : backgroundColorLighther1;
-  const backgroundColorMore2 = isDark
-    ? backgroundColorDarker2
-    : backgroundColorLighther2;
-  const backgroundColorMore3 = isDark
-    ? backgroundColorDarker3
-    : backgroundColorLighther3;
-  const backgroundColorMore4 = isDark
-    ? backgroundColorDarker4
-    : backgroundColorLighther4;
-  const backgroundColorMore5 = isDark
-    ? backgroundColorDarker5
-    : backgroundColorLighther5;
+  const backgroundColorMore1 = isDark ? backgroundColorDarker1 : backgroundColorLighther1;
+  const backgroundColorMore2 = isDark ? backgroundColorDarker2 : backgroundColorLighther2;
+  const backgroundColorMore3 = isDark ? backgroundColorDarker3 : backgroundColorLighther3;
+  const backgroundColorMore4 = isDark ? backgroundColorDarker4 : backgroundColorLighther4;
+  const backgroundColorMore5 = isDark ? backgroundColorDarker5 : backgroundColorLighther5;
 
-  const backgroundColorLess1 = !isDark
-    ? backgroundColorDarker1
-    : backgroundColorLighther1;
-  const backgroundColorLess2 = !isDark
-    ? backgroundColorDarker2
-    : backgroundColorLighther2;
-  const backgroundColorLess3 = !isDark
-    ? backgroundColorDarker3
-    : backgroundColorLighther3;
-  const backgroundColorLess4 = !isDark
-    ? backgroundColorDarker4
-    : backgroundColorLighther4;
-  const backgroundColorLess5 = !isDark
-    ? backgroundColorDarker5
-    : backgroundColorLighther5;
+  const backgroundColorLess1 = !isDark ? backgroundColorDarker1 : backgroundColorLighther1;
+  const backgroundColorLess2 = !isDark ? backgroundColorDarker2 : backgroundColorLighther2;
+  const backgroundColorLess3 = !isDark ? backgroundColorDarker3 : backgroundColorLighther3;
+  const backgroundColorLess4 = !isDark ? backgroundColorDarker4 : backgroundColorLighther4;
+  const backgroundColorLess5 = !isDark ? backgroundColorDarker5 : backgroundColorLighther5;
   const backgroundColorTransparent05 = rgba(backgroundColor, 0.05);
   const backgroundColorTransparent10 = rgba(backgroundColor, 0.1);
 

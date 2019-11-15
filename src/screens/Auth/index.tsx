@@ -1,13 +1,28 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, TextInput, TouchableOpacity, ActivityIndicator} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  ActivityIndicator,
+  KeyboardAvoidingView,
+  ScrollView,
+  StatusBar,
+} from 'react-native';
 import Svg, {Defs, Path, Stop, LinearGradient} from 'react-native-svg';
 
 import px from '../../utils/normalizePixel';
 import {DispatchProp, connect} from 'react-redux';
 import {signinTeam} from '../../actions/teams/thunks';
 import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
+import rem from '../../utils/stylesheet/rem';
+import Touchable from '../../components/Touchable';
+import Header from '../../components/Header';
+import Screen from '../../components/Screen';
+import withStylesheet, {StyleSheetInjectedProps} from '../../utils/stylesheet/withStylesheet';
 
-type Props = ThemeInjectedProps & DispatchProp<any>;
+type Props = ThemeInjectedProps & StyleSheetInjectedProps & DispatchProp<any>;
 
 class Auth extends Component<Props> {
   state = {
@@ -20,7 +35,7 @@ class Auth extends Component<Props> {
 
   renderHeader() {
     return (
-      <Svg style={{width: '100%', marginTop: -px(25)}}>
+      <Svg style={{width: '100%', marginTop: -px(10)}}>
         <Defs>
           <LinearGradient
             id="prefix__a"
@@ -35,16 +50,18 @@ class Auth extends Component<Props> {
         </Defs>
         <Path
           data-name="Path 1"
-          d={`M23 224.095s97.5 ${px(37.06)} ${px(194.587)} 0 ${px(180.413)} 0 ${px(
+          d={`M23 125.095s97.5 ${rem(37.06)} ${rem(194.587)} 0 ${rem(180.413)} 0 ${rem(
             180.413,
           )} 0V2.865H23z`}
           transform="translate(-23 -2.865)"
           fill="url(#prefix__a)"
         />
-        <View style={styles.headerContainer}>
-          <Text style={styles.appTitle}>WhatSlack</Text>
-          <Text style={styles.authMode}>signin</Text>
-        </View>
+        <>
+          <View style={styles.headerContainer}>
+            <Text style={styles.appTitle}>Sup</Text>
+            <Text style={styles.authMode}>signin</Text>
+          </View>
+        </>
       </Svg>
     );
   }
@@ -170,32 +187,69 @@ class Auth extends Component<Props> {
     );
   }
 
-  render() {
-    let {theme} = this.props;
+  renderSigninToPlayground() {
+    let {theme, dispatch} = this.props;
     return (
-      <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
-        {this.renderHeader()}
-        {this.renderDomainInput()}
-        {this.renderDivider()}
-        {this.renderInput('email', 'Email', 'Enter your email', (email: string) =>
-          this.setState({email}),
-        )}
-        {this.renderInput(
-          'password',
-          'Password',
-          'Enter your password',
-          (password: string) => this.setState({password}),
-          true,
-        )}
-        {this.renderInput(
-          'pin',
-          '2FA Pin (if enabled)',
-          'Enter your 2fa pin',
-          (pin: string) => this.setState({pin}),
-          true,
-        )}
-        {this.renderSubmitButton()}
-      </View>
+      <Touchable
+        onPress={() => {
+          this.setState({
+            domain: 'supplayground',
+            email: 'arnnnnis@gmail.com',
+            password: 'abc123456',
+          });
+        }}
+        style={{
+          width: px(175),
+          borderRadius: px(10),
+          borderWidth: px(1),
+          padding: px(2.5),
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginTop: px(15),
+          borderColor: theme.foregroundColorTransparent10,
+        }}>
+        <Text style={{color: theme.foregroundColor}}>fill with sample team</Text>
+      </Touchable>
+    );
+  }
+
+  render() {
+    let {theme, dynamicStyles} = this.props;
+    return (
+      <Screen>
+        <StatusBar backgroundColor="#517AC2" animated />
+        <Header left="back" style={{backgroundColor: '#517AC2', elevation: 0}} />
+        <ScrollView
+          bounces={false}
+          style={{flex: 1, backgroundColor: theme.backgroundColor}}
+          contentContainerStyle={dynamicStyles.scrollView}>
+          <KeyboardAvoidingView
+            style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
+            {this.renderHeader()}
+            {this.renderDomainInput()}
+            {this.renderDivider()}
+            {this.renderInput('email', 'Email', 'Enter your email', (email: string) =>
+              this.setState({email}),
+            )}
+            {this.renderInput(
+              'password',
+              'Password',
+              'Enter your password',
+              (password: string) => this.setState({password}),
+              true,
+            )}
+            {this.renderInput(
+              'pin',
+              '2FA Pin (if enabled)',
+              'Enter your 2fa pin',
+              (pin: string) => this.setState({pin}),
+              true,
+            )}
+            {this.renderSubmitButton()}
+            {this.renderSigninToPlayground()}
+          </KeyboardAvoidingView>
+        </ScrollView>
+      </Screen>
     );
   }
 }
@@ -209,7 +263,7 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     width: '100%',
-    height: px(250),
+    height: px(150),
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -241,4 +295,11 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect()(withTheme(Auth));
+const dynamicStyles = {
+  scrollView: {
+    width: '100%',
+    media: [{orientation: 'landscape'}, {width: '60%', marginHorizontal: '20%'}],
+  },
+};
+
+export default connect()(withTheme(withStylesheet(dynamicStyles)(Auth)));

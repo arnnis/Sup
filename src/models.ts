@@ -87,6 +87,7 @@ export interface Chat {
   name_normalized: string;
   unread_count: number;
   unread_count_display: number;
+  num_members: number;
 }
 
 export interface Message {
@@ -96,6 +97,8 @@ export interface Message {
   user: string;
   text: string;
   ts: string;
+  channel?: string;
+  thread_ts?: string;
   edited?: {
     user: string;
     ts: string;
@@ -106,6 +109,9 @@ export interface Message {
   pinned_to?: string[];
   reactions?: MessageReaction[];
   files?: MessageAttachement[];
+  reply_count?: number;
+  reply_users?: string[];
+  reply_users_count?: number;
 }
 
 export type MessageSubType =
@@ -144,6 +150,9 @@ export interface MessageReaction {
 }
 
 export interface MessageAttachement {
+  thumb_480: string;
+  thumb_480_w: number;
+  thumb_480_h: number;
   name: string;
   fallback: string;
   color: string;
@@ -169,6 +178,32 @@ export interface MessageAttachement {
   permalink: string;
   size: number;
   filetype: string;
+  id: string;
+  created: number;
+  timestamp: number;
+  pretty_type: string;
+  user: string;
+  editable: boolean;
+  mode: string;
+  is_external: boolean;
+  external_type: string;
+  is_public: boolean;
+  public_url_shared: boolean;
+  display_as_bot: boolean;
+  username: string;
+  thumb_360_w: number;
+  thumb_360_h: number;
+  thumb_360_gif: string;
+  image_exif_rotation: number;
+  original_w: number;
+  original_h: number;
+  deanimate_gif: string;
+  pjpeg: string;
+  permalink_public: string;
+  channels: string[];
+  groups: string[];
+  ims: string[];
+  comments_count: number;
 }
 
 interface AttachmentField {
@@ -177,11 +212,13 @@ interface AttachmentField {
   short: boolean;
 }
 
-export type MessageInput = SocketMessageResult & {
-  id?: number;
+export type Presence = 'away' | 'auto';
+
+export type SendInput = SocketMessageResult & {
   type: 'message' | 'ping';
   channel?: string;
   text?: string;
+  thread_ts?: string;
 };
 
 export interface SocketMessageResult {
@@ -190,4 +227,11 @@ export interface SocketMessageResult {
   ts?: string;
 }
 
-export type PendingMessage = MessageInput;
+export type PendingMessage = Message & {
+  id: number;
+  pending: boolean;
+};
+
+export type PingMessage = SendInput & {
+  id: number;
+};

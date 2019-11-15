@@ -6,7 +6,7 @@ import {RootState} from '../reducers';
 import {Platform} from 'react-native';
 import {logout} from '../actions/teams';
 import {logoutFromCurrentTeam} from '../actions/teams/thunks';
-import {currentTeamTokenSelector} from '../screens/ChatUI/MessageImages';
+import {currentTeamTokenSelector} from '../reducers/teams';
 
 interface RequestOption {
   path: string;
@@ -76,7 +76,11 @@ export default async (options: RequestOption) => {
 
 const handleSlackError = (error: SlackError, path: string, silent: boolean) => {
   !silent && console.log('SlackError: ' + error.message + '\npath: ' + path);
-  if (error.message === 'token_revoked' || error.message === 'account_inactive') {
+  if (
+    error.message === 'invalid_auth' ||
+    error.message === 'token_revoked' ||
+    error.message === 'account_inactive'
+  ) {
     store.dispatch(logoutFromCurrentTeam() as any);
     return;
   }

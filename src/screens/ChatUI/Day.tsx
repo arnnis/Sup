@@ -20,7 +20,10 @@ class Day extends PureComponent<Props> {
         <View style={styles.container}>
           <View style={styles.wrapper}>
             <Text style={styles.text}>
-              {dayjs.unix(Number(currentMessage.ts.split('.')[0]) * 1000).format('DD MMMM')}
+              {dayjs
+                .unix(Number(currentMessage.ts.split('.')[0]))
+                .local()
+                .format('DD MMMM')}
             </Text>
           </View>
         </View>

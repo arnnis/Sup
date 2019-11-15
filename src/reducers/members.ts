@@ -13,10 +13,7 @@ const initialState: UsersState = {
   loading: {},
 };
 
-export const membersReducer: Reducer<UsersState, RootAction> = (
-  state = initialState,
-  action,
-) => {
+export const membersReducer: Reducer<UsersState, RootAction> = (state = initialState, action) => {
   switch (action.type) {
     case 'GET_MEMBERS_START_START': {
       return {
@@ -29,10 +26,7 @@ export const membersReducer: Reducer<UsersState, RootAction> = (
       let {members} = action.payload;
       return {
         ...state,
-        list: [
-          ...state.list,
-          ...members.filter(member => !member.is_bot).map(member => member.id),
-        ],
+        list: [...state.list, ...members.filter(member => !member.is_bot).map(member => member.id)],
         loadingList: false,
       };
     }
@@ -68,11 +62,7 @@ export const membersReducer: Reducer<UsersState, RootAction> = (
     }
 
     case 'SET_CURRENT_TEAM': {
-      return {
-        list: [],
-        loadingList: false,
-        loading: {},
-      };
+      return initialState;
     }
 
     default:
