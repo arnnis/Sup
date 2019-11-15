@@ -58,4 +58,4 @@ jobs:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
         automatic_release_tag: true
         files: |
-          android/app/build/output/apk/release/*.apk
+          android/app/build/outputs/apk/release/*.apk
