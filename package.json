@@ -1,6 +1,11 @@
 {
   "name": "Sup",
   "version": "1.0.0",
+  "description": "A Slack client with WhatsApp like UI",
+  "author": {
+    "name": "Alireza Rezania",
+    "email": "alirezarzna@gmail.com"
+  },
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -9,6 +14,7 @@
     "web": "cross-env NODE_ENV=development webpack-dev-server --config ./web/webpack.config.js --color --progress",
     "web:build": "cross-env NODE_ENV=production webpack --config ./web/webpack.config.js --color --progress",
     "desktop": "yarn web:build && electron ./desktop",
+    "desktop:pack": "cross-env CSC_IDENTITY_AUTO_DISCOVERY=false yarn web:build && electron-builder build -m",
     "test": "jest",
     "lint": "eslint .",
     "predeploy": "yarn run web:build",

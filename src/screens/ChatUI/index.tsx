@@ -1,4 +1,4 @@
-import React, {Component, Ref} from 'react';
+import React, {Component} from 'react';
 import {View, StyleSheet, FlatList, ActivityIndicator, Text} from 'react-native';
 import {RootState} from '../../reducers';
 import {connect, DispatchProp} from 'react-redux';
@@ -115,7 +115,6 @@ class ChatUI extends Component<Props> {
 
   async getMessage() {
     let {
-      navigation,
       lastMessageStatus,
       lastMessage,
       nextCursor,
@@ -198,7 +197,7 @@ class ChatUI extends Component<Props> {
   keyExtractor = (messageId: string) => messageId.toString();
 
   renderList() {
-    let {messagesList, chatType} = this.props;
+    let {messagesList} = this.props;
     const inverted = this.isInverted();
     return (
       <FlatList
@@ -271,7 +270,7 @@ class ChatUI extends Component<Props> {
   }
 
   render() {
-    let {theme, currentChat} = this.props;
+    let {currentChat} = this.props;
     if (!currentChat) return null;
     return (
       <Screen>
