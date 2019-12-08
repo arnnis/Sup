@@ -1,4 +1,3 @@
-'use strict';
 const path = require('path');
 const {app, BrowserWindow, Menu} = require('electron');
 /// const {autoUpdater} = require('electron-updater');
@@ -8,6 +7,16 @@ const debug = require('electron-debug');
 const contextMenu = require('electron-context-menu');
 const config = require('./config');
 const menu = require('./menu');
+
+// Keep a reference for dev mode
+let dev = false;
+if (
+	process.defaultApp ||
+	/[\\/]electron-prebuilt[\\/]/.test(process.execPath) ||
+	/[\\/]electron[\\/]/.test(process.execPath)
+) {
+	dev = false;
+}
 
 unhandled();
 debug();
@@ -37,7 +46,8 @@ const createMainWindow = async () => {
 		width: 1280,
 		height: 720,
 		webPreferences: {
-			devTools: false,
+			devTools: dev,
+			nodeIntegration: true,
 		},
 	});
 
@@ -51,7 +61,12 @@ const createMainWindow = async () => {
 		mainWindow = undefined;
 	});
 
-	await win.loadFile(path.join(__dirname, '../web/build/index.html'));
+	let indexPath;
+	if (dev) {
+		await win.loadURL('http://localhost:8080/index.html');
+	} else {
+		await win.loadFile(path.join(__dirname, './build/index.html'));
+	}
 
 	return win;
 };

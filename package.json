@@ -1,6 +1,11 @@
 {
   "name": "Sup",
-  "version": "1.0.0",
+  "version": "0.2.1",
+  "description": "A Slack client with WhatsApp like UI",
+  "author": {
+    "name": "Alireza Rezania",
+    "email": "alirezarzna@gmail.com"
+  },
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -8,7 +13,8 @@
     "start": "react-native start",
     "web": "cross-env NODE_ENV=development webpack-dev-server --config ./web/webpack.config.js --color --progress",
     "web:build": "cross-env NODE_ENV=production webpack --config ./web/webpack.config.js --color --progress",
-    "desktop": "yarn web:build && electron ./desktop",
+    "desktop": "cross-env NODE_ENV=development webpack-dev-server --config ./desktop/webpack.config.js --color --progress",
+    "desktop:build": "yarn web:build && cp -r ./web/build ./desktop/ && node ./desktop/build.js",
     "test": "jest",
     "lint": "eslint .",
     "predeploy": "yarn run web:build",
@@ -95,11 +101,13 @@
     "np": "^5.0.3",
     "react-native-svg-transformer": "^0.13.0",
     "react-test-renderer": "16.9.0",
+    "shelljs": "^0.8.3",
     "terser-webpack-plugin": "^2.1.3",
     "typescript": "^3.7.0-beta",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.9",
     "webpack-dev-server": "^3.8.2",
+    "webpack-merge": "^4.2.2",
     "xo": "^0.24.0"
   },
   "jest": {
@@ -128,5 +136,16 @@
     "presets": [
       "module:metro-react-native-babel-preset"
     ]
+  },
+  "build": {
+    "appId": "com.arnnis.sup",
+    "files": [
+      "!node_modules/*"
+    ],
+    "directories": {
+      "buildResources": "resources",
+      "output": "../desktop/dist"
+    },
+    "publish": null
   }
 }

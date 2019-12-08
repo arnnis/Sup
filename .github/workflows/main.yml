@@ -44,7 +44,10 @@ jobs:
         run: cd android && ./gradlew assembleRelease
 
       - name: Build web
-        run: yarn run web:build
+        run: yarn web:build
+
+      - name: Build desktop
+        run: yarn desktop:build
 
       - name: Deploy to github pages
         if: success()
@@ -60,6 +63,8 @@ jobs:
           prerelease: false
           files: |
             android/app/build/outputs/apk/release/*.apk
+            desktop/dist/Sup*.dmg
+            desktop/dist/Sup*.exe
             LICENSE
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
