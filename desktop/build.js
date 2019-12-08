@@ -11,7 +11,7 @@ try {
 	shell.mkdir('temp/node_modules');
 	shell.cp('-r', './node_modules/electron*', './temp/node_modules');
 	shell.cd('temp');
-	shell.exec('electron-builder .');
+	shell.exec('electron-builder . -mwl');
 	shell.cd('..');
 	shell.rm('-rf', 'temp');
 } catch (err) {
