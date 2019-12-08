@@ -140,13 +140,13 @@ if (isProd) {
   };
 } else {
   config.devServer = {
+    contentBase: path.resolve(__dirname, 'build'),
     port: 8080,
     open: true,
     hot: true,
     compress: true,
     stats: 'errors-only',
     overlay: true,
-    hot: true,
   };
 }
 
