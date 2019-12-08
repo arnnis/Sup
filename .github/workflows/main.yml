@@ -63,8 +63,8 @@ jobs:
           prerelease: false
           files: |
             android/app/build/outputs/apk/release/*.apk
-            desktop/dist/mac/Sup*.dmg
-            desktop/dist/mac/Sup*.exe
+            desktop/dist/Sup*.dmg
+            desktop/dist/Sup*.exe
             LICENSE
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
