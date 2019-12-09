@@ -1,9 +1,6 @@
 name: CI
 
-on:
-  push:
-    tags:
-      - 'v*.*.*'
+on: [push]
 
 jobs:
   build:
@@ -60,11 +57,10 @@ jobs:
       - name: Release artifacts
         uses: softprops/action-gh-release@v1
         with:
-          prerelease: false
+          prerelease: true
           files: |
             android/app/build/outputs/apk/release/*.apk
-            desktop/dist/Sup*.dmg
-            desktop/dist/Sup*.exe
-            LICENSE
+            desktop/dist/*.dmg
+            desktop/dist/*.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
