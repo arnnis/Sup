@@ -15,7 +15,7 @@ if (
 	/[\\/]electron-prebuilt[\\/]/.test(process.execPath) ||
 	/[\\/]electron[\\/]/.test(process.execPath)
 ) {
-	dev = false;
+	dev = true;
 }
 
 unhandled();
