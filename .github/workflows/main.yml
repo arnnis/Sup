@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - uses: actions/checkout@v1
@@ -27,9 +27,6 @@ jobs:
 
       - name: Install dependencies
         run: yarn install
-
-      - name: Patch workers (fixes android build)
-        run: sudo sysctl fs.inotify.max_user_instances=524288 && sudo sysctl fs.inotify.max_user_watches=524288 && sudo sysctl fs.inotify.max_queued_events=524288 && sudo sysctl -p
 
       - name: Run jettifier
         run: npx jetify
