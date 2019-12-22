@@ -20,6 +20,6 @@ missing features.**
 - [Linux](https://github.com/arnnis/Sup/releases/latest) - Linux version using electron
 
 [mobilegif]: https://user-images.githubusercontent.com/58140889/71323716-8ecdfc00-24eb-11ea-8740-1325d4457ccc.gif
-[tabletgif]: https://user-images.githubusercontent.com/58140889/71326013-3e19cb80-250a-11ea-8eed-9a464e5f76e3.gif
+[tabletgif]: https://user-images.githubusercontent.com/58140889/71326898-5394f280-2516-11ea-8efd-93fb0cab643b.gif
 [conversation]: https://user-images.githubusercontent.com/56032649/65983227-eda24d00-e489-11e9-9d31-ed6d392237e3.png
 [workspaces]: https://user-images.githubusercontent.com/56032649/65982799-0100e880-e489-11e9-87c0-ae898f3603dc.png
