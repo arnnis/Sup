@@ -9,6 +9,7 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   StatusBar,
+  Dimensions,
 } from 'react-native';
 import Svg, {Defs, Path, Stop, LinearGradient} from 'react-native-svg';
 
@@ -21,8 +22,11 @@ import Touchable from '../../components/Touchable';
 import Header from '../../components/Header';
 import Screen from '../../components/Screen';
 import withStylesheet, {StyleSheetInjectedProps} from '../../utils/stylesheet/withStylesheet';
+import isLandscape from '../../utils/stylesheet/isLandscape';
 
 type Props = ThemeInjectedProps & StyleSheetInjectedProps & DispatchProp<any>;
+
+const dims = Dimensions.get('window');
 
 class Auth extends Component<Props> {
   state = {
@@ -33,36 +37,44 @@ class Auth extends Component<Props> {
     loggingIn: false,
   };
 
+  // componentDidMount() {
+  //   alert(dims.width);
+  // }
+
   renderHeader() {
     return (
-      <Svg style={{width: '100%', marginTop: -px(10)}}>
-        <Defs>
-          <LinearGradient
-            id="prefix__a"
-            x1={0.5}
-            x2={0.5}
-            y1={0}
-            y2={170}
-            gradientUnits="objectBoundingBox">
-            <Stop offset={0} stopColor="#517AC2" />
-            <Stop offset={1} stopColor="#3D5B8E" />
-          </LinearGradient>
-        </Defs>
-        <Path
-          data-name="Path 1"
-          d={`M23 125.095s97.5 ${rem(37.06)} ${rem(194.587)} 0 ${rem(180.413)} 0 ${rem(
-            180.413,
-          )} 0V2.865H23z`}
-          transform="translate(-23 -2.865)"
-          fill="url(#prefix__a)"
-        />
-        <>
-          <View style={styles.headerContainer}>
-            <Text style={styles.appTitle}>Sup</Text>
-            <Text style={styles.authMode}>signin</Text>
-          </View>
-        </>
-      </Svg>
+      <>
+        <Svg
+          style={{width: '100%', marginTop: -px(10)}}
+          preserveAspectRatio="xMinYMin meet"
+          viewBox={`0 0 ${isLandscape() ? rem(390) : dims.width} ${rem(150)}`}>
+          <Defs>
+            <LinearGradient
+              id="prefix__a"
+              x1={0.5}
+              x2={0.5}
+              y1={0}
+              y2={170}
+              gradientUnits="objectBoundingBox">
+              <Stop offset={0} stopColor="#517AC2" />
+              <Stop offset={1} stopColor="#3D5B8E" />
+            </LinearGradient>
+          </Defs>
+          <Path
+            data-name="Path 1"
+            d={`M23 125.095s97.5 ${rem(37.06)} ${rem(194.587)} 0 ${rem(180.413)} 0 ${rem(
+              180.413,
+            )} 0V2.865H23z`}
+            transform="translate(-23 -2.865)"
+            fill="url(#prefix__a)"
+          />
+          <View style={styles.headerContainer} />
+        </Svg>
+        <View style={{...StyleSheet.absoluteFillObject, top: rem(35), alignItems: 'center'}}>
+          <Text style={styles.appTitle}>Sup</Text>
+          <Text style={styles.authMode}>signin</Text>
+        </View>
+      </>
     );
   }
 
