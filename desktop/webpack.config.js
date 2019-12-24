@@ -13,5 +13,5 @@ const config = merge(webConfigs, {
 		},
 	},
 });
-console.log('config', config);
+
 module.exports = config;

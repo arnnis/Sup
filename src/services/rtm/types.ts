@@ -54,7 +54,7 @@ export interface PresencesQueryRequest {
 
 export interface PresenceChangeEvent {
   type: 'presence_change';
-  presence: 'away';
+  presence: 'away' | 'active';
 
   user: string;
 }
