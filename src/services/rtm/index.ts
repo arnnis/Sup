@@ -43,11 +43,10 @@ export const init = async () => {
     data = JSON.parse(data);
 
     if (data.type === 'hello') {
-      if (isReconnect)
-        batch(() => {
-          store.dispatch(getCurrentUser() as any);
-          store.dispatch(getChats() as any);
-        });
+      batch(() => {
+        store.dispatch(getCurrentUser() as any);
+        store.dispatch(getChats() as any);
+      });
     }
 
     if (data.type === 'pong') {

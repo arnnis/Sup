@@ -24,7 +24,7 @@ export const getMembers = () => async (dispatch, getState) => {
       path: '/users.list',
       body: {
         limit: 500,
-        presence: 1,
+        presence: true,
       },
       isFormData: true,
     });
@@ -36,10 +36,13 @@ export const getMembers = () => async (dispatch, getState) => {
       dispatch(getMembersSuccess(members));
     });
 
+    // Fetch direct list member data just in case.
     state.chats.directsList.forEach(directId => {
       let chat = state.entities.chats.byId[directId];
       chat.user_id && dispatch(getMember(chat.user_id));
     });
+
+    queryPresences(members.map(member => member.id));
 
     return members;
   } catch (err) {

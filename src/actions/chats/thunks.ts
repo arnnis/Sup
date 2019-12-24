@@ -17,16 +17,16 @@ import {
   getChannelMembersSuccess,
   setUserTyping,
   unsetUserTyping,
-  setCurrentThread
+  setCurrentThread,
 } from '.';
 import {RootState} from '../../reducers';
 import imsDirects from '../../utils/filterIms';
 import {getMember} from '../members/thunks';
-import { queryPresences } from '../../services/rtm/members-events';
+import {queryPresences} from '../../services/rtm/members-events';
 import isLandscape from '../../utils/stylesheet/isLandscape';
-import { openBottomSheet } from '../app';
-import { NavigationService } from '../../navigation/Navigator';
-import { NavigationInjectedProps } from 'react-navigation';
+import {openBottomSheet} from '../app';
+import {NavigationService} from '../../navigation/Navigator';
+import {NavigationInjectedProps} from 'react-navigation';
 
 export const getChats = () => async (dispatch, getState) => {
   let store: RootState = getState();
@@ -61,9 +61,9 @@ export const getChats = () => async (dispatch, getState) => {
     batch(() => {
       dispatch(storeEntities('chats', [...ims, ...channels, ...groups]));
       dispatch(fetchChatsSuccess(ims, [...channels, ...groups], nextCursor));
-
-      //queryPresences(ims.map(im => im.user_id));
     });
+
+    queryPresences(ims.map(im => im.user_id));
 
     return [...ims, ...channels, ...groups];
   } catch (err) {
@@ -148,9 +148,9 @@ export const markChatAsRead = (chatId: string, messageId: string) => async dispa
 
 export const getChatInfo = (chatId: string) => async (dispatch, getState) => {
   let state: RootState = getState();
-  let alreadyLoaded = state.chats.fullLoad[chatId]?.loaded ?? false
-  let loading = state.chats.fullLoad[chatId]?.loading ?? false
-  if (alreadyLoaded || loading) return
+  let alreadyLoaded = state.chats.fullLoad[chatId]?.loaded ?? false;
+  let loading = state.chats.fullLoad[chatId]?.loading ?? false;
+  if (alreadyLoaded || loading) return;
   dispatch(getChatInfoStart(chatId));
   try {
     let {channel}: {channel: Chat} = await http({
@@ -176,8 +176,8 @@ export const getChatInfo = (chatId: string) => async (dispatch, getState) => {
 
 export const getChannelMembers = (chatId: string) => async (dispatch, getState) => {
   let state: RootState = getState();
-  let loadStatus = state.chats.membersListLoadStatus[chatId]
-  if (loadStatus?.loading || loadStatus?.nextCursor === "end") return
+  let loadStatus = state.chats.membersListLoadStatus[chatId];
+  if (loadStatus?.loading || loadStatus?.nextCursor === 'end') return;
   dispatch(getChannelMembersStart(chatId));
   try {
     let {members, response_metadata}: {members: Array<string>} & PaginationResult = await http({
@@ -186,11 +186,12 @@ export const getChannelMembers = (chatId: string) => async (dispatch, getState) 
         channel: chatId,
         include_num_members: true,
         limit: 100,
-        cursor: loadStatus?.nextCursor ?? ''
+        cursor: loadStatus?.nextCursor ?? '',
       },
     });
 
-    let next_cursor = response_metadata && response_metadata.next_cursor ? response_metadata.next_cursor : 'end';
+    let next_cursor =
+      response_metadata && response_metadata.next_cursor ? response_metadata.next_cursor : 'end';
 
     batch(() => {
       dispatch(getChannelMembersSuccess(chatId, members, next_cursor));
@@ -202,19 +203,22 @@ export const getChannelMembers = (chatId: string) => async (dispatch, getState) 
     dispatch(getChannelMembersFail(chatId));
     return Promise.reject(err);
   }
-}
+};
 
 export const setTyping = (userId: string, chatId: string) => (dispatch, getState) => {
-  let state = getState() as RootState
-  if (state.chats.typingsUsers[chatId]?.includes(userId)) return
-  dispatch(setUserTyping(userId, chatId))
+  let state = getState() as RootState;
+  if (state.chats.typingsUsers[chatId]?.includes(userId)) return;
+  dispatch(setUserTyping(userId, chatId));
   setTimeout(() => {
-    dispatch(unsetUserTyping(userId, chatId))
-  }, 5000)
-}
+    dispatch(unsetUserTyping(userId, chatId));
+  }, 5000);
+};
 
-export const openThread = (threadId, navigation: NavigationInjectedProps["navigation"]) => (dispatch, getState) => {
-  const state: RootState = getState()
+export const openThread = (threadId, navigation: NavigationInjectedProps['navigation']) => (
+  dispatch,
+  getState,
+) => {
+  const state: RootState = getState();
   let chatId = navigation.getParam('chatId');
   let params = {
     chatType: 'thread',
@@ -224,4 +228,4 @@ export const openThread = (threadId, navigation: NavigationInjectedProps["naviga
   if (isLandscape()) dispatch(openBottomSheet('ChatUI', params));
   else navigation.push('ChatUI', params);
   dispatch(setCurrentThread(threadId));
-}
+};

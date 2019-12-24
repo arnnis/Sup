@@ -15,14 +15,14 @@ const initialState: UsersState = {
 
 export const membersReducer: Reducer<UsersState, RootAction> = (state = initialState, action) => {
   switch (action.type) {
-    case 'GET_MEMBERS_START_START': {
+    case 'GET_ALL_MEMBERS_START': {
       return {
         ...state,
         loadingList: true,
       };
     }
 
-    case 'GET_MEMBERS_START_SUCCESS': {
+    case 'GET_ALL_MEMBERS_SUCCESS': {
       let {members} = action.payload;
       return {
         ...state,
@@ -31,7 +31,7 @@ export const membersReducer: Reducer<UsersState, RootAction> = (state = initialS
       };
     }
 
-    case 'GET_MEMBERS_START_FAIL': {
+    case 'GET_ALL_MEMBERS_FAIL': {
       return {
         ...state,
         loadingList: false,
