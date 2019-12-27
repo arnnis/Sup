@@ -21,6 +21,7 @@ import {currentTeamSelector} from '../../reducers/teams';
 import Toast from '../../components/Toast';
 import {toggleToast} from '../../actions/app';
 import Screen from '../../components/Screen';
+import isNative from '../../utils/isNative';
 
 type Props = ReturnType<typeof mapStateToProps> & DispatchProp<any> & ThemeInjectedProps;
 
@@ -54,7 +55,7 @@ const Main = React.memo(
           : 'Connecting...'
         : 'Sup';
 
-    let _renderMenu = () => currentTeam && <PopupMenu />;
+    let _renderMenu = () => isNative() && currentTeam && <PopupMenu />;
 
     return (
       <Screen>
