@@ -101,7 +101,7 @@ class Header extends Component<Props> {
         style={[
           styles.container,
           {
-            backgroundColor: '#482046',
+            backgroundColor: '#492146',
           },
           this.props.style,
         ]}>

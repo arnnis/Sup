@@ -1,5 +1,5 @@
 import React, {useState, useRef, useEffect} from 'react';
-import {StyleSheet, SafeAreaView, StatusBar, View} from 'react-native';
+import {StyleSheet, SafeAreaView, StatusBar, View, Platform} from 'react-native';
 import MediaQuery from '../../utils/stylesheet/MediaQuery';
 import Header from '../../components/Header';
 import px from '../../utils/normalizePixel';
@@ -55,7 +55,7 @@ const Main = React.memo(
           : 'Connecting...'
         : 'Sup';
 
-    let _renderMenu = () => isNative() && currentTeam && <PopupMenu />;
+    let _renderMenu = () => currentTeam && <PopupMenu />;
 
     return (
       <Screen>

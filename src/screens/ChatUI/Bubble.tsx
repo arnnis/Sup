@@ -14,7 +14,7 @@ import showMenu from '../../utils/showMenu';
 import {withNavigation, NavigationInjectedProps} from 'react-navigation';
 import {connect, DispatchProp} from 'react-redux';
 import {RootState} from '../../reducers';
-import {openThread} from '../../actions/chats/thunks';
+import {goToThread} from '../../actions/chats/thunks';
 
 type Props = ThemeInjectedProps &
   StyleSheetInjectedProps &
@@ -32,7 +32,7 @@ type Props = ThemeInjectedProps &
 
 class Bubble extends Component<Props> {
   goToThread = () => {
-    this.props.dispatch(openThread(this.props.messageId, this.props.navigation));
+    this.props.dispatch(goToThread(this.props.messageId, this.props.navigation));
   };
 
   openMessageContextMenu = () => {

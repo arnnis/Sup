@@ -5,6 +5,7 @@ import Touchable from '../../components/Touchable';
 import px from '../../utils/normalizePixel';
 import showMenu from '../../utils/showMenu';
 import {logoutFromCurrentTeam} from '../../actions/teams/thunks';
+import isNative from '../../utils/isNative';
 
 type Props = DispatchProp<any>;
 
@@ -22,6 +23,8 @@ const PopupMenu: FC<Props> = ({dispatch}) => {
       menuRef.current,
     );
   };
+
+  if (isNative()) return null;
 
   return (
     <Touchable onPress={_openMenu} ref={ref => (menuRef.current = ref)}>

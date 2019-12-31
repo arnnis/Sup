@@ -18,15 +18,15 @@ import {
   setUserTyping,
   unsetUserTyping,
   setCurrentThread,
+  setCurrentChat,
 } from '.';
 import {RootState} from '../../reducers';
 import imsDirects from '../../utils/filterIms';
-import {getMember} from '../members/thunks';
-import {queryPresences, subscribePresence} from '../../services/rtm/members-events';
 import isLandscape from '../../utils/stylesheet/isLandscape';
 import {openBottomSheet} from '../app';
-import {NavigationService} from '../../navigation/Navigator';
 import {NavigationInjectedProps} from 'react-navigation';
+import getCurrentOrientaion from '../../utils/stylesheet/getCurrentOrientaion';
+import {NavigationService} from '../../navigation/Navigator';
 
 export const getChats = () => async (dispatch, getState) => {
   let store: RootState = getState();
@@ -212,7 +212,16 @@ export const setTyping = (userId: string, chatId: string) => (dispatch, getState
   }, 5000);
 };
 
-export const openThread = (threadId, navigation: NavigationInjectedProps['navigation']) => (
+export const goToChat = (chatId, navigation: NavigationInjectedProps['navigation'] | undefined) => (
+  dispatch,
+  getState,
+) => {
+  dispatch(setCurrentChat(chatId));
+  if (getCurrentOrientaion() === 'portrait')
+    (navigation || NavigationService).navigate('ChatUI', {chatId: chatId});
+};
+
+export const goToThread = (threadId, navigation: NavigationInjectedProps['navigation']) => (
   dispatch,
   getState,
 ) => {

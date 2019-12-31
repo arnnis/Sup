@@ -7,7 +7,7 @@ import px from '../../utils/normalizePixel';
 import Touchable from '../../components/Touchable';
 import {withNavigation, NavigationInjectedProps} from 'react-navigation';
 import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
-import {openThread} from '../../actions/chats/thunks';
+import {goToThread} from '../../actions/chats/thunks';
 
 type Props = ReturnType<typeof mapStateToProps> &
   ThemeInjectedProps &
@@ -19,7 +19,7 @@ type Props = ReturnType<typeof mapStateToProps> &
 
 class Replies extends PureComponent<Props> {
   handlePress = () => {
-    this.props.dispatch(openThread(this.props.message.ts, this.props.navigation));
+    this.props.dispatch(goToThread(this.props.message.ts, this.props.navigation));
   };
 
   renderParticipantsAvatar() {

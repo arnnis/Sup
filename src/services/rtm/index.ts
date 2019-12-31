@@ -11,6 +11,7 @@ import {
   handleReactionAdded,
   handleReactionRemoved,
   handleReplyAdded,
+  handleNotificationRecieved,
 } from './message-events';
 import {handleUserTyping, handleChatsMarkedAsSeen} from './chat-events';
 import {handleUserPresenceChange} from './members-events';
@@ -66,6 +67,8 @@ export const init = async () => {
     }
 
     if (data.type === 'message' && data.subtype === 'message_replied') handleReplyAdded(data);
+
+    if (data.type === 'desktop_notification') handleNotificationRecieved(data);
 
     if (data.type === 'user_typing') handleUserTyping(data);
 

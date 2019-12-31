@@ -7,6 +7,23 @@ export interface MessageEvent {
   thread_ts?: string;
 }
 
+export interface NotificationEvent {
+  type: 'desktop_notification';
+  avatarImage: string;
+  channel: string;
+  content: string;
+  event_ts: string;
+  imageUri: string | null;
+  is_channel_invite: boolean;
+  is_shared: boolean;
+  launchUri: string;
+  msg: string;
+  ssbFilename: string;
+  subtitle: string;
+  title: string;
+  ts: string;
+}
+
 export interface UserTypingEvent {
   type: 'user_typing';
   channel: string;

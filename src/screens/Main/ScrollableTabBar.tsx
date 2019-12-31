@@ -44,7 +44,7 @@ const ScrollableTabView = () => {
             {...props}
             indicatorStyle={{backgroundColor: '#fff'}}
             style={{
-              backgroundColor: '#482046',
+              backgroundColor: '#492146',
               height: px(42.5),
               paddingHorizontal: px(10),
             }}
