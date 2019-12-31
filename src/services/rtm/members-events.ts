@@ -1,5 +1,5 @@
 import {socket} from '.';
-import {PresencesQueryRequest, PresenceChangeEvent} from './types';
+import {PresencesQueryRequest, PresenceChangeEvent, PresenceSubscribeRequest} from './types';
 import {store} from '../../App';
 import {updateEntity} from '../../actions/entities';
 import {RootState} from '../../reducers';
@@ -8,6 +8,15 @@ export const queryPresences = (userIds: Array<string>) => {
   if (!userIds || !userIds.length) return;
   const data: PresencesQueryRequest = {
     type: 'presence_query',
+    ids: userIds,
+  };
+  socket && socket.send(JSON.stringify(data));
+};
+
+export const subscribePresence = (userIds: string[]) => {
+  if (!userIds || !userIds.length) return;
+  const data: PresenceSubscribeRequest = {
+    type: 'presence_sub',
     ids: userIds,
   };
   socket && socket.send(JSON.stringify(data));

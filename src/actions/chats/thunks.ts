@@ -22,7 +22,7 @@ import {
 import {RootState} from '../../reducers';
 import imsDirects from '../../utils/filterIms';
 import {getMember} from '../members/thunks';
-import {queryPresences} from '../../services/rtm/members-events';
+import {queryPresences, subscribePresence} from '../../services/rtm/members-events';
 import isLandscape from '../../utils/stylesheet/isLandscape';
 import {openBottomSheet} from '../app';
 import {NavigationService} from '../../navigation/Navigator';
@@ -49,7 +49,7 @@ export const getChats = () => async (dispatch, getState) => {
       body: {
         include_message: 1,
         //mpim_aware: 1,
-        // simple_unreads: 1,
+        //simple_unreads: 1,
       },
       isFormData: true,
     });
@@ -62,8 +62,6 @@ export const getChats = () => async (dispatch, getState) => {
       dispatch(storeEntities('chats', [...ims, ...channels, ...groups]));
       dispatch(fetchChatsSuccess(ims, [...channels, ...groups], nextCursor));
     });
-
-    queryPresences(ims.map(im => im.user_id));
 
     return [...ims, ...channels, ...groups];
   } catch (err) {

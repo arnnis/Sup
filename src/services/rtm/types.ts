@@ -52,6 +52,11 @@ export interface PresencesQueryRequest {
   ids: string[];
 }
 
+export interface PresenceSubscribeRequest {
+  type: 'presence_sub';
+  ids: string[];
+}
+
 export interface PresenceChangeEvent {
   type: 'presence_change';
   presence: 'away' | 'active';

@@ -12,7 +12,7 @@ import {batch} from 'react-redux';
 import {User} from '../../models';
 import filterMembers from '../../utils/filterMembers';
 import {RootState} from '../../reducers';
-import {queryPresences} from '../../services/rtm/members-events';
+import {queryPresences, subscribePresence} from '../../services/rtm/members-events';
 
 export const getMembers = () => async (dispatch, getState) => {
   let state: RootState = getState();
@@ -43,6 +43,7 @@ export const getMembers = () => async (dispatch, getState) => {
     });
 
     queryPresences(members.map(member => member.id));
+    subscribePresence(members.map(member => member.id));
 
     return members;
   } catch (err) {
@@ -92,6 +93,9 @@ export const getMember = (userId: string) => async (dispatch, getState) => {
       },
       silent: true,
     });
+
+    queryPresences([userId]);
+    subscribePresence([userId]);
 
     batch(() => {
       dispatch(storeEntities('users', [user]));
