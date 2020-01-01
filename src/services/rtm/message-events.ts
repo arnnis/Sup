@@ -97,11 +97,11 @@ export const handleSendMessageAckRecieved = data => {
 };
 
 export const handleNotificationRecieved = (data: NotificationEvent) => {
-  let myNotification = new Notification(data.title, {
+  let notif = new Notification(data.title, {
     body: data.content,
   });
 
-  myNotification.onclick = () => {
+  notif.onclick = () => {
     store.dispatch(goToChat(data.channel));
   };
 };

@@ -212,10 +212,10 @@ export const setTyping = (userId: string, chatId: string) => (dispatch, getState
   }, 5000);
 };
 
-export const goToChat = (chatId, navigation: NavigationInjectedProps['navigation'] | undefined) => (
-  dispatch,
-  getState,
-) => {
+export const goToChat = (
+  chatId,
+  navigation?: NavigationInjectedProps['navigation'] | undefined,
+) => (dispatch, getState) => {
   dispatch(setCurrentChat(chatId));
   if (getCurrentOrientaion() === 'portrait')
     (navigation || NavigationService).navigate('ChatUI', {chatId: chatId});
