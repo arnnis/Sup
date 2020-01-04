@@ -1,5 +1,7 @@
 import {Reducer} from 'redux';
 import {RootAction} from '../actions';
+import {createSelector} from 'reselect';
+import {RootState} from '.';
 
 export type DirectsState = Readonly<{
   currentChatId: string;
@@ -246,3 +248,19 @@ export const chatsReducer: Reducer<DirectsState, RootAction> = (state = initialS
       return state;
   }
 };
+
+export const totalDirectsUnreadCountSelector = createSelector(
+  [(state: RootState) => state.chats.directsList, (state: RootState) => state.entities.chats],
+  (directsList, chatsEntities) =>
+    directsList
+      .map(chatId => chatsEntities.byId[chatId])
+      .reduce((acc, cur) => acc + cur.dm_count, 0),
+);
+
+export const totalChannelsUnreadCountSelector = createSelector(
+  [(state: RootState) => state.chats.channelsList, (state: RootState) => state.entities.chats],
+  (directsList, chatsEntities) =>
+    directsList
+      .map(chatId => chatsEntities.byId[chatId])
+      .reduce((acc, cur) => acc + cur.unread_count, 0),
+);
