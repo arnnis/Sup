@@ -97,6 +97,12 @@ export const handleSendMessageAckRecieved = data => {
 };
 
 export const handleNotificationRecieved = (data: NotificationEvent) => {
+  const state: RootState = store.getState();
+
+  // No notifcation when app is visible and notif is from current open chat
+  if (document.visibilityState === 'visible' && state.chats.currentChatId === data.channel) return;
+
+  // Issue a notification
   let notif = new Notification(data.title, {
     body: data.content,
   });
