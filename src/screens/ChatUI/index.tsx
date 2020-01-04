@@ -114,14 +114,7 @@ class ChatUI extends Component<Props> {
   };
 
   async getMessage() {
-    let {
-      lastMessageStatus,
-      lastMessage,
-      nextCursor,
-      messagesList,
-      dispatch,
-      chatId,
-    } = this.props;
+    let {lastMessageStatus, lastMessage, nextCursor, messagesList, dispatch, chatId} = this.props;
     if (lastMessageStatus && lastMessageStatus.messageId && !lastMessageStatus.loading) {
       dispatch(addMessageToChat(lastMessageStatus.messageId, chatId));
       dispatch(getMember(lastMessage.user));
@@ -169,7 +162,9 @@ class ChatUI extends Component<Props> {
 
   renderMessageCell = ({item: messageId, index}) => {
     let {chatType} = this.props;
-    let prevMessageId = this.props.messagesList[index - 1];
+    let prevMessageId = this.isInverted()
+      ? this.props.messagesList[index + 1]
+      : this.props.messagesList[index - 1];
     let isThreadMainMsg = chatType === 'thread' && index === 0;
     return (
       <Message
