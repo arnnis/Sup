@@ -19,6 +19,7 @@ type Props = ReturnType<typeof mapStateToProps> &
   ThemeInjectedProps & {
     messageId: string;
     prevMessageId: string;
+    nextMessageId: string;
     inverted: boolean;
     showDivider?: boolean;
     hideAvatar?: boolean;
@@ -111,8 +112,8 @@ class Message extends Component<Props> {
   }
 
   render() {
-    let {currentMessage, prevMessage, me, inverted} = this.props;
-    let sameUser = isSameUser(currentMessage, prevMessage);
+    let {currentMessage, prevMessage, nextMessage, me, inverted} = this.props;
+    let sameUser = isSameUser(currentMessage, nextMessage);
     let isMe = me && me.id === currentMessage.user;
     return (
       <>
@@ -166,6 +167,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state: RootState, ownProps) => ({
   currentMessage: state.entities.messages.byId[ownProps.messageId],
   prevMessage: state.entities.messages.byId[ownProps.prevMessageId],
+  nextMessage: state.entities.messages.byId[ownProps.nextMessageId],
   me: meSelector(state),
 });
 

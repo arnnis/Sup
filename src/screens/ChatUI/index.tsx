@@ -165,11 +165,15 @@ class ChatUI extends Component<Props> {
     let prevMessageId = this.isInverted()
       ? this.props.messagesList[index + 1]
       : this.props.messagesList[index - 1];
+    let nextMessageId = this.isInverted()
+      ? this.props.messagesList[index - 1]
+      : this.props.messagesList[index + 1];
     let isThreadMainMsg = chatType === 'thread' && index === 0;
     return (
       <Message
         messageId={messageId}
         prevMessageId={prevMessageId}
+        nextMessageId={nextMessageId}
         inverted={chatType !== 'thread'}
         showDivider={isThreadMainMsg}
         hideReplies={chatType === 'thread'}
