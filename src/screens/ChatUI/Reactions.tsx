@@ -54,8 +54,8 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     marginBottom: px(7.5),
     marginTop: Platform.select({
-      ios: px(-3),
-      default: px(-1),
+      android: px(-1),
+      default: px(-3),
     }),
   },
   reactionsRight: {
@@ -68,10 +68,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: Platform.select({
-      web: px(2),
+      web: px(3),
       default: px(5),
     }),
     flexDirection: 'row',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.09,
+    shadowRadius: 0.5,
+
+    elevation: 0.5,
   },
   count: {
     fontSize: px(12.5),

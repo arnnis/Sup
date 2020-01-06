@@ -3,6 +3,7 @@ const webpack = require('webpack');
 const HtmlPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
+const ReactRefreshPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const chalk = require('chalk');
 
 const appDirectory = path.resolve(__dirname, '../');
@@ -121,7 +122,8 @@ const config = {
         to: '.',
       },
     ]),
-  ],
+    !isProd && new ReactRefreshPlugin(),
+  ].filter(Boolean),
 
   resolve: {
     alias: {
