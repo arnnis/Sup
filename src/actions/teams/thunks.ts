@@ -19,7 +19,7 @@ import http from '../../utils/http';
 import {RootState} from '../../reducers';
 import {NavigationService} from '../../navigation/Navigator';
 import {getChats} from '../chats/thunks';
-import {closeSocket, init as initRTM} from '../../services/rtm';
+import {_closeSocket, init as initRTM} from '../../services/rtm';
 import {getCurrentUser} from '../app/thunks';
 import {getMembers} from '../members/thunks';
 import {SlackError} from '../../utils/errors';
@@ -127,7 +127,7 @@ export const getTeam = (teamId: string) => async dispatch => {
 };
 
 export const switchTeam = (teamId: string) => dispatch => {
-  closeSocket();
+  _closeSocket();
   batch(() => {
     dispatch(setCurrentTeam(teamId));
     dispatch(initTeam());
@@ -147,7 +147,7 @@ export const logoutFromCurrentTeam = () => (dispatch, getState) => {
         text: 'Logout',
         onPress: () => {
           let currentTeam = state.teams.currentTeam;
-          closeSocket();
+          _closeSocket();
           return dispatch(logout(currentTeam));
         },
       },

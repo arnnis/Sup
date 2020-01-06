@@ -36,8 +36,8 @@ export const init = async () => {
     connected = true;
     store.dispatch(setConnectionStatus('connected'));
 
-    startPing();
-    stopReconnect();
+    _startPing();
+    _stopReconnect();
   };
 
   socket.onmessage = ({data}) => {
@@ -99,7 +99,7 @@ export const init = async () => {
     store.dispatch(setConnectionStatus('disconnected'));
     connected = false;
 
-    !__DEV__ && reconnect();
+    !__DEV__ && _reconnect();
   };
 
   socket.onerror = error => {
@@ -107,19 +107,19 @@ export const init = async () => {
   };
 };
 
-export const closeSocket = () => {
+export const _closeSocket = () => {
   if (socket) {
-    stopPing();
-    stopReconnect();
+    _stopPing();
+    _stopReconnect();
     socket.close();
   }
 };
 
-const startPing = () => {
+const _startPing = () => {
   pingInterval = setInterval(() => {
     // If last ping did not get a response. close the socket.
     if (lastPingId) {
-      closeSocket();
+      _closeSocket();
       return;
     }
     let message = sendMessage({type: 'ping'});
@@ -128,12 +128,12 @@ const startPing = () => {
   }, 10000);
 };
 
-const stopPing = () => {
+const _stopPing = () => {
   pingInterval && clearInterval(pingInterval);
   pingInterval = null;
 };
 
-const reconnect = () => {
+const _reconnect = () => {
   reconnectInterval = setInterval(() => {
     console.log('[socket] reconnecting...');
     init();
@@ -141,9 +141,13 @@ const reconnect = () => {
   }, 5000);
 };
 
-const stopReconnect = () => {
+const _stopReconnect = () => {
   reconnectInterval && clearInterval(reconnectInterval);
   reconnectInterval = null;
+};
+
+export const _send = (data: any) => {
+  socket && !socket.CONNECTING && socket.send(data);
 };
 
 export * from './message-events';
