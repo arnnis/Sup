@@ -10,6 +10,7 @@ import dayjs from 'dayjs';
 import {ReactionAddedEvent, MessageEvent, MessageReplyEvent, NotificationEvent} from './types';
 import {meSelector} from '../../reducers/teams';
 import {goToChat} from '../../actions/chats/thunks';
+import {addReaction, removeReaction} from '../../actions/messages/thunks';
 
 export const sendMessage = (input: SendInput) => {
   let fingerprint = Math.random() * 100000000000000000;
@@ -108,76 +109,16 @@ export const handleNotificationRecieved = (data: NotificationEvent) => {
   });
 
   notif.onclick = () => {
-    store.dispatch(goToChat(data.channel));
+    store.dispatch(goToChat(data.channel) as any);
   };
 };
 
 export const handleReactionAdded = (data: ReactionAddedEvent) => {
-  let {
-    item: {ts: messageId},
-  } = data;
-  const state: RootState = store.getState() as any;
-  let message = state.entities.messages.byId[messageId];
-
-  // Message not loaded. so no need to update reaction
-  if (!message) return;
-
-  let reactions = message.reactions;
-
-  // Reaction already exist. so only increase count
-  if (reactions && reactions.some(reaction => reaction.name === data.reaction))
-    store.dispatch(
-      updateEntity('messages', messageId, {
-        reactions: reactions.map(reaction =>
-          reaction.name === data.reaction
-            ? {
-                ...reaction,
-                count: reaction.count + 1,
-              }
-            : reaction,
-        ),
-      }),
-    );
-  else
-    store.dispatch(
-      updateEntity('messages', messageId, {
-        reactions: [...(reactions || []), {name: data.reaction, users: [data.user], count: 1}],
-      }),
-    );
+  store.dispatch(addReaction(data.reaction, data.user, data.item.ts) as any);
 };
 
 export const handleReactionRemoved = (data: ReactionAddedEvent) => {
-  let {
-    item: {ts: messageId},
-  } = data;
-  const state: RootState = store.getState() as any;
-  let message = state.entities.messages.byId[messageId];
-
-  // Message not loaded. so no need to update reaction
-  if (!message) return;
-
-  const reactions = message.reactions;
-
-  const reaction = message.reactions?.find(reaction => reaction.name === data.reaction);
-
-  // Check reaction exists
-  if (!reaction) return;
-
-  // Count is 1, so we should remove reaction object, otherwise decrease count by 1
-  if (reaction.count === 1)
-    store.dispatch(
-      updateEntity('messages', messageId, {
-        reactions: reactions.filter(reaction => reaction.name !== data.reaction),
-      }),
-    );
-  else
-    store.dispatch(
-      updateEntity('messages', messageId, {
-        reactions: reactions.map(reaction =>
-          reaction.name === data.reaction ? {...reaction, count: reaction.count - 1} : reaction,
-        ),
-      }),
-    );
+  store.dispatch(removeReaction(data.reaction, data.user, data.item.ts) as any);
 };
 
 export const handleReplyAdded = (data: MessageReplyEvent) => {
