@@ -35,22 +35,6 @@ class Bubble extends Component<Props> {
     this.props.dispatch(goToThread(this.props.messageId, this.props.navigation));
   };
 
-  openMessageContextMenu = () => {
-    showMenu(
-      [
-        {
-          title: 'Reply',
-          onPress: this.goToThread,
-        },
-        // {
-        //   title: 'Edit',
-        //   onPress: () => alert('Edit?'),
-        // },
-      ],
-      this.refs['bubble'],
-    );
-  };
-
   renderMessageText() {
     return <MessageText messageId={this.props.messageId} isMe={this.props.isMe} />;
   }
@@ -104,20 +88,18 @@ class Bubble extends Component<Props> {
               marginRight: isMe ? px(7.5) : 0,
             },
         ]}>
-        <TouchableWithoutFeedback onLongPress={this.openMessageContextMenu}>
-          <View>
-            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-              {this.renderName()}
-              {this.renderSendDate()}
-            </View>
-
-            {this.renderMessageText()}
-            {this.renderMessageImages()}
-            {this.renderMessageVideos()}
-            {this.renderMessageFiles()}
-            {this.renderReplies()}
+        <View>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            {this.renderName()}
+            {this.renderSendDate()}
           </View>
-        </TouchableWithoutFeedback>
+
+          {this.renderMessageText()}
+          {this.renderMessageImages()}
+          {this.renderMessageVideos()}
+          {this.renderMessageFiles()}
+          {this.renderReplies()}
+        </View>
       </View>
     );
   }

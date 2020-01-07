@@ -80,6 +80,7 @@
     "@svgr/webpack": "^4.3.3",
     "@types/jest": "^24.0.19",
     "@types/react": "^16.9.6",
+    "@types/react-dom": "^16.9.4",
     "@types/react-native": "^0.60.20",
     "@types/react-redux": "^7.1.4",
     "@types/react-test-renderer": "^16.9.1",
@@ -152,5 +153,8 @@
       "output": "../desktop/dist"
     },
     "publish": null
+  },
+  "react-native": {
+    "electron": false
   }
 }

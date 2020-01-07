@@ -1,5 +1,6 @@
 import React, {useState, useRef, useEffect} from 'react';
-import {StyleSheet, SafeAreaView, StatusBar, View, Platform} from 'react-native';
+import {StyleSheet, StatusBar, View} from 'react-native';
+
 import MediaQuery from '../../utils/stylesheet/MediaQuery';
 import Header from '../../components/Header';
 import px from '../../utils/normalizePixel';
@@ -21,7 +22,7 @@ import {currentTeamSelector} from '../../reducers/teams';
 import Toast from '../../components/Toast';
 import {toggleToast} from '../../actions/app';
 import Screen from '../../components/Screen';
-import isNative from '../../utils/isNative';
+import {Platform} from '../../libs/platform';
 
 type Props = ReturnType<typeof mapStateToProps> & DispatchProp<any> & ThemeInjectedProps;
 

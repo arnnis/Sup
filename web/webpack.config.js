@@ -132,7 +132,7 @@ const config = {
       'react-native-fast-image': 'react-native-web/dist/exports/Image',
       'react-native-web/dist/exports/Modal': 'modal-enhanced-react-native-web',
     },
-    extensions: ['.web.js', '.js', '.web.ts', '.web.tsx', '.ts', '.tsx', '.json'],
+    extensions: ['.web.js', '.web.ts', '.js', '.web.tsx', '.ts', '.tsx', '.json'],
   },
 };
 

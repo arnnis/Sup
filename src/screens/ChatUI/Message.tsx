@@ -1,9 +1,12 @@
 import React, {Component} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, View, TouchableWithoutFeedback, Clipboard} from 'react-native';
+import ReactDOM from 'react-dom';
 import {isSameUser} from './utils';
 import {RootState} from '../../reducers';
 import Bubble from './Bubble';
-import {connect} from 'react-redux';
+import {connect, DispatchProp} from 'react-redux';
+import Electron from 'electron';
+
 import Avatar from '../../components/Avatar';
 import px from '../../utils/normalizePixel';
 import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
@@ -11,12 +14,16 @@ import {NavigationInjectedProps, withNavigation} from 'react-navigation';
 import Day from './Day';
 import {meSelector} from '../../reducers/teams';
 import rem from '../../utils/stylesheet/rem';
-import {ChatType} from '.';
 import Reactions from './Reactions';
+import {goToThread} from '../../actions/chats/thunks';
+import showMenu from '../../utils/showMenu';
+import isNative from '../../utils/isNative';
+import {Platform} from '../../libs/platform';
 
 type Props = ReturnType<typeof mapStateToProps> &
   NavigationInjectedProps &
-  ThemeInjectedProps & {
+  ThemeInjectedProps &
+  DispatchProp<any> & {
     messageId: string;
     prevMessageId: string;
     nextMessageId: string;
@@ -27,6 +34,67 @@ type Props = ReturnType<typeof mapStateToProps> &
   };
 
 class Message extends Component<Props> {
+  messageContainerRef: any;
+
+  componentDidMount() {
+    Platform.isElectron &&
+      ReactDOM.findDOMNode(this).addEventListener('contextmenu', this.handleContextMenuElectron);
+  }
+
+  componentWillUnmount() {
+    Platform.isElectron &&
+      ReactDOM.findDOMNode(this).removeEventListener('contextmenu', this.handleContextMenuElectron);
+  }
+
+  goToReplies = () => {
+    this.props.dispatch(goToThread(this.props.messageId, this.props.navigation));
+  };
+
+  copyTextToClipboard = () => {
+    const {currentMessage} = this.props;
+    if (Platform.isElectron) {
+      Electron.clipboard.writeText(currentMessage.text);
+    } else {
+      Clipboard.setString(currentMessage.text);
+    }
+  };
+
+  handleContextMenuElectron = e => {
+    e.preventDefault();
+
+    const {Menu, MenuItem} = Electron.remote;
+
+    const menu = new Menu();
+    menu.append(
+      new MenuItem({
+        label: 'Reply',
+        click: this.goToReplies,
+      }),
+    );
+    // menu.append(new MenuItem({type: 'separator'}));
+    menu.append(new MenuItem({label: 'Copy text'}));
+
+    menu.popup({window: Electron.remote.getCurrentWindow()});
+    return false;
+  };
+
+  openMessageContextNative = () => {
+    if (!isNative()) return;
+    showMenu(
+      [
+        {
+          title: 'Reply',
+          onPress: this.goToReplies,
+        },
+        // {
+        //   title: 'Edit',
+        //   onPress: () => alert('Edit?'),
+        // },
+      ],
+      this.refs['bubble'],
+    );
+  };
+
   handleAvatarPress = (userId: string) => {
     this.props.navigation.push('UserProfile', {userId: this.props.currentMessage.user});
   };
@@ -119,26 +187,29 @@ class Message extends Component<Props> {
       <>
         {!inverted && this.renderDay()}
         {inverted && this.renderReaction()}
-        <View
-          style={[
-            styles.container,
-            isMe ? styles.right : styles.left,
-            {marginBottom: sameUser ? 4 : 10},
-          ]}>
-          {!isMe ? (
-            <>
-              {this.renderAvatar(isMe, sameUser)}
-              {this.renderAnchor(isMe, sameUser)}
-            </>
-          ) : null}
-          {this.renderBubble(isMe, sameUser)}
-          {isMe && (
-            <>
-              {this.renderAnchor(isMe, sameUser)}
-              {this.renderAvatar(isMe, sameUser)}
-            </>
-          )}
-        </View>
+        <TouchableWithoutFeedback onLongPress={this.openMessageContextNative}>
+          <View
+            ref={this.messageContainerRef}
+            style={[
+              styles.container,
+              isMe ? styles.right : styles.left,
+              {marginBottom: sameUser ? 4 : 10},
+            ]}>
+            {!isMe ? (
+              <>
+                {this.renderAvatar(isMe, sameUser)}
+                {this.renderAnchor(isMe, sameUser)}
+              </>
+            ) : null}
+            {this.renderBubble(isMe, sameUser)}
+            {isMe && (
+              <>
+                {this.renderAnchor(isMe, sameUser)}
+                {this.renderAvatar(isMe, sameUser)}
+              </>
+            )}
+          </View>
+        </TouchableWithoutFeedback>
         {!inverted && this.renderReaction()}
         {this.renderDivder()}
         {inverted && this.renderDay()}
