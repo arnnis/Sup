@@ -139,9 +139,13 @@
     "presets": [
       "module:metro-react-native-babel-preset"
     ],
-    "plugins": [
-      "react-refresh/babel"
-    ]
+    "env": {
+      "development": {
+        "plugins": [
+          "react-refresh/babel"
+        ]
+      }
+    }
   },
   "build": {
     "appId": "com.arnnis.sup",
@@ -155,6 +159,9 @@
     "publish": null
   },
   "react-native": {
+    "electron": false
+  },
+  "browser": {
     "electron": false
   }
 }
