@@ -45,6 +45,7 @@
     "react-native": "0.61.2",
     "react-native-animated-ellipsis": "^2.0.0",
     "react-native-emoji-input": "^1.1.9",
+    "react-native-emoji-selector": "^0.1.7",
     "react-native-fast-image": "^7.0.2",
     "react-native-fs": "^2.14.1",
     "react-native-gesture-handler": "^1.4.1",

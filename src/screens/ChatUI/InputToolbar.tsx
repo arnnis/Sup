@@ -1,14 +1,22 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, Text, Keyboard, Platform} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Text,
+  Keyboard,
+  Platform,
+  TouchableOpacity,
+  MeasureOnSuccessCallback,
+} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import emojis from '../../utils/emoji';
 import px from '../../utils/normalizePixel';
 import Composer from './Composer';
 import Send from './Send';
 import EmojiPicker from './EmojiPicker';
-import Touchable from '../../components/Touchable';
 import {sendMessage} from '../../services/rtm';
 import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
+import isLandscape from '../../utils/stylesheet/isLandscape';
 
 type Props = ThemeInjectedProps & {
   chatId: string;
@@ -16,9 +24,17 @@ type Props = ThemeInjectedProps & {
 };
 
 class InputToolbar extends Component<Props> {
+  emojiButtonRef: TouchableOpacity;
+
   state = {
     text: '',
-    emojiSelectorVisible: true,
+    emojiPicker: {
+      open: false,
+      standalone: {
+        x: 0,
+        y: 0,
+      },
+    },
   };
 
   handleTextChanged = text => this.setState({text});
@@ -33,13 +49,40 @@ class InputToolbar extends Component<Props> {
     this.setState({text: ''});
   };
 
-  handleEmojiButtonPress = () => {
-    if (!this.state.emojiSelectorVisible) {
+  x: Parameters<MeasureOnSuccessCallback>;
+
+  measureEmojiButtonCoord = (): Promise<{px: number; py: number}> =>
+    new Promise(resolve => {
+      this.emojiButtonRef.measure((x, y, width, height, px, py) => resolve({px, py}));
+    });
+
+  handleEmojiButtonPress = async () => {
+    if (!this.state.emojiPicker.open) {
       Keyboard.dismiss();
     } else {
       // TODO: focus on input
     }
-    this.setState({emojiSelectorVisible: !this.state.emojiSelectorVisible});
+
+    if (isLandscape()) {
+      let {px, py} = await this.measureEmojiButtonCoord();
+      this.setState({
+        emojiPicker: {
+          ...this.state.emojiPicker,
+          open: !this.state.emojiPicker.open,
+          standalone: {
+            x: px,
+            y: py,
+          },
+        },
+      });
+    } else {
+      this.setState({
+        emojiPicker: {
+          ...this.state.emojiPicker,
+          open: !this.state.emojiPicker.open,
+        },
+      });
+    }
   };
 
   handleEmojiPickerClosed = () => this.setState({emojiSelectorVisible: false});
@@ -65,12 +108,12 @@ class InputToolbar extends Component<Props> {
   }
 
   renderEmojiPicker() {
-    if (!this.state.emojiSelectorVisible) return null;
     return (
       <EmojiPicker
         onEmojiSelected={this.handleEmojiSelected}
         onClose={this.handleEmojiPickerClosed}
         onOpen={this.handleEmojiPickerOpened}
+        {...this.state.emojiPicker}
       />
     );
   }
@@ -78,14 +121,17 @@ class InputToolbar extends Component<Props> {
   renderEmojiButton() {
     let {theme} = this.props;
     return (
-      <Touchable style={styles.emojiButton} onPress={this.handleEmojiButtonPress}>
+      <TouchableOpacity
+        style={styles.emojiButton}
+        onPress={this.handleEmojiButtonPress}
+        ref={ref => (this.emojiButtonRef = ref)}>
         <MaterialCommunityIcons
           name="emoticon"
           size={px(21)}
           color={theme.foregroundColorMuted65}
           style={{marginTop: px(2.5), marginLeft: px(1)}}
         />
-      </Touchable>
+      </TouchableOpacity>
     );
   }
 
@@ -98,7 +144,6 @@ class InputToolbar extends Component<Props> {
             {this.renderEmojiButton()}
             {this.renderComposer()}
           </View>
-
           {this.renderSend()}
         </View>
         {this.renderEmojiPicker()}
