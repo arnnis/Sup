@@ -57,7 +57,7 @@ export const InfoRow: FC<InfoRowProps> = ({title, isLast, isFirst, style, childr
   let {theme} = useContext(ThemeContext);
   return (
     <>
-      <View style={style}>
+      <View style={[{flexShrink: 1}, style]}>
         <Text style={styles.infoTitle}>{title}</Text>
         <Text style={[styles.infoBody, {color: theme.foregroundColor}]}>{children}</Text>
       </View>

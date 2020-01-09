@@ -10,7 +10,6 @@ import MessageVideos from './MessageVideos';
 import Replies from './Replies';
 import withStylesheet, {StyleSheetInjectedProps} from '../../utils/stylesheet/withStylesheet';
 import MessageDate from './MessageDate';
-import showMenu from '../../utils/showMenu';
 import {withNavigation, NavigationInjectedProps} from 'react-navigation';
 import {connect, DispatchProp} from 'react-redux';
 import {RootState} from '../../reducers';

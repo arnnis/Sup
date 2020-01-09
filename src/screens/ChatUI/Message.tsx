@@ -183,6 +183,7 @@ class Message extends Component<Props> {
     let {currentMessage, prevMessage, nextMessage, me, inverted} = this.props;
     let sameUser = isSameUser(currentMessage, nextMessage);
     let isMe = me && me.id === currentMessage.user;
+    const hasReactions = !!currentMessage.reactions?.length;
     return (
       <>
         {!inverted && this.renderDay()}
@@ -195,7 +196,7 @@ class Message extends Component<Props> {
             style={[
               styles.container,
               isMe ? styles.right : styles.left,
-              {marginBottom: sameUser ? 4 : 10},
+              {marginBottom: sameUser && !hasReactions ? 4 : 10},
             ]}>
             {!isMe ? (
               <>

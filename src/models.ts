@@ -66,6 +66,9 @@ export interface Team {
 export type ChatType = 'im' | 'group';
 
 export interface Chat {
+  purpose?: {
+    value: string;
+  };
   dm_count: number;
   id: string;
   is_ext_shared: boolean;
