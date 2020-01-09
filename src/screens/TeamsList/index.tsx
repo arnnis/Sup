@@ -1,6 +1,6 @@
 import React, {Component, PureComponent} from 'react';
 import {DispatchProp} from 'react-redux';
-import {View, StyleSheet, FlatList, ActivityIndicator} from 'react-native';
+import {View, StyleSheet, FlatList, ActivityIndicator, Text} from 'react-native';
 import {connect} from 'react-redux';
 import {RootState} from '../../reducers';
 import {NavigationInjectedProps, withNavigation} from 'react-navigation';
@@ -11,6 +11,7 @@ import AddTeam from './AddTeam';
 import {Team} from '../../models';
 import {switchTeam} from '../../actions/teams/thunks';
 import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
+import {Version} from '../../env';
 
 type Props = ReturnType<typeof mapStateToProps> &
   ThemeInjectedProps &
@@ -48,6 +49,14 @@ class TeamsList extends Component<Props> {
     );
   }
 
+  renderVersion() {
+    return (
+      <View style={styles.versionContainer}>
+        <Text style={styles.versionText}>v{Version}</Text>
+      </View>
+    );
+  }
+
   render() {
     let {teamsList, theme} = this.props;
 
@@ -64,6 +73,7 @@ class TeamsList extends Component<Props> {
           })}
           ListFooterComponent={<AddTeam />}
         />
+        {this.renderVersion()}
       </View>
     );
   }
@@ -75,6 +85,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#1D2124',
 
     paddingTop: px(35),
+  },
+
+  versionContainer: {
+    position: 'absolute',
+    left: 0,
+    bottom: 10,
+    width: '100%',
+    alignItems: 'center',
+  },
+  versionText: {
+    color: '#fff',
+    fontWeight: 'bold',
   },
 });
 

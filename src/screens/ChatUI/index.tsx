@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {View, StyleSheet, FlatList, ActivityIndicator, Text} from 'react-native';
+import Electron from 'electron';
 import {RootState} from '../../reducers';
 import {connect, DispatchProp} from 'react-redux';
 import Message from './Message';
@@ -37,6 +38,11 @@ class ChatUI extends Component<Props> {
   _scrollNode: any;
 
   async componentDidMount() {
+    // if (Electron) {
+    //   alert('defined');
+    // } else {
+    //   alert('not defined');
+    // }
     let {chatType, chatId, dispatch} = this.props;
 
     if (chatType === 'channel' || chatType === 'direct') {

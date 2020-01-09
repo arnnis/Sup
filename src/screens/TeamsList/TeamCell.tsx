@@ -1,18 +1,18 @@
-import React, {PureComponent, Component} from 'react';
-import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
-import px from '../../utils/normalizePixel';
-import {Team} from '../../models';
-import {DispatchProp} from 'react-redux';
-import Touchable from '../../components/Touchable';
+import React, {PureComponent} from 'react';
+import {View, StyleSheet, Text} from 'react-native';
 import FastImage from 'react-native-fast-image';
 
-type Props = DispatchProp<any> & {
+import px from '../../utils/normalizePixel';
+import {Team} from '../../models';
+import Touchable from '../../components/Touchable';
+
+type Props = {
   team: Team;
   onPress(team: Team): void;
   selected?: boolean;
 };
 
-class TeamCell extends Component<Props> {
+class TeamCell extends PureComponent<Props> {
   renderName() {
     let {team} = this.props;
     return (

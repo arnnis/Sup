@@ -32,6 +32,7 @@ const Main = React.memo(
     let drawerRef = useRef(null);
 
     useEffect(() => {
+      // alert(Platform.isElectron ? 'is ele' : 'is NOT ele');
       dispatch(initTeam());
       StatusBar.setBarStyle('light-content');
       global['toast'] = toast => dispatch(toggleToast(toast));

@@ -175,7 +175,7 @@ class Message extends Component<Props> {
     );
   }
 
-  renderReaction() {
+  renderReactions() {
     return <Reactions messageId={this.props.messageId} hideAvatar={this.props.hideAvatar} />;
   }
 
@@ -186,8 +186,10 @@ class Message extends Component<Props> {
     return (
       <>
         {!inverted && this.renderDay()}
-        {inverted && this.renderReaction()}
-        <TouchableWithoutFeedback onLongPress={this.openMessageContextNative}>
+        {inverted && this.renderReactions()}
+        <TouchableWithoutFeedback
+          onLongPress={this.openMessageContextNative}
+          disabled={Platform.isElectron}>
           <View
             ref={this.messageContainerRef}
             style={[
@@ -210,7 +212,7 @@ class Message extends Component<Props> {
             )}
           </View>
         </TouchableWithoutFeedback>
-        {!inverted && this.renderReaction()}
+        {!inverted && this.renderReactions()}
         {this.renderDivder()}
         {inverted && this.renderDay()}
       </>
