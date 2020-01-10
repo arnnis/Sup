@@ -45,7 +45,7 @@ function logPackage(packageName) {
 }
 
 const config = {
-  entry: [path.resolve(appDirectory, 'index.js')],
+  entry: [path.resolve(appDirectory, 'index.web.js')],
 
   output: {
     filename: isProd ? '[name].[contenthash:8].js' : '[name].js',

@@ -17,6 +17,8 @@ import EmojiPicker from './EmojiPicker';
 import {sendMessage} from '../../services/rtm';
 import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 import isLandscape from '../../utils/stylesheet/isLandscape';
+import {EmojiData} from 'emoji-mart';
+import isNative from '../../utils/isNative';
 
 type Props = ThemeInjectedProps & {
   chatId: string;
@@ -30,10 +32,7 @@ class InputToolbar extends Component<Props> {
     text: '',
     emojiPicker: {
       open: false,
-      standalone: {
-        x: 0,
-        y: 0,
-      },
+      standalone: null,
     },
   };
 
@@ -80,17 +79,20 @@ class InputToolbar extends Component<Props> {
         emojiPicker: {
           ...this.state.emojiPicker,
           open: !this.state.emojiPicker.open,
+          standalone: null,
         },
       });
     }
   };
 
-  handleEmojiPickerClosed = () => this.setState({emojiSelectorVisible: false});
+  handleEmojiPickerClosed = () =>
+    this.setState({emojiPicker: {...this.state.emojiPicker, open: false}});
 
-  handleEmojiPickerOpened = () => this.setState({emojiSelectorVisible: true});
+  handleEmojiPickerOpened = () =>
+    this.setState({emojiPicker: {...this.state.emojiPicker, open: true}});
 
-  handleEmojiSelected = emoji => {
-    this.setState({text: this.state.text + emoji.char});
+  handleEmojiSelected = (emoji: EmojiData) => {
+    this.setState({text: this.state.text + emoji.native});
   };
 
   renderComposer() {
@@ -123,7 +125,10 @@ class InputToolbar extends Component<Props> {
     return (
       <TouchableOpacity
         style={styles.emojiButton}
-        onPress={this.handleEmojiButtonPress}
+        onPressIn={isNative() && this.handleEmojiButtonPress}
+        // @ts-ignore
+        onMouseEnter={this.handleEmojiButtonPress}
+        //onMouseLeave={this.handleEmojiButtonPress}
         ref={ref => (this.emojiButtonRef = ref)}>
         <MaterialCommunityIcons
           name="emoticon"

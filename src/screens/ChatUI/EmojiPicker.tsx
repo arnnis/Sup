@@ -1,14 +1,18 @@
 import React, {useEffect, useState, FC, useContext} from 'react';
 import {View, StyleSheet, Keyboard, Dimensions} from 'react-native';
-import EmojiSelector from 'react-native-emoji-input';
+import {Portal, Text} from 'react-native-paper';
+
+import EmojiPickerComponent from '../../components/EmojiPicker';
 import px from '../../utils/normalizePixel';
-import rem from '../../utils/stylesheet/rem';
 import ThemeContext from '../../contexts/theme';
+import {EmojiData} from 'emoji-mart';
+import {TouchableWithoutFeedback, TouchableOpacity} from 'react-native-gesture-handler';
+import ReactDOM from 'react-dom';
 
 const dims = Dimensions.get('window');
 
 interface Props {
-  onEmojiSelected(emoji: any): void;
+  onEmojiSelected(emoji: EmojiData): void;
   open: boolean;
   onClose(): void;
   onOpen(): void;
@@ -28,10 +32,6 @@ const EmojiPicker: FC<Props> = ({onEmojiSelected, open, onOpen, onClose, standal
     };
   }, []);
 
-  useEffect(() => {
-    //alert(JSON.stringify(standalone));
-  }, [standalone]);
-
   const handleKeyboardWillShow = () => {
     onOpen();
     onClose();
@@ -42,34 +42,43 @@ const EmojiPicker: FC<Props> = ({onEmojiSelected, open, onOpen, onClose, standal
     onOpen();
   };
 
-  if (!open) return null;
+  const renderPicker = () => <EmojiPickerComponent onSelect={onEmojiSelected} />;
 
-  return (
-    <View style={[styles.standaloneContainer, {left: 15, bottom: dims.height - standalone.y + 20}]}>
-      <EmojiSelector
-        onEmojiSelected={onEmojiSelected}
-        keyboardBackgroundColor={theme.backgroundColor}
-        emojiFontSize={px(25)}
-        numColumns={20}
-        categoryFontSize={px(23)}
-        categoryLabelTextStyle={{color: theme.foregroundColor, fontSize: px(16)}}
-        categoryHighlightColor="#3D2037"
-        enableSearch={false}
-        width={rem(915)}
-      />
-    </View>
-  );
+  const renderStandalone = () => {
+    return (
+      <Portal>
+        <TouchableOpacity style={[StyleSheet.absoluteFillObject]} onPress={onClose} />
+        <View
+          style={[
+            styles.standaloneContainer,
+            {left: standalone.x, bottom: dims.height - standalone.y + 15},
+          ]}>
+          {renderPicker()}
+        </View>
+      </Portal>
+    );
+  };
+
+  const renderNonStandalone = () => <View style={[styles.container]}>{renderPicker()}</View>;
+
+  if (!open) return null;
+  const isStandalone = !!standalone;
+
+  return isStandalone ? renderStandalone() : renderNonStandalone();
 };
 
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    height: px(300),
   },
   standaloneContainer: {
-    height: px(300),
+    flexShrink: 1,
     position: 'absolute',
     borderRadius: px(10),
+  },
+  standaloneBackgroundContainer: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'transparent',
   },
 });
 
