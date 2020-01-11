@@ -23,6 +23,7 @@ import Toast from '../../components/Toast';
 import {toggleToast} from '../../actions/app';
 import Screen from '../../components/Screen';
 import {Platform} from '../../libs/platform';
+import {Portal} from 'react-native-paper';
 
 type Props = ReturnType<typeof mapStateToProps> & DispatchProp<any> & ThemeInjectedProps;
 
@@ -60,39 +61,37 @@ const Main = React.memo(
     let _renderMenu = () => currentTeam && <PopupMenu />;
 
     return (
-      <Screen>
-        <StatusBar backgroundColor="#3A1C39" animated />
-        <DrawerLayout
-          ref={ref => (drawerRef.current = ref)}
-          drawerType="slide"
-          renderNavigationView={() => <TeamsList onTeamSelect={_toggleDrawer} />}
-          drawerWidth={px(185)}
-          onDrawerClose={() => setDrawerOpen(false)}
-          onDrawerOpen={() => setDrawerOpen(true)}>
-          <View style={{flex: 1, flexDirection: 'row'}}>
-            <MasterView>
-              <Header
-                center={_renderConnectionStatus()}
-                left={_renderChangeTeamButton()}
-                right={_renderMenu()}
-                style={{elevation: 0}}
-              />
-              {currentTeam ? <BottomTabbar /> : <TeamEmptyPlaceholder />}
-            </MasterView>
-            <MediaQuery orientation="landscape">
-              <View style={{flex: 1, backgroundColor: 'red'}}>
-                {currentChatId ? (
-                  <ChatUI chatId={currentChatId} threadId={currentThreadId} />
-                ) : (
-                  <ChatEmptyPlaceholder />
-                )}
-              </View>
-            </MediaQuery>
-          </View>
-        </DrawerLayout>
-        <BottomSheet />
-        <Toast />
-      </Screen>
+      <Portal.Host>
+        <Screen>
+          <StatusBar backgroundColor="#3A1C39" animated />
+          <DrawerLayout
+            ref={ref => (drawerRef.current = ref)}
+            drawerType="slide"
+            renderNavigationView={() => <TeamsList onTeamSelect={_toggleDrawer} />}
+            drawerWidth={px(185)}
+            onDrawerClose={() => setDrawerOpen(false)}
+            onDrawerOpen={() => setDrawerOpen(true)}>
+            <View style={{flex: 1, flexDirection: 'row'}}>
+              <MasterView>
+                <Header
+                  center={_renderConnectionStatus()}
+                  left={_renderChangeTeamButton()}
+                  right={_renderMenu()}
+                  style={{elevation: 0}}
+                />
+                {currentTeam ? <BottomTabbar /> : <TeamEmptyPlaceholder />}
+              </MasterView>
+              <MediaQuery orientation="landscape">
+                <View style={{flex: 1, backgroundColor: 'red'}}>
+                  {currentChatId ? <ChatUI chatId={currentChatId} /> : <ChatEmptyPlaceholder />}
+                </View>
+              </MediaQuery>
+            </View>
+          </DrawerLayout>
+          <BottomSheet />
+          <Toast />
+        </Screen>
+      </Portal.Host>
     );
   },
 );

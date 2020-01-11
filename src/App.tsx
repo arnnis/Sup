@@ -20,17 +20,15 @@ const App = () => {
   return (
     <ReduxProvider store={store}>
       <ThemeProvider>
-        <PaperProvider>
-          <PersistGate loading={null} persistor={persistor}>
-            <Portal.Host>
-              <Navigator
-                ref={navigatorRef => {
-                  NavigationService.setTopLevelNavigator(navigatorRef);
-                }}
-              />
-            </Portal.Host>
-          </PersistGate>
-        </PaperProvider>
+        <PersistGate loading={null} persistor={persistor}>
+          <PaperProvider>
+            <Navigator
+              ref={navigatorRef => {
+                NavigationService.setTopLevelNavigator(navigatorRef);
+              }}
+            />
+          </PaperProvider>
+        </PersistGate>
       </ThemeProvider>
     </ReduxProvider>
   );

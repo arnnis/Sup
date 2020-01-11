@@ -226,11 +226,10 @@ export const goToThread = (threadId, navigation: NavigationInjectedProps['naviga
   getState,
 ) => {
   const state: RootState = getState();
-  let chatId = navigation.getParam('chatId');
   let params = {
     chatType: 'thread',
     threadId,
-    chatId: chatId || state.chats.currentChatId,
+    chatId: state.chats.currentChatId,
   };
   if (isLandscape()) dispatch(openBottomSheet('ChatUI', params));
   else navigation.push('ChatUI', params);

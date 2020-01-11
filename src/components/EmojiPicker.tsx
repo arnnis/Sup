@@ -6,6 +6,7 @@ import {Picker as PickerWeb, EmojiData} from 'emoji-mart';
 import isNative from '../utils/isNative';
 import ThemeContext from '../contexts/theme';
 import px from '../utils/normalizePixel';
+import isLandscape from '../utils/stylesheet/isLandscape';
 
 const dims = Dimensions.get('window');
 
@@ -38,6 +39,7 @@ const EmojiPickerComponent: FC<Props> = ({onSelect}) => {
         darkMode={theme.isDark}
         showPreview={false}
         showSkinTones={false}
+        style={{width: isLandscape() ? px(375) : '100%'}}
       />
     );
 

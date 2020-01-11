@@ -275,10 +275,10 @@ class ChatUI extends Component<Props> {
   }
 
   render() {
-    let {currentChat} = this.props;
+    let {currentChat, chatId, threadId} = this.props;
     if (!currentChat) return null;
     return (
-      <Screen>
+      <Screen key={chatId + threadId}>
         {this.renderHeader()}
         {this.renderList()}
         {this.renderInputToolbar()}

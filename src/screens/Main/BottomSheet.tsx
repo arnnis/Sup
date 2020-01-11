@@ -8,6 +8,7 @@ import {View, Dimensions, StyleSheet} from 'react-native';
 import UserProfile from '../UserProfile';
 import {closeBottomSheet} from '../../actions/app';
 import {setCurrentThread} from '../../actions/chats';
+import {Portal} from 'react-native-paper';
 
 const dims = Dimensions.get('window');
 
@@ -24,7 +25,7 @@ const BottomSheet: FC<Props> = ({bottomSheet, dispatch}) => {
 
   useEffect(() => {
     if (bottomSheet.screen) {
-      containerRef.current?.slideInUp(750);
+      containerRef.current?.slideInUp(650);
     }
   }, [bottomSheet.screen]);
 
@@ -67,19 +68,11 @@ const BottomSheet: FC<Props> = ({bottomSheet, dispatch}) => {
 
 const styles = StyleSheet.create({
   container: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
+    ...StyleSheet.absoluteFillObject,
     backgroundColor: 'rgba(0, 0, 0, 0.75)',
   },
   panelContainer: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
+    ...StyleSheet.absoluteFillObject,
     alignItems: 'center',
     justifyContent: 'flex-end',
   },

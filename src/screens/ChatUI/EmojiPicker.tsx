@@ -1,13 +1,11 @@
 import React, {useEffect, useState, FC, useContext} from 'react';
-import {View, StyleSheet, Keyboard, Dimensions} from 'react-native';
-import {Portal, Text} from 'react-native-paper';
+import {View, StyleSheet, Keyboard, Dimensions, TouchableOpacity} from 'react-native';
+import {Portal} from 'react-native-paper';
 
 import EmojiPickerComponent from '../../components/EmojiPicker';
 import px from '../../utils/normalizePixel';
 import ThemeContext from '../../contexts/theme';
 import {EmojiData} from 'emoji-mart';
-import {TouchableWithoutFeedback, TouchableOpacity} from 'react-native-gesture-handler';
-import ReactDOM from 'react-dom';
 
 const dims = Dimensions.get('window');
 
