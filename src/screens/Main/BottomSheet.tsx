@@ -1,5 +1,6 @@
 import React, {FC, useRef, useEffect} from 'react';
 import {Modal, TouchableWithoutFeedback} from 'react-native';
+import * as Animateable from 'react-native-animatable';
 import ChatUI from '../ChatUI';
 import {RootState} from '../../reducers';
 import {connect, DispatchProp} from 'react-redux';
@@ -13,12 +14,20 @@ const dims = Dimensions.get('window');
 type Props = ReturnType<typeof mapStateToProps> & DispatchProp<any>;
 
 const BottomSheet: FC<Props> = ({bottomSheet, dispatch}) => {
+  const containerRef = useRef<Animateable.View>(null);
+
   useEffect(() => {
     return () => {
       dispatch(setCurrentThread(''));
     };
   });
-  if (!bottomSheet.screen) return null;
+
+  useEffect(() => {
+    if (bottomSheet.screen) {
+      containerRef.current?.slideInUp(750);
+    }
+  }, [bottomSheet.screen]);
+
   const _handleBackgroundPress = () => {
     dispatch(closeBottomSheet());
   };
@@ -37,30 +46,23 @@ const BottomSheet: FC<Props> = ({bottomSheet, dispatch}) => {
       <TouchableWithoutFeedback onPress={_handleBackgroundPress}>
         <View style={StyleSheet.absoluteFill} />
       </TouchableWithoutFeedback>
-      <View style={styles.panelContainer} pointerEvents="box-none">
+      <Animateable.View
+        ref={ref => (containerRef.current = ref)}
+        style={styles.panelContainer}
+        pointerEvents="box-none">
         <View style={styles.panel}>
           <View style={styles.panelHeader}>
             <View style={styles.panelHandle} />
           </View>
           {_renderScene()}
         </View>
-      </View>
+      </Animateable.View>
     </>
   );
 
-  return (
-    <View style={styles.container}>
-      <Modal
-        visible={bottomSheet.screen ? true : false}
-        animationType="slide"
-        transparent
-        supportedOrientations={['landscape', 'portrait']}
-        // to fix margin on web
-        style={{margin: 0}}>
-        {content()}
-      </Modal>
-    </View>
-  );
+  if (!bottomSheet.screen) return null;
+
+  return <View style={styles.container}>{content()}</View>;
 };
 
 const styles = StyleSheet.create({
