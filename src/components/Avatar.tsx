@@ -7,8 +7,12 @@ import {connect, DispatchProp} from 'react-redux';
 import {RootState} from '../reducers';
 import {getMember} from '../actions/members/thunks';
 import {currentTeamTokenSelector} from '../reducers/teams';
+import isLandscape from '../utils/stylesheet/isLandscape';
+import {openBottomSheet} from '../actions/app';
+import {withNavigation, NavigationInjectedProps} from 'react-navigation';
 
 type Props = ReturnType<typeof mapStateToProps> &
+  NavigationInjectedProps &
   DispatchProp<any> & {
     userId: string;
     width?: number;
@@ -30,6 +34,14 @@ class Avatar extends PureComponent<Props> {
   componentDidMount() {
     if (!this.props.user) this.props.dispatch(getMember(this.props.userId));
   }
+
+  handlePress = () => {
+    const params = {
+      userId: this.props.userId,
+    };
+    if (!isLandscape()) this.props.navigation.push('UserProfile', params);
+    else this.props.dispatch(openBottomSheet('UserProfile', params));
+  };
 
   onError = () => this.setState({errored: true});
 
@@ -99,8 +111,7 @@ class Avatar extends PureComponent<Props> {
 
     return (
       <TouchableOpacity
-        disabled={!onPress}
-        onPress={onPress}
+        onPress={this.handlePress || onPress}
         style={[
           styles.container,
           {width, height: width, borderRadius: width / 2},
@@ -143,4 +154,4 @@ const mapStateToProps = (state: RootState, ownProps) => ({
   token: currentTeamTokenSelector(state),
 });
 
-export default connect(mapStateToProps)(Avatar);
+export default connect(mapStateToProps)(withNavigation(Avatar));

@@ -37,7 +37,7 @@ const BottomSheet: FC<Props> = ({bottomSheet, dispatch}) => {
     switch (bottomSheet.screen) {
       case 'ChatUI':
         return <ChatUI {...bottomSheet.params} />;
-      case 'UserInfo':
+      case 'UserProfile':
         return <UserProfile {...bottomSheet.params} />;
     }
   };

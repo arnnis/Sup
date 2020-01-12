@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, FC} from 'react';
 import {View, Text, StyleSheet, ScrollView} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Header from '../components/Header';
@@ -7,7 +7,7 @@ import {connect, DispatchProp} from 'react-redux';
 import {NavigationInjectedProps, withNavigation} from 'react-navigation';
 import px from '../utils/normalizePixel';
 import {User} from '../models';
-import {openChat} from '../actions/chats/thunks';
+import {openChat, goToChat} from '../actions/chats/thunks';
 import {ActivityIndicator} from 'react-native-paper';
 import withTheme, {ThemeInjectedProps} from '../contexts/theme/withTheme';
 import Touchable from '../components/Touchable';
@@ -18,6 +18,8 @@ import {InfoBox, InfoRow, ActionRow, SwitchRow} from '../components/InfoBox';
 import withStylesheet, {StyleSheetInjectedProps} from '../utils/stylesheet/withStylesheet';
 import {togglePresence} from '../actions/app/thunks';
 import {logoutFromCurrentTeam} from '../actions/teams/thunks';
+import isLandscape from '../utils/stylesheet/isLandscape';
+import {closeBottomSheet} from '../actions/app';
 
 type Props = ReturnType<typeof mapStateToProps> &
   StyleSheetInjectedProps &
@@ -49,7 +51,11 @@ class UserProfile extends Component<Props> {
     this.setState({isOpeningChat: true});
     try {
       let chatId = await dispatch(openChat([userId]));
-      navigation.navigate('ChatUI', {chatId});
+      this.props.dispatch(goToChat(chatId, this.props.navigation));
+
+      if (isLandscape()) {
+        this.props.dispatch(closeBottomSheet());
+      }
     } catch (err) {
       console.log(err);
     } finally {
@@ -58,7 +64,7 @@ class UserProfile extends Component<Props> {
   };
 
   handleCallPress = () => {
-    alert('This feature is not supported');
+    alert('This feature is not supported yet');
   };
 
   renderHeader(user: User) {
@@ -172,39 +178,23 @@ class UserProfile extends Component<Props> {
     if (!user) return null;
 
     return (
-      <>
-        <Background />
-        <Screen>
-          {!isMe && (
-            <Header
-              center={`${user.profile.real_name_normalized ||
-                user.profile.display_name_normalized}`}
-              left="back"
-            />
-          )}
-          <ScrollView contentContainerStyle={!isMe && dynamicStyles.scrollViewContent}>
-            {this.renderHeader(user)}
-            {this.renderButtons(user)}
-            {isMe && this.renderMeOptions()}
-            {!isMe && this.renderUserInfoRows(user)}
-          </ScrollView>
-        </Screen>
-      </>
+      <Screen>
+        {!isMe && (
+          <Header
+            center={`${user.profile.real_name_normalized || user.profile.display_name_normalized}`}
+            left={!isLandscape() ? 'back' : null}
+          />
+        )}
+        <ScrollView>
+          {this.renderHeader(user)}
+          {this.renderButtons(user)}
+          {isMe && this.renderMeOptions()}
+          {!isMe && this.renderUserInfoRows(user)}
+        </ScrollView>
+      </Screen>
     );
   }
 }
-
-const Background = () => (
-  <View style={styles.backgroundContainer}>
-    <View
-      style={{
-        height: px(120),
-        width: '100%',
-        backgroundColor: '#F5F5F5',
-      }}
-    />
-  </View>
-);
 
 const styles = StyleSheet.create({
   container: {
@@ -302,25 +292,10 @@ const styles = StyleSheet.create({
   },
 });
 
-const dynamicStyles = {
-  scrollViewContent: {
-    width: '100%',
-    media: [
-      {orientation: 'landscape'},
-      {
-        width: '60%',
-        marginHorizontal: '20%',
-      },
-    ],
-  },
-};
-
 const mapStateToProps = (state: RootState) => ({
   entities: state.entities,
   token: currentTeamTokenSelector(state),
   presence: state.app.presence,
 });
 
-export default connect(mapStateToProps)(
-  withStylesheet(dynamicStyles)(withNavigation(withTheme(UserProfile))),
-);
+export default connect(mapStateToProps)(withNavigation(withTheme(UserProfile)));

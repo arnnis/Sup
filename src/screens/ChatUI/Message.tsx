@@ -99,10 +99,6 @@ class Message extends Component<Props> {
     showMenu(menu, this);
   };
 
-  handleAvatarPress = (userId: string) => {
-    this.props.navigation.push('UserProfile', {userId: this.props.currentMessage.user});
-  };
-
   renderAvatar(isMe, sameUser) {
     let {hideAvatar} = this.props;
     if (hideAvatar) return null;
@@ -113,13 +109,7 @@ class Message extends Component<Props> {
           style={{width: 35, height: 35, marginLeft: isMe ? 7.5 : 0, marginRight: isMe ? 0 : 7.5}}
         />
       );
-    return (
-      <Avatar
-        userId={this.props.currentMessage.user}
-        width={px(35)}
-        onPress={this.handleAvatarPress}
-      />
-    );
+    return <Avatar userId={this.props.currentMessage.user} width={px(35)} />;
   }
 
   renderBubble(isMe: boolean, sameUser: boolean) {
