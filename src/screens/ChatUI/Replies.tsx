@@ -25,7 +25,7 @@ class Replies extends PureComponent<Props> {
   renderParticipantsAvatar() {
     let {message} = this.props;
     return (
-      <View style={styles.participantsAvatarContainer}>
+      <View style={styles.participantsAvatarContainer} pointerEvents="box-only">
         {message.reply_users.slice(0, 4).map(replyUser => (
           <Avatar
             userId={replyUser}
