@@ -65,14 +65,17 @@ class Message extends Component<Props> {
     const {Menu, MenuItem} = Electron.remote;
 
     const menu = new Menu();
-    menu.append(
-      new MenuItem({
-        label: 'Reply',
-        click: this.goToReplies,
-      }),
-    );
+
+    if (!this.props.currentThreadId)
+      menu.append(
+        new MenuItem({
+          label: 'Reply',
+          click: this.goToReplies,
+        }),
+      );
+
     // menu.append(new MenuItem({type: 'separator'}));
-    menu.append(new MenuItem({label: 'Copy text'}));
+    menu.append(new MenuItem({label: 'Copy text', click: this.copyTextToClipboard}));
 
     menu.popup({window: Electron.remote.getCurrentWindow()});
     return false;
@@ -80,19 +83,20 @@ class Message extends Component<Props> {
 
   openMessageContextNative = () => {
     if (!isNative()) return;
-    showMenu(
-      [
-        {
-          title: 'Reply',
-          onPress: this.goToReplies,
-        },
-        // {
-        //   title: 'Edit',
-        //   onPress: () => alert('Edit?'),
-        // },
-      ],
-      this.refs['bubble'],
-    );
+
+    const menu = [];
+
+    if (!this.props.currentThreadId)
+      menu.push({
+        title: 'Reply',
+        onPress: this.goToReplies,
+      });
+
+    menu.push({
+      title: 'Copy',
+      onPress: this.copyTextToClipboard,
+    });
+    showMenu(menu, this);
   };
 
   handleAvatarPress = (userId: string) => {
@@ -243,6 +247,7 @@ const mapStateToProps = (state: RootState, ownProps) => ({
   prevMessage: state.entities.messages.byId[ownProps.prevMessageId],
   nextMessage: state.entities.messages.byId[ownProps.nextMessageId],
   me: meSelector(state),
+  currentThreadId: state.chats.currentThreadId,
 });
 
 export default connect(mapStateToProps)(withTheme(withNavigation(Message)));

@@ -225,13 +225,14 @@ export const goToThread = (threadId, navigation: NavigationInjectedProps['naviga
   dispatch,
   getState,
 ) => {
+  dispatch(setCurrentThread(threadId));
   const state: RootState = getState();
   let params = {
     chatType: 'thread',
     threadId,
     chatId: state.chats.currentChatId,
   };
+
   if (isLandscape()) dispatch(openBottomSheet('ChatUI', params));
   else navigation.push('ChatUI', params);
-  dispatch(setCurrentThread(threadId));
 };

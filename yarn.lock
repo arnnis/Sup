@@ -4713,10 +4713,9 @@ emoji-datasource@^4.0.4, emoji-datasource@^4.1.0:
   resolved "https://registry.yarnpkg.com/emoji-datasource/-/emoji-datasource-4.1.0.tgz#b44557f78a2dfac2f350393391b170a567ec28ad"
   integrity sha1-tEVX94ot+sLzUDkzkbFwpWfsKK0=
 
-emoji-mart-native@^0.5.0-beta:
+"emoji-mart-native@https://github.com/arnnis/emoji-mart-native.git":
   version "0.5.0-beta"
-  resolved "https://registry.yarnpkg.com/emoji-mart-native/-/emoji-mart-native-0.5.0-beta.tgz#228b786ff2d4c8abd1c0d6230d89506e164643b6"
-  integrity sha512-g3rM2T73X9qTiJ8pYuSrxUDBEH9DakrG/acCqZjUoOw2kqvLI89SpQI8VqB+E1AmbMyeHDWbHS2eBF8TyIdmRA==
+  resolved "https://github.com/arnnis/emoji-mart-native.git#e5b4c55ac809b91ab84b5521f90be2fcf82579a1"
 
 emoji-mart@^2.11.2:
   version "2.11.2"
