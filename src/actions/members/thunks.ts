@@ -13,6 +13,9 @@ import {User} from '../../models';
 import filterMembers from '../../utils/filterMembers';
 import {RootState} from '../../reducers';
 import {queryPresences, subscribePresence} from '../../services/rtm/members-events';
+import {NavigationInjectedProps} from 'react-navigation';
+import isLandscape from '../../utils/stylesheet/isLandscape';
+import {openBottomSheet} from '../app';
 
 export const getMembers = () => async (dispatch, getState) => {
   let state: RootState = getState();
@@ -105,4 +108,15 @@ export const getMember = (userId: string) => async (dispatch, getState) => {
     console.log(err);
     dispatch(getMemberFail(userId));
   }
+};
+
+export const openUserProfile = (
+  userId: string,
+  navigation?: NavigationInjectedProps['navigation'],
+) => dispatch => {
+  const params = {
+    userId,
+  };
+  if (!isLandscape()) navigation.push('UserProfile', params);
+  else dispatch(openBottomSheet('UserProfile', params));
 };

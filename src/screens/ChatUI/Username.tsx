@@ -4,20 +4,21 @@ import {connect, DispatchProp} from 'react-redux';
 import {RootState} from '../../reducers';
 import px from '../../utils/normalizePixel';
 import {NavigationInjectedProps, withNavigation} from 'react-navigation';
-import { getMember } from '../../actions/members/thunks';
+import {getMember, openUserProfile} from '../../actions/members/thunks';
 
-type Props = ReturnType<typeof mapStateToProps> & DispatchProp<any> &
+type Props = ReturnType<typeof mapStateToProps> &
+  DispatchProp<any> &
   NavigationInjectedProps & {
     userId: string;
   };
 
 const Username: FC<Props> = memo(({userId, name, navigation, dispatch}) => {
-  useEffect(() =>  {
+  useEffect(() => {
     if (!name) {
-      dispatch(getMember(userId))
+      dispatch(getMember(userId));
     }
-  },[])
-  let handlePress = () => navigation.push('UserProfile', {userId});
+  }, []);
+  let handlePress = () => dispatch(openUserProfile(userId, navigation));
 
   return (
     <Text style={styles.text} onPress={handlePress}>

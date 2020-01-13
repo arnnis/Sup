@@ -11,7 +11,7 @@ import {markChatAsRead, getChatInfo} from '../../actions/chats/thunks';
 import Header from '../../components/Header';
 import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 import InputToolbar from './InputToolbar';
-import {getMember} from '../../actions/members/thunks';
+import {getMember, openUserProfile} from '../../actions/members/thunks';
 import isLandscape from '../../utils/stylesheet/isLandscape';
 import {meSelector, currentTeamTokenSelector} from '../../reducers/teams';
 import px from '../../utils/normalizePixel';
@@ -158,10 +158,9 @@ class ChatUI extends Component<Props> {
   };
 
   openChatDetails = () => {
-    let {chatId, chatType, currentUser} = this.props;
-    if (chatType === 'channel') this.props.navigation.navigate('ChannelDetails', {chatId});
-    if (chatType === 'direct')
-      this.props.navigation.navigate('UserProfile', {userId: currentUser.id});
+    let {chatId, chatType, currentUser, navigation} = this.props;
+    if (chatType === 'channel') navigation.navigate('ChannelDetails', {chatId});
+    if (chatType === 'direct') this.props.dispatch(openUserProfile(currentUser.id, navigation));
   };
 
   isInverted = () => this.props.chatType !== 'thread';

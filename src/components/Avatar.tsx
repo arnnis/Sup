@@ -5,10 +5,8 @@ import px from '../utils/normalizePixel';
 import FastImage from 'react-native-fast-image';
 import {connect, DispatchProp} from 'react-redux';
 import {RootState} from '../reducers';
-import {getMember} from '../actions/members/thunks';
+import {getMember, openUserProfile} from '../actions/members/thunks';
 import {currentTeamTokenSelector} from '../reducers/teams';
-import isLandscape from '../utils/stylesheet/isLandscape';
-import {openBottomSheet} from '../actions/app';
 import {withNavigation, NavigationInjectedProps} from 'react-navigation';
 
 type Props = ReturnType<typeof mapStateToProps> &
@@ -36,11 +34,7 @@ class Avatar extends PureComponent<Props> {
   }
 
   handlePress = () => {
-    const params = {
-      userId: this.props.userId,
-    };
-    if (!isLandscape()) this.props.navigation.push('UserProfile', params);
-    else this.props.dispatch(openBottomSheet('UserProfile', params));
+    this.props.dispatch(openUserProfile(this.props.userId, this.props.navigation));
   };
 
   onError = () => this.setState({errored: true});
