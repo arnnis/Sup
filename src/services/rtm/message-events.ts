@@ -1,7 +1,7 @@
 import {SendInput, PendingMessage, PingMessage} from '../../models';
 import {store} from '../../App';
 import {addPendingMessage, addMessageToChat, removePendingMessage} from '../../actions/messages';
-import {socket, _send} from '.';
+import {socket, send} from '.';
 import {batch} from 'react-redux';
 import {storeEntities, updateEntity} from '../../actions/entities';
 import {RootState} from '../../reducers';
@@ -34,7 +34,7 @@ export const sendMessage = (input: SendInput) => {
     store.dispatch(storeEntities('messages', [pendingMessage]));
     store.dispatch(addPendingMessage(pendingMessage));
 
-    _send(JSON.stringify(pendingMessage));
+    send(pendingMessage);
   }
 
   if (input.type === 'ping') {
@@ -42,7 +42,7 @@ export const sendMessage = (input: SendInput) => {
       id: fingerprint,
       type: 'ping',
     };
-    _send(JSON.stringify(pingMessage));
+    send(pingMessage);
   }
 
   return true;

@@ -146,8 +146,14 @@ const _stopReconnect = () => {
   reconnectInterval = null;
 };
 
-export const _send = (data: any) => {
-  socket && !socket.CONNECTING && socket.send(data);
+const _isSocketReady = () =>
+  socket &&
+  socket.readyState !== socket.CONNECTING &&
+  socket.readyState !== socket.CLOSING &&
+  socket.readyState !== socket.CLOSED;
+
+export const send = (data: any) => {
+  socket && _isSocketReady() && socket.send(JSON.stringify(data));
 };
 
 export * from './message-events';

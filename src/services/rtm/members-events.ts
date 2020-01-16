@@ -1,4 +1,4 @@
-import {socket, _send} from '.';
+import {send} from '.';
 import {PresencesQueryRequest, PresenceChangeEvent, PresenceSubscribeRequest} from './types';
 import {store} from '../../App';
 import {updateEntity} from '../../actions/entities';
@@ -10,7 +10,7 @@ export const queryPresences = (userIds: Array<string>) => {
     type: 'presence_query',
     ids: userIds,
   };
-  _send(JSON.stringify(data));
+  send(data);
 };
 
 export const subscribePresence = (userIds: string[]) => {
@@ -19,7 +19,7 @@ export const subscribePresence = (userIds: string[]) => {
     type: 'presence_sub',
     ids: userIds,
   };
-  _send(JSON.stringify(data));
+  send(data);
 };
 
 export const handleUserPresenceChange = (data: PresenceChangeEvent) => {
