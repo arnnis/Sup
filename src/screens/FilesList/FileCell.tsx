@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {MessageFile} from '../ChatUI/MessageFiles';
+import {File} from '../ChatUI/MessageFiles';
 import {RootState} from '../../reducers';
 import {connect} from 'react-redux';
 import {View, StyleSheet} from 'react-native';
@@ -15,7 +15,7 @@ type Props = ReturnType<typeof mapStateToProps> &
 class FileCell extends Component<Props> {
   renderAllFile = () => {
     let {file, token, theme} = this.props;
-    let File = withTheme(MessageFile);
+    let File = withTheme(File);
     return (
       <File
         file={file}

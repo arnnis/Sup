@@ -28,6 +28,7 @@
     "dayjs": "^1.8.16",
     "electron-context-menu": "^0.15.0",
     "electron-debug": "^3.0.0",
+    "electron-dl": "^3.0.0",
     "electron-store": "^4.0.0",
     "electron-unhandled": "^3.0.0",
     "electron-updater": "^4.0.6",

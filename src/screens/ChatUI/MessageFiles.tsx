@@ -5,42 +5,47 @@ import {FileSystem as fs} from 'react-native-unimodules';
 import {Audio} from 'expo-av';
 import bytes from 'bytes';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import electronDL from 'electron-dl';
+import {BrowserWindow, app} from 'electron';
+
 import {RootState} from '../../reducers';
 import {Message, MessageAttachement} from '../../models';
-import {View, StyleSheet, Text, ToastAndroid, Platform, ViewStyle, TextStyle} from 'react-native';
+import {View, StyleSheet, Text, ToastAndroid, ViewStyle, TextStyle} from 'react-native';
 import px from '../../utils/normalizePixel';
 import Touchable from '../../components/Touchable';
 import {currentTeamTokenSelector, meSelector} from '../../reducers/teams';
-import withTheme, { ThemeInjectedProps } from '../../contexts/theme/withTheme';
+import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
+import {Platform} from '../../libs/platform';
 
-type Props = ReturnType<typeof mapStateToProps> & ThemeInjectedProps & {
-  messageId: string;
-};
+type Props = ReturnType<typeof mapStateToProps> &
+  ThemeInjectedProps & {
+    messageId: string;
+  };
 // For all files (including sounds) except videos and images.
 class MessageFilesList extends Component<Props> {
   render() {
     let {message, files, isMe} = this.props;
     if (!message || !files || files.length === 0) return null;
-    let File = withTheme(MessageFile)
+    let _File = withTheme(File);
     return (
       <View style={styles.container}>
         {files.map(file => (
-          <File file={file} token={this.props.token} isMe={isMe} />
+          <_File file={file} token={this.props.token} isMe={isMe} />
         ))}
       </View>
     );
   }
 }
 
-type MessageFileProps = ThemeInjectedProps & {
+type FileProps = ThemeInjectedProps & {
   token: string;
   file: MessageAttachement;
   containerStyle?: ViewStyle;
   textStyle?: TextStyle;
-  isMe?: boolean
-}
+  isMe?: boolean;
+};
 
-interface MessageFileState {
+interface FileState {
   uri: string;
   playing: boolean;
   downloading: boolean;
@@ -50,8 +55,8 @@ interface MessageFileState {
   isSound: boolean;
 }
 
-export class MessageFile extends Component<MessageFileProps, MessageFileState> {
-  constructor(props: MessageFileProps) {
+export class File extends Component<FileProps, FileState> {
+  constructor(props: FileProps) {
     super(props);
     this.state = {
       uri: props.file.url_private,
@@ -75,6 +80,19 @@ export class MessageFile extends Component<MessageFileProps, MessageFileState> {
   handleActionButtonPress = async () => {
     let {file} = this.props;
     let {isSound, uri, downloading} = this.state;
+
+    if (Platform.isElectron) {
+      this.setState({downloading: true});
+      const win = BrowserWindow.getFocusedWindow();
+      await electronDL.download(win, uri, {
+        onProgress: ({totalBytes, transferredBytes}) =>
+          this.handleDownloadProgress(totalBytes, transferredBytes),
+        directory: app.getPath('downloads') + '/Sup/',
+      });
+      this.setState({downloading: false});
+      return;
+    }
+
     if (downloading) {
       this.stopDownload();
     } else if (isSound) {
@@ -88,7 +106,7 @@ export class MessageFile extends Component<MessageFileProps, MessageFileState> {
           this.sound.playAsync();
         }
       } else {
-        let localPath = await this.downloadFile(uri);
+        let localPath = await this.downloadFileNative(uri);
         let {sound} = await Audio.Sound.createAsync({uri: localPath}, {shouldPlay: false});
         this.sound = sound;
 
@@ -116,13 +134,18 @@ export class MessageFile extends Component<MessageFileProps, MessageFileState> {
         });
       }
     } else {
-      await this.downloadFile(uri);
+      await this.downloadFileNative(uri);
       Platform.OS === 'android' &&
         ToastAndroid.show(file.name + ' downloaded successfully', ToastAndroid.SHORT);
     }
   };
 
-  downloadFile = async (url: string) => {
+  handleDownloadProgress = (totalSizeBytes: number, progressBytes: number) =>
+    this.setState({
+      downloadProgress: (totalSizeBytes / progressBytes) * 100,
+    });
+
+  downloadFileNative = async (url: string) => {
     if (this.state.downloading) return;
     if (this.state.localPath) return this.state.localPath;
 
@@ -141,12 +164,8 @@ export class MessageFile extends Component<MessageFileProps, MessageFileState> {
           Authorization: 'Bearer ' + this.props.token,
         },
       },
-      progress => {
-        //alert(JSON.stringify(res));
-        this.setState({
-          downloadProgress: (progress.totalBytesWritten / progress.totalBytesExpectedToWrite) * 100,
-        });
-      },
+      progress =>
+        this.handleDownloadProgress(progress.totalBytesWritten, progress.totalBytesExpectedToWrite),
     );
 
     await this.download.downloadAsync();
@@ -164,33 +183,40 @@ export class MessageFile extends Component<MessageFileProps, MessageFileState> {
   }
 
   renderPlayIcon() {
-    let {isMe} = this.props
-    return <MaterialCommunityIcons name="play" size={px(26)} color={isMe? 'purple' : "#fff"} />;
+    let {isMe} = this.props;
+    return <MaterialCommunityIcons name="play" size={px(26)} color={isMe ? 'purple' : '#fff'} />;
   }
 
   renderPauseIcon() {
-    let {isMe} = this.props
-    return <MaterialCommunityIcons name="pause" size={px(26)} color={isMe? 'purple' : "#fff"} />;
+    let {isMe} = this.props;
+    return <MaterialCommunityIcons name="pause" size={px(26)} color={isMe ? 'purple' : '#fff'} />;
   }
 
   renderFileIcon() {
-    let {isMe} = this.props
-    return <MaterialCommunityIcons name="file" size={px(22)} color={isMe? 'purple' : "#fff"} />;
+    let {isMe} = this.props;
+    return <MaterialCommunityIcons name="file" size={px(22)} color={isMe ? 'purple' : '#fff'} />;
   }
 
   renderStopDownloadIcon() {
-    let {isMe} = this.props
+    let {isMe} = this.props;
     return (
-      <MaterialCommunityIcons name="close" size={px(22)} color={isMe? 'purple' : "#fff"} style={{marginTop: px(5)}} />
+      <MaterialCommunityIcons
+        name="close"
+        size={px(22)}
+        color={isMe ? 'purple' : '#fff'}
+        style={{marginTop: px(5)}}
+      />
     );
   }
 
   renderActionButton() {
     let {playing, isSound, downloading} = this.state;
-    let {isMe} = this.props
+    let {isMe} = this.props;
     return (
       <>
-        <Touchable style={[styles.actionButton, isMe && { backgroundColor: '#fff' }]} onPress={() => this.handleActionButtonPress()}>
+        <Touchable
+          style={[styles.actionButton, isMe && {backgroundColor: '#fff'}]}
+          onPress={this.handleActionButtonPress}>
           {downloading ? (
             <>
               {this.renderStopDownloadIcon()}
@@ -212,14 +238,23 @@ export class MessageFile extends Component<MessageFileProps, MessageFileState> {
 
   renderDownloadProgress() {
     return (
-      <Text style={[styles.downloadProgress, this.props.isMe && { color: 'purple' }]}>{this.state.downloadProgress.toFixed(1) + '%'}</Text>
+      <Text style={[styles.downloadProgress, this.props.isMe && {color: 'purple'}]}>
+        {this.state.downloadProgress.toFixed(1) + '%'}
+      </Text>
     );
   }
 
   renderName() {
     let {file, textStyle, theme, isMe} = this.props;
     return (
-      <Text style={[styles.fileName, {color: theme.foregroundColor}, isMe && {color: '#fff'}, textStyle]} numberOfLines={2}>
+      <Text
+        style={[
+          styles.fileName,
+          {color: theme.foregroundColor},
+          isMe && {color: '#fff'},
+          textStyle,
+        ]}
+        numberOfLines={2}>
         {file.name}
       </Text>
     );
@@ -228,7 +263,13 @@ export class MessageFile extends Component<MessageFileProps, MessageFileState> {
   renderFileSizeAndType() {
     let {file, textStyle, theme, isMe} = this.props;
     return (
-      <Text style={[styles.fileSizeAndType, {color: theme.foregroundColor}, isMe && {color: '#fff'}, textStyle]}>
+      <Text
+        style={[
+          styles.fileSizeAndType,
+          {color: theme.foregroundColor},
+          isMe && {color: '#fff'},
+          textStyle,
+        ]}>
         {bytes(file.size)} {file.filetype.toUpperCase()}
       </Text>
     );
@@ -305,8 +346,8 @@ const mapStateToProps = (state: RootState, ownProps) => {
     message,
     files: messageFilesSelector(message),
     token: currentTeamTokenSelector(state),
-    isMe: meSelector(state)?.id === message.user
+    isMe: meSelector(state)?.id === message.user,
   };
 };
 
-export default connect(mapStateToProps)(withTheme(MessageFilesList) );
+export default connect(mapStateToProps)(withTheme(MessageFilesList));

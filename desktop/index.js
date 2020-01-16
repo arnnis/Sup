@@ -5,8 +5,11 @@ const {is} = require('electron-util');
 const unhandled = require('electron-unhandled');
 const debug = require('electron-debug');
 const contextMenu = require('electron-context-menu');
+const electronDL = require('electron-dl');
 const config = require('./config');
 const menu = require('./menu');
+
+electronDL();
 
 // Keep a reference for dev mode
 let dev = false;

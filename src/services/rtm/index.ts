@@ -103,7 +103,7 @@ export const init = async () => {
   };
 
   socket.onerror = error => {
-    alert(`[error] ${error.message}`);
+    console.log(`[error] ${error.message}`);
   };
 };
 
