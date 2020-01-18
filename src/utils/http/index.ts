@@ -1,12 +1,11 @@
 import NetInfo from '@react-native-community/netinfo';
-import {API_URL} from '../env';
+import {API_URL} from '../../env';
 import {NetworkError, SlackError, ServerError} from './errors';
-import {store} from '../App';
-import {RootState} from '../reducers';
+import {store} from '../../App';
+import {RootState} from '../../reducers';
 import {Platform} from 'react-native';
-import {logout} from '../actions/teams';
-import {logoutFromCurrentTeam} from '../actions/teams/thunks';
-import {currentTeamTokenSelector} from '../reducers/teams';
+import {logoutFromCurrentTeam} from '../../actions/teams/thunks';
+import {currentTeamTokenSelector} from '../../reducers/teams';
 
 interface RequestOption {
   path: string;
