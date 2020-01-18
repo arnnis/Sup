@@ -1,11 +1,10 @@
 import {getMessagesStart, getMessagesFail, getMessagesSuccess} from '.';
 import {batch} from 'react-redux';
 import {storeEntities, updateEntity} from '../entities';
-import {Message, PaginationResult, MessageReaction} from '../../models';
+import {Message, PaginationResult} from '../../models';
 import http from '../../utils/http';
 import {RootState} from '../../reducers';
-import {getMember, getMembersByUserIds} from '../members/thunks';
-import {SlackError} from '../../utils/errors';
+import {SlackError} from '../../utils/http/errors';
 
 export const getMessagesByChatId = (chatId: string) => async (dispatch, getState) => {
   let store: RootState = getState();

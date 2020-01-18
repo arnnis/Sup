@@ -22,7 +22,7 @@ import {getChats} from '../chats/thunks';
 import {_closeSocket, init as initRTM} from '../../services/rtm';
 import {getCurrentUser} from '../app/thunks';
 import {getMembers} from '../members/thunks';
-import {SlackError} from '../../utils/errors';
+import {SlackError} from '../../utils/http/errors';
 import {Alert} from 'react-native';
 import {currentTeamSelector} from '../../reducers/teams';
 

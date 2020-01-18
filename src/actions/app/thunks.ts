@@ -1,5 +1,5 @@
-import {getCurrentUserSuccess, getCurrentUserFail, getCurrentUserStart, setPresence} from '.';
-import {Chat, User} from '../../models';
+import {getCurrentUserFail, getCurrentUserStart, setPresence} from '.';
+import {User} from '../../models';
 import http from '../../utils/http';
 import {batch} from 'react-redux';
 import {storeEntities} from '../entities';
