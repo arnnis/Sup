@@ -18,7 +18,7 @@ import Reactions from './Reactions';
 import {goToThread} from '../../actions/chats/thunks';
 import showMenu from '../../utils/showMenu';
 import isNative from '../../utils/isNative';
-import {Platform} from '../../libs/platform';
+import {Platform} from '../../utils/platform';
 
 type Props = ReturnType<typeof mapStateToProps> &
   NavigationInjectedProps &

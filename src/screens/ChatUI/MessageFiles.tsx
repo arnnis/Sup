@@ -15,7 +15,7 @@ import px from '../../utils/normalizePixel';
 import Touchable from '../../components/Touchable';
 import {currentTeamTokenSelector, meSelector} from '../../reducers/teams';
 import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
-import {Platform} from '../../libs/platform';
+import {Platform} from '../../utils/platform';
 
 type Props = ReturnType<typeof mapStateToProps> &
   ThemeInjectedProps & {
