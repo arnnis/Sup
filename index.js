@@ -1,5 +1,6 @@
 import React from 'react';
 import {AppRegistry} from 'react-native';
+import 'react-native-match-media-polyfill';
 import 'react-native-gesture-handler';
 import {enableScreens} from 'react-native-screens';
 import App from './src/App';

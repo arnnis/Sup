@@ -34,4 +34,5 @@ function isElectron() {
 export const Platform = {
   ..._Platform,
   isElectron: isElectron(),
+  isNative: _Platform.OS === 'android' || _Platform.OS === 'ios' || _Platform.OS === 'macos',
 };

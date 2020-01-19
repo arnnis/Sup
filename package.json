@@ -111,6 +111,7 @@
     "jest": "^24.9.0",
     "metro-react-native-babel-preset": "^0.56.0",
     "np": "^5.0.3",
+    "react-dropzone": "^10.2.1",
     "react-native-svg-transformer": "^0.13.0",
     "react-refresh": "^0.7.1",
     "react-test-renderer": "16.9.0",
@@ -170,9 +171,11 @@
     "publish": null
   },
   "react-native": {
-    "electron": false
+    "electron": false,
+    "electron-dl": false
   },
   "browser": {
-    "electron": false
+    "electron": false,
+    "electron-dl": false
   }
 }

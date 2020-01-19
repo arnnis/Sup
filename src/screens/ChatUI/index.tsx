@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {View, StyleSheet, FlatList, ActivityIndicator, Text} from 'react-native';
-import Electron from 'electron';
+import Dropzone from 'react-dropzone';
 import {RootState} from '../../reducers';
 import {connect, DispatchProp} from 'react-redux';
 import Message from './Message';
@@ -22,6 +22,8 @@ import Screen from '../../components/Screen';
 import Typing from './Typing';
 import {setCurrentChat, setCurrentThread} from '../../actions/chats';
 import select from '../../utils/select';
+import {Platform} from '../../utils/platform';
+import UploadDropZoneWeb from './UploadDropZoneWeb';
 
 export type ChatType = 'direct' | 'channel' | 'thread';
 
@@ -38,11 +40,6 @@ class ChatUI extends Component<Props> {
   _scrollNode: any;
 
   async componentDidMount() {
-    // if (Electron) {
-    //   alert('defined');
-    // } else {
-    //   alert('not defined');
-    // }
     let {chatType, chatId, dispatch} = this.props;
 
     if (chatType === 'channel' || chatType === 'direct') {
@@ -273,16 +270,32 @@ class ChatUI extends Component<Props> {
     return <Header center={center} left={isLandscape() ? undefined : 'back'} />;
   }
 
-  render() {
-    let {currentChat, chatId, threadId} = this.props;
-    if (!currentChat) return null;
+  renderMain() {
     return (
-      <Screen key={chatId + threadId}>
+      <>
         {this.renderHeader()}
         {this.renderList()}
         {this.renderInputToolbar()}
-      </Screen>
+      </>
     );
+  }
+
+  renderWeb() {
+    return (
+      <UploadDropZoneWeb>
+        <Screen>{this.renderMain()}</Screen>
+      </UploadDropZoneWeb>
+    );
+  }
+
+  renderNative() {
+    return <Screen>{this.renderMain()}</Screen>;
+  }
+
+  render() {
+    let {currentChat} = this.props;
+    if (!currentChat) return null;
+    return Platform.isNative ? this.renderNative() : this.renderWeb();
   }
 }
 
@@ -295,7 +308,6 @@ const styles = StyleSheet.create({
     fontSize: px(15.5),
     fontWeight: 'bold',
   },
-
   presense: {
     color: '#fff',
     marginTop: px(2.5),
