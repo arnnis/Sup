@@ -270,32 +270,18 @@ class ChatUI extends Component<Props> {
     return <Header center={center} left={isLandscape() ? undefined : 'back'} />;
   }
 
-  renderMain() {
-    return (
-      <>
-        {this.renderHeader()}
-        {this.renderList()}
-        {this.renderInputToolbar()}
-      </>
-    );
-  }
-
-  renderWeb() {
-    return (
-      <UploadDropZoneWeb>
-        <Screen>{this.renderMain()}</Screen>
-      </UploadDropZoneWeb>
-    );
-  }
-
-  renderNative() {
-    return <Screen>{this.renderMain()}</Screen>;
-  }
-
   render() {
     let {currentChat} = this.props;
     if (!currentChat) return null;
-    return Platform.isNative ? this.renderNative() : this.renderWeb();
+    return (
+      <Screen>
+        <UploadDropZoneWeb>
+          {this.renderHeader()}
+          {this.renderList()}
+          {this.renderInputToolbar()}
+        </UploadDropZoneWeb>
+      </Screen>
+    );
   }
 }
 

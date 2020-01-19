@@ -3,9 +3,10 @@ import Dropzone from 'react-dropzone';
 import {View, StyleSheet, Text} from 'react-native';
 import ThemeContext from '../../contexts/theme';
 import px from '../../utils/normalizePixel';
+import {Platform} from '../../utils/platform';
 
 // This only gonna work on Web. cuz react-dropzone is web only
-const UploadDropZoneWeb: FC = ({children}) => {
+const UploadDropZoneWeb = ({children}) => {
   const {theme} = useContext(ThemeContext);
 
   const renderOverlay = () => (
@@ -13,6 +14,8 @@ const UploadDropZoneWeb: FC = ({children}) => {
       <Text>Drop here to upload</Text>
     </View>
   );
+
+  if (Platform.isNative) return children;
 
   return (
     <Dropzone onDrop={acceptedFiles => console.log(acceptedFiles)}>
