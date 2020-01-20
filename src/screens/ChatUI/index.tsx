@@ -43,7 +43,7 @@ class ChatUI extends Component<Props> {
   _scrollNode: any;
 
   state = {
-    isChannelDetailsOpen: true,
+    isChannelDetailsOpen: false,
   };
 
   async componentDidMount() {
@@ -300,25 +300,25 @@ class ChatUI extends Component<Props> {
         style={{flex: 1, backgroundColor: 'rgb(229, 221, 213)'}}
         resizeMode="cover"
         source={require('../../assets/img/fl1.jpg')}>
-        <UploadDropZoneWeb>
-          <View style={{flex: 1, flexDirection: 'row'}}>
-            <View style={{flex: 1}}>
+        <View style={{flex: 1, flexDirection: 'row'}}>
+          <Screen style={{backgroundColor: 'transparent'}}>
+            <UploadDropZoneWeb>
               {this.renderHeader()}
               {this.renderList()}
               {this.renderInputToolbar()}
-            </View>
-            {chatType === 'channel' && isChannelDetailsOpen && (
-              <MediaQuery minWidth={1280}>
-                <View style={{width: px(325)}}>
-                  <ChannelDetails
-                    chatId={currentChat.id}
-                    onDismiss={this.toggleChannelDetailsPanel}
-                  />
-                </View>
-              </MediaQuery>
-            )}
-          </View>
-        </UploadDropZoneWeb>
+            </UploadDropZoneWeb>
+          </Screen>
+          {chatType === 'channel' && isChannelDetailsOpen && (
+            <MediaQuery minWidth={1280}>
+              <View style={{width: px(325)}}>
+                <ChannelDetails
+                  chatId={currentChat.id}
+                  onDismiss={this.toggleChannelDetailsPanel}
+                />
+              </View>
+            </MediaQuery>
+          )}
+        </View>
       </ImageBackground>
     );
   }

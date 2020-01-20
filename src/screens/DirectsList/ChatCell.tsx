@@ -34,24 +34,6 @@ class ChatCell extends PureComponent<Props> {
     this.props.dispatch(getChatLastMessage(chatId));
   }
 
-  // shouldComponentUpdate(nextProps: Props) {
-  //   let currentChat = this.props.chat
-  //   let nextChat = nextProps.chat
-  //   let currentUser = this.props.user
-  //   let nextUser = nextProps.user
-
-  //   if (
-  //     (currentChat?.unread_count !== nextChat?.unread_count) ||
-  //     (currentChat?.dm_count !== nextChat?.dm_count) ||
-  //     (currentChat?.name !== nextChat?.name) ||
-  //     (currentUser?.profile?.display_name_normalized !== nextUser?.profile?.display_name_normalized ) ||
-  //     (currentUser?.profile?.real_name_normalized !== nextUser?.profile?.real_name_normalized ) ||
-  //     (this.props.chatLastMessageStatus?.loading !== nextProps.chatLastMessageStatus?.loading)
-  //   )
-  //     return true
-  //   return false
-  // }
-
   handlePress = () => {
     this.props.dispatch(setCurrentChat(this.props.chatId));
     if (getCurrentOrientaion() === 'portrait')
@@ -222,8 +204,8 @@ const styles = StyleSheet.create({
     fontSize: px(12),
   },
   unreadCountContainer: {
-    minWidth: px(20),
-    minHeight: px(20),
+    minWidth: px(19),
+    minHeight: px(19),
     backgroundColor: '#3D2037',
     borderRadius: px(10),
     justifyContent: 'center',
@@ -231,9 +213,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: px(4),
   },
   unreadCount: {
-    fontSize: px(12),
+    fontSize: px(11.5),
     color: '#fff',
-    fontWeight: '500',
+    fontWeight: 'bold',
   },
 });
 
