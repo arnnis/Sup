@@ -280,7 +280,7 @@ class ChatUI extends Component<Props> {
     let right = (
       <Touchable onPress={this.toggleChannelDetailsPanel} style={{marginRight: px(5)}}>
         <ChannelDetailsIcon
-          fill={this.state.isChannelDetailsOpen ? '#D3ABD0' : '#fff'}
+          fill={this.state.isChannelDetailsOpen ? '#fff' : '#D3ABD0'}
           width={px(21)}
           height={px(21)}
         />
@@ -290,34 +290,40 @@ class ChatUI extends Component<Props> {
     return <Header center={center} left={isLandscape() ? undefined : 'back'} right={right} />;
   }
 
-  render() {
-    let {currentChat, chatType} = this.props;
+  renderChannelDetails() {
+    let {chatId, chatType} = this.props;
     let {isChannelDetailsOpen} = this.state;
+
+    return (
+      chatType === 'channel' &&
+      isChannelDetailsOpen && (
+        <MediaQuery minWidth={1280}>
+          <View style={{width: px(325)}}>
+            <ChannelDetails chatId={chatId} onDismiss={this.toggleChannelDetailsPanel} />
+          </View>
+        </MediaQuery>
+      )
+    );
+  }
+
+  render() {
+    let {currentChat, theme} = this.props;
     if (!currentChat) return null;
 
     return (
       <ImageBackground
-        style={{flex: 1, backgroundColor: 'rgb(229, 221, 213)'}}
+        style={[styles.container, {backgroundColor: theme.backgroundColorDarker1}]}
         resizeMode="cover"
-        source={require('../../assets/img/fl1.jpg')}>
+        source={theme.isDark ? undefined : require('../../assets/img/fl1.jpg')}>
         <View style={{flex: 1, flexDirection: 'row'}}>
-          <Screen style={{backgroundColor: 'transparent'}}>
+          <Screen transparent>
             <UploadDropZoneWeb>
               {this.renderHeader()}
               {this.renderList()}
               {this.renderInputToolbar()}
             </UploadDropZoneWeb>
           </Screen>
-          {chatType === 'channel' && isChannelDetailsOpen && (
-            <MediaQuery minWidth={1280}>
-              <View style={{width: px(325)}}>
-                <ChannelDetails
-                  chatId={currentChat.id}
-                  onDismiss={this.toggleChannelDetailsPanel}
-                />
-              </View>
-            </MediaQuery>
-          )}
+          {this.renderChannelDetails()}
         </View>
       </ImageBackground>
     );
@@ -327,6 +333,7 @@ class ChatUI extends Component<Props> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'rgb(229, 221, 213)',
   },
   chatName: {
     color: '#fff',
