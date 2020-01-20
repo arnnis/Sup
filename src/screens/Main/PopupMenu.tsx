@@ -5,7 +5,7 @@ import Touchable from '../../components/Touchable';
 import px from '../../utils/normalizePixel';
 import showMenu from '../../utils/showMenu';
 import {logoutFromCurrentTeam} from '../../actions/teams/thunks';
-import isNative from '../../utils/isNative';
+import isLandscape from '../../utils/stylesheet/isLandscape';
 
 type Props = DispatchProp<any>;
 
@@ -24,7 +24,7 @@ const PopupMenu: FC<Props> = ({dispatch}) => {
     );
   };
 
-  if (isNative()) return null;
+  if (isLandscape()) return null;
 
   return (
     <Touchable onPress={_openMenu} ref={ref => (menuRef.current = ref)}>

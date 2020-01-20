@@ -1,5 +1,5 @@
-import React, {ComponentType, Component, ElementType} from 'react';
-import {View, StyleSheet, Platform, Text, TouchableOpacity, ViewStyle} from 'react-native';
+import React, {Component} from 'react';
+import {View, StyleSheet, Text, ViewStyle} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import withTheme, {ThemeInjectedProps} from '../contexts/theme/withTheme';
 import px from '../utils/normalizePixel';

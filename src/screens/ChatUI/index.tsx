@@ -2,8 +2,11 @@ import React, {Component} from 'react';
 import {View, StyleSheet, FlatList, ActivityIndicator, Text, ImageBackground} from 'react-native';
 import {RootState} from '../../reducers';
 import {connect, DispatchProp} from 'react-redux';
-import Message from './Message';
 import {NavigationInjectedProps, withNavigation} from 'react-navigation';
+import MediaQuery from 'react-responsive';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
+import Message from './Message';
 import {addMessageToChat} from '../../actions/messages';
 import {getMessagesByChatId, getRepliesByThreadId} from '../../actions/messages/thunks';
 import {markChatAsRead, getChatInfo} from '../../actions/chats/thunks';
@@ -22,8 +25,8 @@ import Typing from './Typing';
 import {setCurrentChat, setCurrentThread} from '../../actions/chats';
 import select from '../../utils/select';
 import UploadDropZoneWeb from './UploadDropZoneWeb';
-import MediaQuery, {useMediaQuery} from 'react-responsive';
 import ChannelDetails from '../ChannelDetails';
+import ChannelDetailsIcon from '../../assets/icons/dock-right.svg';
 
 export type ChatType = 'direct' | 'channel' | 'thread';
 
@@ -38,6 +41,10 @@ type Props = ReturnType<typeof mapStateToProps> &
 class ChatUI extends Component<Props> {
   _flatlistRef: any;
   _scrollNode: any;
+
+  state = {
+    isChannelDetailsOpen: true,
+  };
 
   async componentDidMount() {
     let {chatType, chatId, dispatch} = this.props;
@@ -162,6 +169,9 @@ class ChatUI extends Component<Props> {
 
   isInverted = () => this.props.chatType !== 'thread';
 
+  toggleChannelDetailsPanel = () =>
+    this.setState({isChannelDetailsOpen: !this.state.isChannelDetailsOpen});
+
   renderMessageCell = ({item: messageId, index}) => {
     let {chatType} = this.props;
     let prevMessageId = this.isInverted()
@@ -267,11 +277,22 @@ class ChatUI extends Component<Props> {
       </Touchable>
     );
 
-    return <Header center={center} left={isLandscape() ? undefined : 'back'} />;
+    let right = (
+      <Touchable onPress={this.toggleChannelDetailsPanel} style={{marginRight: px(5)}}>
+        <ChannelDetailsIcon
+          fill={this.state.isChannelDetailsOpen ? '#D3ABD0' : '#fff'}
+          width={px(21)}
+          height={px(21)}
+        />
+      </Touchable>
+    );
+
+    return <Header center={center} left={isLandscape() ? undefined : 'back'} right={right} />;
   }
 
   render() {
     let {currentChat, chatType} = this.props;
+    let {isChannelDetailsOpen} = this.state;
     if (!currentChat) return null;
 
     return (
@@ -286,10 +307,13 @@ class ChatUI extends Component<Props> {
               {this.renderList()}
               {this.renderInputToolbar()}
             </View>
-            {chatType === 'channel' && (
+            {chatType === 'channel' && isChannelDetailsOpen && (
               <MediaQuery minWidth={1280}>
                 <View style={{width: px(325)}}>
-                  <ChannelDetails chatId={currentChat.id} />
+                  <ChannelDetails
+                    chatId={currentChat.id}
+                    onDismiss={this.toggleChannelDetailsPanel}
+                  />
                 </View>
               </MediaQuery>
             )}

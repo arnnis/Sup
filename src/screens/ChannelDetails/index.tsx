@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import {Text, StyleSheet, SafeAreaView, View, FlatList} from 'react-native';
+import {Text, StyleSheet, View, FlatList} from 'react-native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {InfoBox, InfoRow} from '../../components/InfoBox';
 import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 import Header from '../../components/Header';
@@ -15,17 +16,23 @@ import {getChannelMembers} from '../../actions/chats/thunks';
 import Screen from '../../components/Screen';
 import withStylesheet, {StyleSheetInjectedProps} from '../../utils/stylesheet/withStylesheet';
 import isLandscape from '../../utils/stylesheet/isLandscape';
+import Touchable from '../../components/Touchable';
 
 type Props = ReturnType<typeof mapStateToProps> &
   ThemeInjectedProps &
   DispatchProp<any> &
   StyleSheetInjectedProps & {
     chatId?: string;
+    onDismiss(): void; // when using in landscape next to chat ui.
   };
 
 class ChatDetails extends Component<Props> {
   componentDidMount() {
     this.getChannelMembers();
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    if (prevProps.chatId !== this.props.chatId) this.getChannelMembers();
   }
 
   getChannelMembers = () => {
@@ -102,11 +109,23 @@ class ChatDetails extends Component<Props> {
     );
   };
 
+  renderHeader() {
+    const right = (
+      <Touchable
+        // style={styles.button}
+        onPress={this.props.onDismiss}>
+        <MaterialCommunityIcons name="close" color="#fff" size={px(22)} />
+      </Touchable>
+    );
+    return <Header left={!isLandscape() ? 'back' : null} center="Channel Info" right={right} />;
+  }
+
   render() {
     let {theme, membersList, dynamicStyles} = this.props;
+
     return (
       <Screen>
-        <Header left={!isLandscape() ? 'back' : null} center="Channel Info" />
+        {this.renderHeader()}
         <FlatList
           data={membersList}
           renderItem={this.renderMemberCell}
