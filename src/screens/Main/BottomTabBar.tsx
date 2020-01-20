@@ -1,4 +1,4 @@
-import React, {useState, FC} from 'react';
+import React, {useState, FC, useContext} from 'react';
 import {StyleSheet, View, Text} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import px from '../../utils/normalizePixel';
@@ -10,6 +10,7 @@ import UserProfile from '../UserProfile';
 import {RootState} from '../../reducers';
 import {connect} from 'react-redux';
 import {meSelector} from '../../reducers/teams';
+import ThemeContext from '../../contexts/theme';
 
 type Props = ReturnType<typeof mapStateToProps>;
 
@@ -23,6 +24,8 @@ const BottomTabbar: FC<Props> = ({currentUser}) => {
       {key: 'settings', title: 'Settings', icon: 'settings-box'},
     ],
   });
+
+  let {theme} = useContext(ThemeContext);
 
   let onIndexChange = index => setBottomTabState({...bottomTabState, index});
 
@@ -44,7 +47,8 @@ const BottomTabbar: FC<Props> = ({currentUser}) => {
   );
 
   return (
-    <>
+    <View
+      style={{flex: 1, borderRightWidth: px(1.45), borderRightColor: theme.backgroundColorDarker2}}>
       {_renderBottomTabScene()}
       <View style={styles.container}>
         {bottomTabState.routes.map((tab, index) => {
@@ -59,7 +63,7 @@ const BottomTabbar: FC<Props> = ({currentUser}) => {
           );
         })}
       </View>
-    </>
+    </View>
   );
 };
 

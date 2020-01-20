@@ -62,13 +62,8 @@ const Main: FC = React.memo(() => {
 
   const renderCurrentChat = () => {
     if (isLandscape)
-      return (
-        <MediaQuery orientation="landscape">
-          <View style={{flex: 1, backgroundColor: 'red'}}>
-            {currentChatId ? <ChatUI chatId={currentChatId} /> : <ChatEmptyPlaceholder />}
-          </View>
-        </MediaQuery>
-      );
+      return currentChatId ? <ChatUI chatId={currentChatId} /> : <ChatEmptyPlaceholder />;
+
     return null;
   };
 

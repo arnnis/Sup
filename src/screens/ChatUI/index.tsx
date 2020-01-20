@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, FlatList, ActivityIndicator, Text} from 'react-native';
-import Dropzone from 'react-dropzone';
+import {View, StyleSheet, FlatList, ActivityIndicator, Text, ImageBackground} from 'react-native';
 import {RootState} from '../../reducers';
 import {connect, DispatchProp} from 'react-redux';
 import Message from './Message';
@@ -22,8 +21,9 @@ import Screen from '../../components/Screen';
 import Typing from './Typing';
 import {setCurrentChat, setCurrentThread} from '../../actions/chats';
 import select from '../../utils/select';
-import {Platform} from '../../utils/platform';
 import UploadDropZoneWeb from './UploadDropZoneWeb';
+import MediaQuery, {useMediaQuery} from 'react-responsive';
+import ChannelDetails from '../ChannelDetails';
 
 export type ChatType = 'direct' | 'channel' | 'thread';
 
@@ -271,16 +271,31 @@ class ChatUI extends Component<Props> {
   }
 
   render() {
-    let {currentChat} = this.props;
+    let {currentChat, chatType} = this.props;
     if (!currentChat) return null;
+
     return (
-      <Screen>
+      <ImageBackground
+        style={{flex: 1, backgroundColor: 'rgb(229, 221, 213)'}}
+        resizeMode="cover"
+        source={require('../../assets/img/fl1.jpg')}>
         <UploadDropZoneWeb>
-          {this.renderHeader()}
-          {this.renderList()}
-          {this.renderInputToolbar()}
+          <View style={{flex: 1, flexDirection: 'row'}}>
+            <View style={{flex: 1}}>
+              {this.renderHeader()}
+              {this.renderList()}
+              {this.renderInputToolbar()}
+            </View>
+            {chatType === 'channel' && (
+              <MediaQuery minWidth={px(1025)} maxWidth={px(1280)}>
+                <View style={{width: px(325)}}>
+                  <ChannelDetails chatId={currentChat.id} />
+                </View>
+              </MediaQuery>
+            )}
+          </View>
         </UploadDropZoneWeb>
-      </Screen>
+      </ImageBackground>
     );
   }
 }

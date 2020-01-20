@@ -14,6 +14,7 @@ import ChannelMemberCell from './ChannelMemberCell';
 import {getChannelMembers} from '../../actions/chats/thunks';
 import Screen from '../../components/Screen';
 import withStylesheet, {StyleSheetInjectedProps} from '../../utils/stylesheet/withStylesheet';
+import isLandscape from '../../utils/stylesheet/isLandscape';
 
 type Props = ReturnType<typeof mapStateToProps> &
   ThemeInjectedProps &
@@ -105,14 +106,17 @@ class ChatDetails extends Component<Props> {
     let {theme, membersList, dynamicStyles} = this.props;
     return (
       <Screen>
-        <Header left="back" center="Channel Info" />
+        <Header left={!isLandscape() ? 'back' : null} center="Channel Info" />
         <FlatList
           data={membersList}
           renderItem={this.renderMemberCell}
           ListHeaderComponent={this.renderListHeader()}
           onEndReached={this.getChannelMembers}
           onEndReachedThreshold={0.5}
-          contentContainerStyle={dynamicStyles.scrollViewContent}
+          contentContainerStyle={[
+            dynamicStyles.scrollViewContent,
+            {borderLeftWidth: px(1.45), borderLeftColor: theme.backgroundColorDarker2},
+          ]}
         />
       </Screen>
     );
@@ -135,8 +139,8 @@ const dynamicStyles = {
     media: [
       {orientation: 'landscape'},
       {
-        width: '60%',
-        marginHorizontal: '20%',
+        width: '100%',
+        marginHorizontal: '0%',
       },
     ],
   },
