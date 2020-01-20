@@ -287,7 +287,7 @@ class ChatUI extends Component<Props> {
               {this.renderInputToolbar()}
             </View>
             {chatType === 'channel' && (
-              <MediaQuery minWidth={px(1025)} maxWidth={px(1280)}>
+              <MediaQuery minWidth={1280}>
                 <View style={{width: px(325)}}>
                   <ChannelDetails chatId={currentChat.id} />
                 </View>
