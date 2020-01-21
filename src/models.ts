@@ -218,10 +218,11 @@ interface AttachmentField {
 export type Presence = 'away' | 'auto';
 
 export type SendInput = SocketMessageResult & {
-  type: 'message' | 'ping';
+  type: 'message' | 'file' | 'ping';
   channel?: string;
   text?: string;
   thread_ts?: string;
+  files?: Array<MessageAttachement>;
 };
 
 export interface SocketMessageResult {

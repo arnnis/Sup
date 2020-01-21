@@ -1,5 +1,5 @@
 const path = require('path');
-const {app, BrowserWindow, Menu} = require('electron');
+const {app, BrowserWindow, Menu, ipcMain} = require('electron');
 const {is} = require('electron-util');
 const unhandled = require('electron-unhandled');
 const debug = require('electron-debug');
@@ -74,6 +74,13 @@ app.on('activate', async () => {
 	if (!mainWindow) {
 		mainWindow = await createMainWindow();
 	}
+	ipcMain.on('resize-main-window', ({width, height}) => {
+		let [currentWidth, currentHeight] = mainWindow.getSize();
+		console.log('dsd', res);
+		if (currentWidth < 1280) {
+			mainWindow.setSize(width, currentHeight);
+		}
+	});
 });
 
 (async () => {

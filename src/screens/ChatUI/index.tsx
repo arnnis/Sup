@@ -4,8 +4,7 @@ import {RootState} from '../../reducers';
 import {connect, DispatchProp} from 'react-redux';
 import {NavigationInjectedProps, withNavigation} from 'react-navigation';
 import MediaQuery from 'react-responsive';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-
+import {ipcRenderer, BrowserWindow} from 'electron';
 import Message from './Message';
 import {addMessageToChat} from '../../actions/messages';
 import {getMessagesByChatId, getRepliesByThreadId} from '../../actions/messages/thunks';
@@ -27,6 +26,7 @@ import select from '../../utils/select';
 import UploadDropZoneWeb from './UploadDropZoneWeb';
 import ChannelDetails from '../ChannelDetails';
 import ChannelDetailsIcon from '../../assets/icons/dock-right.svg';
+import {Platform} from '../../utils/platform';
 
 export type ChatType = 'direct' | 'channel' | 'thread';
 
@@ -169,8 +169,12 @@ class ChatUI extends Component<Props> {
 
   isInverted = () => this.props.chatType !== 'thread';
 
-  toggleChannelDetailsPanel = () =>
+  toggleChannelDetailsPanel = () => {
+    // if (Platform.isElectron) {
+    //   ipcRenderer.send('resize-main-window', {width: 1280});
+    // }
     this.setState({isChannelDetailsOpen: !this.state.isChannelDetailsOpen});
+  };
 
   renderMessageCell = ({item: messageId, index}) => {
     let {chatType} = this.props;

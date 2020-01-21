@@ -71,10 +71,11 @@ class MessageImages extends Component<Props> {
           visible={this.state.imageViewerVisible}
           transparent
           animationType="fade"
+          // @ts-ignore
           style={{margin: 0}}>
           <ImageViewer
             imageUrls={images.map(img => ({
-              url: img.url_private_download,
+              url: img.url_private,
               props: {headers: {Authorization: 'Bearer ' + token}},
             }))}
             onCancel={() => this.setState({imageViewerVisible: false})}

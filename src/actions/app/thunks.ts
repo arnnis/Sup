@@ -5,6 +5,8 @@ import {batch} from 'react-redux';
 import {storeEntities} from '../entities';
 import {RootState} from '../../reducers';
 import select from '../../utils/select';
+import {API_URL} from '../../env';
+import {currentTeamTokenSelector} from '../../reducers/teams';
 
 export const getCurrentUser = () => async (dispatch, getState) => {
   try {
@@ -56,4 +58,23 @@ export const togglePresence = () => async (dispatch, getState) => {
     console.log(err);
     return err;
   }
+};
+
+export const uploadFileWeb = (file: File, channels: string[]) => (dispatch, getState) => {
+  return new Promise((resolve, reject) => {
+    var url = `${API_URL}/files.upload`;
+    var fd = new FormData();
+    const token = currentTeamTokenSelector(getState());
+    fd.append('file', file);
+    fd.append('token', token);
+    fd.append('channels', channels.join(','));
+
+    var xhr = new XMLHttpRequest();
+    //xhr.upload.addEventListener("progress", progressFunction, false);
+    xhr.addEventListener('load', resolve, false);
+    xhr.addEventListener('error', reject, false);
+    xhr.addEventListener('abort', reject, false);
+    xhr.open('POST', url, true);
+    xhr.send(fd);
+  });
 };
