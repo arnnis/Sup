@@ -119,22 +119,8 @@ interface MessageImage {
   onPress(): void;
 }
 
-const MessageImage: FC<MessageImage> = ({uri, desiredHeight, mainSize, onPress}) => {
-  // let [size, setSize] = useState({width: 1, height: 1});
+export const MessageImage: FC<MessageImage> = ({uri, desiredHeight, mainSize, onPress}) => {
   let token = useSelector(currentTeamTokenSelector);
-  // useEffect(() => {
-  //   Image.getSizeWithHeaders(uri, {Authorization: 'Bearer ' + token}, (width, height) => {
-  //     console.log('fetched width:', width, 'fetched height: ', height);
-  //     setSize({width, height});
-  //   });
-  // }, []);
-  console.log('fetched size:', mainSize);
-  console.log(
-    'width:',
-    mainSize.width * (desiredHeight / mainSize.height),
-    'height: ',
-    desiredHeight,
-  );
 
   return (
     <TouchableWithoutFeedback onPress={onPress}>
@@ -169,7 +155,7 @@ const messageImagesSelector = createSelector(
 const mapStateToProps = (state: RootState, ownProps) => {
   const message = state.entities.messages.byId[ownProps.messageId];
   return {
-    images: messageImagesSelector(message),
+    images: ownProps.images ?? messageImagesSelector(message),
     token: currentTeamTokenSelector(state),
   };
 };

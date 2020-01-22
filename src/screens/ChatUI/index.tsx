@@ -27,6 +27,7 @@ import UploadDropZoneWeb from './UploadDropZoneWeb';
 import ChannelDetails from '../ChannelDetails';
 import ChannelDetailsIcon from '../../assets/icons/dock-right.svg';
 import {Platform} from '../../utils/platform';
+import {openBottomSheet} from '../../actions/app';
 
 export type ChatType = 'direct' | 'channel' | 'thread';
 
@@ -176,6 +177,10 @@ class ChatUI extends Component<Props> {
     this.setState({isChannelDetailsOpen: !this.state.isChannelDetailsOpen});
   };
 
+  handleFileDropWeb = (files: File[]) => {
+    this.props.dispatch(openBottomSheet('UploadConfig', {files}));
+  };
+
   renderMessageCell = ({item: messageId, index}) => {
     let {chatType} = this.props;
     let prevMessageId = this.isInverted()
@@ -321,7 +326,7 @@ class ChatUI extends Component<Props> {
         source={theme.isDark ? undefined : require('../../assets/img/fl1.jpg')}>
         <View style={{flex: 1, flexDirection: 'row'}}>
           <Screen transparent>
-            <UploadDropZoneWeb>
+            <UploadDropZoneWeb onDrop={this.handleFileDropWeb}>
               {this.renderHeader()}
               {this.renderList()}
               {this.renderInputToolbar()}

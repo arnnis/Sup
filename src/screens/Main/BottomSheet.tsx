@@ -1,5 +1,5 @@
 import React, {FC, useRef, useEffect} from 'react';
-import {Modal, TouchableWithoutFeedback} from 'react-native';
+import {TouchableWithoutFeedback} from 'react-native';
 import * as Animateable from 'react-native-animatable';
 import ChatUI from '../ChatUI';
 import {RootState} from '../../reducers';
@@ -8,7 +8,7 @@ import {View, Dimensions, StyleSheet} from 'react-native';
 import UserProfile from '../UserProfile';
 import {closeBottomSheet} from '../../actions/app';
 import {setCurrentThread} from '../../actions/chats';
-import {Portal} from 'react-native-paper';
+import UploadConfig from '../ChatUI/UploadConfig';
 
 const dims = Dimensions.get('window');
 
@@ -29,22 +29,24 @@ const BottomSheet: FC<Props> = ({bottomSheet, dispatch}) => {
     }
   }, [bottomSheet.screen]);
 
-  const _handleBackgroundPress = () => {
+  const handleBackgroundPress = () => {
     dispatch(closeBottomSheet());
   };
 
-  const _renderScene = () => {
+  const renderScene = () => {
     switch (bottomSheet.screen) {
       case 'ChatUI':
         return <ChatUI {...bottomSheet.params} />;
       case 'UserProfile':
         return <UserProfile {...bottomSheet.params} />;
+      case 'UploadConfig':
+        return <UploadConfig {...bottomSheet.params} />;
     }
   };
 
   let content = () => (
     <>
-      <TouchableWithoutFeedback onPress={_handleBackgroundPress}>
+      <TouchableWithoutFeedback onPress={handleBackgroundPress}>
         <View style={StyleSheet.absoluteFill} />
       </TouchableWithoutFeedback>
       <Animateable.View
@@ -55,7 +57,7 @@ const BottomSheet: FC<Props> = ({bottomSheet, dispatch}) => {
           <View style={styles.panelHeader}>
             <View style={styles.panelHandle} />
           </View>
-          {_renderScene()}
+          {renderScene()}
         </View>
       </Animateable.View>
     </>

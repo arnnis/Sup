@@ -6,7 +6,7 @@ import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 type Props = ThemeInjectedProps & {
   text: string;
   onTextChanged(text: string): void;
-  isThread: boolean;
+  isThread?: boolean;
 };
 
 class Composer extends Component<Props> {

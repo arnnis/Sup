@@ -9,7 +9,6 @@ import {
   MeasureOnSuccessCallback,
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import emojis from '../../utils/emoji';
 import px from '../../utils/normalizePixel';
 import Composer from './Composer';
 import Send from './Send';
@@ -19,6 +18,7 @@ import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 import isLandscape from '../../utils/stylesheet/isLandscape';
 import {EmojiData} from 'emoji-mart';
 import isNative from '../../utils/isNative';
+import EmojiButton from './EmojiButton';
 
 type Props = ThemeInjectedProps & {
   chatId: string;
@@ -109,35 +109,8 @@ class InputToolbar extends Component<Props> {
     return <Send onPress={this.handleSendPress} />;
   }
 
-  renderEmojiPicker() {
-    return (
-      <EmojiPicker
-        onEmojiSelected={this.handleEmojiSelected}
-        onClose={this.handleEmojiPickerClosed}
-        onOpen={this.handleEmojiPickerOpened}
-        {...this.state.emojiPicker}
-      />
-    );
-  }
-
   renderEmojiButton() {
-    let {theme} = this.props;
-    return (
-      <TouchableOpacity
-        style={styles.emojiButton}
-        onPressIn={isNative() && this.handleEmojiButtonPress}
-        // @ts-ignore
-        onMouseEnter={this.handleEmojiButtonPress}
-        //onMouseLeave={this.handleEmojiButtonPress}
-        ref={ref => (this.emojiButtonRef = ref)}>
-        <MaterialCommunityIcons
-          name="emoticon"
-          size={px(21)}
-          color={theme.foregroundColorMuted65}
-          style={{marginTop: px(2.5), marginLeft: px(1)}}
-        />
-      </TouchableOpacity>
-    );
+    return <EmojiButton onEmojiSelected={this.handleEmojiSelected} />;
   }
 
   render() {
@@ -151,7 +124,6 @@ class InputToolbar extends Component<Props> {
           </View>
           {this.renderSend()}
         </View>
-        {this.renderEmojiPicker()}
       </View>
     );
   }
