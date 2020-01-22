@@ -277,6 +277,7 @@ class ChatUI extends Component<Props> {
   }
 
   renderHeader() {
+    let {chatId, chatType} = this.props;
     let center = (
       <Touchable onPress={this.openChatDetails} style={{alignItems: 'center'}}>
         {this.renderChatName()}
@@ -286,7 +287,7 @@ class ChatUI extends Component<Props> {
       </Touchable>
     );
 
-    let right = (
+    let right = chatType === 'channel' && (
       <Touchable onPress={this.toggleChannelDetailsPanel} style={{marginRight: px(5)}}>
         <ChannelDetailsIcon
           fill={this.state.isChannelDetailsOpen ? '#fff' : '#D3ABD0'}
