@@ -22,7 +22,7 @@ class ChannelsList extends PureComponent<Props> {
     );
   }
 
-  renderGroupCell = ({item: groupId, index}) => {
+  renderGroupCell = ({item: groupId}) => {
     return <ChatCell chatId={groupId} />;
   };
 
@@ -31,11 +31,7 @@ class ChannelsList extends PureComponent<Props> {
 
     return (
       <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
-        {/* <Button
-          onPress={() => this.props.dispatch(signinTeam())}
-          title="login"
-        /> */}
-        {this.props.loading ? (
+        {this.props.loading && channelsList.length === 0 ? (
           this.renderLoading()
         ) : (
           <FlatList
