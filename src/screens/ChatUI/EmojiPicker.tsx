@@ -57,7 +57,7 @@ const EmojiPicker: FC<Props> = ({onEmojiSelected, open, onOpen, onClose, standal
     );
   };
 
-  const renderNonStandalone = () => <View style={[styles.container]}>{renderPicker()}</View>;
+  const renderNonStandalone = () => <View style={styles.container}>{renderPicker()}</View>;
 
   if (!open) return null;
   const isStandalone = !!standalone;

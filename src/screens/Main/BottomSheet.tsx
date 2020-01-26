@@ -9,6 +9,8 @@ import UserProfile from '../UserProfile';
 import {closeBottomSheet} from '../../actions/app';
 import {setCurrentThread} from '../../actions/chats';
 import UploadConfig from '../ChatUI/UploadConfig';
+import ChannelDetails from '../ChannelDetails';
+import {Portal} from 'react-native-paper';
 
 const dims = Dimensions.get('window');
 
@@ -34,25 +36,27 @@ const BottomSheet: FC<Props> = ({bottomSheet, dispatch}) => {
   };
 
   const renderScene = () => {
+    const {params} = bottomSheet;
     switch (bottomSheet.screen) {
       case 'ChatUI':
-        return <ChatUI {...bottomSheet.params} />;
+        return <ChatUI {...params} />;
       case 'UserProfile':
-        return <UserProfile {...bottomSheet.params} />;
+        return <UserProfile {...params} />;
       case 'UploadConfig':
-        return <UploadConfig {...bottomSheet.params} />;
+        return <UploadConfig {...params} />;
+      case 'ChannelDetails':
+        return <ChannelDetails {...params} onDismiss={() => dispatch(closeBottomSheet())} />;
     }
   };
 
-  let content = () => (
-    <>
+  if (!bottomSheet.screen) return null;
+
+  return (
+    <View style={styles.container}>
       <TouchableWithoutFeedback onPress={handleBackgroundPress}>
         <View style={StyleSheet.absoluteFill} />
       </TouchableWithoutFeedback>
-      <Animateable.View
-        ref={ref => (containerRef.current = ref)}
-        style={styles.panelContainer}
-        pointerEvents="box-none">
+      <Animateable.View ref={containerRef} style={styles.panelContainer} pointerEvents="box-none">
         <View style={styles.panel}>
           <View style={styles.panelHeader}>
             <View style={styles.panelHandle} />
@@ -60,12 +64,8 @@ const BottomSheet: FC<Props> = ({bottomSheet, dispatch}) => {
           {renderScene()}
         </View>
       </Animateable.View>
-    </>
+    </View>
   );
-
-  if (!bottomSheet.screen) return null;
-
-  return <View style={styles.container}>{content()}</View>;
 };
 
 const styles = StyleSheet.create({

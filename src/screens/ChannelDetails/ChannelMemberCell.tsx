@@ -8,7 +8,7 @@ import {RootState} from '../../reducers';
 import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 import Touchable from '../../components/Touchable';
 import {NavigationInjectedProps, withNavigation} from 'react-navigation';
-import {openUserProfile} from '../../actions/members/thunks';
+import {goToUserProfile} from '../../actions/members/thunks';
 
 const dims = Dimensions.get('window');
 
@@ -22,7 +22,7 @@ type Props = ReturnType<typeof mapStateToProps> &
   };
 
 class ChannelMemberCell extends PureComponent<Props> {
-  handlePress = () => this.props.dispatch(openUserProfile(this.props.memberId));
+  handlePress = () => this.props.dispatch(goToUserProfile(this.props.memberId));
 
   renderAvatar(user: User) {
     return <Avatar userId={user.id} width={px(42)} containerStyle={{marginLeft: px(7.5)}} />;

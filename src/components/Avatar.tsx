@@ -5,7 +5,7 @@ import px from '../utils/normalizePixel';
 import FastImage from 'react-native-fast-image';
 import {connect, DispatchProp} from 'react-redux';
 import {RootState} from '../reducers';
-import {getMember, openUserProfile} from '../actions/members/thunks';
+import {getMember, goToUserProfile} from '../actions/members/thunks';
 import {currentTeamTokenSelector} from '../reducers/teams';
 import {withNavigation, NavigationInjectedProps} from 'react-navigation';
 
@@ -34,7 +34,7 @@ class Avatar extends PureComponent<Props> {
   }
 
   handlePress = () => {
-    this.props.dispatch(openUserProfile(this.props.userId, this.props.navigation));
+    this.props.dispatch(goToUserProfile(this.props.userId, this.props.navigation));
   };
 
   onError = () => this.setState({errored: true});

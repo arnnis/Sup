@@ -8,11 +8,11 @@ import {ipcRenderer, BrowserWindow} from 'electron';
 import Message from './Message';
 import {addMessageToChat} from '../../actions/messages';
 import {getMessagesByChatId, getRepliesByThreadId} from '../../actions/messages/thunks';
-import {markChatAsRead, getChatInfo} from '../../actions/chats/thunks';
+import {markChatAsRead, getChatInfo, goToChannelDetails} from '../../actions/chats/thunks';
 import Header from '../../components/Header';
 import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 import InputToolbar from './InputToolbar';
-import {getMember, openUserProfile} from '../../actions/members/thunks';
+import {getMember, goToUserProfile} from '../../actions/members/thunks';
 import isLandscape from '../../utils/stylesheet/isLandscape';
 import {meSelector, currentTeamTokenSelector} from '../../reducers/teams';
 import px from '../../utils/normalizePixel';
@@ -163,9 +163,9 @@ class ChatUI extends Component<Props> {
   };
 
   openChatDetails = () => {
-    let {chatId, chatType, currentUser, navigation} = this.props;
-    if (chatType === 'channel') navigation.navigate('ChannelDetails', {chatId});
-    if (chatType === 'direct') this.props.dispatch(openUserProfile(currentUser.id, navigation));
+    let {chatId, chatType, currentUser, navigation, dispatch} = this.props;
+    if (chatType === 'channel') dispatch(goToChannelDetails(chatId));
+    if (chatType === 'direct') dispatch(goToUserProfile(currentUser.id, navigation));
   };
 
   isInverted = () => this.props.chatType !== 'thread';

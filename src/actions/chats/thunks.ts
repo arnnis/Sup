@@ -236,3 +236,12 @@ export const goToThread = (threadId, navigation: NavigationInjectedProps['naviga
   if (isLandscape()) dispatch(openBottomSheet('ChatUI', params));
   else navigation.push('ChatUI', params);
 };
+
+export const goToChannelDetails = (chatId: string) => dispatch => {
+  const params = {
+    chatId,
+  };
+
+  if (isLandscape()) dispatch(openBottomSheet('ChannelDetails', params));
+  else NavigationService.navigate('ChatUI', params);
+};

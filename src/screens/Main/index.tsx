@@ -21,6 +21,7 @@ import {currentTeamSelector} from '../../reducers/teams';
 import Toast from '../../components/Toast';
 import {toggleToast} from '../../actions/app';
 import Screen from '../../components/Screen';
+import {Portal} from 'react-native-paper';
 
 const Main: FC = React.memo(() => {
   let [drawerOpen, setDrawerOpen] = useState(false);
@@ -82,23 +83,25 @@ const Main: FC = React.memo(() => {
   };
 
   return (
-    <Screen>
-      <StatusBar backgroundColor="#3A1C39" animated />
-      <DrawerLayout
-        ref={ref => (drawerRef.current = ref)}
-        drawerType="slide"
-        renderNavigationView={() => <TeamsList onTeamSelect={toggleDrawer} />}
-        drawerWidth={px(185)}
-        onDrawerClose={() => setDrawerOpen(false)}
-        onDrawerOpen={() => setDrawerOpen(true)}>
-        <View style={{flex: 1, flexDirection: 'row'}}>
-          {renderMain()}
-          {renderCurrentChat()}
-        </View>
-      </DrawerLayout>
-      <BottomSheet />
-      <Toast />
-    </Screen>
+    <Portal.Host>
+      <Screen>
+        <StatusBar backgroundColor="#3A1C39" animated />
+        <DrawerLayout
+          ref={ref => (drawerRef.current = ref)}
+          drawerType="slide"
+          renderNavigationView={() => <TeamsList onTeamSelect={toggleDrawer} />}
+          drawerWidth={px(185)}
+          onDrawerClose={() => setDrawerOpen(false)}
+          onDrawerOpen={() => setDrawerOpen(true)}>
+          <View style={{flex: 1, flexDirection: 'row'}}>
+            {renderMain()}
+            {renderCurrentChat()}
+          </View>
+        </DrawerLayout>
+        <BottomSheet />
+        <Toast />
+      </Screen>
+    </Portal.Host>
   );
 });
 

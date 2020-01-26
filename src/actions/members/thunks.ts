@@ -110,7 +110,7 @@ export const getMember = (userId: string) => async (dispatch, getState) => {
   }
 };
 
-export const openUserProfile = (
+export const goToUserProfile = (
   userId: string,
   navigation?: NavigationInjectedProps['navigation'],
 ) => dispatch => {
