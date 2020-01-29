@@ -1,12 +1,5 @@
 import React, {Component, FC, useState, useEffect} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Modal,
-  TouchableWithoutFeedback,
-  ActivityIndicator,
-} from 'react-native';
+import {View, StyleSheet, Modal, TouchableWithoutFeedback, ActivityIndicator} from 'react-native';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import FastImage from 'react-native-fast-image';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
