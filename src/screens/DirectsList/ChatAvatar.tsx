@@ -16,15 +16,7 @@ type Props = ReturnType<typeof mapStateToProps> &
 const ChatAvatar: FC<Props> = ({chat, isChannel, selected, size, theme}) =>
   isChannel ? (
     <View style={[styles.container, {width: size, height: size}]}>
-      <Text
-        style={[
-          styles.hash,
-          {
-            color: selected ? theme.backgroundColor : theme.foregroundColor,
-          },
-        ]}>
-        #
-      </Text>
+      <Text style={[styles.hash]}>#</Text>
     </View>
   ) : (
     <Avatar userId={chat.user_id} width={size} />
@@ -41,6 +33,7 @@ const styles = StyleSheet.create({
     borderRadius: px(25),
     borderColor: '#ccc',
     borderWidth: StyleSheet.hairlineWidth,
+    backgroundColor: '#fff',
   },
   hash: {
     fontWeight: 'bold',
