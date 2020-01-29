@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, memo} from 'react';
 import {Text, StyleSheet} from 'react-native';
 import px from '../../utils/normalizePixel';
 
@@ -6,7 +6,7 @@ interface Props {
   text: string;
 }
 
-const Code: FC<Props> = ({text}) => <Text style={styles.text}>{text}</Text>;
+const Code: FC<Props> = memo(({text}) => <Text style={styles.text}>{text}</Text>);
 
 const styles = StyleSheet.create({
   text: {
