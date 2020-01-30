@@ -1,15 +1,20 @@
 import React, {FC} from 'react';
 import {Text, StyleSheet} from 'react-native';
-import {connect} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {RootState} from '../../reducers';
-import emojis from '../../utils/emoji';
+import emojiesData from '../../utils/emoji';
 import px from '../../utils/normalizePixel';
 
-type Props = ReturnType<typeof mapStateToProps> & {
+type Props = {
   name: string;
 };
 
-const Emoji: FC<Props> = ({emoji}) => <Text style={styles.emoji}>{emoji}</Text>;
+const Emoji: FC<Props> = ({name}) => {
+  const slackEmojies = useSelector((state: RootState) => state.entities.emojis.byId);
+  const emoji = {...emojiesData, ...slackEmojies}[name]?.native;
+
+  return <Text style={styles.emoji}>{emoji}</Text>;
+};
 
 const styles = StyleSheet.create({
   emoji: {
@@ -17,8 +22,4 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state: RootState, ownProps) => ({
-  emoji: {...emojis, ...state.entities.emojis.byId}[ownProps.name]?.native,
-});
-
-export default connect(mapStateToProps)(Emoji);
+export default Emoji;
