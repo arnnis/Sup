@@ -1,15 +1,12 @@
-import React, {Component, FC, useState, useEffect} from 'react';
-import {View, StyleSheet, Modal, TouchableWithoutFeedback, ActivityIndicator} from 'react-native';
-import ImageViewer from 'react-native-image-zoom-viewer';
+import React, {Component, FC} from 'react';
+import {View, StyleSheet, TouchableWithoutFeedback} from 'react-native';
 import FastImage from 'react-native-fast-image';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {RootState} from '../../reducers';
 import {createSelector} from 'reselect';
 import {Message, MessageAttachement} from '../../models';
 import px from '../../utils/normalizePixel';
 import {connect, useSelector} from 'react-redux';
 import {currentTeamTokenSelector} from '../../reducers/teams';
-import Touchable from '../../components/Touchable';
 import ImagesPreview from './ImagesPreview';
 
 type Props = ReturnType<typeof mapStateToProps> & {
