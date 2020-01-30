@@ -58,7 +58,7 @@ class MessageText extends Component<Props> {
     return <Code text={text} />;
   }
 
-  renderLink(text) {
+  renderLink = text => {
     let display, content;
     text.replace(/<([^<>]+)>/g, (_, p1) => {
       let [d, c] = p1.split('|');
@@ -70,7 +70,7 @@ class MessageText extends Component<Props> {
         {display}
       </Text>
     );
-  }
+  };
 
   render() {
     let {text, placeholder, filesCount, isMe, textProps, style, theme} = this.props;
