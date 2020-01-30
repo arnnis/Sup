@@ -71,7 +71,8 @@ const BottomSheet: FC<Props> = ({bottomSheet, dispatch}) => {
 const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0, 0, 0, 0.75)',
+    backgroundColor: 'rgba(0, 0, 0, 0.45)',
+    backdropFilter: 'blur(2px)',
   },
   panelContainer: {
     ...StyleSheet.absoluteFillObject,

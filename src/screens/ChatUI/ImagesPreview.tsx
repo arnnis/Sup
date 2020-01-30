@@ -44,7 +44,7 @@ const ImagesPreview: FC<Props> = ({open, images, onDismiss, initalIndex}) => {
       <MaterialCommunityIcons
         name="chevron-right"
         color="#fff"
-        size={px(25)}
+        size={px(30)}
         style={{marginTop: px(2.5), marginHorizontal: px(20)}}
       />
     </View>
@@ -55,7 +55,7 @@ const ImagesPreview: FC<Props> = ({open, images, onDismiss, initalIndex}) => {
       <MaterialCommunityIcons
         name="chevron-left"
         color="#fff"
-        size={px(25)}
+        size={px(30)}
         style={{marginTop: px(2.5), marginHorizontal: px(20)}}
       />
     </View>
@@ -103,8 +103,8 @@ const ImagesPreview: FC<Props> = ({open, images, onDismiss, initalIndex}) => {
 const styles = StyleSheet.create({
   dismissButtonContainer: {
     position: 'absolute',
-    top: px(25),
-    left: px(15),
+    top: px(35),
+    left: px(25),
     backgroundColor: 'purple',
     justifyContent: 'center',
     alignItems: 'center',
@@ -125,13 +125,13 @@ const styles = StyleSheet.create({
   },
   nextButtonContainer: {
     position: 'absolute',
-    right: px(30),
+    right: px(20),
     marginTop: 'auto',
     marginBottom: 'auto',
   },
   previousButtonContainer: {
     position: 'absolute',
-    left: px(30),
+    left: px(20),
     marginTop: 'auto',
     marginBottom: 'auto',
   },
