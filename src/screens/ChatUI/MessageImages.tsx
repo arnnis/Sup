@@ -10,6 +10,7 @@ import px from '../../utils/normalizePixel';
 import {connect, useSelector} from 'react-redux';
 import {currentTeamTokenSelector} from '../../reducers/teams';
 import Touchable from '../../components/Touchable';
+import ImagesPreview from './ImagesPreview';
 
 type Props = ReturnType<typeof mapStateToProps> & {
   messageId: string;
@@ -19,6 +20,8 @@ class MessageImages extends Component<Props> {
   state = {
     imageViewerVisible: false,
   };
+
+  handlePreviewDismiss = () => this.setState({imageViewerVisible: false});
 
   renderImage(image: MessageAttachement, isSingle) {
     console.log(image);
@@ -50,7 +53,7 @@ class MessageImages extends Component<Props> {
   }
 
   render() {
-    let {images, token} = this.props;
+    let {images} = this.props;
     if (!images) return null;
 
     const isSingle = !images.length;
@@ -60,43 +63,11 @@ class MessageImages extends Component<Props> {
         <View style={styles.container}>
           {images.map(image => this.renderImage(image, isSingle))}
         </View>
-        <Modal
-          visible={this.state.imageViewerVisible}
-          transparent
-          animationType="fade"
-          // @ts-ignore
-          style={{margin: 0}}>
-          <ImageViewer
-            imageUrls={images.map(img => ({
-              url: img.url_private,
-              props: {headers: {Authorization: 'Bearer ' + token}},
-            }))}
-            onCancel={() => this.setState({imageViewerVisible: false})}
-            loadingRender={() => <ActivityIndicator size="large" color="#fff" />}
-            enableSwipeDown
-            onSwipeDown={() => this.setState({imageViewerVisible: false})}
-          />
-          <Touchable
-            onPress={() => this.setState({imageViewerVisible: false})}
-            style={{
-              position: 'absolute',
-              top: px(25),
-              left: px(15),
-              backgroundColor: 'purple',
-              justifyContent: 'center',
-              alignItems: 'center',
-              width: px(30),
-              height: px(30),
-              borderRadius: px(15),
-            }}>
-            <MaterialCommunityIcons
-              name="close"
-              color="#fff"
-              size={px(18)}
-              style={{marginTop: px(2.5)}}
-            />
-          </Touchable>
-        </Modal>
+        <ImagesPreview
+          open={this.state.imageViewerVisible}
+          images={images}
+          onDismiss={this.handlePreviewDismiss}
+        />
       </>
     );
   }
@@ -149,7 +120,6 @@ const mapStateToProps = (state: RootState, ownProps) => {
   const message = state.entities.messages.byId[ownProps.messageId];
   return {
     images: ownProps.images ?? messageImagesSelector(message),
-    token: currentTeamTokenSelector(state),
   };
 };
 

@@ -26,7 +26,6 @@ import select from '../../utils/select';
 import UploadDropZoneWeb from './UploadDropZoneWeb';
 import ChannelDetails from '../ChannelDetails';
 import ChannelDetailsIcon from '../../assets/icons/dock-right.svg';
-import {Platform} from '../../utils/platform';
 import {openBottomSheet} from '../../actions/app';
 
 export type ChatType = 'direct' | 'channel' | 'thread';
