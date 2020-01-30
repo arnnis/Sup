@@ -15,14 +15,17 @@ type Props = ReturnType<typeof mapStateToProps> & {
 
 class MessageImages extends Component<Props> {
   state = {
-    imageViewerVisible: false,
+    imageViewerOpen: false,
+    imageViewerCurrentImageIndex: 0,
   };
 
-  handlePreviewDismiss = () => this.setState({imageViewerVisible: false});
+  handlePreviewDismiss = () => this.setState({imageViewerOpen: false});
 
-  renderImage(image: MessageAttachement, isSingle) {
-    console.log(image);
+  renderImage = (image: MessageAttachement) => {
+    let {images} = this.props;
     let desiredHeight: number, uri: string, mainSize: {width: number; height: number};
+
+    let isSingle = !images.length;
 
     if (isSingle) {
       desiredHeight = px(200);
@@ -44,26 +47,28 @@ class MessageImages extends Component<Props> {
         uri={uri}
         desiredHeight={desiredHeight}
         mainSize={mainSize}
-        onPress={() => this.setState({imageViewerVisible: true})}
+        onPress={() =>
+          this.setState({
+            imageViewerOpen: true,
+            imageViewerCurrentImageIndex: images.map(image => image.id).indexOf(image.id),
+          })
+        }
       />
     );
-  }
+  };
 
   render() {
     let {images} = this.props;
     if (!images) return null;
 
-    const isSingle = !images.length;
-
     return (
       <>
-        <View style={styles.container}>
-          {images.map(image => this.renderImage(image, isSingle))}
-        </View>
+        <View style={styles.container}>{images.map(this.renderImage)}</View>
         <ImagesPreview
-          open={this.state.imageViewerVisible}
+          open={this.state.imageViewerOpen}
           images={images}
           onDismiss={this.handlePreviewDismiss}
+          initalIndex={this.state.imageViewerCurrentImageIndex}
         />
       </>
     );
@@ -116,7 +121,7 @@ const messageImagesSelector = createSelector(
 const mapStateToProps = (state: RootState, ownProps) => {
   const message = state.entities.messages.byId[ownProps.messageId];
   return {
-    images: ownProps.images ?? messageImagesSelector(message),
+    images: messageImagesSelector(message),
   };
 };
 
