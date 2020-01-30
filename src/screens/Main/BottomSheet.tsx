@@ -11,6 +11,7 @@ import {setCurrentThread} from '../../actions/chats';
 import UploadConfig from '../ChatUI/UploadConfig';
 import ChannelDetails from '../ChannelDetails';
 import {Portal} from 'react-native-paper';
+import {Platform} from '../../utils/platform';
 
 const dims = Dimensions.get('window');
 
@@ -72,7 +73,7 @@ const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: 'rgba(0, 0, 0, 0.45)',
-    backdropFilter: 'blur(2px)',
+    ...(Platform.isWeb && {backdropFilter: 'blur(2px)'}),
   },
   panelContainer: {
     ...StyleSheet.absoluteFillObject,
