@@ -39,41 +39,44 @@ const ImagesPreview: FC<Props> = ({open, images, onDismiss, initalIndex}) => {
     </Touchable>
   );
 
-  const renderNextButton = () => (
-    <View style={styles.nextButtonContainer}>
-      <MaterialCommunityIcons
-        name="chevron-right"
-        color="#fff"
-        size={px(30)}
-        style={{marginTop: px(2.5), marginHorizontal: px(20)}}
-      />
-    </View>
-  );
-
-  const renderPreviousButton = () => (
-    <View style={styles.previousButtonContainer}>
-      <MaterialCommunityIcons
-        name="chevron-left"
-        color="#fff"
-        size={px(30)}
-        style={{marginTop: px(2.5), marginHorizontal: px(20)}}
-      />
-    </View>
-  );
-
-  const renderIndicator = (currentIndex, allSize) => (
-    <View
-      style={[
-        StyleSheet.absoluteFillObject,
-        {top: px(38), bottom: undefined, alignItems: 'center'},
-      ]}>
-      <View style={styles.indicatorContainer}>
-        <Text style={styles.indicatorText}>
-          {currentIndex}/<Text style={{fontSize: px(11)}}>{allSize}</Text>
-        </Text>
+  const renderNextButton = () =>
+    images.length > 1 && (
+      <View style={styles.nextButtonContainer}>
+        <MaterialCommunityIcons
+          name="chevron-right"
+          color="#fff"
+          size={px(30)}
+          style={{marginTop: px(2.5), marginHorizontal: px(20)}}
+        />
       </View>
-    </View>
-  );
+    );
+
+  const renderPreviousButton = () =>
+    images.length > 1 && (
+      <View style={styles.previousButtonContainer}>
+        <MaterialCommunityIcons
+          name="chevron-left"
+          color="#fff"
+          size={px(30)}
+          style={{marginTop: px(2.5), marginHorizontal: px(20)}}
+        />
+      </View>
+    );
+
+  const renderIndicator = (currentIndex, allSize) =>
+    images.length > 1 && (
+      <View
+        style={[
+          StyleSheet.absoluteFillObject,
+          {top: px(38), bottom: undefined, alignItems: 'center'},
+        ]}>
+        <View style={styles.indicatorContainer}>
+          <Text style={styles.indicatorText}>
+            {currentIndex}/<Text style={{fontSize: px(11)}}>{allSize}</Text>
+          </Text>
+        </View>
+      </View>
+    );
 
   const renderImageThumbnails = () => ({});
 
