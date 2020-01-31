@@ -11,6 +11,7 @@ import {Platform} from '../../utils/platform';
 import UploadDropZoneWeb from './UploadDropZoneWeb';
 import EmojiButton from './EmojiButton';
 import {EmojiData} from 'emoji-mart';
+import ImagesPreview from './ImagesPreview';
 
 interface NativeFile {
   uri: string;
