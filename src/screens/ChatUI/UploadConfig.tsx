@@ -1,5 +1,5 @@
 import React, {FC, useState, useEffect} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, View, Image} from 'react-native';
 import Screen from '../../components/Screen';
 import {File as _File} from './MessageFiles';
 import {MessageAttachement} from '../../models';
@@ -83,8 +83,7 @@ const UploadConfig: FC<Props> = ({files}) => {
   };
 
   const renderImage = (uri: string) => {
-    //console.log('image__', uri);
-    return <FastImage source={{uri}} style={{width: '95%', height: px(200)}} />;
+    return <UploadImage uri={uri} />;
   };
 
   const renderComposer = () => {
@@ -99,10 +98,40 @@ const UploadConfig: FC<Props> = ({files}) => {
   return (
     <UploadDropZoneWeb onDrop={handleFileDropWeb}>
       <Screen style={styles.container}>
-        {uploadFiles.map(renderFile)}
         {renderComposer()}
+        {uploadFiles.map(renderFile)}
       </Screen>
     </UploadDropZoneWeb>
+  );
+};
+
+const UploadImage = ({uri}) => {
+  const [width, setWidth] = useState(0);
+  const [height, setHeight] = useState(0);
+
+  const MAX_HEIGHT = px(300);
+  const maxHeightToCurrentHeightRatio = MAX_HEIGHT / height;
+
+  useEffect(() => {
+    Image.getSize(
+      uri,
+      (w, h) => {
+        setWidth(w);
+        setHeight(h);
+      },
+      err => {},
+    );
+  }, []);
+
+  return (
+    <FastImage
+      source={{uri}}
+      style={{
+        width: width * maxHeightToCurrentHeightRatio,
+        height: height * maxHeightToCurrentHeightRatio,
+      }}
+      resizeMode="contain"
+    />
   );
 };
 

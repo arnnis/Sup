@@ -1,12 +1,10 @@
 import React, {useEffect} from 'react';
 import {YellowBox} from 'react-native';
 import {Provider as ReduxProvider} from 'react-redux';
-import {Provider as PaperProvider} from 'react-native-paper';
-import {Portal} from 'react-native-paper';
+import {PersistGate} from 'redux-persist/integration/react';
 
 import Navigator, {NavigationService} from './navigation/Navigator';
 import configureStore from './store/configureStore';
-import {PersistGate} from 'redux-persist/integration/react';
 import ThemeProvider from './contexts/theme/provider';
 
 export const {store, persistor} = configureStore();
