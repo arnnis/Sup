@@ -1,133 +1,57 @@
-import React, {Component} from 'react';
-import {
-  View,
-  StyleSheet,
-  Text,
-  Keyboard,
-  Platform,
-  TouchableOpacity,
-  MeasureOnSuccessCallback,
-} from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import React, {useContext, useState, FC} from 'react';
+import {View, StyleSheet, Platform} from 'react-native';
+import {EmojiData} from 'emoji-mart';
+
 import px from '../../utils/normalizePixel';
 import Composer from './Composer';
 import Send from './Send';
-import EmojiPicker from './EmojiPicker';
-import {sendMessage} from '../../services/rtm';
-import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
-import isLandscape from '../../utils/stylesheet/isLandscape';
-import {EmojiData} from 'emoji-mart';
-import isNative from '../../utils/isNative';
+import * as RTM from '../../services/rtm';
 import EmojiButton from './EmojiButton';
+import ThemeContext from '../../contexts/theme';
 
-type Props = ThemeInjectedProps & {
+type Props = {
   chatId: string;
   threadId: string;
 };
 
-class InputToolbar extends Component<Props> {
-  emojiButtonRef: TouchableOpacity;
+const InputToolbar: FC<Props> = ({chatId, threadId}) => {
+  const [text, setText] = useState('');
+  const {theme} = useContext(ThemeContext);
 
-  state = {
-    text: '',
-    emojiPicker: {
-      open: false,
-      standalone: null,
-    },
-  };
+  const handleTextChanged = text => setText(text);
 
-  handleTextChanged = text => this.setState({text});
-
-  handleSendPress = () => {
-    sendMessage({
+  const handleSendPress = () => {
+    RTM.sendMessage({
       type: 'message',
-      text: this.state.text,
-      channel: this.props.chatId,
-      thread_ts: this.props.threadId,
+      text,
+      channel: chatId,
+      thread_ts: threadId,
     });
-    this.setState({text: ''});
+    setText('');
   };
 
-  x: Parameters<MeasureOnSuccessCallback>;
+  const handleEmojiSelected = (emoji: EmojiData) => setText(text + emoji.native);
 
-  measureEmojiButtonCoord = (): Promise<{px: number; py: number}> =>
-    new Promise(resolve => {
-      this.emojiButtonRef.measure((x, y, width, height, px, py) => resolve({px, py}));
-    });
+  const renderComposer = () => (
+    <Composer text={text} onTextChanged={handleTextChanged} isThread={!!threadId} />
+  );
 
-  handleEmojiButtonPress = async () => {
-    if (!this.state.emojiPicker.open) {
-      Keyboard.dismiss();
-    } else {
-      // TODO: focus on input
-    }
+  const renderSend = () => <Send onPress={handleSendPress} />;
 
-    if (isLandscape()) {
-      let {px, py} = await this.measureEmojiButtonCoord();
-      this.setState({
-        emojiPicker: {
-          ...this.state.emojiPicker,
-          open: !this.state.emojiPicker.open,
-          standalone: {
-            x: px,
-            y: py,
-          },
-        },
-      });
-    } else {
-      this.setState({
-        emojiPicker: {
-          ...this.state.emojiPicker,
-          open: !this.state.emojiPicker.open,
-          standalone: null,
-        },
-      });
-    }
-  };
+  const renderEmojiButton = () => <EmojiButton onEmojiSelected={handleEmojiSelected} />;
 
-  handleEmojiPickerClosed = () =>
-    this.setState({emojiPicker: {...this.state.emojiPicker, open: false}});
-
-  handleEmojiPickerOpened = () =>
-    this.setState({emojiPicker: {...this.state.emojiPicker, open: true}});
-
-  handleEmojiSelected = (emoji: EmojiData) => {
-    this.setState({text: this.state.text + emoji.native});
-  };
-
-  renderComposer() {
-    return (
-      <Composer
-        text={this.state.text}
-        onTextChanged={this.handleTextChanged}
-        isThread={!!this.props.threadId}
-      />
-    );
-  }
-
-  renderSend() {
-    return <Send onPress={this.handleSendPress} />;
-  }
-
-  renderEmojiButton() {
-    return <EmojiButton onEmojiSelected={this.handleEmojiSelected} />;
-  }
-
-  render() {
-    let {theme} = this.props;
-    return (
-      <View style={styles.container}>
-        <View style={styles.wrapper}>
-          <View style={[styles.emojiAndComposeWrapper, {backgroundColor: theme.backgroundColor}]}>
-            {this.renderEmojiButton()}
-            {this.renderComposer()}
-          </View>
-          {this.renderSend()}
+  return (
+    <View style={styles.container}>
+      <View style={styles.wrapper}>
+        <View style={[styles.emojiAndComposeWrapper, {backgroundColor: theme.backgroundColor}]}>
+          {renderEmojiButton()}
+          {renderComposer()}
         </View>
+        {renderSend()}
       </View>
-    );
-  }
-}
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {},
@@ -164,4 +88,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withTheme(InputToolbar);
+export default InputToolbar;

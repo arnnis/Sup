@@ -4,7 +4,6 @@ import {RootState} from '../../reducers';
 import {connect, DispatchProp} from 'react-redux';
 import {NavigationInjectedProps, withNavigation} from 'react-navigation';
 import MediaQuery from 'react-responsive';
-import {ipcRenderer, BrowserWindow} from 'electron';
 import Message from './Message';
 import {addMessageToChat} from '../../actions/messages';
 import {getMessagesByChatId, getRepliesByThreadId} from '../../actions/messages/thunks';
