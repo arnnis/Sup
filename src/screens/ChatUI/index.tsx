@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
 import {View, StyleSheet, FlatList, ActivityIndicator, Text, ImageBackground} from 'react-native';
-import {RootState} from '../../reducers';
 import {connect, DispatchProp} from 'react-redux';
 import {NavigationInjectedProps, withNavigation} from 'react-navigation';
 import MediaQuery from 'react-responsive';
+
 import Message from './Message';
+import {RootState} from '../../reducers';
 import {addMessageToChat} from '../../actions/messages';
 import {getMessagesByChatId, getRepliesByThreadId} from '../../actions/messages/thunks';
 import {markChatAsRead, getChatInfo, goToChannelDetails} from '../../actions/chats/thunks';
