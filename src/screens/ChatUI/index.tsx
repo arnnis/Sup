@@ -26,7 +26,7 @@ import select from '../../utils/select';
 import UploadDropZoneWeb from './UploadDropZoneWeb';
 import ChannelDetails from '../ChannelDetails';
 import ChannelDetailsIcon from '../../assets/icons/dock-right.svg';
-import {openBottomSheet} from '../../actions/app';
+import {openUploadDialog} from '../../actions/files';
 
 export type ChatType = 'direct' | 'channel' | 'thread';
 
@@ -177,7 +177,7 @@ class ChatUI extends Component<Props> {
   };
 
   handleFileDropWeb = (files: File[]) => {
-    this.props.dispatch(openBottomSheet('UploadConfig', {files}));
+    this.props.dispatch(openUploadDialog({files}));
   };
 
   renderMessageCell = ({item: messageId, index}) => {

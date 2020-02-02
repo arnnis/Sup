@@ -22,6 +22,7 @@ import Toast from '../../components/Toast';
 import {toggleToast} from '../../actions/app';
 import Screen from '../../components/Screen';
 import {Portal} from 'react-native-paper';
+import UploadConfig from '../ChatUI/UploadConfig';
 
 const Main: FC = React.memo(() => {
   let [drawerOpen, setDrawerOpen] = useState(false);
@@ -99,6 +100,7 @@ const Main: FC = React.memo(() => {
           </View>
         </DrawerLayout>
         <BottomSheet />
+        <UploadConfig />
         <Toast />
       </Screen>
     </Portal.Host>

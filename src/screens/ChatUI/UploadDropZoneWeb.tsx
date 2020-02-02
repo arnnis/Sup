@@ -1,6 +1,6 @@
 import React, {FC, useContext} from 'react';
 import Dropzone from 'react-dropzone';
-import {View, StyleSheet, Text} from 'react-native';
+import {View, StyleSheet, Text, ViewStyle} from 'react-native';
 import ThemeContext from '../../contexts/theme';
 import px from '../../utils/normalizePixel';
 import {Platform} from '../../utils/platform';
@@ -10,14 +10,15 @@ import {openBottomSheet} from '../../actions/app';
 interface Props {
   onDrop(files: File[]): void;
   placeholder?: string;
+  style?: ViewStyle;
 }
 
 // This only gonna work on Web. cuz react-dropzone is web only
-const UploadDropZoneWeb: FC<Props> = ({children, onDrop, placeholder}) => {
+const UploadDropZoneWeb: FC<Props> = ({children, onDrop, placeholder, style}) => {
   const {theme} = useContext(ThemeContext);
 
   const renderOverlay = () => (
-    <View style={[styles.overlay, {backgroundColor: theme.backgroundColor}]}>
+    <View style={[styles.overlay, {backgroundColor: theme.backgroundColor}, style]}>
       <Text style={[styles.overlayText, {color: theme.foregroundColor}]}>
         {placeholder || 'Drop here to upload'}
       </Text>
