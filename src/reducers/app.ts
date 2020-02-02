@@ -15,6 +15,7 @@ export type AppState = Readonly<{
     userId?: string; // used when toast is about a community member (e.g. presense change)
     icon?: 'success' | 'fail';
   };
+
   presence: Presence;
 }>;
 

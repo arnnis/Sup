@@ -3,7 +3,7 @@ import {RootAction} from '../actions';
 import {createSelector} from 'reselect';
 import {RootState} from '.';
 
-export type DirectsState = Readonly<{
+export type ChatsState = Readonly<{
   currentChatId: string;
   currentThreadId: string;
   directsList: Array<string>;
@@ -19,7 +19,7 @@ export type DirectsState = Readonly<{
   membersListLoadStatus: {[chatId: string]: {loading: boolean; nextCursor: string}};
 }>;
 
-const initialState: DirectsState = {
+const initialState: ChatsState = {
   currentChatId: '',
   currentThreadId: '',
   directsList: [],
@@ -33,7 +33,7 @@ const initialState: DirectsState = {
   membersListLoadStatus: {},
 };
 
-export const chatsReducer: Reducer<DirectsState, RootAction> = (state = initialState, action) => {
+export const chatsReducer: Reducer<ChatsState, RootAction> = (state = initialState, action) => {
   switch (action.type) {
     case 'FETCH_CHATS_START': {
       return {

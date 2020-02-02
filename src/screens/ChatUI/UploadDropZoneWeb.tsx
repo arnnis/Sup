@@ -9,15 +9,18 @@ import {openBottomSheet} from '../../actions/app';
 
 interface Props {
   onDrop(files: File[]): void;
+  placeholder?: string;
 }
 
 // This only gonna work on Web. cuz react-dropzone is web only
-const UploadDropZoneWeb: FC<Props> = ({children, onDrop}) => {
+const UploadDropZoneWeb: FC<Props> = ({children, onDrop, placeholder}) => {
   const {theme} = useContext(ThemeContext);
 
   const renderOverlay = () => (
     <View style={[styles.overlay, {backgroundColor: theme.backgroundColor}]}>
-      <Text>Drop here to upload</Text>
+      <Text style={[styles.overlayText, {color: theme.foregroundColor}]}>
+        {placeholder || 'Drop here to upload'}
+      </Text>
     </View>
   );
 
@@ -53,6 +56,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: px(2),
     borderColor: '#3A1C39',
+  },
+  overlayText: {
+    fontSize: px(16),
   },
 });
 

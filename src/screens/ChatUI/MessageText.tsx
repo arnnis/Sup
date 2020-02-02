@@ -8,8 +8,8 @@ import Emoji from './Emoji';
 import Username from './Username';
 import Code from './Code';
 import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
+import {Platform} from '../../utils/platform';
 
-const WWW_URL_PATTERN = /^www\./i;
 const USERNAME_PATTERN = /\<@(.*?)\>/i;
 const EMOJI_PATTREN = /\:(.*?)\:/i;
 const CODE_PATTERN = /(```[a-z]*\n[\s\S]*?\n```)/i;
@@ -25,17 +25,21 @@ type Props = ReturnType<typeof mapStateToProps> &
   };
 
 class MessageText extends Component<Props> {
-  onUrlPress = url => {
-    if (WWW_URL_PATTERN.test(url)) {
+  onUrlPress = (url: string) => {
+    if (!(url?.startsWith('http') || url?.startsWith('https'))) {
       this.onUrlPress(`http://${url}`);
     } else {
-      Linking.canOpenURL(url).then(supported => {
-        if (!supported) {
-          console.error('No handler for URL:', url);
-        } else {
-          Linking.openURL(url);
-        }
-      });
+      if (Platform.isNative) {
+        Linking.canOpenURL(url).then(supported => {
+          if (!supported) {
+            console.error('No handler for URL:', url);
+          } else {
+            Linking.openURL(url);
+          }
+        });
+      } else {
+        window.open(url, '_blank');
+      }
     }
   };
 
@@ -66,7 +70,9 @@ class MessageText extends Component<Props> {
       content = c;
     });
     return (
-      <Text style={{textDecorationLine: 'underline'}} onPress={() => this.onUrlPress(content)}>
+      <Text
+        style={{textDecorationLine: 'underline'}}
+        onPress={() => this.onUrlPress(content || display)}>
         {display}
       </Text>
     );
