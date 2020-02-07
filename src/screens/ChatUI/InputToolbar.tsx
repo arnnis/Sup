@@ -1,5 +1,6 @@
 import React, {useContext, useState, FC} from 'react';
-import {View, StyleSheet, Platform} from 'react-native';
+import {View, StyleSheet, Platform, Text} from 'react-native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {EmojiData} from 'emoji-mart';
 
 import px from '../../utils/normalizePixel';
@@ -8,6 +9,8 @@ import Send from './Send';
 import * as RTM from '../../services/rtm';
 import EmojiButton from './EmojiButton';
 import ThemeContext from '../../contexts/theme';
+import Touchable from '../../components/Touchable';
+import FileUploadButton from './FileUploadButton';
 
 type Props = {
   chatId: string;
@@ -21,6 +24,7 @@ const InputToolbar: FC<Props> = ({chatId, threadId}) => {
   const handleTextChanged = text => setText(text);
 
   const handleSendPress = () => {
+    if (!text) return;
     RTM.sendMessage({
       type: 'message',
       text,
@@ -40,12 +44,15 @@ const InputToolbar: FC<Props> = ({chatId, threadId}) => {
 
   const renderEmojiButton = () => <EmojiButton onEmojiSelected={handleEmojiSelected} />;
 
+  const renderFileUploadButton = () => <FileUploadButton />;
+
   return (
     <View style={styles.container}>
       <View style={styles.wrapper}>
         <View style={[styles.emojiAndComposeWrapper, {backgroundColor: theme.backgroundColor}]}>
           {renderEmojiButton()}
           {renderComposer()}
+          {renderFileUploadButton()}
         </View>
         {renderSend()}
       </View>

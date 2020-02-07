@@ -8,6 +8,7 @@ import configureStore from './store/configureStore';
 import ThemeProvider from './contexts/theme/provider';
 import ProgressBarProvider from './contexts/progress-bar/provider';
 import {ProgressBarService} from './contexts/progress-bar/provider';
+import UploadDialog from './screens/ChatUI/UploadDialog';
 
 export const {store, persistor} = configureStore();
 
@@ -30,6 +31,7 @@ const App = () => {
                 NavigationService.setTopLevelNavigator(navigatorRef);
               }}
             />
+            <UploadDialog />
           </PersistGate>
         </ProgressBarProvider>
       </ThemeProvider>

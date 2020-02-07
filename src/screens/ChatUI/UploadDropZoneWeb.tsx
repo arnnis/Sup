@@ -25,7 +25,7 @@ const UploadDropZoneWeb: FC<Props> = ({children, onDrop, placeholder, style}) =>
     </View>
   );
 
-  if (Platform.isNative) return children;
+  if (Platform.isNative) return <>{children}</>;
 
   return (
     <Dropzone onDrop={onDrop}>

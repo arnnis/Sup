@@ -2,8 +2,8 @@ import React, {useState, useRef, useEffect, FC} from 'react';
 import {StatusBar, View} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {useMediaQuery} from 'react-responsive';
+import {Portal} from 'react-native-paper';
 
-import MediaQuery from '../../utils/stylesheet/MediaQuery';
 import Header from '../../components/Header';
 import px from '../../utils/normalizePixel';
 import {RootState} from '../../reducers';
@@ -21,8 +21,6 @@ import {currentTeamSelector} from '../../reducers/teams';
 import Toast from '../../components/Toast';
 import {toggleToast, setDrawerOpen} from '../../actions/app';
 import Screen from '../../components/Screen';
-import {Portal} from 'react-native-paper';
-import UploadConfig from '../ChatUI/UploadConfig';
 
 const Main: FC = React.memo(() => {
   let drawerOpen = useSelector((state: RootState) => state.app.drawerOpen);
@@ -98,15 +96,14 @@ const Main: FC = React.memo(() => {
           drawerType="slide"
           renderNavigationView={() => <TeamsList onTeamSelect={toggleDrawer} />}
           drawerWidth={px(185)}
-          onDrawerClose={() => setDrawerOpen(false)}
-          onDrawerOpen={() => setDrawerOpen(true)}>
+          onDrawerClose={() => dispatch(setDrawerOpen(false))}
+          onDrawerOpen={() => dispatch(setDrawerOpen(true))}>
           <View style={{flex: 1, flexDirection: 'row'}}>
             {renderMain()}
             {renderCurrentChat()}
           </View>
         </DrawerLayout>
         <BottomSheet />
-        <UploadConfig />
         <Toast />
       </Screen>
     </Portal.Host>

@@ -8,7 +8,7 @@ import {View, Dimensions, StyleSheet} from 'react-native';
 import UserProfile from '../UserProfile';
 import {closeBottomSheet} from '../../actions/app';
 import {setCurrentThread} from '../../actions/chats';
-import UploadConfig from '../ChatUI/UploadConfig';
+import UploadDialog from '../ChatUI/UploadDialog';
 import ChannelDetails from '../ChannelDetails';
 import {Portal} from 'react-native-paper';
 import {Platform} from '../../utils/platform';
@@ -47,7 +47,7 @@ const BottomSheet: FC<Props> = ({bottomSheet, dispatch}) => {
       case 'UserProfile':
         return <UserProfile {...params} />;
       case 'UploadConfig':
-        return <UploadConfig {...params} />;
+        return <UploadDialog {...params} />;
       case 'ChannelDetails':
         return <ChannelDetails {...params} onDismiss={() => dispatch(closeBottomSheet())} />;
     }

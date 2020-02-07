@@ -3,25 +3,23 @@ import {View, StyleSheet, Text, ViewStyle} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import withTheme, {ThemeInjectedProps} from '../contexts/theme/withTheme';
 import px from '../utils/normalizePixel';
-import {withNavigation, NavigationInjectedProps} from 'react-navigation';
 import Touchable from './Touchable';
+import {NavigationService} from '../navigation/Navigator';
 
 type ButtonsTypes = 'back' | 'menu';
 
-type Props = ThemeInjectedProps &
-  NavigationInjectedProps & {
-    left?: ButtonsTypes | JSX.Element;
-    center?: string | JSX.Element;
-    right?: ButtonsTypes | JSX.Element;
-    statusBarColor?: string;
-    style?: ViewStyle;
+type Props = ThemeInjectedProps & {
+  left?: ButtonsTypes | JSX.Element;
+  center?: string | JSX.Element;
+  right?: ButtonsTypes | JSX.Element;
+  statusBarColor?: string;
+  style?: ViewStyle;
 
-    onBackPress?(): void;
-  };
+  onBackPress?(): void;
+};
 
 class Header extends Component<Props> {
   renderMenuButton() {
-    let {theme} = this.props;
     return (
       <Touchable style={styles.button} onPress={() => {}}>
         <MaterialCommunityIcons name="dots-vertical" color="#fff" size={px(23)} />
@@ -30,11 +28,12 @@ class Header extends Component<Props> {
   }
 
   renderBackButton() {
-    let {theme, navigation} = this.props;
     return (
       <Touchable
         style={styles.button}
-        onPress={() => (this.props.onBackPress ? this.props.onBackPress() : navigation.goBack())}>
+        onPress={() =>
+          this.props.onBackPress ? this.props.onBackPress() : NavigationService.back()
+        }>
         <MaterialCommunityIcons name="arrow-left" color="#fff" size={px(22)} />
       </Touchable>
     );
@@ -140,4 +139,4 @@ var styles = StyleSheet.create({
   },
 });
 
-export default withTheme(withNavigation(Header));
+export default withTheme(Header);

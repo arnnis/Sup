@@ -50,6 +50,7 @@
     "react-native": "0.61.2",
     "react-native-animatable": "^1.3.3",
     "react-native-animated-ellipsis": "^2.0.0",
+    "react-native-document-picker": "^3.2.4",
     "react-native-emoji-input": "^1.1.9",
     "react-native-emoji-selector": "^0.1.7",
     "react-native-fast-image": "^7.0.2",

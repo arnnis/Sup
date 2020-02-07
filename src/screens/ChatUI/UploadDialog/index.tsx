@@ -1,8 +1,11 @@
 import React, {FC, useState, useEffect, useContext, useRef} from 'react';
 import {StyleSheet, View, ScrollView, TouchableWithoutFeedback} from 'react-native';
-import {Portal} from 'react-native-paper';
 import * as Animateable from 'react-native-animatable';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {useSelector, useDispatch} from 'react-redux';
+import {useMediaQuery} from 'react-responsive';
+import {EmojiData} from 'emoji-mart';
+
 import {File as _File} from '../MessageFiles';
 import {MessageAttachement} from '../../../models';
 import withTheme from '../../../contexts/theme/withTheme';
@@ -11,21 +14,14 @@ import px from '../../../utils/normalizePixel';
 import {Platform} from '../../../utils/platform';
 import UploadDropZoneWeb from '../UploadDropZoneWeb';
 import EmojiButton from '../EmojiButton';
-import {EmojiData} from 'emoji-mart';
 import UploadImage from './UploadImage';
 import ThemeContext from '../../../contexts/theme';
 import Header from '../../../components/Header';
-import {useSelector, useDispatch} from 'react-redux';
 import {RootState} from '../../../reducers';
 import Touchable from '../../../components/Touchable';
-import {useMediaQuery} from 'react-responsive';
 import {closeUploadDialog} from '../../../actions/files';
 import Send from '../Send';
 import {uploadFileWeb} from '../../../actions/files/thunks';
-
-interface NativeFile {
-  uri: string;
-}
 
 interface Props {}
 
@@ -34,7 +30,7 @@ interface UploadFile {
   origin: File;
 }
 
-const UploadConfig: FC<Props> = () => {
+const UploadDialog: FC<Props> = () => {
   const [caption, setCaption] = useState('');
   const [uploadFiles, setUploadFiles] = useState<UploadFile[]>([]);
   const {theme} = useContext(ThemeContext);
@@ -157,7 +153,7 @@ const UploadConfig: FC<Props> = () => {
   );
 
   return (
-    <Portal>
+    <>
       <TouchableWithoutFeedback onPress={closeDialog}>
         <View style={StyleSheet.absoluteFill} />
       </TouchableWithoutFeedback>
@@ -190,7 +186,7 @@ const UploadConfig: FC<Props> = () => {
           </View>
         </Animateable.View>
       </View>
-    </Portal>
+    </>
   );
 };
 
@@ -211,7 +207,6 @@ const styles = StyleSheet.create({
     paddingRight: px(20),
     paddingTop: px(10),
     paddingBottom: px(20),
-    flex: 1,
   },
   composerWrapper: {
     height: px(125),
@@ -236,4 +231,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default UploadConfig;
+export default UploadDialog;

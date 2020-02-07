@@ -68,6 +68,10 @@ function push(routeName, params?) {
   );
 }
 
+function back() {
+  _navigator.dispatch(NavigationActions.back());
+}
+
 function getParam(key) {
   const routes = _navigator.state.nav.routes;
   const route = routes[routes.length - 1];
@@ -79,4 +83,5 @@ export const NavigationService = {
   navigate,
   push,
   getParam,
+  back,
 };

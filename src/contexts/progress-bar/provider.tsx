@@ -75,8 +75,13 @@ const ProgressBarProvider: FC = ({children}) => {
     const indicatorWidth = (progress.value / progress.max) * width;
 
     return (
-      <View style={[styles.progressBarContainer, {width, borderColor: theme.backgroundColorLess3}]}>
-        <View style={[styles.progressIndicator, {width: indicatorWidth}]} />
+      <View style={[styles.progressBarContainer, {width}]}>
+        <View
+          style={[
+            styles.progressIndicator,
+            {width: indicatorWidth, backgroundColor: theme.backgroundColor},
+          ]}
+        />
         <View>
           <Text style={styles.progressTitle} numberOfLines={1}>
             {progress.title}
@@ -105,8 +110,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: px(60),
     width: '100%',
-    marginRight: 'auto',
-    marginLeft: 'auto',
+    alignItems: 'center',
   },
   progressBarContainer: {
     marginHorizontal: 'auto',
