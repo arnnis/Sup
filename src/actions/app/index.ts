@@ -13,7 +13,7 @@ export const getCurrentUserFail = () => action('GET_CURRENT_USER_FAIL');
 
 export const setDrawerOpen = (drawerState: boolean) => action('SET_DRAWER_OPEN', {drawerState});
 
-export const openBottomSheet = (screen: string, params: any) =>
+export const openBottomSheet = (screen: string, params?: any) =>
   action('OPEN_BOTTOM_SHEET', {screen, params});
 
 export const closeBottomSheet = () => action('CLOSE_BOTTOM_SHEET');

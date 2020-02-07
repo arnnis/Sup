@@ -56,8 +56,8 @@ class Auth extends Component<Props> {
               y1={0}
               y2={170}
               gradientUnits="objectBoundingBox">
-              <Stop offset={0} stopColor="#517AC2" />
-              <Stop offset={1} stopColor="#3D5B8E" />
+              <Stop offset={0} stopColor="#492146" />
+              <Stop offset={1} stopColor="#492146" />
             </LinearGradient>
           </Defs>
           <Path
@@ -230,7 +230,8 @@ class Auth extends Component<Props> {
     return (
       <Screen>
         <StatusBar backgroundColor="#517AC2" animated />
-        <Header left="back" style={{backgroundColor: '#517AC2', elevation: 0}} />
+        <Header left="back" style={{elevation: 0}} />
+
         <ScrollView
           bounces={false}
           style={{flex: 1, backgroundColor: theme.backgroundColor}}

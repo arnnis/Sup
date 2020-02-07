@@ -12,6 +12,7 @@ import UploadConfig from '../ChatUI/UploadConfig';
 import ChannelDetails from '../ChannelDetails';
 import {Portal} from 'react-native-paper';
 import {Platform} from '../../utils/platform';
+import Auth from '../Auth';
 
 const dims = Dimensions.get('window');
 
@@ -41,6 +42,8 @@ const BottomSheet: FC<Props> = ({bottomSheet, dispatch}) => {
     switch (bottomSheet.screen) {
       case 'ChatUI':
         return <ChatUI {...params} />;
+      case 'Auth':
+        return <Auth {...params} />;
       case 'UserProfile':
         return <UserProfile {...params} />;
       case 'UploadConfig':

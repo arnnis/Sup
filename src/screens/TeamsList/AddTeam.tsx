@@ -6,8 +6,11 @@ import {withNavigation, NavigationInjectedProps} from 'react-navigation';
 import {NavigationService} from '../../navigation/Navigator';
 import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 import Touchable from '../../components/Touchable';
+import isLandscape from '../../utils/stylesheet/isLandscape';
+import {openBottomSheet} from '../../actions/app';
+import {connect, DispatchProp} from 'react-redux';
 
-type Props = NavigationInjectedProps & ThemeInjectedProps;
+type Props = NavigationInjectedProps & ThemeInjectedProps & DispatchProp<any>;
 
 class AddTeam extends Component<Props> {
   renderName() {
@@ -28,9 +31,10 @@ class AddTeam extends Component<Props> {
     );
   }
 
-  handleAddTeam() {
-    NavigationService.navigate('Auth');
-  }
+  handleAddTeam = () => {
+    if (!isLandscape()) NavigationService.navigate('Auth');
+    else this.props.dispatch(openBottomSheet('Auth'));
+  };
 
   render() {
     return (
@@ -72,4 +76,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withNavigation(withTheme(AddTeam));
+export default withNavigation(withTheme(connect()(AddTeam)));

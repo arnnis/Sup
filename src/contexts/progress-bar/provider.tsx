@@ -1,9 +1,10 @@
-import React, {FC, useState, useEffect} from 'react';
+import React, {FC, useState, useEffect, useContext} from 'react';
 import {View, StyleSheet, Text, Dimensions} from 'react-native';
 import ProgressBarContext from '.';
 import px from '../../utils/normalizePixel';
 import {Platform} from '../../utils/platform';
 import Touchable from '../../components/Touchable';
+import ThemeContext from '../theme';
 
 export let ProgressBarService: ContextValue = {
   show: null,
@@ -28,6 +29,7 @@ export interface ContextValue {
 
 const ProgressBarProvider: FC = ({children}) => {
   const [progressList, setProgressList] = useState<Progress[]>([]);
+  const {theme} = useContext(ThemeContext);
 
   const show: ContextValue['show'] = (progress: Progress) => {
     if (!progress.min) progress.min = 0;
@@ -70,11 +72,11 @@ const ProgressBarProvider: FC = ({children}) => {
 
   const renderProgressBar = (progress: Progress) => {
     const width = Dimensions.get('window').width * (2 / 3);
-    const valueWidth = (progress.value / progress.max) * width;
+    const indicatorWidth = (progress.value / progress.max) * width;
 
     return (
-      <View style={[styles.progressBarContainer, {width}]}>
-        <View style={[styles.progressValueBar, {width: valueWidth}]} />
+      <View style={[styles.progressBarContainer, {width, borderColor: theme.backgroundColorLess3}]}>
+        <View style={[styles.progressIndicator, {width: indicatorWidth}]} />
         <View>
           <Text style={styles.progressTitle} numberOfLines={1}>
             {progress.title}
@@ -123,7 +125,7 @@ const styles = StyleSheet.create({
     fontSize: px(13.5),
     color: '#fff',
   },
-  progressValueBar: {
+  progressIndicator: {
     position: 'absolute',
     top: 0,
     left: 0,
