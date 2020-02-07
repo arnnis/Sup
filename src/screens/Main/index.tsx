@@ -19,13 +19,13 @@ import ChatEmptyPlaceholder from './ChatEmptyPlaceholder';
 import BottomSheet from './BottomSheet';
 import {currentTeamSelector} from '../../reducers/teams';
 import Toast from '../../components/Toast';
-import {toggleToast} from '../../actions/app';
+import {toggleToast, setDrawerOpen} from '../../actions/app';
 import Screen from '../../components/Screen';
 import {Portal} from 'react-native-paper';
 import UploadConfig from '../ChatUI/UploadConfig';
 
 const Main: FC = React.memo(() => {
-  let [drawerOpen, setDrawerOpen] = useState(false);
+  let drawerOpen = useSelector((state: RootState) => state.app.drawerOpen);
   let drawerRef = useRef(null);
   let {currentTeam, connectionStatus, currentChatId} = useSelector((state: RootState) => ({
     currentTeam: currentTeamSelector(state),
@@ -41,13 +41,19 @@ const Main: FC = React.memo(() => {
     global['toast'] = toast => dispatch(toggleToast(toast));
   }, []);
 
-  const toggleDrawer = () => {
-    if (drawerOpen) {
+  useEffect(() => {
+    if (!drawerOpen) {
       drawerRef.current.closeDrawer();
-      setDrawerOpen(false);
     } else {
       drawerRef.current.openDrawer();
-      setDrawerOpen(true);
+    }
+  }, [drawerOpen]);
+
+  const toggleDrawer = () => {
+    if (drawerOpen) {
+      dispatch(setDrawerOpen(false));
+    } else {
+      dispatch(setDrawerOpen(true));
     }
   };
 

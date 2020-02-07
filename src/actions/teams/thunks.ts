@@ -25,6 +25,8 @@ import {getMembers} from '../members/thunks';
 import {SlackError} from '../../utils/http/errors';
 import {Alert} from 'react-native';
 import {currentTeamSelector} from '../../reducers/teams';
+import isLandscape from '../../utils/stylesheet/isLandscape';
+import {closeBottomSheet, setDrawerOpen} from '../app';
 
 export const signinTeam = (domain: string, email: string, password: string, pin?: string) => async (
   dispatch,
@@ -65,7 +67,10 @@ export const signinTeam = (domain: string, email: string, password: string, pin?
 
     dispatch(signinTeamSuccess(token, team_id, user));
     dispatch(switchTeam(team_id));
-    NavigationService.navigate('Main');
+
+    dispatch(setDrawerOpen(false));
+    if (isLandscape()) dispatch(closeBottomSheet());
+    else NavigationService.navigate('Main');
     return Promise.resolve();
   } catch (err) {
     dispatch(signinTeamFail());

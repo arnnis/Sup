@@ -8,6 +8,7 @@ import {RootState} from '../../reducers';
 import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 import Touchable from '../../components/Touchable';
 import {NavigationInjectedProps, withNavigation} from 'react-navigation';
+import {goToUserProfile} from '../../actions/members/thunks';
 
 const {width} = Dimensions.get('window');
 
@@ -20,9 +21,7 @@ type Props = ReturnType<typeof mapStateToProps> &
 
 class MemberCell extends PureComponent<Props> {
   handlePress = () =>
-    this.props.navigation.navigate('UserProfile', {
-      userId: this.props.memberId,
-    });
+    this.props.dispatch(goToUserProfile(this.props.memberId, this.props.navigation));
 
   renderAvatar(user: User) {
     return (

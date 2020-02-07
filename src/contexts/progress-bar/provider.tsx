@@ -103,7 +103,7 @@ const ProgressBarProvider: FC = ({children}) => {
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    top: px(30),
+    top: px(60),
     width: '100%',
     marginRight: 'auto',
     marginLeft: 'auto',
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     height: '100%',
-    backgroundColor: 'green',
+    backgroundColor: '#26AD76',
     borderRadius: px(5),
   },
   cancelButton: {},

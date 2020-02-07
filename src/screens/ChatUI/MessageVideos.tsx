@@ -9,6 +9,7 @@ import {RootState} from '../../reducers';
 import {connect} from 'react-redux';
 import px from '../../utils/normalizePixel';
 import {currentTeamTokenSelector} from '../../reducers/teams';
+import {Platform} from '../../utils/platform';
 
 type Props = ReturnType<typeof mapStateToProps> & {
   messageId: string;
@@ -58,7 +59,7 @@ class MessageVideo extends Component<MessageVideoProps> {
   }
 
   async componentWillUnmount() {
-    if (this.video) {
+    if (this.video && Platform.isNative) {
       await this.video.stopAsync();
       await this.video.unloadAsync();
     }
