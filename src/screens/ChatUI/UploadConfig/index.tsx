@@ -93,7 +93,10 @@ const UploadConfig: FC<Props> = () => {
   const closeDialog = () => dispatch(closeUploadDialog());
 
   const handleSendPress = () => {
-    dispatch(uploadFileWeb(uploadFiles[0].origin, ['CMQ9CLVNV']));
+    uploadFiles.forEach(file => {
+      dispatch(uploadFileWeb(file.origin, [params.chatId], params.threadId));
+    });
+
     dispatch(closeUploadDialog());
   };
 

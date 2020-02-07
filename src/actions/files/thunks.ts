@@ -39,7 +39,10 @@ export const getFiles = (channel?: string, fileTypes?: string[], user?: string) 
   }
 };
 
-export const uploadFileWeb = (file: File, channels: string[]) => (dispatch, getState) => {
+export const uploadFileWeb = (file: File, channels: string[], threadId?: string) => (
+  dispatch,
+  getState,
+) => {
   return new Promise((resolve, reject) => {
     const url = `${API_URL}/files.upload`;
     const fd = new FormData();
@@ -47,18 +50,33 @@ export const uploadFileWeb = (file: File, channels: string[]) => (dispatch, getS
     fd.append('file', file);
     fd.append('token', token);
     fd.append('channels', channels.join(','));
-
-    const progressId = ProgressBarService.show({title: `Uploading ${file.name}`});
+    threadId && fd.append('thread_ts', threadId);
 
     const xhr = new XMLHttpRequest();
+
+    const progressId = ProgressBarService.show({
+      title: `Uploading ${file.name}`,
+      onCancel: () => {
+        xhr.abort();
+        ProgressBarService.hide(progressId);
+      },
+    });
+
     xhr.upload.addEventListener(
       'progress',
       e => ProgressBarService.updateProgress(progressId, Math.ceil((e.loaded / e.total) * 100)),
       false,
     );
-    xhr.addEventListener('load', resolve, false);
+    xhr.addEventListener(
+      'load',
+      () => {
+        resolve();
+        ProgressBarService.hide(progressId);
+      },
+      false,
+    );
     xhr.addEventListener('error', reject, false);
-    xhr.addEventListener('abort', reject, false);
+    //xhr.addEventListener('abort', reject, false);
     xhr.open('POST', url, true);
     xhr.send(fd);
   });

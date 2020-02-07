@@ -60,11 +60,11 @@ const ProgressBarProvider: FC = ({children}) => {
   const renderCancelButton = (progress: Progress) => (
     <Touchable
       onPress={() => {
-        progress.onCancel();
+        progress.onCancel && progress.onCancel();
         hide(progress.id);
       }}
       style={styles.cancelButton}>
-      <Text>Cancel</Text>
+      <Text style={styles.cancelButtonTitle}>Cancel</Text>
     </Touchable>
   );
 
@@ -131,8 +131,11 @@ const styles = StyleSheet.create({
     backgroundColor: 'green',
     borderRadius: px(5),
   },
-  cancelButton: {
-    backgroundColor: 'red',
+  cancelButton: {},
+  cancelButtonTitle: {
+    fontWeight: 'bold',
+    color: '#ffff',
+    fontSize: px(13),
   },
 });
 
