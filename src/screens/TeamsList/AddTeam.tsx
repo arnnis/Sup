@@ -1,7 +1,7 @@
 import React, {Component, PureComponent} from 'react';
 import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import px from '../../utils/normalizePixel';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {withNavigation, NavigationInjectedProps} from 'react-navigation';
 import {NavigationService} from '../../navigation/Navigator';
 import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
@@ -23,7 +23,7 @@ class AddTeam extends Component<Props> {
     let {theme} = this.props;
     return (
       <View style={[styles.teamLogo, {borderColor: theme.gray}]}>
-        <MaterialIcons name="add" size={px(27)} color="#4B4F51" />
+        <MaterialCommunityIcons name="plus" size={px(27)} color="#4B4F51" />
       </View>
     );
   }

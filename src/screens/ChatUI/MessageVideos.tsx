@@ -54,7 +54,7 @@ class MessageVideo extends Component<MessageVideoProps> {
   video: Video | null = null;
 
   componentDidMount() {
-    this.generateThumbnail();
+    //this.generateThumbnail();
   }
 
   async componentWillUnmount() {
