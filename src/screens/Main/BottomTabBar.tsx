@@ -11,6 +11,7 @@ import {RootState} from '../../reducers';
 import {connect} from 'react-redux';
 import {meSelector} from '../../reducers/teams';
 import ThemeContext from '../../contexts/theme';
+import isLandscape from '../../utils/stylesheet/isLandscape';
 
 type Props = ReturnType<typeof mapStateToProps>;
 
@@ -48,7 +49,11 @@ const BottomTabbar: FC<Props> = ({currentUser}) => {
 
   return (
     <View
-      style={{flex: 1, borderRightWidth: px(1.45), borderRightColor: theme.backgroundColorDarker2}}>
+      style={{
+        flex: 1,
+        borderRightWidth: isLandscape() ? px(1.45) : 0,
+        borderRightColor: theme.backgroundColorDarker2,
+      }}>
       {_renderBottomTabScene()}
       <View style={styles.container}>
         {bottomTabState.routes.map((tab, index) => {

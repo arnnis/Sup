@@ -47,7 +47,7 @@ class Auth extends Component<Props> {
         <Svg
           style={{width: '100%', marginTop: -px(10)}}
           preserveAspectRatio="xMinYMin meet"
-          viewBox={`0 0 ${isLandscape() ? rem(390) : dims.width} ${rem(150)}`}>
+          viewBox={`0 0 ${isLandscape() ? rem(375) : dims.width} ${rem(120)}`}>
           <Defs>
             <LinearGradient
               id="prefix__a"
@@ -70,7 +70,7 @@ class Auth extends Component<Props> {
           />
           <View style={styles.headerContainer} />
         </Svg>
-        <View style={{...StyleSheet.absoluteFillObject, top: rem(35), alignItems: 'center'}}>
+        <View style={{...StyleSheet.absoluteFillObject, top: rem(10), alignItems: 'center'}}>
           <Text style={styles.appTitle}>Sup</Text>
           <Text style={styles.authMode}>signin</Text>
         </View>
@@ -232,10 +232,7 @@ class Auth extends Component<Props> {
         <StatusBar backgroundColor="#517AC2" animated />
         <Header left="back" style={{elevation: 0}} />
 
-        <ScrollView
-          bounces={false}
-          style={{flex: 1, backgroundColor: theme.backgroundColor}}
-          contentContainerStyle={dynamicStyles.scrollView}>
+        <ScrollView bounces={false} style={{flex: 1, backgroundColor: theme.backgroundColor}}>
           <KeyboardAvoidingView
             style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
             {this.renderHeader()}
@@ -282,16 +279,16 @@ const styles = StyleSheet.create({
   },
   appTitle: {
     color: '#fff',
-    fontSize: px(29),
+    fontSize: rem(29),
     // fontFamily: 'Skia',
     fontWeight: 'bold',
   },
   authMode: {
     color: '#fff',
-    fontSize: px(16),
+    fontSize: rem(16),
     marginTop: px(5),
     // fontFamily: 'Skia',
-    fontWeight: '600',
+    fontWeight: '500',
     marginBottom: px(12.5),
   },
   submitButton: {

@@ -287,7 +287,7 @@ class ChatUI extends Component<Props> {
       </Touchable>
     );
 
-    let right = chatType === 'channel' && (
+    let right = chatType === 'channel' && isLandscape() && (
       <Touchable onPress={this.toggleChannelDetailsPanel} style={{marginRight: px(5)}}>
         <ChannelDetailsIcon
           fill={this.state.isChannelDetailsOpen ? '#fff' : '#D3ABD0'}

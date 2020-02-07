@@ -93,7 +93,7 @@ export const MessageImage: FC<MessageImage> = ({uri, desiredHeight, mainSize, on
       <FastImage
         source={{uri, headers: {Authorization: 'Bearer ' + token}}}
         style={{
-          width: mainSize.width * (desiredHeight / mainSize.height),
+          width: mainSize.width ? mainSize.width * (desiredHeight / mainSize.height) : 'auto',
           maxWidth: '100%',
           height: desiredHeight,
           marginBottom: px(7.5),
