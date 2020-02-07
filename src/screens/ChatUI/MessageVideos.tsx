@@ -92,7 +92,7 @@ class MessageVideo extends Component<MessageVideoProps> {
 
   render() {
     let {token, uri, height, width} = this.props;
-    return this.renderThumbnail(uri, width, height);
+    //return this.renderThumbnail(uri, width, height);
     return (
       <Video
         ref={ref => (this.video = ref)}

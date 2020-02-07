@@ -59,22 +59,3 @@ export const togglePresence = () => async (dispatch, getState) => {
     return err;
   }
 };
-
-export const uploadFileWeb = (file: File, channels: string[]) => (dispatch, getState) => {
-  return new Promise((resolve, reject) => {
-    var url = `${API_URL}/files.upload`;
-    var fd = new FormData();
-    const token = currentTeamTokenSelector(getState());
-    fd.append('file', file);
-    fd.append('token', token);
-    fd.append('channels', channels.join(','));
-
-    var xhr = new XMLHttpRequest();
-    //xhr.upload.addEventListener("progress", progressFunction, false);
-    xhr.addEventListener('load', resolve, false);
-    xhr.addEventListener('error', reject, false);
-    xhr.addEventListener('abort', reject, false);
-    xhr.open('POST', url, true);
-    xhr.send(fd);
-  });
-};

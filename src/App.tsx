@@ -6,6 +6,8 @@ import {PersistGate} from 'redux-persist/integration/react';
 import Navigator, {NavigationService} from './navigation/Navigator';
 import configureStore from './store/configureStore';
 import ThemeProvider from './contexts/theme/provider';
+import ProgressBarProvider from './contexts/progress-bar/provider';
+import {ProgressBarService} from './contexts/progress-bar/provider';
 
 export const {store, persistor} = configureStore();
 
@@ -13,18 +15,23 @@ const App = () => {
   useEffect(() => {
     console.disableYellowBox = true;
     YellowBox.ignoreWarnings(['deprecated', 'Require cycle']);
+    setTimeout(() => {
+      ProgressBarService.show({title: 'hello', onCancel: () => alert('ed')});
+    }, 1000);
   }, []);
 
   return (
     <ReduxProvider store={store}>
       <ThemeProvider>
-        <PersistGate loading={null} persistor={persistor}>
-          <Navigator
-            ref={navigatorRef => {
-              NavigationService.setTopLevelNavigator(navigatorRef);
-            }}
-          />
-        </PersistGate>
+        <ProgressBarProvider>
+          <PersistGate loading={null} persistor={persistor}>
+            <Navigator
+              ref={navigatorRef => {
+                NavigationService.setTopLevelNavigator(navigatorRef);
+              }}
+            />
+          </PersistGate>
+        </ProgressBarProvider>
       </ThemeProvider>
     </ReduxProvider>
   );

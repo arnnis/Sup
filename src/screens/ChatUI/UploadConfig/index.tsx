@@ -21,6 +21,7 @@ import Touchable from '../../../components/Touchable';
 import {useMediaQuery} from 'react-responsive';
 import {closeUploadDialog} from '../../../actions/files';
 import Send from '../Send';
+import {uploadFileWeb} from '../../../actions/files/thunks';
 
 interface NativeFile {
   uri: string;
@@ -91,7 +92,10 @@ const UploadConfig: FC<Props> = () => {
 
   const closeDialog = () => dispatch(closeUploadDialog());
 
-  const handleSendPress = () => {};
+  const handleSendPress = () => {
+    dispatch(uploadFileWeb(uploadFiles[0].origin, ['CMQ9CLVNV']));
+    dispatch(closeUploadDialog());
+  };
 
   const renderFile = (file: UploadFile) => {
     if (file.origin.type.startsWith('image')) return renderImage(file.uri);
@@ -154,21 +158,7 @@ const UploadConfig: FC<Props> = () => {
       <TouchableWithoutFeedback onPress={closeDialog}>
         <View style={StyleSheet.absoluteFill} />
       </TouchableWithoutFeedback>
-      <View
-        pointerEvents="box-none"
-        style={[
-          {
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: 'rgba(0, 0, 0, 0.45)',
-            ...(Platform.isWeb && {backdropFilter: 'blur(2px)'}),
-          },
-        ]}>
+      <View pointerEvents="box-none" style={styles.dialogContainer}>
         <Animateable.View
           ref={containerRef}
           style={{
@@ -202,6 +192,17 @@ const UploadConfig: FC<Props> = () => {
 };
 
 const styles = StyleSheet.create({
+  dialogContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.45)',
+    ...(Platform.isWeb && {backdropFilter: 'blur(2px)'}),
+  },
   container: {
     paddingLeft: px(20),
     paddingRight: px(20),
