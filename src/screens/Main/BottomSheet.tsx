@@ -10,7 +10,6 @@ import {closeBottomSheet} from '../../actions/app';
 import {setCurrentThread} from '../../actions/chats';
 import UploadDialog from '../ChatUI/UploadDialog';
 import ChannelDetails from '../ChannelDetails';
-import {Portal} from 'react-native-paper';
 import {Platform} from '../../utils/platform';
 import Auth from '../Auth';
 

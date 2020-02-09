@@ -7,7 +7,6 @@ import Navigator, {NavigationService} from './navigation/Navigator';
 import configureStore from './store/configureStore';
 import ThemeProvider from './contexts/theme/provider';
 import ProgressBarProvider from './contexts/progress-bar/provider';
-import {ProgressBarService} from './contexts/progress-bar/provider';
 import UploadDialog from './screens/ChatUI/UploadDialog';
 
 export const {store, persistor} = configureStore();
@@ -16,9 +15,9 @@ const App = () => {
   useEffect(() => {
     console.disableYellowBox = true;
     YellowBox.ignoreWarnings(['deprecated', 'Require cycle']);
-    setTimeout(() => {
-      ProgressBarService.show({title: 'hello', onCancel: () => alert('ed')});
-    }, 1000);
+    // setTimeout(() => {
+    //   ProgressBarService.show({title: 'hello', onCancel: () => alert('ed')});
+    // }, 1000);
   }, []);
 
   return (

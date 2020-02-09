@@ -41,7 +41,7 @@ const FileUploadButton: FC = () => {
 
   return (
     <Touchable style={styles.fileButton} onPress={openDocumentPicker}>
-      <MaterialCommunityIcons name="file" size={px(20)} color={theme.foregroundColorMuted65} />
+      <MaterialCommunityIcons name="paperclip" size={px(20)} color={theme.foregroundColorMuted65} />
     </Touchable>
   );
 };
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
   fileButton: {
     marginLeft: 'auto',
     height: '100%',
-    marginBottom: Platform.select({ios: px(7.5), web: px(7.5), default: px(11)}),
+    marginBottom: Platform.select({ios: px(7.5), web: px(9), default: px(11)}),
     marginRight: px(10),
   },
 });

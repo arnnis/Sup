@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginLeft: px(10),
-    paddingBottom: Platform.select({ios: px(7.5), web: px(7.5), default: px(11)}),
+    paddingBottom: Platform.select({ios: px(7.5), web: px(8), default: px(11)}),
   },
 });
 
