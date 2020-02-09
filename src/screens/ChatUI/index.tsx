@@ -43,7 +43,7 @@ class ChatUI extends Component<Props> {
   _scrollNode: any;
 
   state = {
-    isChannelDetailsOpen: false,
+    isChannelDetailsOpen: true,
   };
 
   async componentDidMount() {

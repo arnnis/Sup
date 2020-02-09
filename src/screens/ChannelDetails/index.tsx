@@ -126,17 +126,21 @@ class ChatDetails extends Component<Props> {
     return (
       <Screen>
         {this.renderHeader()}
-        <FlatList
-          data={membersList}
-          renderItem={this.renderMemberCell}
-          ListHeaderComponent={this.renderListHeader()}
-          onEndReached={this.getChannelMembers}
-          onEndReachedThreshold={0.5}
-          contentContainerStyle={[
-            dynamicStyles.scrollViewContent,
-            {borderLeftWidth: px(1.45), borderLeftColor: theme.backgroundColorDarker2},
-          ]}
-        />
+        <View
+          style={{
+            borderLeftWidth: px(1.45),
+            borderLeftColor: theme.backgroundColorDarker2,
+            height: '100%',
+          }}>
+          <FlatList
+            data={membersList}
+            renderItem={this.renderMemberCell}
+            ListHeaderComponent={this.renderListHeader()}
+            onEndReached={this.getChannelMembers}
+            onEndReachedThreshold={0.5}
+            contentContainerStyle={[dynamicStyles.scrollViewContent]}
+          />
+        </View>
       </Screen>
     );
   }
@@ -147,7 +151,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   name: {
-    fontWeight: '700',
     fontSize: px(16),
   },
 });

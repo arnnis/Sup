@@ -207,6 +207,7 @@ const styles = StyleSheet.create({
     paddingRight: px(20),
     paddingTop: px(10),
     paddingBottom: px(20),
+    maxHeight: '90%',
   },
   composerWrapper: {
     height: px(125),

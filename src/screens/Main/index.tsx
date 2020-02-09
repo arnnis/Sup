@@ -49,8 +49,10 @@ const Main: FC = React.memo(() => {
 
   const toggleDrawer = () => {
     if (drawerOpen) {
+      drawerRef.current.closeDrawer();
       dispatch(setDrawerOpen(false));
     } else {
+      drawerRef.current.openDrawer();
       dispatch(setDrawerOpen(true));
     }
   };

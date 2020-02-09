@@ -76,7 +76,7 @@ const config = {
         },
       },
       {
-        test: /\.(gif|jpe?g|png|ttf)$/,
+        test: /\.(gif|jpe?g|png|ttf|otf)$/,
         use: {
           loader: 'file-loader',
           options: {
