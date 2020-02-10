@@ -128,23 +128,28 @@ class Message extends Component<Props> {
 
   renderAnchor(isMe, sameUser) {
     if (sameUser) return null;
-    let {theme} = this.props;
+    let {theme, currentMessage} = this.props;
     return (
       <View
-        style={{
-          width: 0,
-          height: 0,
-          borderTopWidth: 7.5,
-          borderTopColor: 'transparent',
-          borderBottomColor: isMe ? 'purple' : theme.backgroundColor,
-          borderRightWidth: isMe ? 7.5 : 0,
-          borderLeftWidth: isMe ? 0 : 7.5,
-          borderBottomWidth: 7.5,
-          borderRightColor: 'transparent',
-          borderLeftColor: 'transparent',
-          borderTopLeftRadius: isMe ? 7.5 : 0,
-          borderTopRightRadius: isMe ? 0 : 7.5,
-        }}
+        style={[
+          {
+            width: 0,
+            height: 0,
+            borderTopWidth: 7.5,
+            borderTopColor: 'transparent',
+            borderBottomColor: isMe ? 'purple' : theme.backgroundColor,
+            borderRightWidth: isMe ? 7.5 : 0,
+            borderLeftWidth: isMe ? 0 : 7.5,
+            borderBottomWidth: 7.5,
+            borderRightColor: 'transparent',
+            borderLeftColor: 'transparent',
+            borderTopLeftRadius: isMe ? 7.5 : 0,
+            borderTopRightRadius: isMe ? 0 : 7.5,
+          },
+          currentMessage.pending && {
+            opacity: 0.5,
+          },
+        ]}
       />
     );
   }

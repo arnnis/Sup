@@ -92,7 +92,6 @@ class Bubble extends Component<Props> {
             {this.renderName()}
             {this.renderSendDate()}
           </View>
-
           {this.renderMessageText()}
           {this.renderMessageImages()}
           {this.renderMessageVideos()}
