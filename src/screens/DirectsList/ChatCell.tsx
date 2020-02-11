@@ -28,7 +28,6 @@ type Props = ReturnType<typeof mapStateToProps> &
   };
 
 class ChatCell extends PureComponent<Props> {
-  static whyDidYouRender = true;
   componentDidMount() {
     let {chatId} = this.props;
     this.props.dispatch(getChatLastMessage(chatId));
@@ -70,8 +69,6 @@ class ChatCell extends PureComponent<Props> {
   renderLastMessage() {
     let {chatLastMessageStatus, lastMessage, chat, theme} = this.props;
     let messageText = '';
-
-    ///if (!chatLastMessageStatus) return null;
 
     if (!lastMessage && chatLastMessageStatus && chatLastMessageStatus.loading) {
       return (
@@ -141,6 +138,21 @@ class ChatCell extends PureComponent<Props> {
     );
   }
 
+  renderDivider() {
+    let {theme} = this.props;
+    return (
+      <View
+        style={{
+          marginLeft: px(65),
+          marginRight: px(7.5),
+          width: '100%',
+          height: StyleSheet.hairlineWidth,
+          backgroundColor: theme.backgroundColorLess2,
+        }}
+      />
+    );
+  }
+
   render() {
     let {user, theme, selected} = this.props;
     return (
@@ -163,15 +175,7 @@ class ChatCell extends PureComponent<Props> {
             {this.renderDate()}
           </View>
         </Touchable>
-        <View
-          style={{
-            flex: 1,
-            marginLeft: px(65),
-            marginRight: px(7.5),
-            height: StyleSheet.hairlineWidth,
-            backgroundColor: theme.backgroundColorLess2,
-          }}
-        />
+        {this.renderDivider()}
       </>
     );
   }
