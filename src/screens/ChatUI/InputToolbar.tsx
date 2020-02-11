@@ -1,6 +1,5 @@
 import React, {useContext, useState, FC} from 'react';
 import {View, StyleSheet, Platform, Text} from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {EmojiData} from 'emoji-mart';
 
 import px from '../../utils/normalizePixel';
@@ -9,7 +8,6 @@ import Send from './Send';
 import * as RTM from '../../services/rtm';
 import EmojiButton from './EmojiButton';
 import ThemeContext from '../../contexts/theme';
-import Touchable from '../../components/Touchable';
 import FileUploadButton from './FileUploadButton';
 
 type Props = {
@@ -17,7 +15,7 @@ type Props = {
   threadId: string;
 };
 
-const InputToolbar: FC<Props> = ({chatId, threadId}) => {
+const InputToolbar: FC<Props> = React.memo(({chatId, threadId}) => {
   const [text, setText] = useState('');
   const {theme} = useContext(ThemeContext);
 
@@ -44,7 +42,7 @@ const InputToolbar: FC<Props> = ({chatId, threadId}) => {
 
   const renderEmojiButton = () => <EmojiButton onEmojiSelected={handleEmojiSelected} />;
 
-  const renderFileUploadButton = () => <FileUploadButton />;
+  const renderFileUploadButton = () => <FileUploadButton chatId={chatId} threadId={threadId} />;
 
   return (
     <View style={styles.container}>
@@ -58,7 +56,7 @@ const InputToolbar: FC<Props> = ({chatId, threadId}) => {
       </View>
     </View>
   );
-};
+});
 
 const styles = StyleSheet.create({
   container: {},

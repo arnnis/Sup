@@ -6,7 +6,7 @@ interface Props {
   text: string;
 }
 
-const Code: FC<Props> = memo(({text}) => <Text style={styles.text}>{text}</Text>);
+const Code: FC<Props> = React.memo(({text}) => <Text style={styles.text}>{text}</Text>);
 
 const styles = StyleSheet.create({
   text: {

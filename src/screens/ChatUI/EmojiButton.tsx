@@ -13,7 +13,7 @@ interface Props {
   onEmojiSelected(emoji: EmojiData): void;
 }
 
-const EmojiButton: FC<Props> = ({onEmojiSelected}) => {
+const EmojiButton: FC<Props> = React.memo(({onEmojiSelected}) => {
   const [open, setOpen] = useState(false);
   const [coord, setCoord] = useState<{x: number; y: number}>(null);
   const ref = useRef<TouchableOpacity>(null);
@@ -68,7 +68,7 @@ const EmojiButton: FC<Props> = ({onEmojiSelected}) => {
       />
     </>
   );
-};
+});
 
 const styles = StyleSheet.create({
   emojiButton: {

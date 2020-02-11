@@ -10,7 +10,7 @@ interface Props {
   chatId: string;
 }
 
-const ChatMembersCount: FC<Props> = ({chatId, style}) => {
+const ChatMembersCount: FC<Props> = React.memo(({chatId, style}) => {
   const {chat, fullLoad} = useSelector((state: RootState) => ({
     chat: state.entities.chats.byId[chatId],
     fullLoad: state.chats.fullLoad[chatId],
@@ -21,7 +21,7 @@ const ChatMembersCount: FC<Props> = ({chatId, style}) => {
       {fullLoad?.loading ? '...' : fullLoad?.loaded ? `${chat?.num_members}` : ''} members
     </Text>
   );
-};
+});
 
 const styles = StyleSheet.create({
   membersCount: {

@@ -9,18 +9,18 @@ import px from '../../utils/normalizePixel';
 import {Platform} from '../../utils/platform';
 import ThemeContext from '../../contexts/theme';
 import {openUploadDialog} from '../../actions/files';
-import {RootState} from '../../reducers';
 
-const FileUploadButton: FC = () => {
+interface Props {
+  chatId: string;
+  threadId?: string;
+}
+
+const FileUploadButton: FC<Props> = ({chatId, threadId}) => {
   const {theme} = useContext(ThemeContext);
-  const {currentChatId, currentThreadId} = useSelector((state: RootState) => ({
-    currentChatId: state.chats.currentChatId,
-    currentThreadId: state.chats.currentThreadId,
-  }));
   const dispatch = useDispatch();
 
   const openDocumentPicker = async () => {
-    const params = {chatId: currentChatId, threadId: currentThreadId};
+    const params = {chatId, threadId};
     if (Platform.isWeb) {
       const el = document.createElement('input');
       el.type = 'file';

@@ -1,63 +1,67 @@
-import React, {Component} from 'react';
+import React, {FC, useContext} from 'react';
 import {Text, View, StyleSheet, Platform} from 'react-native';
 import Touchable from '../../components/Touchable';
 import {RootState} from '../../reducers';
-import {connect, DispatchProp} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import px from '../../utils/normalizePixel';
 import {MessageReaction} from '../../models';
 import Emoji from './Emoji';
 import {meSelector} from '../../reducers/teams';
-import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 import {removeReactionRequest, addReactionRequest} from '../../actions/messages/thunks';
+import ThemeContext from '../../contexts/theme';
 
-type Props = ReturnType<typeof mapStateToProps> &
-  DispatchProp<any> &
-  ThemeInjectedProps & {
-    messageId: string;
-    hideAvatar: boolean;
+interface Props {
+  messageId: string;
+  hideAvatar: boolean;
+}
+
+const Reactions: FC<Props> = React.memo(({messageId, hideAvatar}) => {
+  const {theme} = useContext(ThemeContext);
+  const {me, isMe, reactions} = useSelector((state: RootState) => {
+    let message = state.entities.messages.byId[messageId];
+    return {
+      me: meSelector(state),
+      isMe: meSelector(state)?.id === message?.user,
+      reactions: message?.reactions,
+    };
+  });
+  const dispatch = useDispatch();
+
+  const handleReactionPress = (reaction: MessageReaction) => {
+    if (reaction.users.includes(me.id)) {
+      dispatch(removeReactionRequest(reaction.name, messageId));
+    } else {
+      dispatch(addReactionRequest(reaction.name, messageId));
+    }
   };
 
-class Reactions extends Component<Props> {
-  handleReactionPress = (reaction: MessageReaction) => {
-    const {messageId, me} = this.props;
-    if (reaction.users.includes(me.id))
-      this.props.dispatch(removeReactionRequest(reaction.name, messageId));
-    else this.props.dispatch(addReactionRequest(reaction.name, messageId));
-  };
-
-  renderReactionCell = (reaction: MessageReaction) => {
-    let {theme, me} = this.props;
+  const renderReactionCell = (reaction: MessageReaction) => {
+    const isSelected = reaction.users.includes(me.id);
     return (
       <Touchable
         style={[
           styles.reaction,
           {backgroundColor: theme.backgroundColor},
-          reaction.users.includes(me.id) && styles.reactionSelected,
+          isSelected && styles.reactionSelected,
         ]}
-        onPress={() => this.handleReactionPress(reaction)}>
+        onPress={() => handleReactionPress(reaction)}>
         <Emoji name={reaction.name} />
         <Text style={[styles.count, {color: theme.foregroundColor}]}>{reaction.count}</Text>
       </Touchable>
     );
   };
 
-  render() {
-    let {isMe, reactions, hideAvatar} = this.props;
-    if (!reactions || !reactions.length) return null;
-    return (
-      <View
-        style={[
-          styles.container,
-          isMe && styles.reactionsRight,
-          !hideAvatar && {paddingHorizontal: px(43)},
-        ]}>
-        {reactions.map(reaction => {
-          return this.renderReactionCell(reaction);
-        })}
-      </View>
-    );
-  }
-}
+  return (
+    <View
+      style={[
+        styles.container,
+        isMe && styles.reactionsRight,
+        !hideAvatar && {paddingHorizontal: px(43)},
+      ]}>
+      {reactions?.map(renderReactionCell)}
+    </View>
+  );
+});
 
 const styles = StyleSheet.create({
   container: {
@@ -104,13 +108,4 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state: RootState, ownProps) => {
-  let message = state.entities.messages.byId[ownProps.messageId];
-  return {
-    me: meSelector(state),
-    isMe: meSelector(state)?.id === message?.user,
-    reactions: message?.reactions,
-  };
-};
-
-export default connect(mapStateToProps)(withTheme(Reactions));
+export default Reactions;
