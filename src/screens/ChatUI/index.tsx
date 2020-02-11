@@ -27,6 +27,7 @@ import UploadDropZoneWeb from './UploadDropZoneWeb';
 import ChannelDetails from '../ChannelDetails';
 import ChannelDetailsIcon from '../../assets/icons/dock-right.svg';
 import {openUploadDialog} from '../../actions/files';
+import {Platform} from '../../utils/platform';
 
 export type ChatType = 'direct' | 'channel' | 'thread';
 
@@ -105,6 +106,7 @@ class ChatUI extends Component<Props> {
 
   // Fixes inverted scroll on web
   registerScrollHandlder() {
+    if (Platform.isNative) return;
     this._scrollNode = this._flatlistRef.getScrollableNode();
     this._scrollNode.addEventListener('wheel', this._invertedWheelEvent);
 

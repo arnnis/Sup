@@ -12,10 +12,9 @@ import {
   Dimensions,
 } from 'react-native';
 import Svg, {Defs, Path, Stop, LinearGradient} from 'react-native-svg';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {DispatchProp, connect} from 'react-redux';
 
 import px from '../../utils/normalizePixel';
-import {DispatchProp, connect} from 'react-redux';
 import {signinTeam} from '../../actions/teams/thunks';
 import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 import rem from '../../utils/stylesheet/rem';
@@ -24,7 +23,6 @@ import Header from '../../components/Header';
 import Screen from '../../components/Screen';
 import withStylesheet, {StyleSheetInjectedProps} from '../../utils/stylesheet/withStylesheet';
 import isLandscape from '../../utils/stylesheet/isLandscape';
-import {closeBottomSheet} from '../../actions/app';
 
 type Props = ThemeInjectedProps & StyleSheetInjectedProps & DispatchProp<any>;
 
@@ -38,10 +36,6 @@ class Auth extends Component<Props> {
     pin: '',
     loggingIn: false,
   };
-
-  // componentDidMount() {
-  //   alert(dims.width);
-  // }
 
   renderTop() {
     return (
@@ -228,24 +222,16 @@ class Auth extends Component<Props> {
   }
 
   renderHeader() {
-    const right = isLandscape() && (
-      <Touchable
-        // style={styles.button}
-        onPress={() => this.props.dispatch(closeBottomSheet())}>
-        <MaterialCommunityIcons name="close" color="#fff" size={px(22)} />
-      </Touchable>
-    );
-
     const left = !isLandscape() ? 'back' : null;
 
-    return <Header left={left} right={right} style={{elevation: 0}} />;
+    return <Header left={left} style={{elevation: 0}} />;
   }
 
   render() {
-    let {theme, dynamicStyles} = this.props;
+    let {theme} = this.props;
     return (
       <Screen>
-        <StatusBar backgroundColor="#517AC2" animated />
+        <StatusBar backgroundColor="#492146" animated />
         {this.renderHeader()}
 
         <ScrollView bounces={false} style={{flex: 1, backgroundColor: theme.backgroundColor}}>
@@ -303,7 +289,6 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: rem(16),
     marginTop: px(5),
-    // fontFamily: 'Skia',
     fontWeight: '500',
     marginBottom: px(12.5),
   },

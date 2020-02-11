@@ -121,6 +121,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     flexDirection: 'row',
     marginBottom: px(5),
+    elevation: 5,
     ...(Platform.isWeb && {boxShadow: '1px 0px 15px 3px rgba(0,0,0,0.23)'}),
   },
   progressTitle: {
