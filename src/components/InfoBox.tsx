@@ -19,7 +19,7 @@ export const InfoBox: FC<Props> = ({children, style, isList = true}) => {
       {isList
         ? React.Children.map(children, (child, i) => {
             const isFirst = i === 0;
-            const isLast = React.Children.count(children) === i + 1;
+            const isLast = React.Children.toArray(children).length === i + 1;
             if (!React.isValidElement(child)) return null;
             // Adds a Divider and padding to each child. ( all child Must have a style propery for parent )
             return (

@@ -70,6 +70,7 @@
     "react-native-vector-icons": "^6.6.0",
     "react-native-web": "^0.11.7",
     "react-navigation": "^4.0.10",
+    "react-navigation-hooks": "^1.1.0",
     "react-navigation-stack": "^1.9.4",
     "react-navigation-tabs": "^2.5.6",
     "react-redux": "^7.1.1",

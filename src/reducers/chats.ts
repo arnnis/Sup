@@ -131,7 +131,7 @@ export const chatsReducer: Reducer<ChatsState, RootAction> = (state = initialSta
         ...state,
         typingsUsers: {
           ...state.typingsUsers,
-          [chatId]: state.typingsUsers[chatId].filter(uId => uId !== userId),
+          [chatId]: (state.typingsUsers[chatId] || []).filter(uId => uId !== userId),
         },
       };
     }

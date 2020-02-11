@@ -1,9 +1,10 @@
-import React, {FC, memo} from 'react';
+import React, {FC, memo, useContext} from 'react';
 import {Text, StyleSheet, TextStyle} from 'react-native';
-import {connect} from 'react-redux';
+import {connect, useSelector} from 'react-redux';
 import {RootState} from '../../reducers';
 import px from '../../utils/normalizePixel';
 import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
+import ThemeContext from '../../contexts/theme';
 
 type Props = ReturnType<typeof mapStateToProps> &
   ThemeInjectedProps & {
@@ -12,11 +13,21 @@ type Props = ReturnType<typeof mapStateToProps> &
     style?: TextStyle;
   };
 
-const Name: FC<Props> = memo(({name, isMe, style, theme}) => (
-  <Text style={[styles.text, {color: isMe ? '#fff' : theme.foregroundColor}, style]}>
-    {name || 'loading...'}
-  </Text>
-));
+const Name: FC<Props> = memo(({userId, isMe, style}) => {
+  const {theme} = useContext(ThemeContext);
+  const {name} = useSelector((state: RootState) => {
+    let user = state.entities.users.byId[userId];
+    return {
+      name: user && (user.profile.display_name_normalized || user.profile.real_name_normalized),
+    };
+  });
+
+  return (
+    <Text style={[styles.text, {color: isMe ? '#fff' : theme.foregroundColor}, style]}>
+      {name || 'loading...'}
+    </Text>
+  );
+});
 
 const styles = StyleSheet.create({
   text: {
