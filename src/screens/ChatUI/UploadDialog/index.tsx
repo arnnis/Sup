@@ -97,14 +97,14 @@ const UploadDialog: FC<Props> = () => {
   };
 
   const renderFile = (file: UploadFile) => {
-    if (file.origin.type.startsWith('image')) return renderImage(file.uri);
+    if (file.origin?.type?.startsWith('image')) return renderImage(file.uri);
 
     const File = withTheme(_File);
     const _messageFile: MessageAttachement = {
       name: file.origin.name,
       url_private_download: file.origin.path,
-      mimetype: file.origin.type,
-      filetype: file.origin.type,
+      mimetype: file.origin?.type ?? '',
+      filetype: file.origin?.type ?? '',
       size: file.origin.size,
     };
 
