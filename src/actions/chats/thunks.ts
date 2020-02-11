@@ -243,5 +243,5 @@ export const goToChannelDetails = (chatId: string) => dispatch => {
   };
 
   if (isLandscape()) dispatch(openBottomSheet('ChannelDetails', params));
-  else NavigationService.navigate('ChatUI', params);
+  else NavigationService.navigate('ChannelDetails', params);
 };

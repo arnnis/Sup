@@ -25,9 +25,9 @@ const UploadDropZoneWeb: FC<Props> = ({children, onDrop, placeholder, style}) =>
     </View>
   );
 
-  if (Platform.isNative) return <View style={{flex: 1}}>{children}</View>;
+  const renderNative = () => children;
 
-  return (
+  const renderWeb = () => (
     <Dropzone onDrop={onDrop}>
       {({getRootProps, _, isDragActive}) => (
         <div
@@ -45,6 +45,8 @@ const UploadDropZoneWeb: FC<Props> = ({children, onDrop, placeholder, style}) =>
       )}
     </Dropzone>
   );
+
+  return <View style={{flex: 1}}>{Platform.isNative ? renderNative() : renderWeb()}</View>;
 };
 
 const styles = StyleSheet.create({

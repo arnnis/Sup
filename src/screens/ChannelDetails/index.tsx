@@ -110,14 +110,17 @@ class ChatDetails extends Component<Props> {
   };
 
   renderHeader() {
-    const right = (
+    const right = isLandscape() && (
       <Touchable
         // style={styles.button}
         onPress={this.props.onDismiss}>
         <MaterialCommunityIcons name="close" color="#fff" size={px(22)} />
       </Touchable>
     );
-    return <Header left={!isLandscape() ? 'back' : null} center="Channel Info" right={right} />;
+
+    const left = !isLandscape() ? 'back' : null;
+
+    return <Header left={left} center="Channel Info" right={right} />;
   }
 
   render() {

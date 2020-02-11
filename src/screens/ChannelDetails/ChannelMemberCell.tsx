@@ -73,7 +73,7 @@ class ChannelMemberCell extends PureComponent<Props> {
             height: '100%',
             justifyContent: 'center',
             marginLeft: px(15),
-            borderBottomWidth: StyleSheet.hairlineWidth,
+            borderBottomWidth: isLast ? 0 : StyleSheet.hairlineWidth,
             borderBottomColor: theme.backgroundColorLess2,
           }}>
           {this.renderName(member)}
