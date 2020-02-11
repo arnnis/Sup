@@ -321,21 +321,20 @@ class ChatUI extends Component<Props> {
     if (!currentChat) return null;
 
     return (
-      <ImageBackground
-        style={[styles.container, {backgroundColor: theme.backgroundColorDarker1}]}
-        resizeMode="cover"
-        source={theme.isDark ? undefined : require('../../assets/img/fl1.jpg')}>
-        <View style={{flex: 1, flexDirection: 'row'}}>
-          <Screen transparent>
-            <UploadDropZoneWeb onDrop={this.handleFileDropWeb}>
-              {this.renderHeader()}
-              {this.renderList()}
-              {this.renderInputToolbar()}
-            </UploadDropZoneWeb>
-          </Screen>
+      <Screen>
+        <ImageBackground
+          style={[styles.container, {backgroundColor: theme.backgroundColorDarker1}]}
+          resizeMode="cover"
+          source={theme.isDark ? undefined : require('../../assets/img/fl1.jpg')}>
+          <UploadDropZoneWeb onDrop={this.handleFileDropWeb}>
+            {this.renderHeader()}
+            {this.renderList()}
+            {this.renderInputToolbar()}
+          </UploadDropZoneWeb>
+
           {this.renderChannelDetails()}
-        </View>
-      </ImageBackground>
+        </ImageBackground>
+      </Screen>
     );
   }
 }
@@ -343,7 +342,7 @@ class ChatUI extends Component<Props> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'rgb(229, 221, 213)',
+    flexDirection: 'row',
   },
   chatName: {
     color: '#fff',

@@ -1,10 +1,9 @@
-import React, {PureComponent, Component} from 'react';
+import React, {PureComponent} from 'react';
 import {connect, DispatchProp} from 'react-redux';
-import {View, Text, StyleSheet, ActivityIndicator} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import AnimatedEllipsis from 'react-native-animated-ellipsis';
 import px from '../../utils/normalizePixel';
-import {Chat, User} from '../../models';
-import Avatar from '../../components/Avatar';
+import {User} from '../../models';
 import {RootState} from '../../reducers';
 import {getChatLastMessage} from '../../actions/chats/thunks';
 import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';

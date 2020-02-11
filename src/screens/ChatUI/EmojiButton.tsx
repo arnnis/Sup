@@ -31,7 +31,7 @@ const EmojiButton: FC<Props> = ({onEmojiSelected}) => {
       // TODO: focus on input
     }
 
-    if (isLandscape()) {
+    if (isLandscape() || !isLandscape()) {
       let {px, py} = await measureCoord();
       setCoord({x: px, y: py});
       setOpen(!open);
