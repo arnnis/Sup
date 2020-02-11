@@ -12,6 +12,7 @@ import {
   Dimensions,
 } from 'react-native';
 import Svg, {Defs, Path, Stop, LinearGradient} from 'react-native-svg';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import px from '../../utils/normalizePixel';
 import {DispatchProp, connect} from 'react-redux';
@@ -23,6 +24,7 @@ import Header from '../../components/Header';
 import Screen from '../../components/Screen';
 import withStylesheet, {StyleSheetInjectedProps} from '../../utils/stylesheet/withStylesheet';
 import isLandscape from '../../utils/stylesheet/isLandscape';
+import {closeBottomSheet} from '../../actions/app';
 
 type Props = ThemeInjectedProps & StyleSheetInjectedProps & DispatchProp<any>;
 
@@ -41,7 +43,7 @@ class Auth extends Component<Props> {
   //   alert(dims.width);
   // }
 
-  renderHeader() {
+  renderTop() {
     return (
       <>
         <Svg
@@ -225,17 +227,31 @@ class Auth extends Component<Props> {
     );
   }
 
+  renderHeader() {
+    const right = isLandscape() && (
+      <Touchable
+        // style={styles.button}
+        onPress={() => this.props.dispatch(closeBottomSheet())}>
+        <MaterialCommunityIcons name="close" color="#fff" size={px(22)} />
+      </Touchable>
+    );
+
+    const left = !isLandscape() ? 'back' : null;
+
+    return <Header left={left} right={right} style={{elevation: 0}} />;
+  }
+
   render() {
     let {theme, dynamicStyles} = this.props;
     return (
       <Screen>
         <StatusBar backgroundColor="#517AC2" animated />
-        <Header left="back" style={{elevation: 0}} />
+        {this.renderHeader()}
 
         <ScrollView bounces={false} style={{flex: 1, backgroundColor: theme.backgroundColor}}>
           <KeyboardAvoidingView
             style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
-            {this.renderHeader()}
+            {this.renderTop()}
             {this.renderDomainInput()}
             {this.renderDivider()}
             {this.renderInput('email', 'Email', 'Enter your email', (email: string) =>

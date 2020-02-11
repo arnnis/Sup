@@ -1,9 +1,4 @@
-import {
-  createAppContainer,
-  NavigationNavigator,
-  NavigationNavigatorProps,
-  NavigationContainer,
-} from 'react-navigation';
+import {createAppContainer, NavigationContainer} from 'react-navigation';
 import createNativeStackNavigator from 'react-native-screens/createNativeStackNavigator';
 import {createBrowserApp} from '@react-navigation/web';
 import {NavigationActions} from 'react-navigation';
@@ -34,6 +29,7 @@ const AppStack = _createStackNavigator(
     SelectTheme,
   },
   {
+    mode: 'modal',
     headerMode: 'none',
     initialRouteName: 'Main',
     cardStyle: {
