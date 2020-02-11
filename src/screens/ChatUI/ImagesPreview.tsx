@@ -17,7 +17,6 @@ interface Props {
 }
 
 const ImagesPreview: FC<Props> = ({open, images, onDismiss, initalIndex}) => {
-  const [index, setIndex] = useState(initalIndex);
   const token = useSelector(currentTeamTokenSelector);
 
   const normalizeImages = () =>
@@ -93,7 +92,7 @@ const ImagesPreview: FC<Props> = ({open, images, onDismiss, initalIndex}) => {
         loadingRender={renderLoading}
         enableSwipeDown
         onSwipeDown={onDismiss}
-        index={index}
+        index={initalIndex}
         renderArrowRight={renderNextButton}
         renderArrowLeft={renderPreviousButton}
         renderIndicator={renderIndicator}

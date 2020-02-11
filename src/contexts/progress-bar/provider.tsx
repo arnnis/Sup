@@ -76,17 +76,13 @@ const ProgressBarProvider: FC = ({children}) => {
 
     return (
       <View style={[styles.progressBarContainer, {width}]}>
-        <View
-          style={[
-            styles.progressIndicator,
-            {width: indicatorWidth, backgroundColor: theme.backgroundColor},
-          ]}
-        />
-        <View>
+        <View style={[styles.progressIndicator, {width: indicatorWidth}]} />
+        <View style={{flex: 1}}>
           <Text style={styles.progressTitle} numberOfLines={1}>
             {progress.title}
           </Text>
         </View>
+
         {renderCancelButton(progress)}
       </View>
     );
@@ -100,7 +96,9 @@ const ProgressBarProvider: FC = ({children}) => {
   return (
     <ProgressBarContext.Provider value={value}>
       {children}
-      <View style={styles.container}>{progressList.map(renderProgressBar)}</View>
+      <View style={styles.container} pointerEvents="box-none">
+        {progressList.map(renderProgressBar)}
+      </View>
     </ProgressBarContext.Provider>
   );
 };
@@ -113,6 +111,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   progressBarContainer: {
+    flex: 1,
     marginHorizontal: 'auto',
     backgroundColor: '#492146',
     paddingVertical: px(3),
@@ -121,7 +120,6 @@ const styles = StyleSheet.create({
     borderColor: '#fff',
     borderWidth: 1,
     flexDirection: 'row',
-    justifyContent: 'space-between',
     marginBottom: px(5),
     ...(Platform.isWeb && {boxShadow: '1px 0px 15px 3px rgba(0,0,0,0.23)'}),
   },
@@ -137,7 +135,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#26AD76',
     borderRadius: px(5),
   },
-  cancelButton: {},
+  cancelButton: {
+    marginLeft: 'auto',
+  },
   cancelButtonTitle: {
     fontWeight: 'bold',
     color: '#ffff',
