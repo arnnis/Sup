@@ -131,10 +131,11 @@ const config = {
         to: '.',
       },
     ]),
-    new WorkboxPlugin.GenerateSW({
-      clientsClaim: true,
-      skipWaiting: true,
-    }),
+    !isProd &&
+      new WorkboxPlugin.GenerateSW({
+        clientsClaim: true,
+        skipWaiting: true,
+      }),
     !isProd && new ReactRefreshPlugin(),
   ].filter(Boolean),
 

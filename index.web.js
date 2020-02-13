@@ -20,7 +20,7 @@ if (module.hot) {
 }
 
 // Register service worker
-if ('serviceWorker' in navigator) {
+if ('serviceWorker' in navigator && !__DEV__) {
   window.addEventListener('load', () => {
     navigator.serviceWorker
       .register('/service-worker.js')
