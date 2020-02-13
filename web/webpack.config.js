@@ -4,6 +4,7 @@ const HtmlPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const ReactRefreshPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+const WorkboxPlugin = require('workbox-webpack-plugin');
 const chalk = require('chalk');
 
 const appDirectory = path.resolve(__dirname, '../');
@@ -121,7 +122,19 @@ const config = {
         from: path.resolve(__dirname + '/index.css'),
         to: '.',
       },
+      {
+        from: path.resolve(__dirname + '/images'),
+        to: './images',
+      },
+      {
+        from: path.resolve(__dirname + '/manifest.json'),
+        to: '.',
+      },
     ]),
+    new WorkboxPlugin.GenerateSW({
+      clientsClaim: true,
+      skipWaiting: true,
+    }),
     !isProd && new ReactRefreshPlugin(),
   ].filter(Boolean),
 
