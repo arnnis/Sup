@@ -28,6 +28,7 @@ import {currentTeamSelector} from '../../reducers/teams';
 import isLandscape from '../../utils/stylesheet/isLandscape';
 import {closeBottomSheet, setDrawerOpen} from '../app';
 import {Platform} from '../../utils/platform';
+import AlertWeb from '../../utils/AlertWeb';
 
 export const signinTeam = (domain: string, email: string, password: string, pin?: string) => async (
   dispatch,
@@ -143,35 +144,27 @@ export const switchTeam = (teamId: string) => dispatch => {
 export const logoutFromCurrentTeam = () => (dispatch, getState) => {
   let state: RootState = getState();
   const currentTeamName = currentTeamSelector(state)?.name;
-  if (Platform.isNative) {
-    Alert.alert(
-      'Logout from ' + currentTeamName,
-      'Do you want to logout?',
-      [
-        {
-          text: 'Cancel',
-        },
-        {
-          text: 'Logout',
-          onPress: () => {
-            let currentTeam = state.teams.currentTeam;
-            _closeSocket();
-            return dispatch(logout(currentTeam));
-          },
-        },
-      ],
+  const _Alert = Platform.isNative ? Alert : AlertWeb;
+  _Alert.alert(
+    'Logout from ' + currentTeamName,
+    'Do you want to logout?',
+    [
       {
-        cancelable: true,
+        text: 'Cancel',
       },
-    );
-  } else {
-    const res = window.confirm(`Do you want to logout from ${currentTeamName}`);
-    if (res) {
-      let currentTeam = state.teams.currentTeam;
-      _closeSocket();
-      return dispatch(logout(currentTeam));
-    }
-  }
+      {
+        text: 'Logout',
+        onPress: () => {
+          let currentTeam = state.teams.currentTeam;
+          _closeSocket();
+          return dispatch(logout(currentTeam));
+        },
+      },
+    ],
+    {
+      cancelable: true,
+    },
+  );
 };
 
 export const getEmojis = () => async dispatch => {
