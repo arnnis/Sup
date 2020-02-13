@@ -6,16 +6,11 @@ import Touchable from '../../components/Touchable';
 import ScrollableTabView from './ScrollableTabBar';
 import MembersList from '../MembersList';
 import FilesList from '../FilesList';
-import UserProfile from '../UserProfile';
-import {RootState} from '../../reducers';
-import {connect} from 'react-redux';
-import {meSelector} from '../../reducers/teams';
 import ThemeContext from '../../contexts/theme';
 import isLandscape from '../../utils/stylesheet/isLandscape';
+import Settings from '../Settings';
 
-type Props = ReturnType<typeof mapStateToProps>;
-
-const BottomTabbar: FC<Props> = ({currentUser}) => {
+const BottomTabbar: FC = () => {
   let [bottomTabState, setBottomTabState] = useState({
     index: 0,
     routes: [
@@ -39,7 +34,7 @@ const BottomTabbar: FC<Props> = ({currentUser}) => {
       case 2:
         return <FilesList />;
       case 3:
-        return <UserProfile userId={currentUser && currentUser.id} isMe />;
+        return <Settings />;
     }
   };
 
@@ -109,8 +104,4 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state: RootState) => ({
-  currentUser: meSelector(state),
-});
-
-export default connect(mapStateToProps)(BottomTabbar);
+export default BottomTabbar;
