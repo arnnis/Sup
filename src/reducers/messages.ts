@@ -1,5 +1,7 @@
 import {Reducer} from 'redux';
 import {RootAction} from '../actions';
+import {createSelector} from 'reselect';
+import {Message} from '../models';
 
 export type MessagesState = Readonly<{
   list: {[chatIdOrThreadId: string]: Array<string | number>}; // Number for pending message local fingerprint, string for regular messages
@@ -143,3 +145,12 @@ export const messagesReducer: Reducer<MessagesState, RootAction> = (
       return state;
   }
 };
+
+export const messageFilesSelector = createSelector(
+  (message: Message) => message,
+  message =>
+    message.files &&
+    message.files.filter(
+      file => !file.mimetype.startsWith('image') && !file.mimetype.startsWith('video'),
+    ),
+);

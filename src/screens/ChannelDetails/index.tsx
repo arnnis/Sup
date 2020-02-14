@@ -124,7 +124,7 @@ class ChatDetails extends Component<Props> {
   }
 
   render() {
-    let {theme, membersList, dynamicStyles} = this.props;
+    let {theme, membersList} = this.props;
 
     return (
       <Screen>
@@ -141,7 +141,6 @@ class ChatDetails extends Component<Props> {
             ListHeaderComponent={this.renderListHeader()}
             onEndReached={this.getChannelMembers}
             onEndReachedThreshold={0.5}
-            contentContainerStyle={[dynamicStyles.scrollViewContent]}
           />
         </View>
       </Screen>
@@ -157,19 +156,6 @@ const styles = StyleSheet.create({
     fontSize: px(16),
   },
 });
-
-const dynamicStyles = {
-  scrollViewContent: {
-    width: '100%',
-    media: [
-      {orientation: 'landscape'},
-      {
-        width: '100%',
-        marginHorizontal: '0%',
-      },
-    ],
-  },
-};
 
 const mapStateToProps = (state: RootState, ownProps) => {
   let chatId = ownProps.chatId ?? ownProps?.navigation.getParam('chatId');
@@ -187,4 +173,4 @@ const mapStateToProps = (state: RootState, ownProps) => {
   };
 };
 
-export default connect(mapStateToProps)(withTheme(withStylesheet(dynamicStyles)(ChatDetails)));
+export default connect(mapStateToProps)(withTheme(ChatDetails));

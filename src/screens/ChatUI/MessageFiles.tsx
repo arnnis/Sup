@@ -1,204 +1,166 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {createSelector} from 'reselect';
+import React, {Component, useState, FC, useEffect, useRef, useContext} from 'react';
+import {View, StyleSheet, Text, ViewStyle, TextStyle} from 'react-native';
+import {useSelector} from 'react-redux';
 import {FileSystem as fs} from 'react-native-unimodules';
 import {Audio} from 'expo-av';
 import bytes from 'bytes';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import electronDL from 'electron-dl';
-import {BrowserWindow, app} from 'electron';
 
 import {RootState} from '../../reducers';
-import {Message, MessageAttachement} from '../../models';
-import {View, StyleSheet, Text, ToastAndroid, ViewStyle, TextStyle} from 'react-native';
+import {MessageAttachement} from '../../models';
 import px from '../../utils/normalizePixel';
 import Touchable from '../../components/Touchable';
 import {currentTeamTokenSelector, meSelector} from '../../reducers/teams';
-import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
-import {Platform} from '../../utils/platform';
+import ThemeContext from '../../contexts/theme';
+import {messageFilesSelector} from '../../reducers/messages';
 
-type Props = ReturnType<typeof mapStateToProps> &
-  ThemeInjectedProps & {
-    messageId: string;
-  };
-// For all files (including sounds) except videos and images.
-class MessageFilesList extends Component<Props> {
-  render() {
-    let {message, files, isMe} = this.props;
-    if (!message || !files || files.length === 0) return null;
-    let _File = withTheme(File);
-    return (
-      <View style={styles.container}>
-        {files.map(file => (
-          <_File file={file} token={this.props.token} isMe={isMe} />
-        ))}
-      </View>
-    );
-  }
+interface Props {
+  messageId: string;
 }
+// For all files (including sounds) except videos and images.
+const MessageFilesList: FC<Props> = ({messageId}) => {
+  const {files, isMe} = useSelector((state: RootState) => {
+    let message = state.entities.messages.byId[messageId];
+    return {
+      files: messageFilesSelector(message),
+      isMe: meSelector(state)?.id === message.user,
+    };
+  });
 
-type FileProps = ThemeInjectedProps & {
-  token: string;
+  const renderFile = (file: MessageAttachement) => <File file={file} isMe={isMe} />;
+
+  return files ? <View style={styles.container}>{files.map(renderFile)}</View> : null;
+};
+interface FileProps {
   file: MessageAttachement;
   containerStyle?: ViewStyle;
   textStyle?: TextStyle;
   isMe?: boolean;
-};
-
-interface FileState {
-  uri: string;
-  playing: boolean;
-  downloading: boolean;
-  downloadJobId: number | undefined;
-  downloadProgress: number;
-  localPath: string;
-  isSound: boolean;
 }
 
-export class File extends Component<FileProps, FileState> {
-  constructor(props: FileProps) {
-    super(props);
-    this.state = {
-      uri: props.file.url_private,
-      playing: false,
-      downloading: false,
-      downloadJobId: undefined,
-      downloadProgress: 0,
-      localPath: '',
-      isSound: props.file.mimetype.startsWith('audio'),
+export const File: FC<FileProps> = ({file, containerStyle, textStyle, isMe}) => {
+  const [url] = useState<string>(file.url_private);
+  const {theme} = useContext(ThemeContext);
+  const token = useSelector(currentTeamTokenSelector);
+  const [playing, setPlaying] = useState(false);
+  const [downloading, setDownloading] = useState<boolean>(false);
+  const [downloadProgress, setDownloadProgress] = useState<number>(0);
+  const [localPath, setLocalPath] = useState<string>(null);
+  const [isSound] = useState<boolean>(file.mimetype.startsWith('audio'));
+  const downloadRef = useRef<fs.DownloadResumable>(null);
+  const soundRef = useRef<Audio.Sound>(null);
+
+  useEffect(() => {
+    return () => {
+      soundRef.current && soundRef.current.unloadAsync();
+      stopDownload();
     };
-  }
+  });
 
-  download: fs.DownloadResumable = null;
-  sound: Audio.Sound = null;
-
-  componentWillUnmount() {
-    this.sound && this.sound.unloadAsync();
-    this.stopDownload();
-  }
-
-  handleActionButtonPress = async () => {
-    let {file} = this.props;
-    let {isSound, uri, downloading} = this.state;
-
-    if (Platform.isElectron) {
-      this.setState({downloading: true});
-      const win = BrowserWindow.getFocusedWindow();
-      await electronDL.download(win, uri, {
-        onProgress: ({totalBytes, transferredBytes}) =>
-          this.handleDownloadProgress(totalBytes, transferredBytes),
-        directory: app.getPath('downloads') + '/Sup/',
-      });
-      this.setState({downloading: false});
-      return;
-    }
-
-    if (downloading) {
-      this.stopDownload();
-    } else if (isSound) {
-      // Play and Pause
-      if (this.sound) {
-        let playbackStatus = await this.sound.getStatusAsync();
-        if (!playbackStatus.isLoaded) return;
-        if (playbackStatus.isPlaying) {
-          this.sound.pauseAsync();
-        } else {
-          this.sound.playAsync();
-        }
-      } else {
-        let localPath = await this.downloadFileNative(uri);
-        let {sound} = await Audio.Sound.createAsync({uri: localPath}, {shouldPlay: false});
-        this.sound = sound;
-
-        await this.sound.playAsync();
-        this.setState({playing: true});
-
-        this.sound.setOnPlaybackStatusUpdate(playbackStatus => {
-          if (!playbackStatus.isLoaded) {
-            // Update your UI for the unloaded state
-            if (playbackStatus.error) {
-              console.log(`Encountered a fatal error during playback: ${playbackStatus.error}`);
-              // Send Expo team the error on Slack or the forums so we can help you debug!
-            }
-          } else {
-            if (playbackStatus.isPlaying) {
-              this.setState({playing: true});
-            } else {
-              this.setState({playing: false});
-            }
-
-            if (playbackStatus.didJustFinish && !playbackStatus.isLooping) {
-              this.setState({playing: false});
-            }
-          }
-        });
-      }
+  const handleActionButtonPress = () => {
+    if (isSound) {
+      playSound();
     } else {
-      await this.downloadFileNative(uri);
-      Platform.OS === 'android' &&
-        ToastAndroid.show(file.name + ' downloaded successfully', ToastAndroid.SHORT);
+      downloadFile();
     }
   };
 
-  handleDownloadProgress = (totalSizeBytes: number, progressBytes: number) =>
-    this.setState({
-      downloadProgress: (totalSizeBytes / progressBytes) * 100,
-    });
+  const handleDownloadProgressUpdate = (totalSizeBytes: number, progressBytes: number) => {
+    setDownloadProgress((totalSizeBytes / progressBytes) * 100);
+  };
 
-  downloadFileNative = async (url: string) => {
-    if (this.state.downloading) return;
-    if (this.state.localPath) return this.state.localPath;
+  const downloadFile = async () => {
+    if (downloading) return false;
+    if (localPath) return localPath;
 
     const filename = url.split('/').pop();
-    let localPath = `${fs.documentDirectory}/${filename}`;
+    let _localPath = `${fs.documentDirectory}/${filename}`;
     // let {exists} = await fs.getInfoAsync(localPath);
     // if (exists) return localPath;
 
-    this.setState({downloading: true});
+    setDownloading(false);
 
-    this.download = fs.createDownloadResumable(
+    downloadRef.current = fs.createDownloadResumable(
       url,
-      localPath,
+      _localPath,
       {
         headers: {
-          Authorization: 'Bearer ' + this.props.token,
+          Authorization: 'Bearer ' + token,
         },
       },
       progress =>
-        this.handleDownloadProgress(progress.totalBytesWritten, progress.totalBytesExpectedToWrite),
+        handleDownloadProgressUpdate(
+          progress.totalBytesWritten,
+          progress.totalBytesExpectedToWrite,
+        ),
     );
 
-    await this.download.downloadAsync();
-    // console.log((await fs.readFile(localPath)) || 'empty');
-    await this.setState({localPath, downloading: false});
-    return localPath;
+    await downloadRef.current.downloadAsync();
+
+    setLocalPath(_localPath);
+    setDownloading(false);
+    return _localPath;
   };
 
-  stopDownload() {
-    if (this.state.downloading) {
-      this.download && this.download.pauseAsync();
+  const playSound = async () => {
+    // Sound already initialized
+    if (soundRef.current) {
+      let playbackStatus = await soundRef.current.getStatusAsync();
+      if (!playbackStatus.isLoaded) return;
+      if (playbackStatus.isPlaying) {
+        this.sound.pauseAsync();
+      } else {
+        this.sound.playAsync();
+      }
+    } else {
+      let localPath = await downloadFile();
+      if (!localPath) return false;
+      let {sound} = await Audio.Sound.createAsync({uri: localPath}, {shouldPlay: false});
+      soundRef.current = sound;
+
+      await soundRef.current.playAsync();
+      setPlaying(true);
+
+      soundRef.current.setOnPlaybackStatusUpdate(playbackStatus => {
+        if (!playbackStatus.isLoaded) {
+          // Update your UI for the unloaded state
+          if (playbackStatus.error) {
+            console.log(`Encountered a fatal error during playback: ${playbackStatus.error}`);
+            // Send Expo team the error on Slack or the forums so we can help you debug!
+          }
+        } else {
+          if (playbackStatus.isPlaying) {
+            setPlaying(true);
+          } else {
+            setPlaying(false);
+          }
+
+          if (playbackStatus.didJustFinish && !playbackStatus.isLooping) {
+            setPlaying(false);
+          }
+        }
+      });
     }
+  };
 
-    this.setState({downloading: false, downloadProgress: 0});
-  }
+  const stopDownload = () => {
+    if (downloading) {
+      downloadRef.current && downloadRef.current.pauseAsync();
+    }
+    downloadRef.current = null;
+    setDownloading(false);
+    setDownloadProgress(0);
+  };
 
-  renderPlayIcon() {
-    let {isMe} = this.props;
-    return <MaterialCommunityIcons name="play" size={px(26)} color={isMe ? 'purple' : '#fff'} />;
-  }
+  const renderDownloadProgress = () => {
+    return (
+      <Text style={[styles.downloadProgress, this.props.isMe && {color: 'purple'}]}>
+        {downloadProgress.toFixed(1) + '%'}
+      </Text>
+    );
+  };
 
-  renderPauseIcon() {
-    let {isMe} = this.props;
-    return <MaterialCommunityIcons name="pause" size={px(26)} color={isMe ? 'purple' : '#fff'} />;
-  }
-
-  renderFileIcon() {
-    let {isMe} = this.props;
-    return <MaterialCommunityIcons name="file" size={px(22)} color={isMe ? 'purple' : '#fff'} />;
-  }
-
-  renderStopDownloadIcon() {
-    let {isMe} = this.props;
+  const renderStopDownloadIcon = () => {
     return (
       <MaterialCommunityIcons
         name="close"
@@ -207,61 +169,50 @@ export class File extends Component<FileProps, FileState> {
         style={{marginTop: px(5)}}
       />
     );
-  }
+  };
 
-  renderActionButton() {
-    let {playing, isSound, downloading} = this.state;
-    let {isMe} = this.props;
-    return (
-      <>
-        <Touchable
-          style={[styles.actionButton, isMe && {backgroundColor: '#fff'}]}
-          onPress={this.handleActionButtonPress}>
-          {downloading ? (
-            <>
-              {this.renderStopDownloadIcon()}
-              {this.renderDownloadProgress()}
-            </>
-          ) : isSound ? (
-            playing ? (
-              this.renderPauseIcon()
-            ) : (
-              this.renderPlayIcon()
-            )
-          ) : (
-            this.renderFileIcon()
-          )}
-        </Touchable>
-      </>
-    );
-  }
+  const renderPlayIcon = () => (
+    <MaterialCommunityIcons name="play" size={px(26)} color={isMe ? 'purple' : '#fff'} />
+  );
 
-  renderDownloadProgress() {
-    return (
-      <Text style={[styles.downloadProgress, this.props.isMe && {color: 'purple'}]}>
-        {this.state.downloadProgress.toFixed(1) + '%'}
-      </Text>
-    );
-  }
+  const renderPauseIcon = () => (
+    <MaterialCommunityIcons name="pause" size={px(26)} color={isMe ? 'purple' : '#fff'} />
+  );
 
-  renderName() {
-    let {file, textStyle, theme, isMe} = this.props;
-    return (
-      <Text
-        style={[
-          styles.fileName,
-          {color: theme.foregroundColor},
-          isMe && {color: '#fff'},
-          textStyle,
-        ]}
-        numberOfLines={2}>
-        {file.name}
-      </Text>
-    );
-  }
+  const renderFileIcon = () => (
+    <MaterialCommunityIcons name="file" size={px(22)} color={isMe ? 'purple' : '#fff'} />
+  );
 
-  renderFileSizeAndType() {
-    let {file, textStyle, theme, isMe} = this.props;
+  const renderActionButton = () => (
+    <Touchable
+      style={[styles.actionButton, isMe && {backgroundColor: '#fff'}]}
+      onPress={handleActionButtonPress}>
+      {downloading ? (
+        <>
+          {renderStopDownloadIcon()}
+          {renderDownloadProgress()}
+        </>
+      ) : isSound ? (
+        playing ? (
+          renderPauseIcon()
+        ) : (
+          renderPlayIcon()
+        )
+      ) : (
+        renderFileIcon()
+      )}
+    </Touchable>
+  );
+
+  const renderName = () => (
+    <Text
+      style={[styles.fileName, {color: theme.foregroundColor}, isMe && {color: '#fff'}, textStyle]}
+      numberOfLines={2}>
+      {file.name}
+    </Text>
+  );
+
+  const renderFileSizeAndType = () => {
     return (
       <Text
         style={[
@@ -273,20 +224,18 @@ export class File extends Component<FileProps, FileState> {
         {bytes(file.size)} {file.filetype.toUpperCase()}
       </Text>
     );
-  }
+  };
 
-  render() {
-    return (
-      <View style={[styles.file, this.props.containerStyle]}>
-        {this.renderActionButton()}
-        <View style={styles.fileInfosWrapper}>
-          {this.renderName()}
-          {this.renderFileSizeAndType()}
-        </View>
+  return (
+    <View style={[styles.file, containerStyle]}>
+      {renderActionButton()}
+      <View style={styles.fileInfosWrapper}>
+        {renderName()}
+        {renderFileSizeAndType()}
       </View>
-    );
-  }
-}
+    </View>
+  );
+};
 
 const ACTION_BUTTON_SIZE = px(45);
 
@@ -331,23 +280,4 @@ const styles = StyleSheet.create({
   },
 });
 
-const messageFilesSelector = createSelector(
-  (message: Message) => message,
-  message =>
-    message.files &&
-    message.files.filter(
-      file => !file.mimetype.startsWith('image') && !file.mimetype.startsWith('video'),
-    ),
-);
-
-const mapStateToProps = (state: RootState, ownProps) => {
-  let message = state.entities.messages.byId[ownProps.messageId];
-  return {
-    message,
-    files: messageFilesSelector(message),
-    token: currentTeamTokenSelector(state),
-    isMe: meSelector(state)?.id === message.user,
-  };
-};
-
-export default connect(mapStateToProps)(withTheme(MessageFilesList));
+export default MessageFilesList;
