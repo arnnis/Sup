@@ -325,7 +325,7 @@ class ChatUI extends Component<Props> {
     return (
       <Screen>
         <ImageBackground
-          style={[styles.container, {backgroundColor: theme.backgroundColorMore1}]}
+          style={[styles.container, {backgroundColor: theme.backgroundColorDarker1}]}
           resizeMode="repeat"
           // TODO: change background image feature
           // source={theme.isDark ? undefined : require('../../assets/img/wa1.png')}
