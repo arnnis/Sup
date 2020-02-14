@@ -51,12 +51,15 @@ class ChatDetails extends Component<Props> {
   }
 
   renderMembersCount() {
-    let {chatType, chatId, theme} = this.props;
-    return (
-      chatType === 'channel' && (
+    let {chatType, chatId, chat, theme} = this.props;
+    if (chatType === 'channel') {
+      return !chat.is_private ? (
         <ChannelMembersCount chatId={chatId} style={{color: theme.foregroundColor}} />
-      )
-    );
+      ) : (
+        <Text style={styles.chat_status}>private</Text>
+      );
+    }
+    return null;
   }
 
   renderPresense() {
@@ -103,7 +106,7 @@ class ChatDetails extends Component<Props> {
             marginLeft: px(40),
             marginTop: 25,
           }}>
-          {chat?.num_members} MEMBERS
+          {chat.is_private ? '' : `${chat?.num_members} MEMBERS`}
         </Text>
       </>
     );
@@ -154,6 +157,11 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: px(16),
+  },
+  chat_status: {
+    color: '#fff',
+    marginTop: px(2.5),
+    fontSize: px(13.5),
   },
 });
 

@@ -254,8 +254,8 @@ class ChatUI extends Component<Props> {
   }
 
   renderMembersCount() {
-    let {chatType, chatId, typingUsersCount} = this.props;
-    if (chatType === 'channel' && typingUsersCount === 0) {
+    let {chatType, chatId, typingUsersCount, currentChat} = this.props;
+    if (chatType === 'channel' && typingUsersCount === 0 && !currentChat.is_private) {
       return <ChannelMembersCount chatId={chatId} />;
     }
     return null;
@@ -278,14 +278,24 @@ class ChatUI extends Component<Props> {
     return <Typing chatId={this.props.chatId} />;
   }
 
+  renderIsPrivate() {
+    return <Text style={styles.chat_status}>private</Text>;
+  }
+
   renderHeader() {
-    let {chatId, chatType} = this.props;
+    let {chatId, chatType, typingUsersCount, currentChat} = this.props;
     let center = (
       <Touchable onPress={this.openChatDetails} style={{alignItems: 'center'}}>
         {this.renderChatName()}
-        {this.renderMembersCount()}
-        {this.renderPresense()}
-        {this.renderTyping()}
+        {typingUsersCount > 0
+          ? this.renderTyping()
+          : chatType === 'direct'
+          ? this.renderPresense()
+          : chatType === 'channel'
+          ? currentChat.is_private
+            ? this.renderIsPrivate()
+            : this.renderMembersCount()
+          : null}
       </Touchable>
     );
 
@@ -353,7 +363,7 @@ const styles = StyleSheet.create({
     fontSize: px(15.5),
     fontWeight: 'bold',
   },
-  presense: {
+  chat_status: {
     color: '#fff',
     marginTop: px(2.5),
     fontSize: px(13.5),
