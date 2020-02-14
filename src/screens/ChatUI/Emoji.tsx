@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, memo} from 'react';
 import {Text, StyleSheet} from 'react-native';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../reducers';
@@ -9,12 +9,12 @@ interface Props {
   name: string;
 }
 
-const Emoji: FC<Props> = React.memo(({name}) => {
+const Emoji: FC<Props> = ({name}) => {
   const slackEmojies = useSelector((state: RootState) => state.entities.emojis.byId);
   const emoji = {...emojiesData, ...slackEmojies}[name]?.native;
 
   return <Text style={styles.emoji}>{emoji}</Text>;
-});
+};
 
 const styles = StyleSheet.create({
   emoji: {
@@ -22,4 +22,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Emoji;
+export default memo(Emoji);

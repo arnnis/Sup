@@ -5,7 +5,6 @@ import {connect} from 'react-redux';
 import {View, StyleSheet} from 'react-native';
 import px from '../../utils/normalizePixel';
 import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
-import {currentTeamTokenSelector} from '../../reducers/teams';
 
 type Props = ReturnType<typeof mapStateToProps> &
   ThemeInjectedProps & {
@@ -14,12 +13,11 @@ type Props = ReturnType<typeof mapStateToProps> &
 
 class FileCell extends Component<Props> {
   renderAllFile = () => {
-    let {file, token, theme} = this.props;
-    let _File = withTheme(File);
+    let {file, theme} = this.props;
+
     return (
-      <_File
+      <File
         file={file}
-        token={token}
         containerStyle={{width: '100%'}}
         textStyle={{color: theme.foregroundColor}}
       />
@@ -54,7 +52,6 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state: RootState, ownProps) => ({
   file: state.entities.files.byId[ownProps.fileId],
-  token: currentTeamTokenSelector(state),
 });
 
 export default connect(mapStateToProps)(withTheme(FileCell));

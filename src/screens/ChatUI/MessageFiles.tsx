@@ -1,8 +1,9 @@
-import React, {Component, useState, FC, useEffect, useRef, useContext} from 'react';
+import React, {useState, FC, useEffect, useRef, useContext} from 'react';
 import {View, StyleSheet, Text, ViewStyle, TextStyle} from 'react-native';
 import {useSelector} from 'react-redux';
 import {FileSystem as fs} from 'react-native-unimodules';
 import {Audio} from 'expo-av';
+import {Howl, Howler} from 'howler';
 import bytes from 'bytes';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -13,6 +14,7 @@ import Touchable from '../../components/Touchable';
 import {currentTeamTokenSelector, meSelector} from '../../reducers/teams';
 import ThemeContext from '../../contexts/theme';
 import {messageFilesSelector} from '../../reducers/messages';
+import {Platform} from '../../utils/platform';
 
 interface Props {
   messageId: string;
@@ -39,9 +41,10 @@ interface FileProps {
 }
 
 export const File: FC<FileProps> = ({file, containerStyle, textStyle, isMe}) => {
-  const [url] = useState<string>(file.url_private);
+  const [url] = useState<string>(file.url_private_download);
   const {theme} = useContext(ThemeContext);
   const token = useSelector(currentTeamTokenSelector);
+  const [filename, setFilename] = useState(url.split('/').pop());
   const [playing, setPlaying] = useState(false);
   const [downloading, setDownloading] = useState<boolean>(false);
   const [downloadProgress, setDownloadProgress] = useState<number>(0);
@@ -69,11 +72,10 @@ export const File: FC<FileProps> = ({file, containerStyle, textStyle, isMe}) => 
     setDownloadProgress((totalSizeBytes / progressBytes) * 100);
   };
 
-  const downloadFile = async () => {
+  const downloadFileNative = async () => {
     if (downloading) return false;
     if (localPath) return localPath;
 
-    const filename = url.split('/').pop();
     let _localPath = `${fs.documentDirectory}/${filename}`;
     // let {exists} = await fs.getInfoAsync(localPath);
     // if (exists) return localPath;
@@ -102,20 +104,31 @@ export const File: FC<FileProps> = ({file, containerStyle, textStyle, isMe}) => 
     return _localPath;
   };
 
-  const playSound = async () => {
+  const downloadFileWeb = () => {
+    // window.open(url, '_blank');
+    const el = document.createElement('a');
+    el.href = url;
+    el.download = filename;
+    el.target = '_blank';
+    el.click();
+  };
+
+  const downloadFile = () => (Platform.isNative ? downloadFileNative : downloadFileWeb);
+
+  const playSoundNative = async () => {
     // Sound already initialized
     if (soundRef.current) {
       let playbackStatus = await soundRef.current.getStatusAsync();
       if (!playbackStatus.isLoaded) return;
       if (playbackStatus.isPlaying) {
-        this.sound.pauseAsync();
+        soundRef.current.pauseAsync();
       } else {
-        this.sound.playAsync();
+        soundRef.current.playAsync();
       }
     } else {
-      let localPath = await downloadFile();
+      let localPath = await downloadFileNative();
       if (!localPath) return false;
-      let {sound} = await Audio.Sound.createAsync({uri: localPath}, {shouldPlay: false});
+      let {sound} = await Audio.Sound.createAsync({uri: url}, {shouldPlay: false});
       soundRef.current = sound;
 
       await soundRef.current.playAsync();
@@ -143,11 +156,19 @@ export const File: FC<FileProps> = ({file, containerStyle, textStyle, isMe}) => 
     }
   };
 
+  const playSoundWeb = () => {
+    const sound = new Howl({
+      src: [url],
+    });
+    sound.play();
+  };
+
+  const playSound = Platform.isNative ? playSoundNative : playSoundWeb;
+
   const stopDownload = () => {
     if (downloading) {
       downloadRef.current && downloadRef.current.pauseAsync();
     }
-    downloadRef.current = null;
     setDownloading(false);
     setDownloadProgress(0);
   };

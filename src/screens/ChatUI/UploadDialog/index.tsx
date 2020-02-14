@@ -6,9 +6,8 @@ import {useSelector, useDispatch} from 'react-redux';
 import {useMediaQuery} from 'react-responsive';
 import {EmojiData} from 'emoji-mart';
 
-import {File as _File} from '../MessageFiles';
+import {File} from '../MessageFiles';
 import {MessageAttachement} from '../../../models';
-import withTheme from '../../../contexts/theme/withTheme';
 import Composer from '../Composer';
 import px from '../../../utils/normalizePixel';
 import {Platform} from '../../../utils/platform';
@@ -99,7 +98,6 @@ const UploadDialog: FC<Props> = () => {
   const renderFile = (file: UploadFile) => {
     if (file.origin?.type?.startsWith('image')) return renderImage(file.uri);
 
-    const File = withTheme(_File);
     const _messageFile: MessageAttachement = {
       name: file.origin.name,
       url_private_download: file.origin.path,

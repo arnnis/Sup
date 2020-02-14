@@ -1,110 +1,93 @@
-import React, {Component} from 'react';
-import {View, StyleSheet, TouchableWithoutFeedback} from 'react-native';
+import React, {FC, useContext, memo, forwardRef} from 'react';
+import {View, StyleSheet} from 'react-native';
 import MessageText from './MessageText';
 import px from '../../utils/normalizePixel';
 import Name from './Name';
-import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 import MessageImages from './MessageImages';
 import MessageFiles from './MessageFiles';
 import MessageVideos from './MessageVideos';
 import Replies from './Replies';
-import withStylesheet, {StyleSheetInjectedProps} from '../../utils/stylesheet/withStylesheet';
 import MessageDate from './MessageDate';
-import {withNavigation, NavigationInjectedProps} from 'react-navigation';
-import {connect, DispatchProp} from 'react-redux';
-import {RootState} from '../../reducers';
-import {goToThread} from '../../actions/chats/thunks';
+import {useMediaQuery} from 'react-responsive';
+import ThemeContext from '../../contexts/theme';
 
-type Props = ThemeInjectedProps &
-  StyleSheetInjectedProps &
-  NavigationInjectedProps &
-  DispatchProp<any> &
-  ReturnType<typeof mapStateToProps> & {
-    messageId: string;
-    userId: string;
-    sameUser: boolean;
-    isMe: boolean;
-    pending: boolean;
-    hideAvatar?: boolean;
-    hideReplies?: boolean;
-  };
-
-class Bubble extends Component<Props> {
-  goToThread = () => {
-    this.props.dispatch(goToThread(this.props.messageId, this.props.navigation));
-  };
-
-  renderMessageText() {
-    return <MessageText messageId={this.props.messageId} isMe={this.props.isMe} />;
-  }
-
-  renderMessageImages() {
-    return <MessageImages messageId={this.props.messageId} />;
-  }
-
-  renderMessageVideos() {
-    return <MessageVideos messageId={this.props.messageId} />;
-  }
-
-  renderMessageFiles() {
-    return <MessageFiles messageId={this.props.messageId} />;
-  }
-
-  renderName() {
-    return <Name userId={this.props.userId} isMe={this.props.isMe} />;
-  }
-
-  renderReplies() {
-    if (this.props.hideReplies) return null;
-    return <Replies messageId={this.props.messageId} isMe={this.props.isMe} />;
-  }
-
-  renderSendDate() {
-    return <MessageDate messageId={this.props.messageId} />;
-  }
-
-  render() {
-    let {sameUser, isMe, pending, theme, hideAvatar, dynamicStyles} = this.props;
-
-    return (
-      <View
-        ref="bubble"
-        style={[
-          styles.container,
-          dynamicStyles.container,
-          {backgroundColor: theme.backgroundColor},
-          isMe && styles.right,
-          !sameUser && {
-            borderBottomLeftRadius: isMe ? 5 : 0,
-            borderBottomRightRadius: isMe ? 0 : 5,
-          },
-          pending && {
-            opacity: 0.5,
-          },
-          hideAvatar &&
-            sameUser && {
-              marginLeft: !isMe ? px(7.5) : 0,
-              marginRight: isMe ? px(7.5) : 0,
-            },
-        ]}>
-        <View>
-          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-            {this.renderName()}
-            {this.renderSendDate()}
-          </View>
-          {this.renderMessageText()}
-          {this.renderMessageImages()}
-          {this.renderMessageVideos()}
-          {this.renderMessageFiles()}
-          {this.renderReplies()}
-        </View>
-      </View>
-    );
-  }
+interface Props {
+  messageId: string;
+  userId: string;
+  sameUser: boolean;
+  isMe: boolean;
+  pending: boolean;
+  hideAvatar?: boolean;
+  hideReplies?: boolean;
 }
+
+const Bubble: FC<Props> = ({
+  messageId,
+  userId,
+  isMe,
+  sameUser,
+  pending,
+  hideAvatar,
+  hideReplies,
+}) => {
+  const isLandscape = useMediaQuery({orientation: 'landscape'});
+  const {theme} = useContext(ThemeContext);
+
+  const renderMessageText = () => <MessageText messageId={messageId} isMe={isMe} />;
+
+  const renderMessageImages = () => <MessageImages messageId={messageId} />;
+
+  const renderMessageVideos = () => <MessageVideos messageId={messageId} />;
+
+  const renderMessageFiles = () => <MessageFiles messageId={messageId} />;
+
+  const renderName = () => <Name userId={userId} isMe={isMe} />;
+
+  const renderReplies = () => {
+    if (hideReplies) return null;
+    return <Replies messageId={messageId} isMe={isMe} />;
+  };
+
+  const renderSendDate = () => <MessageDate messageId={messageId} />;
+
+  return (
+    <View
+      style={[
+        styles.container,
+        isLandscape && {maxWidth: '62%'},
+        {backgroundColor: theme.backgroundColor},
+        isMe && styles.right,
+        !sameUser && {
+          borderBottomLeftRadius: isMe ? 5 : 0,
+          borderBottomRightRadius: isMe ? 0 : 5,
+        },
+        pending && {
+          opacity: 0.5,
+        },
+        hideAvatar &&
+          sameUser && {
+            marginLeft: !isMe ? px(7.5) : 0,
+            marginRight: isMe ? px(7.5) : 0,
+          },
+      ]}>
+      <View>
+        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+          {renderName()}
+          {renderSendDate()}
+        </View>
+        {renderMessageText()}
+        {renderMessageImages()}
+        {renderMessageVideos()}
+        {renderMessageFiles()}
+        {renderReplies()}
+      </View>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
+    maxWidth: '68%',
     borderRadius: px(5),
     padding: px(5),
     paddingHorizontal: px(7.5),
@@ -123,22 +106,4 @@ const styles = StyleSheet.create({
   },
 });
 
-const dynamicStyles = {
-  container: {
-    maxWidth: '68%',
-    media: [
-      {orientation: 'landscape'},
-      {
-        maxWidth: '62%',
-      },
-    ],
-  },
-};
-
-const mapStateToProps = (state: RootState) => ({
-  currentChatId: state.chats.currentChatId,
-});
-
-export default connect(mapStateToProps)(
-  withTheme(withStylesheet(dynamicStyles)(withNavigation(Bubble))),
-);
+export default Bubble;

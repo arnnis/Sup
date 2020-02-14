@@ -325,9 +325,11 @@ class ChatUI extends Component<Props> {
     return (
       <Screen>
         <ImageBackground
-          style={[styles.container, {backgroundColor: theme.backgroundColorDarker1}]}
-          resizeMode="cover"
-          source={theme.isDark ? undefined : require('../../assets/img/fl1.jpg')}>
+          style={[styles.container, {backgroundColor: theme.backgroundColorMore1}]}
+          resizeMode="repeat"
+          // TODO: change background image feature
+          // source={theme.isDark ? undefined : require('../../assets/img/wa1.png')}
+        >
           <UploadDropZoneWeb onDrop={this.handleFileDropWeb}>
             {this.renderHeader()}
             {this.renderList()}
