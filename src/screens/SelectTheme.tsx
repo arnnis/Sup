@@ -7,23 +7,20 @@ import ThemeContext from '../contexts/theme';
 import {ScrollView} from 'react-native';
 import useStyle from '../utils/stylesheet/useStyle';
 import {ThemeKey} from '../contexts/theme/types';
+import {useMediaQuery} from 'react-responsive';
 
 const SelectTheme: FC = () => {
-  let {theme, toggleTheme} = useContext(ThemeContext);
-  let scrollviewContainer = useStyle({
-    width: '100%',
-    media: [
-      {orientation: 'landscape'},
-      {
-        width: '60%',
-        marginHorizontal: '20%',
-      },
-    ],
-  });
+  const {theme, toggleTheme} = useContext(ThemeContext);
+  const isLandscape = useMediaQuery({orientation: 'landscape'});
+
   return (
     <Screen>
       <Header left="back" center="Select Theme" />
-      <ScrollView contentContainerStyle={scrollviewContainer}>
+      <ScrollView
+        contentContainerStyle={[
+          {width: '100%'},
+          isLandscape && {width: '60%', marginHorizontal: '20%'},
+        ]}>
         <InfoBox>
           {Object.keys(themes).map((themeKey: ThemeKey) => {
             let _theme = themes[themeKey];

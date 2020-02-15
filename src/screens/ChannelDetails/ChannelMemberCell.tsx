@@ -60,6 +60,7 @@ class ChannelMemberCell extends PureComponent<Props> {
 
     return (
       <Touchable
+        key={member.id}
         style={[
           styles.container,
           {backgroundColor: theme.backgroundColor},
