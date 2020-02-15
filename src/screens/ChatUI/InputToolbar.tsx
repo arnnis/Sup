@@ -1,5 +1,5 @@
-import React, {useContext, useState, FC} from 'react';
-import {View, StyleSheet, Platform, Text} from 'react-native';
+import React, {useContext, useState, FC, useEffect} from 'react';
+import {View, StyleSheet, Platform} from 'react-native';
 import {EmojiData} from 'emoji-mart';
 
 import px from '../../utils/normalizePixel';
@@ -35,7 +35,12 @@ const InputToolbar: FC<Props> = React.memo(({chatId, threadId}) => {
   const handleEmojiSelected = (emoji: EmojiData) => setText(text + emoji.native);
 
   const renderComposer = () => (
-    <Composer text={text} onTextChanged={handleTextChanged} isThread={!!threadId} />
+    <Composer
+      text={text}
+      onTextChanged={handleTextChanged}
+      isThread={!!threadId}
+      onEnter={handleSendPress}
+    />
   );
 
   const renderSend = () => <Send onPress={handleSendPress} />;

@@ -1,16 +1,24 @@
 import React, {Component} from 'react';
-import {Platform, StyleSheet, TextInput} from 'react-native';
+import {StyleSheet, TextInput} from 'react-native';
 import px from '../../utils/normalizePixel';
 import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
+import {Platform} from '../../utils/platform';
 
 type Props = ThemeInjectedProps & {
   text: string;
   onTextChanged(text: string): void;
   isThread?: boolean;
+  onEnter?(): void;
 };
 
 class Composer extends Component<Props> {
   contentSize?: {width: number; height: number} = undefined;
+
+  componentDidUpdate(prevProps: Props) {
+    if (!this.props.text && Platform.isWeb) {
+      this.contentSize = undefined;
+    }
+  }
 
   onContentSizeChange = (e: any) => {
     const {contentSize} = e.nativeEvent;
@@ -35,7 +43,7 @@ class Composer extends Component<Props> {
   };
 
   render() {
-    const {isThread, theme} = this.props;
+    const {text, onTextChanged, isThread, onEnter, theme} = this.props;
     const placeholder = `Type a ${isThread ? 'reply' : 'message'}...`;
     return (
       <TextInput
@@ -58,13 +66,25 @@ class Composer extends Component<Props> {
               },
             }),
           },
-          {color: theme.foregroundColor},
+          {color: theme.foregroundColor, height: this.contentSize?.height ?? 'auto'},
         ]}
         autoFocus={false}
         value={this.props.text}
         enablesReturnKeyAutomatically
         underlineColorAndroid="transparent"
         keyboardAppearance="default"
+        onKeyPress={e => {
+          let event: KeyboardEvent = e as any;
+          if (Platform.isWeb) {
+            if (event.key === 'Enter') {
+              if (event.ctrlKey) {
+                onTextChanged(text + '\n');
+              } else {
+                onEnter && onEnter();
+              }
+            }
+          }
+        }}
       />
     );
   }
