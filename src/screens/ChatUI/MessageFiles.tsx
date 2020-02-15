@@ -3,7 +3,7 @@ import {View, StyleSheet, Text, ViewStyle, TextStyle} from 'react-native';
 import {useSelector} from 'react-redux';
 import {FileSystem as fs} from 'react-native-unimodules';
 import {Audio} from 'expo-av';
-import {Howl, Howler} from 'howler';
+import {Howl} from 'howler';
 import bytes from 'bytes';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -51,11 +51,12 @@ export const File: FC<FileProps> = ({file, containerStyle, textStyle, isMe}) => 
   const [localPath, setLocalPath] = useState<string>(null);
   const [isSound] = useState<boolean>(file.mimetype.startsWith('audio'));
   const downloadRef = useRef<fs.DownloadResumable>(null);
-  const soundRef = useRef<Audio.Sound>(null);
+  const soundRef = useRef<Audio.Sound | Howl | null>(null);
 
   useEffect(() => {
     return () => {
-      soundRef.current && soundRef.current.unloadAsync();
+      if (soundRef.current instanceof Audio.Sound) soundRef?.current.unloadAsync();
+      if (soundRef.current instanceof Howl) soundRef.current?.unload();
       stopDownload();
     };
   });
@@ -113,11 +114,11 @@ export const File: FC<FileProps> = ({file, containerStyle, textStyle, isMe}) => 
     el.click();
   };
 
-  const downloadFile = () => (Platform.isNative ? downloadFileNative : downloadFileWeb);
+  const downloadFile = Platform.isNative ? downloadFileNative : downloadFileWeb;
 
   const playSoundNative = async () => {
     // Sound already initialized
-    if (soundRef.current) {
+    if (soundRef.current && soundRef.current instanceof Audio.Sound) {
       let playbackStatus = await soundRef.current.getStatusAsync();
       if (!playbackStatus.isLoaded) return;
       if (playbackStatus.isPlaying) {
@@ -156,11 +157,30 @@ export const File: FC<FileProps> = ({file, containerStyle, textStyle, isMe}) => 
     }
   };
 
-  const playSoundWeb = () => {
-    const sound = new Howl({
-      src: [url],
-    });
-    sound.play();
+  const playSoundWeb = async () => {
+    downloadFile();
+    // if (soundRef.current && soundRef.current instanceof Howl) {
+    //   let playbackStatus = await soundRef.current.state();
+    //   if (playbackStatus !== 'loaded') return;
+    //   if (playing) {
+    //     soundRef.current.pause();
+    //   } else {
+    //     soundRef.current.play();
+    //   }
+    // } else {
+    //   soundRef.current = new Howl({
+    //     src: [url],
+    //   });
+    //   soundRef.current.play();
+
+    //   // register events
+    //   soundRef.current.on('play', () => setPlaying(true));
+    //   soundRef.current.on('stop', () => setPlaying(false));
+    //   soundRef.current.on('pause', () => setPlaying(false));
+    //   soundRef.current.on('playerror', () => setPlaying(false));
+    //   soundRef.current.on('loaderror', () => setPlaying(false));
+    //   soundRef.current.on('end', () => setPlaying(false));
+    // }
   };
 
   const playSound = Platform.isNative ? playSoundNative : playSoundWeb;
@@ -247,14 +267,23 @@ export const File: FC<FileProps> = ({file, containerStyle, textStyle, isMe}) => 
     );
   };
 
+  const renderSoundWeb = () =>
+    isSound &&
+    Platform.isWeb && (
+      <audio src={url} autoPlay={false} style={{width: '100%', height: px(25)}} controls />
+    );
+
   return (
-    <View style={[styles.file, containerStyle]}>
-      {renderActionButton()}
-      <View style={styles.fileInfosWrapper}>
-        {renderName()}
-        {renderFileSizeAndType()}
+    <>
+      <View style={[styles.file, containerStyle]}>
+        {renderActionButton()}
+        <View style={styles.fileInfosWrapper}>
+          {renderName()}
+          {renderFileSizeAndType()}
+        </View>
       </View>
-    </View>
+      {/* {renderSoundWeb()} */}
+    </>
   );
 };
 
