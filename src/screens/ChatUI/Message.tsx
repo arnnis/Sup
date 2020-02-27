@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import {StyleSheet, View, TouchableWithoutFeedback, Clipboard} from 'react-native';
 import ReactDOM from 'react-dom';
-import {isSameUser} from './utils';
-import {RootState} from '../../reducers';
-import Bubble from './Bubble';
 import {connect, DispatchProp} from 'react-redux';
 import Electron from 'electron';
 import {ContextMenu, MenuItem} from 'react-contextmenu';
 
+import {isSameUser} from './utils';
+import {RootState} from '../../reducers';
+import Bubble from './Bubble';
 import Avatar from '../../components/Avatar';
 import px from '../../utils/normalizePixel';
 import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
@@ -40,12 +40,15 @@ class Message extends Component<Props> {
 
   componentDidMount() {
     Platform.isElectron &&
-      ReactDOM.findDOMNode(this).addEventListener('contextmenu', this.handleContextMenuElectron);
+      ReactDOM.findDOMNode(this)?.addEventListener('contextmenu', this.handleContextMenuElectron);
   }
 
   componentWillUnmount() {
     Platform.isElectron &&
-      ReactDOM.findDOMNode(this).removeEventListener('contextmenu', this.handleContextMenuElectron);
+      ReactDOM.findDOMNode(this)?.removeEventListener(
+        'contextmenu',
+        this.handleContextMenuElectron,
+      );
   }
 
   goToReplies = () => {
