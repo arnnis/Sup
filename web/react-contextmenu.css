@@ -13,9 +13,6 @@
   pointer-events: none;
   text-align: left;
   transition: opacity 250ms ease !important;
-  position: fixed;
-  top: 30px;
-  left: 30px;
 }
 
 .react-contextmenu.react-contextmenu--visible {

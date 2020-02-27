@@ -12,7 +12,7 @@ import ThemeContext from '../../contexts/theme';
 
 interface Props {
   messageId: string;
-  hideAvatar: boolean;
+  hideAvatar?: boolean;
 }
 
 const Reactions: FC<Props> = React.memo(({messageId, hideAvatar}) => {
