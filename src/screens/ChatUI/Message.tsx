@@ -6,6 +6,7 @@ import {RootState} from '../../reducers';
 import Bubble from './Bubble';
 import {connect, DispatchProp} from 'react-redux';
 import Electron from 'electron';
+import {ContextMenu, MenuItem} from 'react-contextmenu';
 
 import Avatar from '../../components/Avatar';
 import px from '../../utils/normalizePixel';
@@ -19,6 +20,7 @@ import {goToThread} from '../../actions/chats/thunks';
 import showMenu from '../../utils/showMenu';
 import isNative from '../../utils/isNative';
 import {Platform} from '../../utils/platform';
+import {ContextMenuTrigger} from '../../components/CustomMenuWeb';
 
 type Props = ReturnType<typeof mapStateToProps> &
   NavigationInjectedProps &
@@ -178,6 +180,23 @@ class Message extends Component<Props> {
     return <Reactions messageId={this.props.messageId} hideAvatar={this.props.hideAvatar} />;
   }
 
+  renderMenu = () => {
+    return (
+      <ContextMenu id={this.props.currentMessage.ts}>
+        <MenuItem data={{foo: 'bar'}} onClick={this.goToReplies}>
+          Reply
+        </MenuItem>
+        <MenuItem data={{foo: 'bar'}} onClick={this.copyTextToClipboard}>
+          Copy {this.props.currentMessage.text}
+        </MenuItem>
+        {/* <MenuItem divider />
+      <MenuItem data={{foo: 'bar'}} onClick={this.handleClick}>
+        ContextMenu Item 3
+      </MenuItem> */}
+      </ContextMenu>
+    );
+  };
+
   render() {
     let {currentMessage, prevMessage, nextMessage, me, inverted} = this.props;
     let sameUser = isSameUser(currentMessage, nextMessage);
@@ -187,34 +206,39 @@ class Message extends Component<Props> {
       <>
         {!inverted && this.renderDay()}
         {inverted && this.renderReactions()}
+
         <TouchableWithoutFeedback
           onLongPress={this.openMessageContextNative}
           disabled={Platform.isElectron}>
-          <View
-            ref={this.messageContainerRef}
-            style={[
-              styles.container,
-              isMe ? styles.right : styles.left,
-              {marginBottom: sameUser && !hasReactions ? 4 : 10},
-            ]}>
-            {!isMe ? (
-              <>
-                {this.renderAvatar(isMe, sameUser)}
-                {this.renderAnchor(isMe, sameUser)}
-              </>
-            ) : null}
-            {this.renderBubble(isMe, sameUser)}
-            {isMe && (
-              <>
-                {this.renderAnchor(isMe, sameUser)}
-                {this.renderAvatar(isMe, sameUser)}
-              </>
-            )}
-          </View>
+          <ContextMenuTrigger id={currentMessage.ts}>
+            <View
+              ref={this.messageContainerRef}
+              style={[
+                styles.container,
+                isMe ? styles.right : styles.left,
+                {marginBottom: sameUser && !hasReactions ? 4 : 10},
+              ]}>
+              {!isMe ? (
+                <>
+                  {this.renderAvatar(isMe, sameUser)}
+                  {this.renderAnchor(isMe, sameUser)}
+                </>
+              ) : null}
+              {this.renderBubble(isMe, sameUser)}
+              {isMe && (
+                <>
+                  {this.renderAnchor(isMe, sameUser)}
+                  {this.renderAvatar(isMe, sameUser)}
+                </>
+              )}
+            </View>
+          </ContextMenuTrigger>
         </TouchableWithoutFeedback>
+
         {!inverted && this.renderReactions()}
         {this.renderDivder()}
         {inverted && this.renderDay()}
+        {this.renderMenu()}
       </>
     );
   }
