@@ -4,7 +4,6 @@ import ReactDOM from 'react-dom';
 import {connect, DispatchProp} from 'react-redux';
 import Electron from 'electron';
 // import {ContextMenu, MenuItem} from 'react-contextmenu';
-import {Menu} from 'react-native-paper';
 
 import {isSameUser} from './utils';
 import {RootState} from '../../reducers';
@@ -21,8 +20,8 @@ import {goToThread} from '../../actions/chats/thunks';
 import showMenu from '../../utils/showMenu';
 import isNative from '../../utils/isNative';
 import {Platform} from '../../utils/platform';
-import {ContextMenuTrigger} from '../../components/CustomMenuWeb';
 import WithMenu, {MenuInjectedProps} from '../../contexts/menu/with-menu';
+import MenuItem from '../../components/Menu/MenuItem';
 
 type Props = ReturnType<typeof mapStateToProps> &
   MenuInjectedProps &
@@ -45,7 +44,7 @@ class Message extends Component<Props> {
     Platform.isWeb &&
       ReactDOM.findDOMNode(this.messageContainerRef)?.addEventListener(
         'contextmenu',
-        this.handleContextMenuElectron,
+        this.handleContextMenuWeb,
       );
   }
 
@@ -53,7 +52,7 @@ class Message extends Component<Props> {
     Platform.isWeb &&
       ReactDOM.findDOMNode(this.messageContainerRef)?.removeEventListener(
         'contextmenu',
-        this.handleContextMenuElectron,
+        this.handleContextMenuWeb,
       );
   }
 
@@ -70,38 +69,36 @@ class Message extends Component<Props> {
     }
   };
 
-  handleContextMenuElectron = (e: MouseEvent) => {
+  handleContextMenuWeb = (e: MouseEvent) => {
     e.preventDefault();
 
-    if (Platform.isElectron) {
-      const {Menu, MenuItem} = Electron.remote;
+    const items = (
+      <>
+        <MenuItem onPress={this.goToReplies} title="Reply" />
+        <MenuItem onPress={this.copyTextToClipboard} title="Copy text" />
+      </>
+    );
+    // alert(JSON.stringify({x: e.pageX, y: e.pageY}));
+    this.props.show && this.props.show({x: e.pageX, y: e.pageY}, items);
 
-      const menu = new Menu();
+    // if (Platform.isElectron) {
+    //   const {Menu, MenuItem} = Electron.remote;
 
-      if (!this.props.currentThreadId)
-        menu.append(
-          new MenuItem({
-            label: 'Reply',
-            click: this.goToReplies,
-          }),
-        );
+    //   const menu = new Menu();
 
-      // menu.append(new MenuItem({type: 'separator'}));
-      menu.append(new MenuItem({label: 'Copy text', click: this.copyTextToClipboard}));
+    //   if (!this.props.currentThreadId)
+    //     menu.append(
+    //       new MenuItem({
+    //         label: 'Reply',
+    //         click: this.goToReplies,
+    //       }),
+    //     );
 
-      menu.popup({window: Electron.remote.getCurrentWindow()});
-    } else {
-      const items = (
-        <>
-          <Menu.Item onPress={() => {}} title="Item 1" />
-          <Menu.Item onPress={() => {}} title={('Coy ', this.props.currentMessage.text)} />
+    //   // menu.append(new MenuItem({type: 'separator'}));
+    //   menu.append(new MenuItem({label: 'Copy text', click: this.copyTextToClipboard}));
 
-          <Menu.Item onPress={() => {}} title="Item 3" />
-        </>
-      );
-      // alert(JSON.stringify({x: e.pageX, y: e.pageY}));
-      this.props.show && this.props.show({x: e.pageX, y: e.pageY}, items);
-    }
+    //   menu.popup({window: Electron.remote.getCurrentWindow()});
+    // }
 
     return false;
   };

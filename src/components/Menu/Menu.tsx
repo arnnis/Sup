@@ -503,9 +503,12 @@ class Menu extends React.Component<Props, State> {
         <Animated.View style={{transform: positionTransforms}}>
           <Surface
             style={
-              [styles.shadowMenuContainer, shadowMenuContainerStyle, contentStyle] as StyleProp<
-                ViewStyle
-              >
+              [
+                styles.shadowMenuContainer,
+                {backgroundColor: theme.backgroundColor},
+                shadowMenuContainerStyle,
+                contentStyle,
+              ] as StyleProp<ViewStyle>
             }>
             {(scrollableMenuHeight && <ScrollView>{children}</ScrollView>) || (
               <React.Fragment>{children}</React.Fragment>
@@ -523,7 +526,7 @@ const styles = StyleSheet.create({
   },
   shadowMenuContainer: {
     opacity: 0,
-    paddingVertical: 8,
+    paddingVertical: 3,
     elevation: 8,
   },
 });
