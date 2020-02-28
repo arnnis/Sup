@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {View, Text, StyleSheet, Linking, TextProps, TextStyle} from 'react-native';
 import ParsedText from 'react-native-parsed-text';
+import {shell} from 'electron';
 import {connect} from 'react-redux';
 import {RootState} from '../../reducers';
 import px from '../../utils/normalizePixel';
@@ -38,7 +39,11 @@ class MessageText extends Component<Props> {
           }
         });
       } else {
-        window.open(url, '_blank');
+        if (Platform.isElectron) {
+          shell.openExternal(url);
+        } else {
+          window.open(url, '_blank');
+        }
       }
     }
   };
