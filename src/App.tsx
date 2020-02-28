@@ -9,6 +9,7 @@ import configureStore from './store/configureStore';
 import ThemeProvider from './contexts/theme/provider';
 import ProgressBarProvider from './contexts/progress-bar/provider';
 import UploadDialog from './screens/ChatUI/UploadDialog';
+import MenuProvider from './contexts/menu/provider';
 
 export const {store, persistor} = configureStore();
 
@@ -26,14 +27,16 @@ const App = () => {
       <ThemeProvider>
         <PaperProvider>
           <ProgressBarProvider>
-            <PersistGate loading={null} persistor={persistor}>
-              <Navigator
-                ref={navigatorRef => {
-                  NavigationService.setTopLevelNavigator(navigatorRef);
-                }}
-              />
-              <UploadDialog />
-            </PersistGate>
+            <MenuProvider>
+              <PersistGate loading={null} persistor={persistor}>
+                <Navigator
+                  ref={navigatorRef => {
+                    NavigationService.setTopLevelNavigator(navigatorRef);
+                  }}
+                />
+                <UploadDialog />
+              </PersistGate>
+            </MenuProvider>
           </ProgressBarProvider>
         </PaperProvider>
       </ThemeProvider>

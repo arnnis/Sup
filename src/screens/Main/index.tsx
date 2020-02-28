@@ -21,6 +21,7 @@ import {currentTeamSelector} from '../../reducers/teams';
 import Toast from '../../components/Toast';
 import {toggleToast, setDrawerOpen} from '../../actions/app';
 import Screen from '../../components/Screen';
+import Menu from '../../components/Menu/Menu';
 
 const Main: FC = React.memo(() => {
   let drawerOpen = useSelector((state: RootState) => state.app.drawerOpen);
