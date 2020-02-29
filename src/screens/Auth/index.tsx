@@ -30,9 +30,9 @@ const dims = Dimensions.get('window');
 
 class Auth extends Component<Props> {
   state = {
-    domain: 'arnnis',
-    email: 'alireza.rzna@gmail.com',
-    password: 'abc161920',
+    domain: '',
+    email: '',
+    password: '',
     pin: '',
     loggingIn: false,
   };
