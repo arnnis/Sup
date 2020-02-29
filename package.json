@@ -9,6 +9,7 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
+    "android:build": "npx jetifier && cd android && ./gradlew assembleRelease",
     "ios": "react-native run-ios",
     "start": "react-native start",
     "web": "cross-env NODE_ENV=development webpack-dev-server --config ./web/webpack.config.js --color --progress",
