@@ -3,6 +3,7 @@ import {StyleSheet, TextInput} from 'react-native';
 import px from '../../utils/normalizePixel';
 import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 import {Platform} from '../../utils/platform';
+import ReactDOM from 'react-dom';
 
 type Props = ThemeInjectedProps & {
   text: string;
@@ -13,6 +14,37 @@ type Props = ThemeInjectedProps & {
 
 class Composer extends Component<Props> {
   contentSize?: {width: number; height: number} = undefined;
+  inputRef: TextInput | null = null;
+
+  componentDidMount() {
+    Platform.isWeb &&
+      ReactDOM.findDOMNode(this.inputRef)?.addEventListener(
+        'keydown',
+        this.handleKeyDownWeb as any,
+      );
+  }
+
+  componentWillUnmount() {
+    Platform.isWeb &&
+      ReactDOM.findDOMNode(this.inputRef)?.removeEventListener(
+        'keydown',
+        this.handleKeyDownWeb as any,
+      );
+  }
+
+  handleKeyDownWeb = (event: KeyboardEvent) => {
+    const {text, onTextChanged, onEnter} = this.props;
+    if (Platform.isWeb) {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        if (event.ctrlKey) {
+          onTextChanged(text + '\n');
+        } else {
+          onEnter && onEnter();
+        }
+      }
+    }
+  };
 
   componentDidUpdate(prevProps: Props) {
     if (!this.props.text && Platform.isWeb) {
@@ -47,6 +79,7 @@ class Composer extends Component<Props> {
     const placeholder = `Type a ${isThread ? 'reply' : 'message'}...`;
     return (
       <TextInput
+        ref={ref => (this.inputRef = ref)}
         accessible
         accessibilityLabel={placeholder}
         placeholder={placeholder}
@@ -73,18 +106,6 @@ class Composer extends Component<Props> {
         enablesReturnKeyAutomatically
         underlineColorAndroid="transparent"
         keyboardAppearance="default"
-        onKeyPress={e => {
-          let event: KeyboardEvent = e as any;
-          if (Platform.isWeb) {
-            if (event.key === 'Enter') {
-              if (event.ctrlKey) {
-                onTextChanged(text + '\n');
-              } else {
-                onEnter && onEnter();
-              }
-            }
-          }
-        }}
       />
     );
   }
