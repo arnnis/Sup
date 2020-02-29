@@ -13,7 +13,7 @@
     "start": "react-native start",
     "web": "cross-env NODE_ENV=development webpack-dev-server --config ./web/webpack.config.js --color --progress",
     "web:build": "cross-env NODE_ENV=production webpack --config ./web/webpack.config.js --color --progress",
-    "desktop": "cross-env NODE_ENV=development webpack-dev-server --config ./desktop/webpack.config.js --color --progress",
+    "desktop": "cross-env NODE_ENV=development webpack-dev-server --config ./desktop/webpack.config.renderer.dev.js --color --progress",
     "desktop:build": "yarn web:build && node ./desktop/build.js",
     "test": "jest",
     "lint": "eslint .",

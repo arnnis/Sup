@@ -15,6 +15,7 @@ import {currentTeamTokenSelector, meSelector} from '../../reducers/teams';
 import ThemeContext from '../../contexts/theme';
 import {messageFilesSelector} from '../../reducers/messages';
 import {Platform} from '../../utils/platform';
+import {shell} from 'electron';
 
 interface Props {
   messageId: string;
@@ -106,12 +107,11 @@ export const File: FC<FileProps> = ({file, containerStyle, textStyle, isMe}) => 
   };
 
   const downloadFileWeb = () => {
-    // window.open(url, '_blank');
-    const el = document.createElement('a');
-    el.href = url;
-    el.download = filename;
-    el.target = '_blank';
-    el.click();
+    if (Platform.isElectron) {
+      shell.openExternal(url);
+    } else {
+      window.open(url, '_blank');
+    }
   };
 
   const downloadFile = Platform.isNative ? downloadFileNative : downloadFileWeb;
