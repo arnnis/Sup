@@ -6,7 +6,7 @@ const config = merge(webConfigs, {
 	target: 'electron-renderer',
 	devServer: {
 		open: false,
-		setup: function() {
+		before: function() {
 			spawn('electron', ['./desktop'], {shell: true, env: process.env, stdio: 'inherit'})
 				.on('close', code => process.exit(0))
 				.on('error', spawnError => console.error(spawnError));

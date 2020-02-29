@@ -43,7 +43,7 @@ const createMainWindow = async () => {
 	if (is.development) {
 		await win.loadURL('http://localhost:8080/index.html');
 	} else {
-		await win.loadFile(path.join(__dirname, './build/index.html'));
+		await win.loadFile('./www/index.html');
 	}
 
 	return win;

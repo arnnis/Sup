@@ -168,7 +168,7 @@
   "build": {
     "appId": "com.arnnis.sup",
     "files": [
-      "!node_modules/*"
+      "!node_modules/*/**"
     ],
     "directories": {
       "buildResources": "resources",
