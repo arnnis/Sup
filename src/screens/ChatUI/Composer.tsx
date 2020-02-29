@@ -37,7 +37,7 @@ class Composer extends Component<Props> {
     if (Platform.isWeb) {
       if (event.key === 'Enter') {
         event.preventDefault();
-        if (event.ctrlKey) {
+        if (event.ctrlKey || event.metaKey) {
           onTextChanged(text + '\n');
         } else {
           onEnter && onEnter();
