@@ -25,7 +25,7 @@ try {
 	shell.cd('temp');
 
 	console.log(chalk.bgCyan('Starting desktop pack...'));
-	shell.exec('electron-builder . -m');
+	shell.exec('electron-builder . -mwl');
 	console.log(chalk.bgGreen('Desktop build done...'));
 
 	console.log(chalk.bgYellow('Removing temp folder...'));
