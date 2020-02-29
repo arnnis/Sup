@@ -1,8 +1,9 @@
 name: CI
 
-on: push
-#     tags:
-#       - 'v*.*.*'
+on:
+  push:
+    tags:
+      - 'v*.*.*'
 
 jobs:
   build:
@@ -47,13 +48,13 @@ jobs:
 
       - name: Setup wine for windows build
         run: |
-         sudo apt-get update && sudo apt-get install -y --no-install-recommends software-properties-common && sudo dpkg --add-architecture i386 && sudo curl -L https://download.opensuse.org/repositories/Emulators:/Wine:/Debian/xUbuntu_18.04/Release.key > winehq.key && sudo apt-key add winehq.key && sudo apt-add-repository 'deb https://download.opensuse.org/repositories/Emulators:/Wine:/Debian/xUbuntu_18.04/ ./'
-         sudo apt-get update
-         sudo apt-get -y purge software-properties-common libdbus-glib-1-2 python3-dbus python3-gi python3-pycurl python3-software-properties
-         sudo apt-get install -y --no-install-recommends winehq-stable
-         sudo apt-get clean && sudo rm -rf /var/lib/apt/lists/* && sudo unlink winehq.key
-         sudo curl -L https://github.com/electron-userland/electron-builder-binaries/releases/download/wine-2.0.3-mac-10.13/wine-home.zip > /tmp/wine-home.zip && sudo unzip /tmp/wine-home.zip -d /root/.wine && sudo unlink /tmp/wine-home.zip
-        
+          sudo apt-get update && sudo apt-get install -y --no-install-recommends software-properties-common && sudo dpkg --add-architecture i386 && sudo curl -L https://download.opensuse.org/repositories/Emulators:/Wine:/Debian/xUbuntu_18.04/Release.key > winehq.key && sudo apt-key add winehq.key && sudo apt-add-repository 'deb https://download.opensuse.org/repositories/Emulators:/Wine:/Debian/xUbuntu_18.04/ ./'
+          sudo apt-get update
+          sudo apt-get -y purge software-properties-common libdbus-glib-1-2 python3-dbus python3-gi python3-pycurl python3-software-properties
+          sudo apt-get install -y --no-install-recommends winehq-stable
+          sudo apt-get clean && sudo rm -rf /var/lib/apt/lists/* && sudo unlink winehq.key
+          sudo curl -L https://github.com/electron-userland/electron-builder-binaries/releases/download/wine-2.0.3-mac-10.13/wine-home.zip > /tmp/wine-home.zip && sudo unzip /tmp/wine-home.zip -d /root/.wine && sudo unlink /tmp/wine-home.zip
+
       - name: Build desktop
         run: yarn desktop:build
 
