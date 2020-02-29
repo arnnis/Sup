@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
 
       - name: Setup Node.js 12
         uses: actions/setup-node@v1
@@ -61,10 +61,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Release artifacts
-        uses: meeDamian/github-release@0.1
+        uses: softprops/action-gh-release@v1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          files: >
+          files: |
             android/app/build/outputs/apk/release/*.apk
             desktop/dist/*.dmg
             desktop/dist/*.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
