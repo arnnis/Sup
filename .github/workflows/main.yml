@@ -41,7 +41,7 @@ jobs:
           architecture: x64 // (x64 or x86) - defaults to x64
 
       - name: Build android
-        run: cd android && ./gradlew assembleRelease
+        run: yarn android:build
 
       - name: Build web
         run: yarn web:build
