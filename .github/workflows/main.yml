@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - uses: actions/checkout@v2
@@ -28,8 +28,8 @@ jobs:
       - name: Install dependencies
         run: yarn install
 
-      - name: Patch workers (fixes android build)
-        run: sudo sysctl fs.inotify.max_user_instances=524288 && sudo sysctl fs.inotify.max_user_watches=524288 && sudo sysctl fs.inotify.max_queued_events=524288 && sudo sysctl -p
+      # - name: Patch workers (fixes android build)
+      #   run: sudo sysctl fs.inotify.max_user_instances=524288 && sudo sysctl fs.inotify.max_user_watches=524288 && sudo sysctl fs.inotify.max_queued_events=524288 && sudo sysctl -p
 
       - name: Run jettifier
         run: npx jetify
@@ -46,9 +46,9 @@ jobs:
       - name: Build web
         run: yarn web:build
 
-#       - name: Setup wine for windows build
-#         run: sudo apt-get install --no-install-recommends -y libopenjp2-tools && sudo apt install wine
-        
+      #       - name: Setup wine for windows build
+      #         run: sudo apt-get install --no-install-recommends -y libopenjp2-tools && sudo apt install wine
+
       - name: Build desktop
         run: yarn desktop:build
 
