@@ -46,8 +46,8 @@ jobs:
       - name: Build web
         run: yarn web:build
 
-      - name: Setup wine for windows build
-        run: sudo apt-get install --no-install-recommends -y libopenjp2-tools && sudo apt install wine
+#       - name: Setup wine for windows build
+#         run: sudo apt-get install --no-install-recommends -y libopenjp2-tools && sudo apt install wine
         
       - name: Build desktop
         run: yarn desktop:build
