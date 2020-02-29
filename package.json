@@ -40,6 +40,7 @@
     "emoji-mart-native": "https://github.com/arnnis/emoji-mart-native.git",
     "expo": "^35.0.0",
     "expo-av": "^8.0.0",
+    "expo-location": "^8.0.0",
     "expo-video-thumbnails": "^3.0.0",
     "howler": "^2.1.3",
     "lodash": "^4.17.15",
