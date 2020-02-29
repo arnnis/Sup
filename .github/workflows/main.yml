@@ -73,5 +73,6 @@ jobs:
             android/app/build/outputs/apk/release/*.apk
             desktop/dist/*.dmg
             desktop/dist/*.exe
+            desktop/dist/*.AppImage
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
