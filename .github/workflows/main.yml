@@ -61,12 +61,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Release artifacts
-        uses: softprops/action-gh-release@v1
+        uses: meeDamian/github-release@0.1
         with:
-          prerelease: true
-          files: |
+          token: ${{ secrets.GITHUB_TOKEN }}
+          files: >
             android/app/build/outputs/apk/release/*.apk
             desktop/dist/*.dmg
             desktop/dist/*.exe
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
