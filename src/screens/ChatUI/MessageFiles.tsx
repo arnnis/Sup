@@ -49,10 +49,10 @@ export const File: FC<FileProps> = ({file, containerStyle, textStyle, isMe}) => 
   const [playing, setPlaying] = useState(false);
   const [downloading, setDownloading] = useState<boolean>(false);
   const [downloadProgress, setDownloadProgress] = useState<number>(0);
-  const [localPath, setLocalPath] = useState<string>(null);
-  const [isSound] = useState<boolean>(file.mimetype.startsWith('audio'));
+  const [localPath, setLocalPath] = useState<string>('');
+  const [isSound] = useState<boolean>(file?.mimetype.startsWith('audio'));
   const downloadRef = useRef<fs.DownloadResumable>(null);
-  const soundRef = useRef<Audio.Sound | Howl | null>(null);
+  const soundRef = useRef<Audio.Sound | null>(null);
 
   useEffect(() => {
     return () => {
@@ -75,35 +75,39 @@ export const File: FC<FileProps> = ({file, containerStyle, textStyle, isMe}) => 
   };
 
   const downloadFileNative = async () => {
+    console.log('download called');
     if (downloading) return false;
     if (localPath) return localPath;
-
+    console.log('reached here?');
     let _localPath = `${fs.documentDirectory}/${filename}`;
     // let {exists} = await fs.getInfoAsync(localPath);
     // if (exists) return localPath;
 
-    setDownloading(false);
+    setDownloading(true);
 
-    downloadRef.current = fs.createDownloadResumable(
-      url,
-      _localPath,
-      {
-        headers: {
-          Authorization: 'Bearer ' + token,
+    try {
+      downloadRef.current = fs.createDownloadResumable(
+        url,
+        _localPath,
+        {
+          headers: {
+            Authorization: 'Bearer ' + token,
+          },
         },
-      },
-      progress =>
-        handleDownloadProgressUpdate(
-          progress.totalBytesWritten,
-          progress.totalBytesExpectedToWrite,
-        ),
-    );
+        progress =>
+          handleDownloadProgressUpdate(
+            progress.totalBytesWritten,
+            progress.totalBytesExpectedToWrite,
+          ),
+      );
 
-    await downloadRef.current.downloadAsync();
-
-    setLocalPath(_localPath);
-    setDownloading(false);
-    return _localPath;
+      await downloadRef.current.downloadAsync();
+      setLocalPath(_localPath);
+      setDownloading(false);
+      return _localPath;
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const downloadFileWeb = () => {
@@ -118,7 +122,7 @@ export const File: FC<FileProps> = ({file, containerStyle, textStyle, isMe}) => 
 
   const playSoundNative = async () => {
     // Sound already initialized
-    if (soundRef.current && soundRef.current instanceof Audio.Sound) {
+    if (soundRef.current) {
       let playbackStatus = await soundRef.current.getStatusAsync();
       if (!playbackStatus.isLoaded) return;
       if (playbackStatus.isPlaying) {
@@ -127,6 +131,8 @@ export const File: FC<FileProps> = ({file, containerStyle, textStyle, isMe}) => 
         soundRef.current.playAsync();
       }
     } else {
+      console.log('need to initialize sound object');
+      console.log('download the sound');
       let localPath = await downloadFileNative();
       if (!localPath) return false;
       let {sound} = await Audio.Sound.createAsync({uri: url}, {shouldPlay: false});
@@ -195,7 +201,7 @@ export const File: FC<FileProps> = ({file, containerStyle, textStyle, isMe}) => 
 
   const renderDownloadProgress = () => {
     return (
-      <Text style={[styles.downloadProgress, this.props.isMe && {color: 'purple'}]}>
+      <Text style={[styles.downloadProgress, isMe && {color: 'purple'}]}>
         {downloadProgress.toFixed(1) + '%'}
       </Text>
     );
