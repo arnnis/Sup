@@ -45,7 +45,7 @@ export const File: FC<FileProps> = ({file, containerStyle, textStyle, isMe}) => 
   const [url] = useState<string>(file.url_private_download);
   const {theme} = useContext(ThemeContext);
   const token = useSelector(currentTeamTokenSelector);
-  const [filename, setFilename] = useState(url.split('/').pop());
+  const [filename, setFilename] = useState(url?.split('/').pop());
   const [playing, setPlaying] = useState(false);
   const [downloading, setDownloading] = useState<boolean>(false);
   const [downloadProgress, setDownloadProgress] = useState<number>(0);
