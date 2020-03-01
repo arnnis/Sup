@@ -15,7 +15,7 @@
     "web": "cross-env NODE_ENV=development webpack-dev-server --config ./web/webpack.config.js --color --progress",
     "web:release": "cross-env NODE_ENV=production webpack --config ./web/webpack.config.js --color --progress",
     "desktop": "cross-env NODE_ENV=development webpack-dev-server --config ./desktop/webpack.config.renderer.dev.js --color --progress",
-    "desktop:release": "yarn web:build && node ./desktop/build.js",
+    "desktop:release": "yarn web:release && node ./desktop/build.js",
     "test": "jest",
     "lint": "eslint .",
     "predeploy": "yarn run web:release",
