@@ -19,7 +19,8 @@
     "test": "jest",
     "lint": "eslint .",
     "predeploy": "yarn run web:build",
-    "deploy": "gh-pages -d web/build"
+    "deploy": "gh-pages -d web/build",
+    "postversion": "react-native-version"
   },
   "dependencies": {
     "@react-native-community/netinfo": "^4.4.0",
@@ -120,6 +121,7 @@
     "np": "^5.0.3",
     "react-dropzone": "^10.2.1",
     "react-native-svg-transformer": "^0.13.0",
+    "react-native-version": "^3.2.0",
     "react-refresh": "^0.7.1",
     "react-test-renderer": "16.9.0",
     "shelljs": "^0.8.3",
