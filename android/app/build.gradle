@@ -133,7 +133,8 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "1.0"
+        versionName "0.2.2"
+        setProperty("archivesBaseName", "Sup-$versionName") // appends version to output apk name.
     }
     splits {
         abi {
