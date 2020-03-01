@@ -9,7 +9,6 @@ import {
   Easing,
   I18nManager,
   LayoutRectangle,
-  TouchableWithoutFeedback,
   View,
   ViewStyle,
   ScrollView,

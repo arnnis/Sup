@@ -1,6 +1,7 @@
 import React, {FC, useState} from 'react';
 import MenuContext from '.';
 import Menu from '../../components/Menu/Menu';
+import {Platform} from '../../utils/platform';
 
 export interface ContextValue {
   show: ((anchor: any, items: any) => void) | null;
@@ -23,9 +24,11 @@ const MenuProvider: FC = ({children}) => {
   return (
     <MenuContext.Provider value={value}>
       {children}
-      <Menu visible={visible} anchor={anchor} onDismiss={() => setVisible(false)}>
-        {items}
-      </Menu>
+      {Platform.isWeb && (
+        <Menu visible={visible} anchor={anchor} onDismiss={() => setVisible(false)}>
+          {items}
+        </Menu>
+      )}
     </MenuContext.Provider>
   );
 };
