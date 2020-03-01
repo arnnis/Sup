@@ -144,7 +144,7 @@ export const switchTeam = (teamId: string) => dispatch => {
 export const logoutFromCurrentTeam = () => (dispatch, getState) => {
   let state: RootState = getState();
   const currentTeamName = currentTeamSelector(state)?.name;
-  const _Alert = Platform.isNative ? Alert : AlertWeb;
+  const _Alert = Platform.isNative ? Alert : AlertWeb();
   _Alert.alert(
     'Logout from ' + currentTeamName,
     'Do you want to logout?',
