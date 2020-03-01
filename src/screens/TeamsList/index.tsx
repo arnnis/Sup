@@ -73,6 +73,7 @@ class TeamsList extends Component<Props> {
           })}
           ListFooterComponent={<AddTeam />}
         />
+        {this.renderVersion()}
       </View>
     );
   }

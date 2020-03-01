@@ -147,7 +147,7 @@ class Auth extends Component<Props> {
             value={this.state.domain}
             placeholderTextColor={theme.backgroundColorLess4}
             onChangeText={text => this.setState({domain: text})}
-            placeholder="Team (e.g. arnnis)"
+            placeholder="Team"
           />
         </View>
         <Text
