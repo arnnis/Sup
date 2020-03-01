@@ -18,7 +18,7 @@
     "desktop:release": "yarn web:build && node ./desktop/build.js",
     "test": "jest",
     "lint": "eslint .",
-    "predeploy": "yarn run web:build",
+    "predeploy": "yarn run web:release",
     "deploy": "gh-pages -d web/build",
     "postversion": "react-native-version"
   },
