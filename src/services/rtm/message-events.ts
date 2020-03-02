@@ -11,6 +11,7 @@ import {ReactionAddedEvent, MessageEvent, MessageReplyEvent, NotificationEvent} 
 import {meSelector} from '../../reducers/teams';
 import {goToChat} from '../../actions/chats/thunks';
 import {addReaction, removeReaction} from '../../actions/messages/thunks';
+import {Platform} from '../../utils/platform';
 
 export const sendMessage = (input: SendInput) => {
   let fingerprint = Math.random() * 100000000000000000;
@@ -101,17 +102,20 @@ export const handleSendMessageAckRecieved = data => {
 export const handleNotificationRecieved = (data: NotificationEvent) => {
   const state: RootState = store.getState();
 
-  // No notifcation when app is visible and notif is from current open chat
-  if (document.visibilityState === 'visible' && state.chats.currentChatId === data.channel) return;
+  if (Platform.isWeb) {
+    // No notifcation when app is visible and notif is from current open chat
+    if (document.visibilityState === 'visible' && state.chats.currentChatId === data.channel)
+      return;
 
-  // Issue a notification
-  let notif = new Notification(data.title, {
-    body: data.content,
-  });
+    // Issue a notification
+    let notif = new Notification(data.title, {
+      body: data.content,
+    });
 
-  notif.onclick = () => {
-    store.dispatch(goToChat(data.channel) as any);
-  };
+    notif.onclick = () => {
+      store.dispatch(goToChat(data.channel) as any);
+    };
+  }
 };
 
 export const handleReactionAdded = (data: ReactionAddedEvent) => {

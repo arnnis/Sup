@@ -18,7 +18,7 @@ PODS:
     - UMCore
   - EXLinearGradient (7.0.1):
     - UMCore
-  - EXLocation (7.0.0):
+  - EXLocation (8.0.0):
     - UMCore
     - UMPermissionsInterface
     - UMTaskManagerInterface
@@ -523,7 +523,7 @@ SPEC CHECKSUMS:
   EXFont: 71d07dc5d2153db7d1a23f1e0cc1b6341d55c432
   EXKeepAwake: d4caf9a1a7691126ade4ca0b76592e93250a8f29
   EXLinearGradient: b7d4a703ac9802078a8a8e212d205929c18b03e4
-  EXLocation: 452a1d9edceb1b93deb86fd785236606d33742dd
+  EXLocation: 3c75d012ca92eed94d4338778d79c49d1252393a
   EXPermissions: 9bc08859a675d291e89be9a0870155c27c16ac35
   EXSQLite: ddc1e6727bd7d36e649f07590fe3ae5511c1f039
   EXVideoThumbnails: da6cbd27284d6f35fc70b04faef033bc61b34ae4
