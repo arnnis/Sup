@@ -13,9 +13,8 @@ missing features.**
 
 ## Install
 
+- [Web](https://arnnis.github.io/Sup) - Web version using react-native-web
 - [Android](https://github.com/arnnis/Sup/releases/latest) - Android apk
-- [Web](https://arnnis.github.io/sup) - Web version using react-native-web
-- [Mac](https://github.com/arnnis/Sup/releases/latest) - Mac version using electron
 - [Windows](https://github.com/arnnis/Sup/releases/latest) - Windows version using electron
 - [Linux](https://github.com/arnnis/Sup/releases/latest) - Linux version using electron
 
