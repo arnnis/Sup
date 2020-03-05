@@ -1,11 +1,13 @@
 # Sup
 
-A slack client with WhatsApp like UI
+A Slack client with a UI similar to WhatsApp or Telegram.
+
+Supports Web, Android, Desktop
 
 **Do not use this for work, it's experiemental and you might miss important messages due to bugs and
 missing features.**
 
-[Open webapp](https://arnnis.github.io/Sup) (check **[Install](https://github.com/arnnis/Sup#install)** section for Android, Desktop versions)
+[Open Webapp]
 
 
 ## Screenshots
