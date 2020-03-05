@@ -39,38 +39,17 @@ class Auth extends Component<Props> {
 
   renderTop() {
     return (
-      <>
-        <Svg
-          style={{width: '100%', marginTop: -px(10)}}
-          preserveAspectRatio="xMinYMin meet"
-          viewBox={`0 0 ${isLandscape() ? rem(375) : dims.width} ${rem(120)}`}>
-          <Defs>
-            <LinearGradient
-              id="prefix__a"
-              x1={0.5}
-              x2={0.5}
-              y1={0}
-              y2={170}
-              gradientUnits="objectBoundingBox">
-              <Stop offset={0} stopColor="#492146" />
-              <Stop offset={1} stopColor="#492146" />
-            </LinearGradient>
-          </Defs>
-          <Path
-            data-name="Path 1"
-            d={`M23 125.095s97.5 ${rem(37.06)} ${rem(194.587)} 0 ${rem(180.413)} 0 ${rem(
-              180.413,
-            )} 0V2.865H23z`}
-            transform="translate(-23 -2.865)"
-            fill="url(#prefix__a)"
-          />
-          <View style={styles.headerContainer} />
-        </Svg>
+      <View
+        style={{
+          height: rem(135),
+          width: '100%',
+          backgroundColor: '#492146',
+        }}>
         <View style={{...StyleSheet.absoluteFillObject, top: rem(10), alignItems: 'center'}}>
           <Text style={styles.appTitle}>Sup</Text>
           <Text style={styles.authMode}>signin</Text>
         </View>
-      </>
+      </View>
     );
   }
 
@@ -133,7 +112,7 @@ class Auth extends Component<Props> {
           alignItems: 'flex-end',
           marginTop: px(20),
         }}>
-        <View style={{width: '40%'}}>
+        <View style={{width: isLandscape() ? '55%' : '40%'}}>
           <TextInput
             style={{
               width: '100%',
@@ -224,7 +203,12 @@ class Auth extends Component<Props> {
   renderHeader() {
     const left = !isLandscape() ? 'back' : null;
 
-    return <Header left={left} style={{elevation: 0}} />;
+    return (
+      <Header
+        left={left}
+        style={{elevation: 0, shadowOffset: {width: 0, height: 0}, shadowColor: 'transparent'}}
+      />
+    );
   }
 
   render() {

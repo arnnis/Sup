@@ -9,7 +9,7 @@ import px from '../../utils/normalizePixel';
 import {RootState} from '../../reducers';
 import DrawerLayout from 'react-native-gesture-handler/DrawerLayout';
 import TeamsList from '../TeamsList';
-import {initTeam} from '../../actions/teams/thunks';
+import {initTeam, goToAddTeam} from '../../actions/teams/thunks';
 import BottomTabbar from './BottomTabBar';
 import TeamEmptyPlaceholder from './TeamEmptyPlaceholder';
 import ChangeTeamButton from './ChangeTeamButton';
@@ -35,7 +35,12 @@ const Main: FC = React.memo(() => {
   let isLandscape = useMediaQuery({orientation: 'landscape'});
 
   useEffect(() => {
-    dispatch(initTeam());
+    if (currentTeam) {
+      dispatch(initTeam());
+    } else {
+      dispatch(goToAddTeam());
+    }
+
     StatusBar.setBarStyle('light-content');
     global['toast'] = toast => dispatch(toggleToast(toast));
   }, []);

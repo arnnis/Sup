@@ -3,12 +3,10 @@ import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import px from '../../utils/normalizePixel';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {withNavigation, NavigationInjectedProps} from 'react-navigation';
-import {NavigationService} from '../../navigation/Navigator';
 import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 import Touchable from '../../components/Touchable';
-import isLandscape from '../../utils/stylesheet/isLandscape';
-import {openBottomSheet} from '../../actions/app';
 import {connect, DispatchProp} from 'react-redux';
+import {goToAddTeam} from '../../actions/teams/thunks';
 
 type Props = NavigationInjectedProps & ThemeInjectedProps & DispatchProp<any>;
 
@@ -32,8 +30,7 @@ class AddTeam extends Component<Props> {
   }
 
   handleAddTeam = () => {
-    if (!isLandscape()) NavigationService.navigate('Auth');
-    else this.props.dispatch(openBottomSheet('Auth'));
+    this.props.dispatch(goToAddTeam());
   };
 
   render() {

@@ -26,7 +26,7 @@ import {SlackError} from '../../utils/http/errors';
 import {Alert} from 'react-native';
 import {currentTeamSelector} from '../../reducers/teams';
 import isLandscape from '../../utils/stylesheet/isLandscape';
-import {closeBottomSheet, setDrawerOpen} from '../app';
+import {closeBottomSheet, setDrawerOpen, openBottomSheet} from '../app';
 import {Platform} from '../../utils/platform';
 import AlertWeb from '../../utils/AlertWeb';
 
@@ -157,7 +157,8 @@ export const logoutFromCurrentTeam = () => (dispatch, getState) => {
         onPress: () => {
           let currentTeam = state.teams.currentTeam;
           _closeSocket();
-          return dispatch(logout(currentTeam));
+          dispatch(logout(currentTeam));
+          dispatch(setCurrentTeam(null));
         },
       },
     ],
@@ -182,4 +183,9 @@ export const getEmojis = () => async dispatch => {
     dispatch(getEmojisFail());
     console.log(err);
   }
+};
+
+export const goToAddTeam = () => dispatch => {
+  if (!isLandscape()) NavigationService.navigate('Auth');
+  else dispatch(openBottomSheet('Auth'));
 };

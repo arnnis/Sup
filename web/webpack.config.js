@@ -130,6 +130,10 @@ const config = {
         from: path.resolve(__dirname + '/manifest.json'),
         to: '.',
       },
+      {
+        from: path.resolve(__dirname + '/readme.md'),
+        to: '.',
+      },
     ]),
     !isProd &&
       new WorkboxPlugin.GenerateSW({
