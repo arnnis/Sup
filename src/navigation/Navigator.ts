@@ -13,7 +13,7 @@ import {Platform} from 'react-native';
 import {createStackNavigator} from 'react-navigation-stack';
 
 const _createStackNavigator = Platform.select({
-  ios: createNativeStackNavigator,
+  ios: createStackNavigator,
   default: createStackNavigator,
 });
 
@@ -29,7 +29,7 @@ const AppStack = _createStackNavigator(
     SelectTheme,
   },
   {
-    mode: 'modal',
+    // mode: 'modal',
     headerMode: 'none',
     initialRouteName: 'Main',
     cardStyle: {
