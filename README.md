@@ -5,8 +5,8 @@ A slack client with WhatsApp like UI
 **Do not use this for work, it's experiemental and you might miss important messages due to bugs and
 missing features.**
 
-[Open webapp](https://www.google.com)
-- Check **[Install](https://www.google.com)** section for Android, Desktop versions
+[Open webapp](https://www.google.com) (Check **[Install](https://www.google.com)** section for Android, Desktop versions)
+
 
 ## Screenshots
 
