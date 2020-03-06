@@ -155,7 +155,7 @@ class Auth extends Component<Props> {
               signinTeam(
                 this.state.domain.toLowerCase(),
                 this.state.email.toLowerCase(),
-                this.state.password.toLowerCase(),
+                this.state.password,
                 this.state.pin.toLowerCase(),
               ),
             );
