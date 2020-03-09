@@ -34,7 +34,7 @@ const UploadDropZoneWeb: FC<Props> = ({children, onDrop, placeholder, style}) =>
           style={{
             display: 'flex',
             flexDirection: 'column',
-            flex: 1,
+            flexShrink: 1,
             height: '100%',
             width: '100%',
           }}
