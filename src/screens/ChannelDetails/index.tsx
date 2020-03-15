@@ -106,7 +106,7 @@ class ChatDetails extends Component<Props> {
             marginLeft: px(40),
             marginTop: 25,
           }}>
-          {chat.is_private ? '' : `${chat?.num_members} MEMBERS`}
+          {chat.is_private ? '' : chat?.num_members ? `${chat.num_members} MEMBERS` : ''}
         </Text>
       </>
     );
