@@ -1,6 +1,5 @@
 @import '~emoji-mart/css/emoji-mart.css';
 @import url(https://fonts.googleapis.com/css?family=Open+Sans);
-@import './react-contextmenu.css';
 
 * {
   font-family: 'Open Sans', sans-serif;
