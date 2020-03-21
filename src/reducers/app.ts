@@ -7,7 +7,7 @@ export type AppState = Readonly<{
   drawerOpen: boolean;
   connectionStatus: ConnectionStatus;
   bottomSheet: {
-    screen: string;
+    screen: string | undefined;
     params: any;
   };
   toast: {
