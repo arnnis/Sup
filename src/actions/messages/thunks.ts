@@ -216,12 +216,21 @@ export const removeReaction = (name: string, user: string, messageId: string) =>
 };
 
 export const removeMessage = (chatId: string, messageId: string) => async (dispatch: any) => {
-  let result: {ok: boolean} = await http({
-    path: '/chat.delete',
-    body: {
-      ts: messageId,
-      channel: chatId,
-    },
-  });
-  return result;
+  try {
+    let result: {ok: boolean} = await http({
+      path: '/chat.delete',
+      body: {
+        ts: messageId,
+        channel: chatId,
+      },
+      silent: false,
+    });
+    return result;
+  } catch (err) {
+    if (err instanceof SlackError) {
+      if (err.message === 'message_not_found') {
+        alert('Message not found');
+      }
+    }
+  }
 };

@@ -116,6 +116,28 @@ export interface MessageDeletedEvent {
     user: string;
     ts: string;
     team: string;
+    thread_ts?: string;
+  };
+  event_ts: string;
+  ts: string;
+}
+
+export interface MessageChangedEvent {
+  type: string;
+  subtype: string;
+  hidden: boolean;
+  deleted_ts: string;
+  channel: string;
+  previous_message: {
+    client_msg_id: string;
+    type: string;
+    text: string;
+    user: string;
+    ts: string;
+    team: string;
+    blocks: any[];
+    thread_ts: string;
+    parent_user_id: string;
   };
   event_ts: string;
   ts: string;

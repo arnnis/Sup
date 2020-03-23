@@ -18,6 +18,7 @@ import {
   MessageReplyEvent,
   NotificationEvent,
   MessageDeletedEvent,
+  MessageChangedEvent,
 } from './types';
 import {meSelector} from '../../reducers/teams';
 import {goToChat} from '../../actions/chats/thunks';
@@ -143,5 +144,13 @@ export const handleReplyAdded = (data: MessageReplyEvent) => {
 };
 
 export const handleMessageDeleted = (data: MessageDeletedEvent) => {
-  store.dispatch(removeMessageFromChat(data.previous_message.ts, data.channel));
+  const chatId = data.channel;
+  const threadId = data.previous_message.thread_ts;
+  const messageId = data.previous_message.ts;
+  store.dispatch(removeMessageFromChat(messageId, threadId || chatId));
+};
+
+export const handleMessageChanged = (data: MessageChangedEvent) => {
+  const {previous_message: message} = data;
+  store.dispatch(updateEntity('messages', message.ts, message));
 };

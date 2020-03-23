@@ -13,6 +13,7 @@ import {
   handleReplyAdded,
   handleNotificationRecieved,
   handleMessageDeleted,
+  handleMessageChanged,
 } from './message-events';
 import {handleUserTyping, handleChatsMarkedAsSeen} from './chat-events';
 import {handleUserPresenceChange} from './members-events';
@@ -71,6 +72,9 @@ export const init = async () => {
     if (data.type === 'message' && data.subtype === 'message_replied') handleReplyAdded(data);
 
     if (data.type === 'message' && data.subtype === 'message_deleted') handleMessageDeleted(data);
+
+    // When a message is deleted from thread, used to decrease reply count of parent message.
+    if (data.type === 'message' && data.subtype === 'message_changed') handleMessageChanged(data);
 
     if (data.type === 'desktop_notification') handleNotificationRecieved(data);
 
