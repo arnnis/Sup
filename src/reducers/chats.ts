@@ -114,6 +114,21 @@ export const chatsReducer: Reducer<ChatsState, RootAction> = (state = initialSta
       };
     }
 
+    case 'REMOVE_MESSAGE_FROM_CHAT': {
+      let {chatId, messageId} = action.payload;
+      if (state.lastMessages[chatId].messageId === messageId)
+        return {
+          ...state,
+          lastMessages: {
+            ...state.lastMessages,
+            [chatId]: {
+              loading: false,
+              messageId: null,
+            },
+          },
+        };
+    }
+
     case 'SET_USER_TYPING': {
       let {chatId, userId} = action.payload;
       return {
