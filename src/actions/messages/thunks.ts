@@ -196,13 +196,13 @@ export const removeReaction = (name: string, user: string, messageId: string) =>
   if (reaction.count === 1)
     dispatch(
       updateEntity('messages', messageId, {
-        reactions: reactions.filter(reaction => reaction.name !== name),
+        reactions: reactions?.filter(reaction => reaction.name !== name),
       }),
     );
   else
     dispatch(
       updateEntity('messages', messageId, {
-        reactions: reactions.map(reaction =>
+        reactions: reactions?.map(reaction =>
           reaction.name === name
             ? {
                 ...reaction,
@@ -213,4 +213,15 @@ export const removeReaction = (name: string, user: string, messageId: string) =>
         ),
       }),
     );
+};
+
+export const removeMessage = (chatId: string, messageId: string) => async (dispatch: any) => {
+  let result: {ok: boolean} = await http({
+    path: '/chat.delete',
+    body: {
+      ts: messageId,
+      channel: chatId,
+    },
+  });
+  return result;
 };

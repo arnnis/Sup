@@ -137,6 +137,17 @@ export const messagesReducer: Reducer<MessagesState, RootAction> = (
       };
     }
 
+    case 'REMOVE_MESSAGE_FROM_CHAT': {
+      let {chatId, messageId} = action.payload;
+      return {
+        ...state,
+        list: {
+          ...state.list,
+          [chatId]: state.list[chatId].filter(msgId => msgId !== messageId),
+        },
+      };
+    }
+
     case 'SET_CURRENT_TEAM': {
       return initialState;
     }

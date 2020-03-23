@@ -14,3 +14,6 @@ export const addPendingMessage = (message: PendingMessage) =>
 
 export const removePendingMessage = (pendingId: number, chatId: string) =>
   action('REMOVE_PENDING_MESSAGE', {pendingId, chatId});
+
+export const removeMessageFromChat = (messageId: string, chatId: string) =>
+  action('REMOVE_MESSAGE_FROM_CHAT', {messageId, chatId});

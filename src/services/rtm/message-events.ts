@@ -1,13 +1,24 @@
 import {SendInput, PendingMessage, PingMessage} from '../../models';
 import {store} from '../../App';
-import {addPendingMessage, addMessageToChat, removePendingMessage} from '../../actions/messages';
+import {
+  addPendingMessage,
+  addMessageToChat,
+  removePendingMessage,
+  removeMessageFromChat,
+} from '../../actions/messages';
 import {send} from '.';
 import {batch} from 'react-redux';
 import {storeEntities, updateEntity} from '../../actions/entities';
 import {RootState} from '../../reducers';
 import {getMember} from '../../actions/members/thunks';
 import dayjs from 'dayjs';
-import {ReactionAddedEvent, MessageEvent, MessageReplyEvent, NotificationEvent} from './types';
+import {
+  ReactionAddedEvent,
+  MessageEvent,
+  MessageReplyEvent,
+  NotificationEvent,
+  MessageDeletedEvent,
+} from './types';
 import {meSelector} from '../../reducers/teams';
 import {goToChat} from '../../actions/chats/thunks';
 import {addReaction, removeReaction} from '../../actions/messages/thunks';
@@ -129,4 +140,8 @@ export const handleReactionRemoved = (data: ReactionAddedEvent) => {
 export const handleReplyAdded = (data: MessageReplyEvent) => {
   const {message} = data;
   store.dispatch(updateEntity('messages', message.thread_ts, message));
+};
+
+export const handleMessageDeleted = (data: MessageDeletedEvent) => {
+  store.dispatch(removeMessageFromChat(data.previous_message.ts, data.channel));
 };

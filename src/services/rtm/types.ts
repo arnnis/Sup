@@ -103,3 +103,20 @@ export interface MessageReplyEvent {
   event_ts: string;
   ts: string;
 }
+
+export interface MessageDeletedEvent {
+  type: string;
+  subtype: string;
+  hidden: boolean;
+  deleted_ts: string;
+  channel: string;
+  previous_message: {
+    type: string;
+    text: string;
+    user: string;
+    ts: string;
+    team: string;
+  };
+  event_ts: string;
+  ts: string;
+}

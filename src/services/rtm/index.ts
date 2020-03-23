@@ -12,6 +12,7 @@ import {
   handleReactionRemoved,
   handleReplyAdded,
   handleNotificationRecieved,
+  handleMessageDeleted,
 } from './message-events';
 import {handleUserTyping, handleChatsMarkedAsSeen} from './chat-events';
 import {handleUserPresenceChange} from './members-events';
@@ -60,13 +61,16 @@ export const init = async () => {
     }
 
     console.log(`[message] Data received from server:`, data);
+    console.log(JSON.stringify(data));
 
-    if (data.type === 'message') {
+    if (data.type === 'message' && !data.subtype) {
       // Ingoring hidden message events. here we only add thread and chat regular messages.
       if (!data.hidden) handleMessageRecieved(data);
     }
 
     if (data.type === 'message' && data.subtype === 'message_replied') handleReplyAdded(data);
+
+    if (data.type === 'message' && data.subtype === 'message_deleted') handleMessageDeleted(data);
 
     if (data.type === 'desktop_notification') handleNotificationRecieved(data);
 

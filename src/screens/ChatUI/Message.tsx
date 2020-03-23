@@ -3,7 +3,6 @@ import {StyleSheet, View, TouchableWithoutFeedback, Clipboard} from 'react-nativ
 import ReactDOM from 'react-dom';
 import {connect, DispatchProp} from 'react-redux';
 import Electron from 'electron';
-// import {ContextMenu, MenuItem} from 'react-contextmenu';
 
 import {isSameUser} from './utils';
 import {RootState} from '../../reducers';
@@ -22,6 +21,7 @@ import isNative from '../../utils/isNative';
 import {Platform} from '../../utils/platform';
 import WithMenu, {MenuInjectedProps} from '../../contexts/menu/with-menu';
 import MenuItem from '../../components/Menu/MenuItem';
+import {removeMessage} from '../../actions/messages/thunks';
 
 type Props = ReturnType<typeof mapStateToProps> &
   MenuInjectedProps &
@@ -39,12 +39,18 @@ type Props = ReturnType<typeof mapStateToProps> &
 
 class Message extends Component<Props> {
   messageContainerRef: any;
+  contextMenu: Array<{title: string; onPress(): void}> = [];
+
+  constructor(props: Props) {
+    super(props);
+    this.initContextMenu();
+  }
 
   componentDidMount() {
     Platform.isWeb &&
       ReactDOM.findDOMNode(this.messageContainerRef)?.addEventListener(
         'contextmenu',
-        this.handleContextMenuWeb,
+        this.handleContextMenuWeb as any,
       );
   }
 
@@ -52,9 +58,28 @@ class Message extends Component<Props> {
     Platform.isWeb &&
       ReactDOM.findDOMNode(this.messageContainerRef)?.removeEventListener(
         'contextmenu',
-        this.handleContextMenuWeb,
+        this.handleContextMenuWeb as any,
       );
   }
+
+  initContextMenu = () => {
+    // Do not show reply option when thread is open
+    if (!this.props.currentThreadId) {
+      this.contextMenu.push({
+        title: 'Reply',
+        onPress: this.goToReplies,
+      });
+    }
+
+    this.contextMenu.push({
+      title: 'Copy text',
+      onPress: this.copyTextToClipboard,
+    });
+    this.contextMenu.push({
+      title: 'Delete message',
+      onPress: this.removeMessage,
+    });
+  };
 
   goToReplies = () => {
     this.props.dispatch(goToThread(this.props.messageId, this.props.navigation));
@@ -69,18 +94,23 @@ class Message extends Component<Props> {
     }
   };
 
+  removeMessage = () => {
+    this.props.dispatch(removeMessage(this.props.currentChatId, this.props.messageId));
+  };
+
   handleContextMenuWeb = (e: MouseEvent) => {
     e.preventDefault();
 
     const items = (
       <>
-        <MenuItem onPress={this.goToReplies} title="Reply" />
-        <MenuItem onPress={this.copyTextToClipboard} title="Copy text" />
+        {this.contextMenu.map(option => (
+          <MenuItem onPress={option.onPress} title={option.title} />
+        ))}
       </>
     );
-    // alert(JSON.stringify({x: e.pageX, y: e.pageY}));
     this.props.show && this.props.show({x: e.pageX, y: e.pageY}, items);
 
+    // OS native menu provided by electron, does not work on web, commented for now
     // if (Platform.isElectron) {
     //   const {Menu, MenuItem} = Electron.remote;
 
@@ -105,20 +135,7 @@ class Message extends Component<Props> {
 
   openMessageContextNative = () => {
     if (!isNative()) return;
-
-    const menu = [];
-
-    if (!this.props.currentThreadId)
-      menu.push({
-        title: 'Reply',
-        onPress: this.goToReplies,
-      });
-
-    menu.push({
-      title: 'Copy',
-      onPress: this.copyTextToClipboard,
-    });
-    showMenu(menu, this);
+    showMenu(this.contextMenu, this);
   };
 
   renderAvatar(isMe, sameUser) {
@@ -200,23 +217,6 @@ class Message extends Component<Props> {
     return <Reactions messageId={this.props.messageId} hideAvatar={this.props.hideAvatar} />;
   }
 
-  // renderMenu = () => {
-  //   return (
-  //     <ContextMenu id={this.props.currentMessage.ts}>
-  //       <MenuItem data={{foo: 'bar'}} onClick={this.goToReplies}>
-  //         Reply
-  //       </MenuItem>
-  //       <MenuItem data={{foo: 'bar'}} onClick={this.copyTextToClipboard}>
-  //         Copy {this.props.currentMessage.text}
-  //       </MenuItem>
-  //       {/* <MenuItem divider />
-  //     <MenuItem data={{foo: 'bar'}} onClick={this.handleClick}>
-  //       ContextMenu Item 3
-  //     </MenuItem> */}
-  //     </ContextMenu>
-  //   );
-  // };
-
   render() {
     let {currentMessage, prevMessage, nextMessage, me, inverted} = this.props;
     let sameUser = isSameUser(currentMessage, nextMessage);
@@ -256,7 +256,6 @@ class Message extends Component<Props> {
         {!inverted && this.renderReactions()}
         {this.renderDivder()}
         {inverted && this.renderDay()}
-        {/* {this.renderMenu()} */}
       </>
     );
   }
@@ -285,6 +284,7 @@ const mapStateToProps = (state: RootState, ownProps) => ({
   nextMessage: state.entities.messages.byId[ownProps.nextMessageId],
   me: meSelector(state),
   currentThreadId: state.chats.currentThreadId,
+  currentChatId: state.chats.currentChatId,
 });
 
 export default connect(mapStateToProps)(withTheme(withNavigation(WithMenu(Message))));
