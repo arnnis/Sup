@@ -38,7 +38,7 @@
     "emoji-datasource": "^5.0.1",
     "emoji-js": "^3.5.0",
     "emoji-mart": "^2.11.2",
-    "emoji-mart-native": "https://github.com/arnnis/emoji-mart-native.git",
+    "emoji-mart-native": "^0.5.0-beta",
     "expo": "^35.0.0",
     "expo-av": "^8.0.0",
     "expo-location": "^8.0.0",
