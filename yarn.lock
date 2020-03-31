@@ -5578,9 +5578,10 @@ emoji-js@^3.5.0:
   dependencies:
     emoji-datasource "4.1.0"
 
-"emoji-mart-native@https://github.com/arnnis/emoji-mart-native.git":
+emoji-mart-native@^0.5.0-beta:
   version "0.5.0-beta"
-  resolved "https://github.com/arnnis/emoji-mart-native.git#e5b4c55ac809b91ab84b5521f90be2fcf82579a1"
+  resolved "https://registry.yarnpkg.com/emoji-mart-native/-/emoji-mart-native-0.5.0-beta.tgz#228b786ff2d4c8abd1c0d6230d89506e164643b6"
+  integrity sha512-g3rM2T73X9qTiJ8pYuSrxUDBEH9DakrG/acCqZjUoOw2kqvLI89SpQI8VqB+E1AmbMyeHDWbHS2eBF8TyIdmRA==
 
 emoji-mart@^2.11.2:
   version "2.11.2"
