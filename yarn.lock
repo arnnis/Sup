@@ -12267,10 +12267,14 @@ react-native-svg@^9.11.1:
   resolved "https://registry.yarnpkg.com/react-native-svg/-/react-native-svg-9.11.1.tgz#b1ccf48de413ff8c4f476f202aaa3893f4c8b59a"
   integrity sha512-BmNCM81SSzhj1+N5rYiy7sxrkmybgiT8Cu8yVRB7zVoWze/i1lbCWJah+Gk0OHHwR35ZA31oVKf5jtO4G1n94Q==
 
-react-native-tab-view@^2.10.0, react-native-tab-view@^2.9.0:
+react-native-tab-view@^2.9.0:
   version "2.10.0"
   resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-2.10.0.tgz#5e249e5650502010013449ffd4e5edc18a95364b"
   integrity sha512-qgexVz5eO4yaFjdkmn/sURXgVvaBo6pZD/q1eoca96SbPVbaH3WzVhF3bRUfeTHwZkXwznFTpS3JURqIFU8vQA==
+
+react-native-tab-view@arnnis/react-native-tab-view#refs/heads/release-github:
+  version "2.14.0"
+  resolved "https://codeload.github.com/arnnis/react-native-tab-view/tar.gz/952cc74fa2c50af6e9b623293c931701096b8b28"
 
 react-native-triangle@^0.0.9:
   version "0.0.9"
