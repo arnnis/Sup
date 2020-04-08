@@ -1,27 +1,27 @@
-import React, {Component} from 'react';
-import {StyleSheet, View, TouchableWithoutFeedback, Clipboard} from 'react-native';
+import React, { Component } from 'react';
+import { StyleSheet, View, TouchableWithoutFeedback, Clipboard } from 'react-native';
 import ReactDOM from 'react-dom';
-import {connect, DispatchProp} from 'react-redux';
+import { connect, DispatchProp } from 'react-redux';
 import Electron from 'electron';
 
-import {isSameUser} from './utils';
-import {RootState} from '../../reducers';
+import { isSameUser } from './utils';
+import { RootState } from '../../reducers';
 import Bubble from './Bubble';
 import Avatar from '../../components/Avatar';
 import px from '../../utils/normalizePixel';
-import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
-import {NavigationInjectedProps, withNavigation} from 'react-navigation';
+import withTheme, { ThemeInjectedProps } from '../../contexts/theme/withTheme';
+import { NavigationInjectedProps, withNavigation } from 'react-navigation';
 import Day from './Day';
-import {meSelector} from '../../reducers/teams';
+import { meSelector } from '../../reducers/teams';
 import rem from '../../utils/stylesheet/rem';
 import Reactions from './Reactions';
-import {goToThread} from '../../actions/chats/thunks';
+import { goToThread } from '../../actions/chats/thunks';
 import showMenu from '../../utils/showMenu';
 import isNative from '../../utils/isNative';
-import {Platform} from '../../utils/platform';
-import WithMenu, {MenuInjectedProps} from '../../contexts/menu/with-menu';
+import { Platform } from '../../utils/platform';
+import WithMenu, { MenuInjectedProps } from '../../contexts/menu/with-menu';
 import MenuItem from '../../components/Menu/MenuItem';
-import {removeMessage} from '../../actions/messages/thunks';
+import { removeMessage } from '../../actions/messages/thunks';
 
 type Props = ReturnType<typeof mapStateToProps> &
   MenuInjectedProps &
@@ -39,7 +39,7 @@ type Props = ReturnType<typeof mapStateToProps> &
 
 class Message extends Component<Props> {
   messageContainerRef: any;
-  contextMenu: Array<{title: string; onPress(): void}> = [];
+  contextMenu: Array<{ title: string; onPress(): void }> = [];
 
   constructor(props: Props) {
     super(props);
@@ -75,10 +75,10 @@ class Message extends Component<Props> {
       title: 'Copy text',
       onPress: this.copyTextToClipboard,
     });
-    this.contextMenu.push({
-      title: 'Delete message',
-      onPress: this.removeMessage,
-    });
+    // this.contextMenu.push({
+    //   title: 'Delete message',
+    //   onPress: this.removeMessage,
+    // });
   };
 
   goToReplies = () => {
@@ -86,7 +86,7 @@ class Message extends Component<Props> {
   };
 
   copyTextToClipboard = () => {
-    const {currentMessage} = this.props;
+    const { currentMessage } = this.props;
     if (Platform.isElectron) {
       Electron.clipboard.writeText(currentMessage.text);
     } else {
@@ -108,7 +108,7 @@ class Message extends Component<Props> {
         ))}
       </>
     );
-    this.props.show && this.props.show({x: e.pageX, y: e.pageY}, items);
+    this.props.show && this.props.show({ x: e.pageX, y: e.pageY }, items);
 
     // OS native menu provided by electron, does not work on web, commented for now
     // if (Platform.isElectron) {
@@ -139,13 +139,13 @@ class Message extends Component<Props> {
   };
 
   renderAvatar(isMe, sameUser) {
-    let {hideAvatar} = this.props;
+    let { hideAvatar } = this.props;
     if (hideAvatar) return null;
     // If same author of previous message, render a placeholder instead of avatar
     if (sameUser)
       return (
         <View
-          style={{width: 35, height: 35, marginLeft: isMe ? 7.5 : 0, marginRight: isMe ? 0 : 7.5}}
+          style={{ width: 35, height: 35, marginLeft: isMe ? 7.5 : 0, marginRight: isMe ? 0 : 7.5 }}
         />
       );
     return <Avatar userId={this.props.currentMessage.user} width={px(35)} />;
@@ -167,7 +167,7 @@ class Message extends Component<Props> {
 
   renderAnchor(isMe, sameUser) {
     if (sameUser) return null;
-    let {theme, currentMessage} = this.props;
+    let { theme, currentMessage } = this.props;
     return (
       <View
         style={[
@@ -194,7 +194,7 @@ class Message extends Component<Props> {
   }
 
   renderDay() {
-    let {currentMessage, prevMessage} = this.props;
+    let { currentMessage, prevMessage } = this.props;
     return <Day currentMessage={currentMessage} prevMessage={prevMessage} />;
   }
 
@@ -218,7 +218,7 @@ class Message extends Component<Props> {
   }
 
   render() {
-    let {currentMessage, prevMessage, nextMessage, me, inverted} = this.props;
+    let { currentMessage, prevMessage, nextMessage, me, inverted } = this.props;
     let sameUser = isSameUser(currentMessage, nextMessage);
     let isMe = me && me.id === currentMessage.user;
     const hasReactions = !!currentMessage.reactions?.length;
@@ -235,7 +235,7 @@ class Message extends Component<Props> {
             style={[
               styles.container,
               isMe ? styles.right : styles.left,
-              {marginBottom: sameUser && !hasReactions ? 4 : 10},
+              { marginBottom: sameUser && !hasReactions ? 4 : 10 },
             ]}>
             {!isMe ? (
               <>
