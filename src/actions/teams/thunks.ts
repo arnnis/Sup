@@ -16,7 +16,6 @@ import {
 import {batch} from 'react-redux';
 import {storeEntities} from '../entities';
 import http from '../../utils/http';
-import {RootState} from '../../reducers';
 import {NavigationService} from '../../navigation/Navigator';
 import {getChats} from '../../slices/chats-thunks';
 import {_closeSocket, init as initRTM} from '../../services/rtm';
@@ -29,12 +28,15 @@ import isLandscape from '../../utils/stylesheet/isLandscape';
 import {closeBottomSheet, setDrawerOpen, openBottomSheet} from '../../slices/app-slice';
 import {Platform} from '../../utils/platform';
 import AlertWeb from '../../utils/AlertWeb';
+import {AppThunk} from '../../store/configureStore';
 
-export const signinTeam = (domain: string, email: string, password: string, pin?: string) => async (
-  dispatch,
-  getState,
-) => {
-  let state: RootState = getState();
+export const signinTeam = (
+  domain: string,
+  email: string,
+  password: string,
+  pin?: string,
+): AppThunk => async (dispatch, getState) => {
+  let state = getState();
 
   if (
     state.teams.list
@@ -70,7 +72,7 @@ export const signinTeam = (domain: string, email: string, password: string, pin?
     dispatch(signinTeamSuccess(token, team_id, user));
     dispatch(switchTeam(team_id));
 
-    dispatch(setDrawerOpen(false));
+    dispatch(setDrawerOpen({drawerState: false}));
     if (isLandscape()) dispatch(closeBottomSheet());
     else NavigationService.navigate('Main');
     return Promise.resolve();
@@ -86,8 +88,8 @@ export const signinTeam = (domain: string, email: string, password: string, pin?
   }
 };
 
-export const initTeam = () => async (dispatch, getState) => {
-  let store: RootState = getState();
+export const initTeam = (): AppThunk => async (dispatch, getState) => {
+  let store = getState();
   let currentTeamId = store.teams.currentTeam;
 
   if (!currentTeamId) return;
@@ -111,7 +113,7 @@ export const initTeam = () => async (dispatch, getState) => {
   }
 };
 
-export const getTeam = (teamId: string) => async (dispatch) => {
+export const getTeam = (teamId: string): AppThunk => async (dispatch) => {
   dispatch(getTeamStart(teamId));
 
   try {
@@ -133,7 +135,7 @@ export const getTeam = (teamId: string) => async (dispatch) => {
   }
 };
 
-export const switchTeam = (teamId: string) => (dispatch) => {
+export const switchTeam = (teamId: string): AppThunk => (dispatch) => {
   _closeSocket();
   batch(() => {
     dispatch(setCurrentTeam(teamId));
@@ -141,8 +143,8 @@ export const switchTeam = (teamId: string) => (dispatch) => {
   });
 };
 
-export const logoutFromCurrentTeam = () => (dispatch, getState) => {
-  let state: RootState = getState();
+export const logoutFromCurrentTeam = (): AppThunk => (dispatch, getState) => {
+  let state = getState();
   const currentTeamName = currentTeamSelector(state)?.name;
   const _Alert = Platform.isNative ? Alert : AlertWeb();
   _Alert.alert(
@@ -158,7 +160,7 @@ export const logoutFromCurrentTeam = () => (dispatch, getState) => {
           let currentTeam = state.teams.currentTeam;
           _closeSocket();
           dispatch(logout(currentTeam));
-          dispatch(setCurrentTeam(null));
+          dispatch(setCurrentTeam(''));
         },
       },
     ],
@@ -168,7 +170,7 @@ export const logoutFromCurrentTeam = () => (dispatch, getState) => {
   );
 };
 
-export const getEmojis = () => async (dispatch) => {
+export const getEmojis = (): AppThunk => async (dispatch) => {
   try {
     dispatch(getEmojisStart());
     let {emoji}: {emoji: any} = await http({
@@ -185,7 +187,7 @@ export const getEmojis = () => async (dispatch) => {
   }
 };
 
-export const goToAddTeam = () => (dispatch) => {
+export const goToAddTeam = (): AppThunk => (dispatch) => {
   if (!isLandscape()) NavigationService.navigate('Auth');
-  else dispatch(openBottomSheet('Auth'));
+  else dispatch(openBottomSheet({screen: 'Auth'}));
 };
