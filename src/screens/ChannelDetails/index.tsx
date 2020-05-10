@@ -12,7 +12,7 @@ import DirectPresense from '../ChatUI/DirectPresense';
 import {getChatType} from '../ChatUI/utils';
 import ChannelMembersCount from '../ChatUI/ChannelMembersCount';
 import ChannelMemberCell from './ChannelMemberCell';
-import {getChannelMembers} from '../../actions/chats/thunks';
+import {getChannelMembers} from '../../slices/chats-thunks';
 import Screen from '../../components/Screen';
 import withStylesheet, {StyleSheetInjectedProps} from '../../utils/stylesheet/withStylesheet';
 import isLandscape from '../../utils/stylesheet/isLandscape';

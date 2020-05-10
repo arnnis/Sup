@@ -21,7 +21,7 @@ import {
   MessageChangedEvent,
 } from './types';
 import {meSelector} from '../../reducers/teams';
-import {goToChat} from '../../actions/chats/thunks';
+import {goToChat} from '../../slices/chats-thunks';
 import {addReaction, removeReaction} from '../../actions/messages/thunks';
 import {Platform} from '../../utils/platform';
 
@@ -37,10 +37,7 @@ export const sendMessage = (input: SendInput) => {
       channel: input.channel,
       thread_ts: input.thread_ts,
       user: meId,
-      ts:
-        dayjs()
-          .unix()
-          .toString() + '.0000',
+      ts: dayjs().unix().toString() + '.0000',
       pending: true,
     };
     store.dispatch(storeEntities('messages', [pendingMessage]));
@@ -78,7 +75,7 @@ export const handleMessageRecieved = (data: MessageEvent) => {
     // Increase chat unread count
     let state = store.getState() as RootState;
     let chat = state.entities.chats.byId[chatId];
-    let isMe = userId === state.teams.list.find(tm => tm.id === state.teams.currentTeam)?.userId;
+    let isMe = userId === state.teams.list.find((tm) => tm.id === state.teams.currentTeam)?.userId;
     if (!isMe)
       store.dispatch(
         updateEntity('chats', chatId, {
@@ -89,12 +86,12 @@ export const handleMessageRecieved = (data: MessageEvent) => {
   });
 };
 
-export const handleSendMessageAckRecieved = data => {
+export const handleSendMessageAckRecieved = (data) => {
   let state: RootState = store.getState();
   let messageLists = state.messages.list;
   let currentTeam = state.teams.currentTeam;
 
-  let meId = state.teams.list.find(ws => ws.id === currentTeam).userId;
+  let meId = state.teams.list.find((ws) => ws.id === currentTeam).userId;
 
   // Check this ack is for a pending message
   for (let chatId in messageLists) {

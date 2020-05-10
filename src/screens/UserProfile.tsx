@@ -7,7 +7,7 @@ import {connect, DispatchProp} from 'react-redux';
 import {NavigationInjectedProps, withNavigation} from 'react-navigation';
 import px from '../utils/normalizePixel';
 import {User} from '../models';
-import {openChat, goToChat} from '../actions/chats/thunks';
+import {openChat, goToChat} from '../slices/chats-thunks';
 import {ActivityIndicator} from 'react-native-paper';
 import withTheme, {ThemeInjectedProps} from '../contexts/theme/withTheme';
 import Touchable from '../components/Touchable';

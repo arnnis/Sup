@@ -8,7 +8,7 @@ import Message from './Message';
 import {RootState} from '../../reducers';
 import {addMessageToChat} from '../../actions/messages';
 import {getMessagesByChatId, getRepliesByThreadId} from '../../actions/messages/thunks';
-import {markChatAsRead, getChatInfo, goToChannelDetails} from '../../actions/chats/thunks';
+import {markChatAsRead, getChatInfo, goToChannelDetails} from '../../slices/chats-thunks';
 import Header from '../../components/Header';
 import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 import InputToolbar from './InputToolbar';
@@ -21,7 +21,7 @@ import ChannelMembersCount from './ChannelMembersCount';
 import DirectPresense from './DirectPresense';
 import Screen from '../../components/Screen';
 import Typing from './Typing';
-import {setCurrentChat, setCurrentThread} from '../../actions/chats';
+import {setCurrentChat, setCurrentThread} from '../../slices/chats-slice';
 import select from '../../utils/select';
 import UploadDropZoneWeb from './UploadDropZoneWeb';
 import ChannelDetails from '../ChannelDetails';
@@ -120,7 +120,7 @@ class ChatUI extends Component<Props> {
     });
   }
 
-  _invertedWheelEvent = e => {
+  _invertedWheelEvent = (e) => {
     this._scrollNode.scrollTop -= e.deltaY;
     e.preventDefault();
   };
@@ -223,7 +223,7 @@ class ChatUI extends Component<Props> {
     const inverted = this.isInverted();
     return (
       <FlatList
-        ref={ref => (this._flatlistRef = ref)}
+        ref={(ref) => (this._flatlistRef = ref)}
         data={messagesList}
         renderItem={this.renderMessageCell}
         bounces={false}

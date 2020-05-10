@@ -5,14 +5,14 @@ import AnimatedEllipsis from 'react-native-animated-ellipsis';
 import px from '../../utils/normalizePixel';
 import {User} from '../../models';
 import {RootState} from '../../reducers';
-import {getChatLastMessage} from '../../actions/chats/thunks';
+import {getChatLastMessage} from '../../slices/chats-thunks';
 import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 import Touchable from '../../components/Touchable';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import {NavigationInjectedProps, withNavigation} from 'react-navigation';
 import MessageText from '../ChatUI/MessageText';
-import {setCurrentChat} from '../../actions/chats';
+import {setCurrentChat} from '../../slices/chats-slice';
 import getCurrentOrientaion from '../../utils/stylesheet/getCurrentOrientaion';
 import isLandscape from '../../utils/stylesheet/isLandscape';
 import ChatAvatar from './ChatAvatar';
@@ -33,7 +33,7 @@ class ChatCell extends PureComponent<Props> {
   }
 
   handlePress = () => {
-    this.props.dispatch(setCurrentChat(this.props.chatId));
+    this.props.dispatch(setCurrentChat({chatId: this.props.chatId}));
     if (getCurrentOrientaion() === 'portrait')
       this.props.navigation.navigate('ChatUI', {chatId: this.props.chatId});
   };

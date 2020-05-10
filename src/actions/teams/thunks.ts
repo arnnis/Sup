@@ -18,7 +18,7 @@ import {storeEntities} from '../entities';
 import http from '../../utils/http';
 import {RootState} from '../../reducers';
 import {NavigationService} from '../../navigation/Navigator';
-import {getChats} from '../chats/thunks';
+import {getChats} from '../../slices/chats-thunks';
 import {_closeSocket, init as initRTM} from '../../services/rtm';
 import {getCurrentUser} from '../app/thunks';
 import {getMembers} from '../members/thunks';
@@ -38,8 +38,8 @@ export const signinTeam = (domain: string, email: string, password: string, pin?
 
   if (
     state.teams.list
-      .map(tm => state.entities.teams.byId[tm.id])
-      .some(team => team.domain === domain)
+      .map((tm) => state.entities.teams.byId[tm.id])
+      .some((team) => team.domain === domain)
   ) {
     alert('You have already signed into this team.');
     return;
@@ -111,7 +111,7 @@ export const initTeam = () => async (dispatch, getState) => {
   }
 };
 
-export const getTeam = (teamId: string) => async dispatch => {
+export const getTeam = (teamId: string) => async (dispatch) => {
   dispatch(getTeamStart(teamId));
 
   try {
@@ -133,7 +133,7 @@ export const getTeam = (teamId: string) => async dispatch => {
   }
 };
 
-export const switchTeam = (teamId: string) => dispatch => {
+export const switchTeam = (teamId: string) => (dispatch) => {
   _closeSocket();
   batch(() => {
     dispatch(setCurrentTeam(teamId));
@@ -168,7 +168,7 @@ export const logoutFromCurrentTeam = () => (dispatch, getState) => {
   );
 };
 
-export const getEmojis = () => async dispatch => {
+export const getEmojis = () => async (dispatch) => {
   try {
     dispatch(getEmojisStart());
     let {emoji}: {emoji: any} = await http({
@@ -185,7 +185,7 @@ export const getEmojis = () => async dispatch => {
   }
 };
 
-export const goToAddTeam = () => dispatch => {
+export const goToAddTeam = () => (dispatch) => {
   if (!isLandscape()) NavigationService.navigate('Auth');
   else dispatch(openBottomSheet('Auth'));
 };

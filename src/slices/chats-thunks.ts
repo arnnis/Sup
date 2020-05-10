@@ -1,15 +1,15 @@
 import {batch} from 'react-redux';
-import http from '../../utils/http';
-import {Chat, Message, PaginationResult} from '../../models';
-import {storeEntities} from '../entities';
-import chatsActions from '../../store/chats-slice';
-import {RootState} from '../../reducers';
-import imsDirects from '../../utils/filterIms';
-import isLandscape from '../../utils/stylesheet/isLandscape';
-import {openBottomSheet} from '../app';
+import http from '../utils/http';
+import {Chat, Message, PaginationResult} from '../models';
+import {storeEntities} from '../actions/entities';
+import * as chatsActions from './chats-slice';
+import {RootState} from '../reducers';
+import imsDirects from '../utils/filterIms';
+import isLandscape from '../utils/stylesheet/isLandscape';
+import {openBottomSheet} from '../actions/app';
 import {NavigationInjectedProps} from 'react-navigation';
-import getCurrentOrientaion from '../../utils/stylesheet/getCurrentOrientaion';
-import {NavigationService} from '../../navigation/Navigator';
+import getCurrentOrientaion from '../utils/stylesheet/getCurrentOrientaion';
+import {NavigationService} from '../navigation/Navigator';
 
 const {
   fetchChatsStart,
@@ -27,8 +27,8 @@ const {
   setUserTyping,
   unsetUserTyping,
   setCurrentThread,
-  setCurrentChat
-} = chatsActions
+  setCurrentChat,
+} = chatsActions;
 
 export const getChats = () => async (dispatch, getState) => {
   let store: RootState = getState();
@@ -97,14 +97,20 @@ export const getChatLastMessage = (chatId: string) => async (dispatch, getState)
 
     batch(() => {
       dispatch(storeEntities('messages', messages));
-      dispatch(getLastMessageSuccess({directId: chatId, messageId: messages[0].ts, nextCursor: next_cursor}));
+      dispatch(
+        getLastMessageSuccess({
+          directId: chatId,
+          messageId: messages[0].ts,
+          nextCursor: next_cursor,
+        }),
+      );
     });
   } catch (err) {
     dispatch(getLastMessageFail({directId: chatId}));
   }
 };
 
-export const openChat = (userIds: Array<string>) => async dispatch => {
+export const openChat = (userIds: Array<string>) => async (dispatch) => {
   let {channel}: {channel: any} = await http({
     path: '/conversations.open',
     body: {
@@ -130,7 +136,7 @@ export const openChat = (userIds: Array<string>) => async dispatch => {
   return channel.id;
 };
 
-export const markChatAsRead = (chatId: string, messageId: string) => async dispatch => {
+export const markChatAsRead = (chatId: string, messageId: string) => async (dispatch) => {
   try {
     let {ok} = await http({
       path: '/conversations.mark',
@@ -239,7 +245,7 @@ export const goToThread = (threadId: string, navigation: NavigationInjectedProps
   else navigation.push('ChatUI', params);
 };
 
-export const goToChannelDetails = (chatId: string) => dispatch => {
+export const goToChannelDetails = (chatId: string) => (dispatch) => {
   const params = {
     chatId,
   };
