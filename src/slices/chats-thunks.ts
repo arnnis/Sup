@@ -10,6 +10,7 @@ import {openBottomSheet} from '../actions/app';
 import {NavigationInjectedProps} from 'react-navigation';
 import getCurrentOrientaion from '../utils/stylesheet/getCurrentOrientaion';
 import {NavigationService} from '../navigation/Navigator';
+import {AppThunk} from '../store/configureStore';
 
 const {
   fetchChatsStart,
@@ -30,7 +31,7 @@ const {
   setCurrentChat,
 } = chatsActions;
 
-export const getChats = () => async (dispatch, getState) => {
+export const getChats = (): AppThunk => async (dispatch, getState) => {
   let store: RootState = getState();
   let cursor = store.chats.nextCursor;
   if (cursor === 'end') return;
@@ -72,8 +73,8 @@ export const getChats = () => async (dispatch, getState) => {
   }
 };
 
-export const getChatLastMessage = (chatId: string) => async (dispatch, getState) => {
-  let store: RootState = getState();
+export const getChatLastMessage = (chatId: string): AppThunk => async (dispatch, getState) => {
+  let store = getState();
 
   // If already is loading or already loaded break.
   let loading = store.chats.lastMessages[chatId] && store.chats.lastMessages[chatId].loading;
@@ -110,7 +111,7 @@ export const getChatLastMessage = (chatId: string) => async (dispatch, getState)
   }
 };
 
-export const openChat = (userIds: Array<string>) => async (dispatch) => {
+export const openChat = (userIds: Array<string>): AppThunk => async (dispatch) => {
   let {channel}: {channel: any} = await http({
     path: '/conversations.open',
     body: {
@@ -136,7 +137,7 @@ export const openChat = (userIds: Array<string>) => async (dispatch) => {
   return channel.id;
 };
 
-export const markChatAsRead = (chatId: string, messageId: string) => async (dispatch) => {
+export const markChatAsRead = (chatId: string, messageId: string): AppThunk => async (dispatch) => {
   try {
     let {ok} = await http({
       path: '/conversations.mark',
@@ -152,7 +153,7 @@ export const markChatAsRead = (chatId: string, messageId: string) => async (disp
   }
 };
 
-export const getChatInfo = (chatId: string) => async (dispatch, getState) => {
+export const getChatInfo = (chatId: string): AppThunk => async (dispatch, getState) => {
   let state: RootState = getState();
   let alreadyLoaded = state.chats.fullLoad[chatId]?.loaded ?? false;
   let loading = state.chats.fullLoad[chatId]?.loading ?? false;
@@ -180,7 +181,7 @@ export const getChatInfo = (chatId: string) => async (dispatch, getState) => {
   }
 };
 
-export const getChannelMembers = (chatId: string) => async (dispatch, getState) => {
+export const getChannelMembers = (chatId: string): AppThunk => async (dispatch, getState) => {
   let state: RootState = getState();
   let loadStatus = state.chats.membersListLoadStatus[chatId];
   if (loadStatus?.loading || loadStatus?.nextCursor === 'end') return;
@@ -211,7 +212,7 @@ export const getChannelMembers = (chatId: string) => async (dispatch, getState) 
   }
 };
 
-export const setTyping = (userId: string, chatId: string) => (dispatch, getState) => {
+export const setTyping = (userId: string, chatId: string): AppThunk => (dispatch, getState) => {
   let state = getState() as RootState;
   if (state.chats.typingsUsers[chatId]?.includes(userId)) return;
   dispatch(setUserTyping({userId, chatId}));
@@ -221,18 +222,18 @@ export const setTyping = (userId: string, chatId: string) => (dispatch, getState
 };
 
 export const goToChat = (
-  chatId,
+  chatId: string,
   navigation?: NavigationInjectedProps['navigation'] | undefined,
-) => (dispatch, getState) => {
-  dispatch(setCurrentChat(chatId));
+): AppThunk => (dispatch) => {
+  dispatch(setCurrentChat({chatId}));
   if (getCurrentOrientaion() === 'portrait')
     (navigation || NavigationService).navigate('ChatUI', {chatId: chatId});
 };
 
-export const goToThread = (threadId: string, navigation: NavigationInjectedProps['navigation']) => (
-  dispatch,
-  getState,
-) => {
+export const goToThread = (
+  threadId: string,
+  navigation: NavigationInjectedProps['navigation'],
+): AppThunk => (dispatch, getState) => {
   dispatch(setCurrentThread({threadId}));
   const state: RootState = getState();
   let params = {
@@ -245,7 +246,7 @@ export const goToThread = (threadId: string, navigation: NavigationInjectedProps
   else navigation.push('ChatUI', params);
 };
 
-export const goToChannelDetails = (chatId: string) => (dispatch) => {
+export const goToChannelDetails = (chatId: string): AppThunk => (dispatch) => {
   const params = {
     chatId,
   };
