@@ -16,9 +16,10 @@ import {queryPresences, subscribePresence} from '../../services/rtm/members-even
 import {NavigationInjectedProps} from 'react-navigation';
 import isLandscape from '../../utils/stylesheet/isLandscape';
 import {openBottomSheet} from '../../slices/app-slice';
+import {AppThunk} from '../../store/configureStore';
 
-export const getMembers = () => async (dispatch, getState) => {
-  let state: RootState = getState();
+export const getMembers = (): AppThunk => async (dispatch, getState) => {
+  let state = getState();
 
   dispatch(getMembersStart());
 
@@ -56,8 +57,11 @@ export const getMembers = () => async (dispatch, getState) => {
   }
 };
 
-export const getMembersByUserIds = (userIds: Array<string>) => async (dispatch, getState) => {
-  let state: RootState = getState();
+export const getMembersByUserIds = (userIds: Array<string>): AppThunk => async (
+  dispatch,
+  getState,
+) => {
+  let state = getState();
 
   userIds.forEach(async (userId) => {
     let loading = state.members.loading[userId];
@@ -77,8 +81,8 @@ export const getMembersByUserIds = (userIds: Array<string>) => async (dispatch, 
   return true;
 };
 
-export const getMember = (userId: string) => async (dispatch, getState) => {
-  let state: RootState = getState();
+export const getMember = (userId: string): AppThunk => async (dispatch, getState) => {
+  let state = getState();
 
   let loading = state.members.loading[userId];
   let alreadyLoaded = state.entities.users.byId[userId];
@@ -113,7 +117,7 @@ export const getMember = (userId: string) => async (dispatch, getState) => {
 export const goToUserProfile = (
   userId: string,
   navigation?: NavigationInjectedProps['navigation'],
-) => (dispatch) => {
+): AppThunk => (dispatch) => {
   const params = {
     userId,
   };
