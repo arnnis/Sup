@@ -5,7 +5,7 @@ import px from '../utils/normalizePixel';
 import FastImage from 'react-native-fast-image';
 import {connect, DispatchProp} from 'react-redux';
 import {RootState} from '../reducers';
-import {getMember, goToUserProfile} from '../actions/members/thunks';
+import {getMember, goToUserProfile} from '../slices/members-thunks';
 import {currentTeamTokenSelector} from '../reducers/teams';
 import {withNavigation, NavigationInjectedProps} from 'react-navigation';
 

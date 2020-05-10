@@ -5,7 +5,7 @@ import {useNavigation} from 'react-navigation-hooks';
 
 import {RootState} from '../../reducers';
 import px from '../../utils/normalizePixel';
-import {getMember, goToUserProfile} from '../../actions/members/thunks';
+import {getMember, goToUserProfile} from '../../slices/members-thunks';
 
 interface Props {
   userId: string;

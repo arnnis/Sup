@@ -12,7 +12,7 @@ import {markChatAsRead, getChatInfo, goToChannelDetails} from '../../slices/chat
 import Header from '../../components/Header';
 import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 import InputToolbar from './InputToolbar';
-import {getMember, goToUserProfile} from '../../actions/members/thunks';
+import {getMember, goToUserProfile} from '../../slices/members-thunks';
 import isLandscape from '../../utils/stylesheet/isLandscape';
 import {meSelector, currentTeamTokenSelector} from '../../reducers/teams';
 import px from '../../utils/normalizePixel';

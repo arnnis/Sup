@@ -10,7 +10,7 @@ import {send} from '.';
 import {batch} from 'react-redux';
 import {storeEntities, updateEntity} from '../../actions/entities';
 import {RootState} from '../../reducers';
-import {getMember} from '../../actions/members/thunks';
+import {getMember} from '../../slices/members-thunks';
 import dayjs from 'dayjs';
 import {
   ReactionAddedEvent,

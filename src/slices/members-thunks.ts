@@ -5,18 +5,17 @@ import {
   getMemberStart,
   getMemberFail,
   getMemberSuccess,
-} from '.';
-import {storeEntities} from '../entities';
-import http from '../../utils/http';
+} from './members-slice';
+import {storeEntities} from '../actions/entities';
+import http from '../utils/http';
 import {batch} from 'react-redux';
-import {User} from '../../models';
-import filterMembers from '../../utils/filterMembers';
-import {RootState} from '../../reducers';
-import {queryPresences, subscribePresence} from '../../services/rtm/members-events';
+import {User} from '../models';
+import filterMembers from '../utils/filterMembers';
+import {queryPresences, subscribePresence} from '../services/rtm/members-events';
 import {NavigationInjectedProps} from 'react-navigation';
-import isLandscape from '../../utils/stylesheet/isLandscape';
-import {openBottomSheet} from '../../slices/app-slice';
-import {AppThunk} from '../../store/configureStore';
+import isLandscape from '../utils/stylesheet/isLandscape';
+import {openBottomSheet} from './app-slice';
+import {AppThunk} from '../store/configureStore';
 
 export const getMembers = (): AppThunk => async (dispatch, getState) => {
   let state = getState();
@@ -37,7 +36,7 @@ export const getMembers = (): AppThunk => async (dispatch, getState) => {
 
     batch(() => {
       dispatch(storeEntities('users', members));
-      dispatch(getMembersSuccess(members));
+      dispatch(getMembersSuccess({members}));
     });
 
     // Fetch direct list member data just in case.
@@ -89,7 +88,7 @@ export const getMember = (userId: string): AppThunk => async (dispatch, getState
   let loadingList = state.members.loadingList;
   if (loading || alreadyLoaded || loadingList) return;
 
-  dispatch(getMemberStart(userId));
+  dispatch(getMemberStart({userId}));
 
   try {
     let {user}: {user: User} = await http({
@@ -106,11 +105,11 @@ export const getMember = (userId: string): AppThunk => async (dispatch, getState
 
     batch(() => {
       dispatch(storeEntities('users', [user]));
-      dispatch(getMemberSuccess(userId));
+      dispatch(getMemberSuccess({userId}));
     });
   } catch (err) {
     console.log(err);
-    dispatch(getMemberFail(userId));
+    dispatch(getMemberFail({userId}));
   }
 };
 
@@ -121,6 +120,7 @@ export const goToUserProfile = (
   const params = {
     userId,
   };
+  // @ts-ignore
   if (!isLandscape()) navigation?.push('UserProfile', params);
   else dispatch(openBottomSheet({screen: 'UserProfile', params}));
 };
