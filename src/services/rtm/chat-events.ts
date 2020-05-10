@@ -1,6 +1,6 @@
 import {store} from '../../App';
 import {updateEntity} from '../../actions/entities';
-import {setTyping} from '../../actions/chats/thunks';
+import {setTyping} from '../../slices/chats-thunks';
 import {UserTypingEvent, ChatMarkedEvent} from './types';
 
 export const handleChatsMarkedAsSeen = (data: ChatMarkedEvent) => {

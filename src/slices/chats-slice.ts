@@ -53,15 +53,15 @@ const chatsSlice = createSlice({
 
     getLastMessageStart(state, action: PayloadAction<{directId: string}>) {
       state.lastMessages[action.payload.directId] = {
-          loading: true,
-            ...state.lastMessages[action.payload.directId]
-      }
+        ...state.lastMessages[action.payload.directId],
+        loading: true,
+      };
     },
     getLastMessageSuccess(
       state,
       action: PayloadAction<{directId: string; messageId: string; nextCursor: string}>,
     ) {
-      let {directId, messageId, nextCursor} = action.payload;
+      let {directId, messageId} = action.payload;
       state.lastMessages[directId] = {
         loading: false,
         messageId,
@@ -70,9 +70,9 @@ const chatsSlice = createSlice({
     },
     getLastMessageFail(state, action: PayloadAction<{directId: string}>) {
       state.lastMessages[action.payload.directId] = {
-          loading: false,
-          ...state.lastMessages[action.payload.directId]
-      }
+        ...state.lastMessages[action.payload.directId],
+        loading: false,
+      };
     },
     setUserTyping(state, action: PayloadAction<{userId: string; chatId: string}>) {
       const {chatId, userId} = action.payload;
@@ -116,7 +116,10 @@ const chatsSlice = createSlice({
 
     getChannelMembersStart(state, action: PayloadAction<{chatId: string}>) {
       let {chatId} = action.payload;
-      state.membersListLoadStatus[chatId]["loading"] = true;
+      state.membersListLoadStatus[chatId] = {
+        ...state.membersListLoadStatus[chatId],
+        loading: true,
+      };
     },
     getChannelMembersSuccess(
       state,
@@ -127,19 +130,36 @@ const chatsSlice = createSlice({
       }>,
     ) {
       let {chatId, members, nextCursor} = action.payload;
-      state.membersList[chatId] = [...(state.membersList[chatId] || []), ...members]
+      state.membersList[chatId] = [...(state.membersList[chatId] || []), ...members];
       state.membersListLoadStatus[chatId] = {
         loading: false,
         nextCursor,
-      }
+      };
     },
     getChannelMembersFail(state, action: PayloadAction<{chatId: string}>) {
-        let {chatId} = action.payload;
-        state.membersListLoadStatus[chatId]["loading"] = false;
+      let {chatId} = action.payload;
+      state.membersListLoadStatus[chatId]['loading'] = false;
     },
   },
 });
 
-export const chatsReducer = chatsSlice.reducer ;
+export const chatsReducer = chatsSlice.reducer;
 
-export default chatsSlice.actions;
+export const {
+  fetchChatsStart,
+  fetchChatsSuccess,
+  fetchChatsFail,
+  getLastMessageStart,
+  getLastMessageSuccess,
+  getLastMessageFail,
+  setUserTyping,
+  unsetUserTyping,
+  setCurrentChat,
+  setCurrentThread,
+  getChatInfoStart,
+  getChatInfoSuccess,
+  getChatInfoFail,
+  getChannelMembersFail,
+  getChannelMembersStart,
+  getChannelMembersSuccess,
+} = chatsSlice.actions;
