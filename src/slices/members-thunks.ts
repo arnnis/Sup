@@ -6,7 +6,7 @@ import {
   getMemberFail,
   getMemberSuccess,
 } from './members-slice';
-import {storeEntities} from '../actions/entities';
+import {storeEntities} from './entities-slice';
 import http from '../utils/http';
 import {batch} from 'react-redux';
 import {User} from '../models';
@@ -35,7 +35,7 @@ export const getMembers = (): AppThunk => async (dispatch, getState) => {
     members = members.filter(filterMembers);
 
     batch(() => {
-      dispatch(storeEntities('users', members));
+      dispatch(storeEntities({entity: 'users', data: members}));
       dispatch(getMembersSuccess({members}));
     });
 
@@ -54,30 +54,6 @@ export const getMembers = (): AppThunk => async (dispatch, getState) => {
     dispatch(getMembersFail());
     throw err;
   }
-};
-
-export const getMembersByUserIds = (userIds: Array<string>): AppThunk => async (
-  dispatch,
-  getState,
-) => {
-  let state = getState();
-
-  userIds.forEach(async (userId) => {
-    let loading = state.members.loading[userId];
-    let alreadyLoaded = !!state.entities.users.byId[userId];
-    if (loading || alreadyLoaded) return;
-
-    let {user}: {user: User} = await http({
-      path: '/users.info',
-      body: {
-        user: userId,
-      },
-      silent: true,
-    });
-
-    dispatch(storeEntities('users', [user]));
-  });
-  return true;
 };
 
 export const getMember = (userId: string): AppThunk => async (dispatch, getState) => {
@@ -104,7 +80,7 @@ export const getMember = (userId: string): AppThunk => async (dispatch, getState
     subscribePresence([userId]);
 
     batch(() => {
-      dispatch(storeEntities('users', [user]));
+      dispatch(storeEntities({entity: 'users', data: [user]}));
       dispatch(getMemberSuccess({userId}));
     });
   } catch (err) {

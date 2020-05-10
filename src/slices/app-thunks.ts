@@ -2,7 +2,7 @@ import {setPresence} from './app-slice';
 import {User} from '../models';
 import http from '../utils/http';
 import {batch} from 'react-redux';
-import {storeEntities} from '../actions/entities';
+import {storeEntities} from './entities-slice';
 import {RootState} from '../reducers';
 import select from '../utils/select';
 import {AppThunk} from '../store/configureStore';
@@ -22,7 +22,7 @@ export const getCurrentUser = (): AppThunk => async (dispatch, getState) => {
     });
 
     batch(() => {
-      dispatch(storeEntities('users', [user]));
+      dispatch(storeEntities({entity: 'users', data: [user]}));
     });
   } catch (err) {
     console.log(err);

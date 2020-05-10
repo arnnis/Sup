@@ -3,7 +3,7 @@ import {RootState} from '../reducers';
 import http from '../utils/http';
 import {MessageAttachement} from '../models';
 import {batch} from 'react-redux';
-import {storeEntities} from '../actions/entities';
+import {storeEntities} from './entities-slice';
 import {API_URL} from '../env';
 import {currentTeamTokenSelector} from '../reducers/teams';
 import {ProgressBarService} from '../contexts/progress-bar/provider';
@@ -32,8 +32,8 @@ export const getFiles = (channel?: string, fileTypes?: string[], user?: string):
       },
     });
     batch(() => {
-      dispatch(storeEntities('files', files));
-      dispatch(getFilesSuccess(files));
+      dispatch(storeEntities({entity: 'files', data: files}));
+      dispatch(getFilesSuccess({files}));
     });
   } catch (err) {
     dispatch(getFilesFail());
