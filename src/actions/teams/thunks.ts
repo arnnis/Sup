@@ -20,7 +20,7 @@ import {NavigationService} from '../../navigation/Navigator';
 import {getChats} from '../../slices/chats-thunks';
 import {_closeSocket, init as initRTM} from '../../services/rtm';
 import {getCurrentUser} from '../../slices/app-thunks';
-import {getMembers} from '../members/thunks';
+import {getMembers} from '../../slices/members-thunks';
 import {SlackError} from '../../utils/http/errors';
 import {Alert} from 'react-native';
 import {currentTeamSelector} from '../../reducers/teams';

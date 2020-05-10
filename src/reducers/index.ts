@@ -5,7 +5,7 @@ import {teamsReducer} from './teams';
 import {appReducer} from './../slices/app-slice';
 import {chatsReducer} from '../slices/chats-slice';
 import {messagesReducer} from '../slices/messages-slice';
-import {membersReducer} from './members';
+import {membersReducer} from '../slices/members-slice';
 import {filesReducer} from '../slices/files-slice';
 
 const rootReducer = combineReducers({
