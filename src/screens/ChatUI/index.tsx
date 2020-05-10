@@ -180,7 +180,7 @@ class ChatUI extends Component<Props> {
 
   handleFileDropWeb = (files: File[]) => {
     let {chatId, threadId} = this.props;
-    this.props.dispatch(openUploadDialog({files, chatId, threadId}));
+    this.props.dispatch(openUploadDialog({params: {files, chatId, threadId}}));
   };
 
   renderMessageCell = ({item: messageId, index}) => {
