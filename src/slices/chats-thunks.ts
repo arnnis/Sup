@@ -111,7 +111,7 @@ export const getChatLastMessage = (chatId: string): AppThunk => async (dispatch,
   }
 };
 
-export const openChat = (userIds: Array<string>): AppThunk => async (dispatch) => {
+export const openChat = (userIds: Array<string>): AppThunk => async (dispatch): Promise<string> => {
   let {channel}: {channel: any} = await http({
     path: '/conversations.open',
     body: {

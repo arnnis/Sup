@@ -15,7 +15,7 @@ import Svg, {Defs, Path, Stop, LinearGradient} from 'react-native-svg';
 import {DispatchProp, connect} from 'react-redux';
 
 import px from '../../utils/normalizePixel';
-import {signinTeam} from '../../actions/teams/thunks';
+import {signinTeam} from '../../slices/team-thunks';
 import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 import rem from '../../utils/stylesheet/rem';
 import Touchable from '../../components/Touchable';
@@ -79,7 +79,7 @@ class Auth extends Component<Props> {
           onChangeText={onChange}
           placeholder={placeholder || ''}
           secureTextEntry={secure ? secure : false}
-          onChange={text => this.setState({[key]: text})}
+          onChange={(text) => this.setState({[key]: text})}
         />
       </View>
     );
@@ -125,7 +125,7 @@ class Auth extends Component<Props> {
             }}
             value={this.state.domain}
             placeholderTextColor={theme.backgroundColorLess4}
-            onChangeText={text => this.setState({domain: text})}
+            onChangeText={(text) => this.setState({domain: text})}
             placeholder="Team"
           />
         </View>

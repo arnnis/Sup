@@ -6,7 +6,7 @@ import {withNavigation, NavigationInjectedProps} from 'react-navigation';
 import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 import Touchable from '../../components/Touchable';
 import {connect, DispatchProp} from 'react-redux';
-import {goToAddTeam} from '../../actions/teams/thunks';
+import {goToAddTeam} from '../../slices/team-thunks';
 
 type Props = NavigationInjectedProps & ThemeInjectedProps & DispatchProp<any>;
 

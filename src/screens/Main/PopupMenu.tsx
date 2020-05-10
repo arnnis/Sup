@@ -4,7 +4,7 @@ import {connect, DispatchProp} from 'react-redux';
 import Touchable from '../../components/Touchable';
 import px from '../../utils/normalizePixel';
 import showMenu from '../../utils/showMenu';
-import {logoutFromCurrentTeam} from '../../actions/teams/thunks';
+import {logoutFromCurrentTeam} from '../../slices/team-thunks';
 import isLandscape from '../../utils/stylesheet/isLandscape';
 
 type Props = DispatchProp<any>;
@@ -27,7 +27,7 @@ const PopupMenu: FC<Props> = ({dispatch}) => {
   if (isLandscape()) return null;
 
   return (
-    <Touchable onPress={_openMenu} ref={ref => (menuRef.current = ref)}>
+    <Touchable onPress={_openMenu} ref={(ref) => (menuRef.current = ref)}>
       <MaterialCommunityIcons name="dots-vertical" color="#fff" size={px(22)} />
     </Touchable>
   );

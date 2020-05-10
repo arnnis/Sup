@@ -1,5 +1,6 @@
 import {Presence} from '../models';
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {setCurrentTeam} from './teams-slice';
 
 export type ConnectionStatus = 'connected' | 'connecting' | 'disconnected';
 
@@ -63,6 +64,11 @@ const appSlice = createSlice({
     setPresence(state, action: PayloadAction<{presence: Presence}>) {
       state.presence = action.payload.presence;
     },
+  },
+  extraReducers: (b) => {
+    b.addCase(setCurrentTeam, () => {
+      return initialState;
+    });
   },
 });
 

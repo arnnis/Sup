@@ -1,5 +1,6 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {User} from '../models';
+import {setCurrentTeam} from './teams-slice';
 
 export type UsersState = Readonly<{
   list: Array<string>;
@@ -44,6 +45,11 @@ const membersSlice = createSlice({
     getMemberFail(state, action: PayloadAction<{userId?: string}>) {
       this.getMemberSuccess(state, action);
     },
+  },
+  extraReducers: (b) => {
+    b.addCase(setCurrentTeam, () => {
+      return initialState;
+    });
   },
 });
 
