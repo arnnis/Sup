@@ -4,7 +4,7 @@ import {RootState} from '../../reducers';
 import {connect, DispatchProp} from 'react-redux';
 import FileCell from './FileCell';
 import px from '../../utils/normalizePixel';
-import {getFiles} from '../../actions/files/thunks';
+import {getFiles} from '../../slices/files-thunks';
 import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 
 type Props = ReturnType<typeof mapStateToProps> & ThemeInjectedProps & DispatchProp<any>;

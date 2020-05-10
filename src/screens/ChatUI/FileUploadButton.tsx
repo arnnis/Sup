@@ -8,7 +8,7 @@ import Touchable from '../../components/Touchable';
 import px from '../../utils/normalizePixel';
 import {Platform} from '../../utils/platform';
 import ThemeContext from '../../contexts/theme';
-import {openUploadDialog} from '../../actions/files';
+import {openUploadDialog} from '../../slices/files-slice';
 
 interface Props {
   chatId: string;
@@ -25,17 +25,17 @@ const FileUploadButton: FC<Props> = ({chatId, threadId}) => {
       const el = document.createElement('input');
       el.type = 'file';
       el.click();
-      el.addEventListener('change', e => {
+      el.addEventListener('change', (e) => {
         // @ts-ignore
         let files = e.target.files;
-        dispatch(openUploadDialog({files: files, ...params}));
+        dispatch(openUploadDialog({params: {files: files, ...params}}));
       });
     } else {
       const file = await DocumentPicker.pick({
         type: [DocumentPicker.types.allFiles],
       });
       console.log('TCL: openDocumentPicker -> file', file);
-      dispatch(openUploadDialog({files: [file], ...params}));
+      dispatch(openUploadDialog({params: {files: [file], ...params}}));
     }
   };
 
