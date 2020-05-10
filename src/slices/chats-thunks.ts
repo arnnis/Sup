@@ -1,7 +1,7 @@
 import {batch} from 'react-redux';
 import http from '../utils/http';
 import {Chat, Message, PaginationResult} from '../models';
-import {storeEntities} from '../actions/entities';
+import {storeEntities} from './entities-slice';
 import * as chatsActions from './chats-slice';
 import {RootState} from '../reducers';
 import imsDirects from '../utils/filterIms';
@@ -62,7 +62,7 @@ export const getChats = (): AppThunk => async (dispatch, getState) => {
     ims = ims.filter(imsDirects);
 
     batch(() => {
-      dispatch(storeEntities('chats', [...ims, ...channels, ...groups]));
+      dispatch(storeEntities({entity: 'chats', data: [...ims, ...channels, ...groups]}));
       dispatch(fetchChatsSuccess({ims, groups: [...channels, ...groups], nextCursor}));
     });
 
@@ -97,7 +97,7 @@ export const getChatLastMessage = (chatId: string): AppThunk => async (dispatch,
     if (!messages.length) throw 'no lst message';
 
     batch(() => {
-      dispatch(storeEntities('messages', messages));
+      dispatch(storeEntities({entity: 'messages', data: messages}));
       dispatch(
         getLastMessageSuccess({
           directId: chatId,
@@ -122,16 +122,19 @@ export const openChat = (userIds: Array<string>): AppThunk => async (dispatch): 
 
   // Chat object form users.counts is diffrent so we adapt to it.
   dispatch(
-    storeEntities('chats', [
-      {
-        dm_count: channel.unread_count,
-        id: channel.id,
-        is_ext_shared: channel.is_org_shared,
-        is_im: channel.is_im,
-        is_open: channel.is_open,
-        user_id: channel.user,
-      } as Chat,
-    ]),
+    storeEntities({
+      entity: 'chats',
+      data: [
+        {
+          dm_count: channel.unread_count,
+          id: channel.id,
+          is_ext_shared: channel.is_org_shared,
+          is_im: channel.is_im,
+          is_open: channel.is_open,
+          user_id: channel.user,
+        } as Chat,
+      ],
+    }),
   );
 
   return channel.id;
@@ -169,7 +172,7 @@ export const getChatInfo = (chatId: string): AppThunk => async (dispatch, getSta
     });
 
     batch(() => {
-      dispatch(storeEntities('chats', [channel]));
+      dispatch(storeEntities({entity: 'chats', data: [channel]}));
       dispatch(getChatInfoSuccess({chatId, chat: channel}));
     });
 

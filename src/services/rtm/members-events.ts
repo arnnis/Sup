@@ -1,7 +1,7 @@
 import {send} from '.';
 import {PresencesQueryRequest, PresenceChangeEvent, PresenceSubscribeRequest} from './types';
 import {store} from '../../App';
-import {updateEntity} from '../../actions/entities';
+import {updateEntity} from '../../slices/entities-slice';
 import {RootState} from '../../reducers';
 
 export const queryPresences = (userIds: Array<string>) => {
@@ -28,7 +28,7 @@ export const handleUserPresenceChange = (data: PresenceChangeEvent) => {
   const state: RootState = store.getState();
   const currentPresence = state.entities.users.byId[userId]?.presence ?? 'away';
   if (currentPresence !== presence) {
-    store.dispatch(updateEntity('users', userId, {presence}));
+    store.dispatch(updateEntity({entity: 'users', key: userId, data: {presence}}));
     console.log('presence updated, user:', userId);
   }
 };

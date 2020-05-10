@@ -1,6 +1,6 @@
 import {getMessagesStart, getMessagesFail, getMessagesSuccess} from './messages-slice';
 import {batch} from 'react-redux';
-import {storeEntities, updateEntity} from '../actions/entities';
+import {storeEntities, updateEntity} from './entities-slice';
 import {Message, PaginationResult} from '../models';
 import http from '../utils/http';
 import {RootState} from '../reducers';
@@ -31,7 +31,7 @@ export const getMessagesByChatId = (chatId: string): AppThunk => async (dispatch
 
     batch(() => {
       dispatch(getMessagesSuccess({chatId, messages, nextCursor}));
-      dispatch(storeEntities('messages', messages));
+      dispatch(storeEntities({entity: 'messages', data: messages}));
     });
 
     return Promise.resolve(messages);
@@ -72,7 +72,7 @@ export const getRepliesByThreadId = (threadId: string, chatId: string): AppThunk
 
     batch(() => {
       dispatch(getMessagesSuccess({chatId: threadId, messages, nextCursor}));
-      dispatch(storeEntities('messages', messages));
+      dispatch(storeEntities({entity: 'messages', data: messages}));
     });
 
     return Promise.resolve(messages);
@@ -154,22 +154,30 @@ export const addReaction = (name: string, user: string, messageId: string): AppT
   // Reaction already exist. so only increase count
   if (reaction)
     dispatch(
-      updateEntity('messages', messageId, {
-        reactions: reactions?.map((r) =>
-          r.name === name
-            ? {
-                ...r,
-                count: r.count + 1,
-                users: [...r.users, user],
-              }
-            : r,
-        ),
+      updateEntity({
+        entity: 'messages',
+        key: messageId,
+        data: {
+          reactions: reactions?.map((r) =>
+            r.name === name
+              ? {
+                  ...r,
+                  count: r.count + 1,
+                  users: [...r.users, user],
+                }
+              : r,
+          ),
+        },
       }),
     );
   else
     dispatch(
-      updateEntity('messages', messageId, {
-        reactions: [...(reactions || []), {name: name, users: [user], count: 1}],
+      updateEntity({
+        entity: 'messages',
+        key: messageId,
+        data: {
+          reactions: [...(reactions || []), {name: name, users: [user], count: 1}],
+        },
       }),
     );
 };
@@ -196,22 +204,30 @@ export const removeReaction = (name: string, user: string, messageId: string): A
   // Count is 1, so we should remove reaction object, otherwise decrease count by 1
   if (reaction.count === 1)
     dispatch(
-      updateEntity('messages', messageId, {
-        reactions: reactions?.filter((reaction) => reaction.name !== name),
+      updateEntity({
+        entity: 'messages',
+        key: messageId,
+        data: {
+          reactions: reactions?.filter((reaction) => reaction.name !== name),
+        },
       }),
     );
   else
     dispatch(
-      updateEntity('messages', messageId, {
-        reactions: reactions?.map((reaction) =>
-          reaction.name === name
-            ? {
-                ...reaction,
-                count: reaction.count - 1,
-                users: reaction.users.filter((user) => user !== user),
-              }
-            : reaction,
-        ),
+      updateEntity({
+        entity: 'messages',
+        key: messageId,
+        data: {
+          reactions: reactions?.map((reaction) =>
+            reaction.name === name
+              ? {
+                  ...reaction,
+                  count: reaction.count - 1,
+                  users: reaction.users.filter((user) => user !== user),
+                }
+              : reaction,
+          ),
+        },
       }),
     );
 };

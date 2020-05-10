@@ -8,7 +8,7 @@ import {
 } from '../../slices/messages-slice';
 import {send} from '.';
 import {batch} from 'react-redux';
-import {storeEntities, updateEntity} from '../../actions/entities';
+import {storeEntities, updateEntity} from '../../slices/entities-slice';
 import {RootState} from '../../reducers';
 import {getMember} from '../../slices/members-thunks';
 import dayjs from 'dayjs';
@@ -40,7 +40,7 @@ export const sendMessage = (input: SendInput) => {
       ts: dayjs().unix().toString() + '.0000',
       pending: true,
     };
-    store.dispatch(storeEntities('messages', [pendingMessage]));
+    store.dispatch(storeEntities({entity: 'messages', data: [pendingMessage]}));
     store.dispatch(addPendingMessage({message: pendingMessage}));
 
     send(pendingMessage);
@@ -65,7 +65,7 @@ export const handleMessageRecieved = (data: MessageEvent) => {
   let userId = data.user;
   let threadId = data.thread_ts;
   batch(() => {
-    store.dispatch(storeEntities('messages', [data]));
+    store.dispatch(storeEntities({entity: 'messages', data: [data]}));
 
     // Add to chat's messages list
     store.dispatch(addMessageToChat({messageId, chatId, threadId}));
@@ -78,9 +78,13 @@ export const handleMessageRecieved = (data: MessageEvent) => {
     let isMe = userId === state.teams.list.find((tm) => tm.id === state.teams.currentTeam)?.userId;
     if (!isMe)
       store.dispatch(
-        updateEntity('chats', chatId, {
-          dm_count: chat && (chat['dm_count'] ? chat['dm_count'] + 1 : 1),
-          unread_count: chat && (chat['unread_count'] ? chat['unread_count'] + 1 : 1),
+        updateEntity({
+          entity: 'chats',
+          key: chatId,
+          data: {
+            dm_count: chat && (chat['dm_count'] ? chat['dm_count'] + 1 : 1),
+            unread_count: chat && (chat['unread_count'] ? chat['unread_count'] + 1 : 1),
+          },
         }),
       );
   });
@@ -101,7 +105,7 @@ export const handleSendMessageAckRecieved = (data) => {
       let pendingMessage = state.entities.messages.byId[pendingId];
       batch(() => {
         store.dispatch(removePendingMessage({pendingId, chatId}));
-        store.dispatch(storeEntities('messages', [{...data, user: meId}]));
+        store.dispatch(storeEntities({entity: 'messages', data: [{...data, user: meId}]}));
         store.dispatch(
           addMessageToChat({messageId: data.ts, chatId, threadId: pendingMessage.thread_ts}),
         );
@@ -139,7 +143,7 @@ export const handleReactionRemoved = (data: ReactionAddedEvent) => {
 
 export const handleReplyAdded = (data: MessageReplyEvent) => {
   const {message} = data;
-  store.dispatch(updateEntity('messages', message.thread_ts, message));
+  store.dispatch(updateEntity({entity: 'messages', key: message.thread_ts, data: message}));
 };
 
 export const handleMessageDeleted = (data: MessageDeletedEvent) => {
@@ -151,5 +155,5 @@ export const handleMessageDeleted = (data: MessageDeletedEvent) => {
 
 export const handleMessageChanged = (data: MessageChangedEvent) => {
   const {previous_message: message} = data;
-  store.dispatch(updateEntity('messages', message.ts, message));
+  store.dispatch(updateEntity({entity: 'messages', key: message.ts, data: message}));
 };

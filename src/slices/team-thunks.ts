@@ -7,7 +7,7 @@ import {
   logout,
 } from './teams-slice';
 import {batch} from 'react-redux';
-import {storeEntities} from '../actions/entities';
+import {storeEntities} from './entities-slice';
 import http from '../utils/http';
 import {NavigationService} from '../navigation/Navigator';
 import {getChats} from './chats-thunks';
@@ -112,7 +112,7 @@ export const getTeam = (teamId: string): AppThunk => async (dispatch) => {
     });
 
     batch(() => {
-      dispatch(storeEntities('teams', [team]));
+      dispatch(storeEntities({entity: 'teams', data: [team]}));
       dispatch(getTeamSuccess({teamId}));
     });
   } catch (err) {
@@ -164,7 +164,7 @@ export const getEmojis = (): AppThunk => async (dispatch) => {
     });
 
     batch(() => {
-      dispatch(storeEntities('emojis', emoji));
+      dispatch(storeEntities({entity: 'emojis', data: emoji}));
     });
   } catch (err) {
     console.log(err);
