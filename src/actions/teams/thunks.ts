@@ -20,13 +20,13 @@ import {RootState} from '../../reducers';
 import {NavigationService} from '../../navigation/Navigator';
 import {getChats} from '../../slices/chats-thunks';
 import {_closeSocket, init as initRTM} from '../../services/rtm';
-import {getCurrentUser} from '../app/thunks';
+import {getCurrentUser} from '../../slices/app-thunks';
 import {getMembers} from '../members/thunks';
 import {SlackError} from '../../utils/http/errors';
 import {Alert} from 'react-native';
 import {currentTeamSelector} from '../../reducers/teams';
 import isLandscape from '../../utils/stylesheet/isLandscape';
-import {closeBottomSheet, setDrawerOpen, openBottomSheet} from '../app';
+import {closeBottomSheet, setDrawerOpen, openBottomSheet} from '../../slices/app-slice';
 import {Platform} from '../../utils/platform';
 import AlertWeb from '../../utils/AlertWeb';
 

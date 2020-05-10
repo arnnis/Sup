@@ -6,7 +6,7 @@ import {RootState} from '../../reducers';
 import {connect, DispatchProp} from 'react-redux';
 import {View, Dimensions, StyleSheet} from 'react-native';
 import UserProfile from '../UserProfile';
-import {closeBottomSheet} from '../../actions/app';
+import {closeBottomSheet} from '../../slices/app-slice';
 import {setCurrentThread} from '../../slices/chats-slice';
 import UploadDialog from '../ChatUI/UploadDialog';
 import ChannelDetails from '../ChannelDetails';
