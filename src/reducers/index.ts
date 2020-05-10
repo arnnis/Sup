@@ -4,7 +4,7 @@ import {entitiesReducer} from './entities';
 import {teamsReducer} from './teams';
 import {appReducer} from './../slices/app-slice';
 import {chatsReducer} from '../slices/chats-slice';
-import {messagesReducer} from './messages';
+import {messagesReducer} from '../slices/messages-slice';
 import {membersReducer} from './members';
 import {filesReducer} from './files';
 

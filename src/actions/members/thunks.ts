@@ -118,5 +118,5 @@ export const goToUserProfile = (
     userId,
   };
   if (!isLandscape()) navigation.push('UserProfile', params);
-  else dispatch(openBottomSheet('UserProfile', params));
+  else dispatch(openBottomSheet({screen: 'UserProfile', params}));
 };

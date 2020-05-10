@@ -5,7 +5,7 @@ import {
   addMessageToChat,
   removePendingMessage,
   removeMessageFromChat,
-} from '../../actions/messages';
+} from '../../slices/messages-slice';
 import {send} from '.';
 import {batch} from 'react-redux';
 import {storeEntities, updateEntity} from '../../actions/entities';
@@ -22,7 +22,7 @@ import {
 } from './types';
 import {meSelector} from '../../reducers/teams';
 import {goToChat} from '../../slices/chats-thunks';
-import {addReaction, removeReaction} from '../../actions/messages/thunks';
+import {addReaction, removeReaction} from '../../slices/messages-thunks';
 import {Platform} from '../../utils/platform';
 
 export const sendMessage = (input: SendInput) => {
@@ -41,7 +41,7 @@ export const sendMessage = (input: SendInput) => {
       pending: true,
     };
     store.dispatch(storeEntities('messages', [pendingMessage]));
-    store.dispatch(addPendingMessage(pendingMessage));
+    store.dispatch(addPendingMessage({message: pendingMessage}));
 
     send(pendingMessage);
     return true;
@@ -68,7 +68,7 @@ export const handleMessageRecieved = (data: MessageEvent) => {
     store.dispatch(storeEntities('messages', [data]));
 
     // Add to chat's messages list
-    store.dispatch(addMessageToChat(messageId, chatId, threadId));
+    store.dispatch(addMessageToChat({messageId, chatId, threadId}));
 
     store.dispatch(getMember(userId) as any);
 
@@ -91,7 +91,7 @@ export const handleSendMessageAckRecieved = (data) => {
   let messageLists = state.messages.list;
   let currentTeam = state.teams.currentTeam;
 
-  let meId = state.teams.list.find((ws) => ws.id === currentTeam).userId;
+  let meId = state.teams.list.find((ws) => ws.id === currentTeam)?.userId;
 
   // Check this ack is for a pending message
   for (let chatId in messageLists) {
@@ -100,9 +100,11 @@ export const handleSendMessageAckRecieved = (data) => {
       let pendingId = messageLists[chatId][index] as number;
       let pendingMessage = state.entities.messages.byId[pendingId];
       batch(() => {
-        store.dispatch(removePendingMessage(pendingId, chatId));
+        store.dispatch(removePendingMessage({pendingId, chatId}));
         store.dispatch(storeEntities('messages', [{...data, user: meId}]));
-        store.dispatch(addMessageToChat(data.ts, chatId, pendingMessage.thread_ts));
+        store.dispatch(
+          addMessageToChat({messageId: data.ts, chatId, threadId: pendingMessage.thread_ts}),
+        );
       });
     }
   }
@@ -144,7 +146,7 @@ export const handleMessageDeleted = (data: MessageDeletedEvent) => {
   const chatId = data.channel;
   const threadId = data.previous_message.thread_ts;
   const messageId = data.previous_message.ts;
-  store.dispatch(removeMessageFromChat(messageId, threadId || chatId));
+  store.dispatch(removeMessageFromChat({messageId, chatId: threadId || chatId}));
 };
 
 export const handleMessageChanged = (data: MessageChangedEvent) => {

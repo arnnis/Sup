@@ -6,8 +6,8 @@ import MediaQuery from 'react-responsive';
 
 import Message from './Message';
 import {RootState} from '../../reducers';
-import {addMessageToChat} from '../../actions/messages';
-import {getMessagesByChatId, getRepliesByThreadId} from '../../actions/messages/thunks';
+import {addMessageToChat} from '../../slices/messages-slice';
+import {getMessagesByChatId, getRepliesByThreadId} from '../../slices/messages-thunks';
 import {markChatAsRead, getChatInfo, goToChannelDetails} from '../../slices/chats-thunks';
 import Header from '../../components/Header';
 import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
@@ -96,11 +96,11 @@ class ChatUI extends Component<Props> {
   componentWillUnmount() {
     let {chatType, dispatch} = this.props;
     if (chatType === 'channel' || chatType === 'direct') {
-      dispatch(setCurrentChat(''));
+      dispatch(setCurrentChat({chatId: ''}));
     }
 
     if (chatType === 'thread') {
-      dispatch(setCurrentThread(''));
+      dispatch(setCurrentThread({threadId: ''}));
     }
   }
 
@@ -128,7 +128,7 @@ class ChatUI extends Component<Props> {
   async getMessage() {
     let {lastMessageStatus, lastMessage, nextCursor, messagesList, dispatch, chatId} = this.props;
     if (lastMessageStatus && lastMessageStatus.messageId && !lastMessageStatus.loading) {
-      dispatch(addMessageToChat(lastMessageStatus.messageId, chatId));
+      dispatch(addMessageToChat({messageId: lastMessageStatus.messageId, chatId}));
       dispatch(getMember(lastMessage.user));
     }
 
@@ -142,7 +142,7 @@ class ChatUI extends Component<Props> {
   getReplies() {
     let {dispatch, threadId, chatId} = this.props;
 
-    dispatch(addMessageToChat(threadId, threadId));
+    dispatch(addMessageToChat({messageId: threadId as string, threadId: threadId as string}));
 
     dispatch(getRepliesByThreadId(threadId, chatId));
   }
@@ -160,7 +160,7 @@ class ChatUI extends Component<Props> {
 
   markChatAsRead = () => {
     let {dispatch, chatId} = this.props;
-    dispatch(markChatAsRead(chatId, this.props.messagesList[0]));
+    dispatch(markChatAsRead(chatId, this.props.messagesList[0] as string));
   };
 
   openChatDetails = () => {

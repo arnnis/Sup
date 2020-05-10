@@ -7,7 +7,7 @@ import px from '../../utils/normalizePixel';
 import {MessageReaction} from '../../models';
 import Emoji from './Emoji';
 import {meSelector} from '../../reducers/teams';
-import {removeReactionRequest, addReactionRequest} from '../../actions/messages/thunks';
+import {removeReactionRequest, addReactionRequest} from '../../slices/messages-thunks';
 import ThemeContext from '../../contexts/theme';
 
 interface Props {
