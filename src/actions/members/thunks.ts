@@ -121,6 +121,6 @@ export const goToUserProfile = (
   const params = {
     userId,
   };
-  if (!isLandscape()) navigation.push('UserProfile', params);
+  if (!isLandscape()) navigation?.push('UserProfile', params);
   else dispatch(openBottomSheet({screen: 'UserProfile', params}));
 };
