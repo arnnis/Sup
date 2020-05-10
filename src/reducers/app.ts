@@ -1,6 +1,6 @@
 import {Reducer} from 'redux';
 import {RootAction} from '../actions';
-import {ConnectionStatus} from '../actions/app';
+import {ConnectionStatus} from '../slices/app-slice';
 import {Presence} from '../models';
 
 export type AppState = Readonly<{

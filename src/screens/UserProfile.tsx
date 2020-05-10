@@ -16,10 +16,10 @@ import {currentTeamTokenSelector} from '../reducers/teams';
 import Screen from '../components/Screen';
 import {InfoBox, InfoRow, ActionRow, SwitchRow} from '../components/InfoBox';
 import withStylesheet, {StyleSheetInjectedProps} from '../utils/stylesheet/withStylesheet';
-import {togglePresence} from '../actions/app/thunks';
+import {togglePresence} from '../slices/app-thunks';
 import {logoutFromCurrentTeam} from '../actions/teams/thunks';
 import isLandscape from '../utils/stylesheet/isLandscape';
-import {closeBottomSheet} from '../actions/app';
+import {closeBottomSheet} from '../slices/app-slice';
 
 type Props = ReturnType<typeof mapStateToProps> &
   StyleSheetInjectedProps &

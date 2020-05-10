@@ -1,8 +1,8 @@
 import http from '../../utils/http';
 import {store} from '../../App';
 import {batch} from 'react-redux';
-import {setConnectionStatus} from '../../actions/app';
-import {getCurrentUser} from '../../actions/app/thunks';
+import {setConnectionStatus} from '../../slices/app-slice';
+import {getCurrentUser} from '../../slices/app-thunks';
 import {getChats} from '../../slices/chats-thunks';
 import {
   sendMessage,

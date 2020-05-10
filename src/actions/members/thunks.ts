@@ -15,7 +15,7 @@ import {RootState} from '../../reducers';
 import {queryPresences, subscribePresence} from '../../services/rtm/members-events';
 import {NavigationInjectedProps} from 'react-navigation';
 import isLandscape from '../../utils/stylesheet/isLandscape';
-import {openBottomSheet} from '../app';
+import {openBottomSheet} from '../../slices/app-slice';
 
 export const getMembers = () => async (dispatch, getState) => {
   let state: RootState = getState();
@@ -40,13 +40,13 @@ export const getMembers = () => async (dispatch, getState) => {
     });
 
     // Fetch direct list member data just in case.
-    state.chats.directsList.forEach(directId => {
+    state.chats.directsList.forEach((directId) => {
       let chat = state.entities.chats.byId[directId];
       chat.user_id && dispatch(getMember(chat.user_id));
     });
 
-    queryPresences(members.map(member => member.id));
-    subscribePresence(members.map(member => member.id));
+    queryPresences(members.map((member) => member.id));
+    subscribePresence(members.map((member) => member.id));
 
     return members;
   } catch (err) {
@@ -59,7 +59,7 @@ export const getMembers = () => async (dispatch, getState) => {
 export const getMembersByUserIds = (userIds: Array<string>) => async (dispatch, getState) => {
   let state: RootState = getState();
 
-  userIds.forEach(async userId => {
+  userIds.forEach(async (userId) => {
     let loading = state.members.loading[userId];
     let alreadyLoaded = !!state.entities.users.byId[userId];
     if (loading || alreadyLoaded) return;
@@ -113,7 +113,7 @@ export const getMember = (userId: string) => async (dispatch, getState) => {
 export const goToUserProfile = (
   userId: string,
   navigation?: NavigationInjectedProps['navigation'],
-) => dispatch => {
+) => (dispatch) => {
   const params = {
     userId,
   };

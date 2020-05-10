@@ -6,7 +6,7 @@ import * as chatsActions from './chats-slice';
 import {RootState} from '../reducers';
 import imsDirects from '../utils/filterIms';
 import isLandscape from '../utils/stylesheet/isLandscape';
-import {openBottomSheet} from '../actions/app';
+import {openBottomSheet} from './app-slice';
 import {NavigationInjectedProps} from 'react-navigation';
 import getCurrentOrientaion from '../utils/stylesheet/getCurrentOrientaion';
 import {NavigationService} from '../navigation/Navigator';
@@ -242,7 +242,8 @@ export const goToThread = (
     chatId: state.chats.currentChatId,
   };
 
-  if (isLandscape()) dispatch(openBottomSheet('ChatUI', params));
+  if (isLandscape()) dispatch(openBottomSheet({screen: 'ChatUI', params}));
+  // @ts-ignore
   else navigation.push('ChatUI', params);
 };
 
@@ -251,6 +252,6 @@ export const goToChannelDetails = (chatId: string): AppThunk => (dispatch) => {
     chatId,
   };
 
-  if (isLandscape()) dispatch(openBottomSheet('ChannelDetails', params));
+  if (isLandscape()) dispatch(openBottomSheet({screen: 'ChannelDetails', params}));
   else NavigationService.navigate('ChannelDetails', params);
 };
