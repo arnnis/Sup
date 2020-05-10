@@ -4,7 +4,7 @@ import {NetworkError, SlackError, ServerError} from './errors';
 import {store} from '../../App';
 import {RootState} from '../../reducers';
 import {Platform} from 'react-native';
-import {logoutFromCurrentTeam} from '../../actions/teams/thunks';
+import {logoutFromCurrentTeam} from '../../slices/team-thunks';
 import {currentTeamTokenSelector} from '../../reducers/teams';
 
 interface RequestOption {

@@ -1,5 +1,6 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {Chat} from '../models';
+import {setCurrentTeam} from './teams-slice';
 
 export type ChatsState = {
   currentChatId: string;
@@ -140,6 +141,11 @@ const chatsSlice = createSlice({
       let {chatId} = action.payload;
       state.membersListLoadStatus[chatId]['loading'] = false;
     },
+  },
+  extraReducers: (b) => {
+    b.addCase(setCurrentTeam, () => {
+      return initialState;
+    });
   },
 });
 

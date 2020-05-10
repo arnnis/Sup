@@ -1,5 +1,6 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {MessageAttachement} from '../models';
+import {setCurrentTeam} from './teams-slice';
 
 export type FilesState = Readonly<{
   list: Array<string>;
@@ -45,6 +46,11 @@ const filesSlice = createSlice({
     closeUploadDialog(state) {
       state.uploadDialog = initialState.uploadDialog;
     },
+  },
+  extraReducers: (b) => {
+    b.addCase(setCurrentTeam, () => {
+      return initialState;
+    });
   },
 });
 

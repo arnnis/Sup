@@ -17,7 +17,7 @@ import Screen from '../components/Screen';
 import {InfoBox, InfoRow, ActionRow, SwitchRow} from '../components/InfoBox';
 import withStylesheet, {StyleSheetInjectedProps} from '../utils/stylesheet/withStylesheet';
 import {togglePresence} from '../slices/app-thunks';
-import {logoutFromCurrentTeam} from '../actions/teams/thunks';
+import {logoutFromCurrentTeam} from '../slices/team-thunks';
 import isLandscape from '../utils/stylesheet/isLandscape';
 import {closeBottomSheet} from '../slices/app-slice';
 

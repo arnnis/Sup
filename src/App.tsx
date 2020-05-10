@@ -13,7 +13,7 @@ import MenuProvider from './contexts/menu/provider';
 
 export const {store, persistor} = configureStore();
 
-type AppDispatch = typeof store.dispatch;
+export type AppDispatch = typeof store.dispatch;
 
 const App = () => {
   useEffect(() => {

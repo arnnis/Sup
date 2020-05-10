@@ -1,7 +1,7 @@
 import {ActionType} from 'typesafe-actions';
 import * as appActions from '../slices/app-slice';
 // import * as directsActions from './chats';
-import * as teamActions from './teams';
+import * as teamActions from '../slices/teams-slice';
 import * as messagesActions from '../slices/messages-slice';
 import * as membersActions from '../slices/members-slice';
 import * as filesActions from '../slices/files-slice';

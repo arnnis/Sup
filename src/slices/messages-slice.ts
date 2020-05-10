@@ -1,6 +1,7 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {Message, PendingMessage} from '../models';
 import {getLastMessageSuccess} from './chats-slice';
+import {setCurrentTeam} from './teams-slice';
 
 export type MessagesState = Readonly<{
   list: {[chatIdOrThreadId: string]: Array<string | number>}; // Number for pending message local fingerprint, string for regular messages
@@ -87,6 +88,9 @@ const messagesSlice = createSlice({
     builder.addCase(getLastMessageSuccess, (state, action) => {
       let {nextCursor, directId} = action.payload;
       state.nextCursor[directId] = nextCursor;
+    });
+    builder.addCase(setCurrentTeam, () => {
+      return initialState;
     });
   },
 });
