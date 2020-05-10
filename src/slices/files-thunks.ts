@@ -1,13 +1,13 @@
-import {getFilesStart, getFilesSuccess, getFilesFail} from '.';
-import {RootState} from '../../reducers';
-import http from '../../utils/http';
-import {MessageAttachement} from '../../models';
+import {getFilesStart, getFilesSuccess, getFilesFail} from './files-slice';
+import {RootState} from '../reducers';
+import http from '../utils/http';
+import {MessageAttachement} from '../models';
 import {batch} from 'react-redux';
-import {storeEntities} from '../entities';
-import {API_URL} from '../../env';
-import {currentTeamTokenSelector} from '../../reducers/teams';
-import {ProgressBarService} from '../../contexts/progress-bar/provider';
-import {AppThunk} from '../../store/configureStore';
+import {storeEntities} from '../actions/entities';
+import {API_URL} from '../env';
+import {currentTeamTokenSelector} from '../reducers/teams';
+import {ProgressBarService} from '../contexts/progress-bar/provider';
+import {AppThunk} from '../store/configureStore';
 
 export const getFiles = (channel?: string, fileTypes?: string[], user?: string): AppThunk => async (
   dispatch,

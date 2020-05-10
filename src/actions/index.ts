@@ -4,7 +4,7 @@ import * as appActions from '../slices/app-slice';
 import * as teamActions from './teams';
 import * as messagesActions from '../slices/messages-slice';
 import * as membersActions from './members';
-import * as filesActions from './files';
+import * as filesActions from '../slices/files-slice';
 import * as entitiesActions from './entities';
 
 export type RootAction = ActionType<

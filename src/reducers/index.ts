@@ -6,7 +6,7 @@ import {appReducer} from './../slices/app-slice';
 import {chatsReducer} from '../slices/chats-slice';
 import {messagesReducer} from '../slices/messages-slice';
 import {membersReducer} from './members';
-import {filesReducer} from './files';
+import {filesReducer} from '../slices/files-slice';
 
 const rootReducer = combineReducers({
   entities: entitiesReducer,
