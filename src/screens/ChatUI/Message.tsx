@@ -21,7 +21,7 @@ import isNative from '../../utils/isNative';
 import {Platform} from '../../utils/platform';
 import WithMenu, {MenuInjectedProps} from '../../contexts/menu/with-menu';
 import MenuItem from '../../components/Menu/MenuItem';
-import {removeMessage} from '../../actions/messages/thunks';
+import {removeMessage} from '../../slices/messages-thunks';
 
 type Props = ReturnType<typeof mapStateToProps> &
   MenuInjectedProps &

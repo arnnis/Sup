@@ -1,5 +1,5 @@
 import {action} from 'typesafe-actions';
-import {MessageAttachement} from '../../models';
+import {MessageAttachement} from '../models';
 
 export const getFilesStart = () => action('GET_FILES_START');
 export const getFilesSuccess = (files: MessageAttachement[]) =>
