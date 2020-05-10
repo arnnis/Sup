@@ -3,7 +3,7 @@ import {combineReducers} from 'redux';
 import {entitiesReducer} from './entities';
 import {teamsReducer} from './teams';
 import {appReducer} from './app';
-import {chatsReducer} from './chats';
+import {chatsReducer} from '../store/chats-slice';
 import {messagesReducer} from './messages';
 import {membersReducer} from './members';
 import {filesReducer} from './files';

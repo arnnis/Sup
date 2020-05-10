@@ -2,12 +2,21 @@ import {batch} from 'react-redux';
 import http from '../../utils/http';
 import {Chat, Message, PaginationResult} from '../../models';
 import {storeEntities} from '../entities';
-import {
+import chatsActions from '../../store/chats-slice';
+import {RootState} from '../../reducers';
+import imsDirects from '../../utils/filterIms';
+import isLandscape from '../../utils/stylesheet/isLandscape';
+import {openBottomSheet} from '../app';
+import {NavigationInjectedProps} from 'react-navigation';
+import getCurrentOrientaion from '../../utils/stylesheet/getCurrentOrientaion';
+import {NavigationService} from '../../navigation/Navigator';
+
+const {
   fetchChatsStart,
   fetchChatsSuccess,
-  getChatLastMessageStart,
-  getChatLastMessageSuccess,
-  getChatLastMessageFail,
+  getLastMessageStart,
+  getLastMessageSuccess,
+  getLastMessageFail,
   fetchChatsFail,
   getChatInfoStart,
   getChatInfoSuccess,
@@ -18,15 +27,8 @@ import {
   setUserTyping,
   unsetUserTyping,
   setCurrentThread,
-  setCurrentChat,
-} from '.';
-import {RootState} from '../../reducers';
-import imsDirects from '../../utils/filterIms';
-import isLandscape from '../../utils/stylesheet/isLandscape';
-import {openBottomSheet} from '../app';
-import {NavigationInjectedProps} from 'react-navigation';
-import getCurrentOrientaion from '../../utils/stylesheet/getCurrentOrientaion';
-import {NavigationService} from '../../navigation/Navigator';
+  setCurrentChat
+} = chatsActions
 
 export const getChats = () => async (dispatch, getState) => {
   let store: RootState = getState();
@@ -60,7 +62,7 @@ export const getChats = () => async (dispatch, getState) => {
 
     batch(() => {
       dispatch(storeEntities('chats', [...ims, ...channels, ...groups]));
-      dispatch(fetchChatsSuccess(ims, [...channels, ...groups], nextCursor));
+      dispatch(fetchChatsSuccess({ims, groups: [...channels, ...groups], nextCursor}));
     });
 
     return [...ims, ...channels, ...groups];
@@ -79,7 +81,7 @@ export const getChatLastMessage = (chatId: string) => async (dispatch, getState)
   if (loading || loaded) return;
 
   try {
-    dispatch(getChatLastMessageStart(chatId));
+    dispatch(getLastMessageStart({directId: chatId}));
     let {messages, response_metadata}: {messages: Array<Message>} & PaginationResult = await http({
       path: '/conversations.history',
       body: {
@@ -95,10 +97,10 @@ export const getChatLastMessage = (chatId: string) => async (dispatch, getState)
 
     batch(() => {
       dispatch(storeEntities('messages', messages));
-      dispatch(getChatLastMessageSuccess(chatId, messages[0].ts, next_cursor));
+      dispatch(getLastMessageSuccess({directId: chatId, messageId: messages[0].ts, nextCursor: next_cursor}));
     });
   } catch (err) {
-    dispatch(getChatLastMessageFail(chatId));
+    dispatch(getLastMessageFail({directId: chatId}));
   }
 };
 
@@ -149,7 +151,7 @@ export const getChatInfo = (chatId: string) => async (dispatch, getState) => {
   let alreadyLoaded = state.chats.fullLoad[chatId]?.loaded ?? false;
   let loading = state.chats.fullLoad[chatId]?.loading ?? false;
   if (alreadyLoaded || loading) return;
-  dispatch(getChatInfoStart(chatId));
+  dispatch(getChatInfoStart({chatId}));
   try {
     let {channel}: {channel: Chat} = await http({
       path: '/conversations.info',
@@ -161,13 +163,13 @@ export const getChatInfo = (chatId: string) => async (dispatch, getState) => {
 
     batch(() => {
       dispatch(storeEntities('chats', [channel]));
-      dispatch(getChatInfoSuccess(chatId, channel));
+      dispatch(getChatInfoSuccess({chatId, chat: channel}));
     });
 
     return Promise.resolve(channel);
   } catch (err) {
     console.log(err);
-    dispatch(getChatInfoFail(chatId));
+    dispatch(getChatInfoFail({chatId}));
     return Promise.reject(err);
   }
 };
@@ -176,7 +178,7 @@ export const getChannelMembers = (chatId: string) => async (dispatch, getState) 
   let state: RootState = getState();
   let loadStatus = state.chats.membersListLoadStatus[chatId];
   if (loadStatus?.loading || loadStatus?.nextCursor === 'end') return;
-  dispatch(getChannelMembersStart(chatId));
+  dispatch(getChannelMembersStart({chatId}));
   try {
     let {members, response_metadata}: {members: Array<string>} & PaginationResult = await http({
       path: '/conversations.members',
@@ -188,17 +190,17 @@ export const getChannelMembers = (chatId: string) => async (dispatch, getState) 
       },
     });
 
-    let next_cursor =
+    let nextCursor =
       response_metadata && response_metadata.next_cursor ? response_metadata.next_cursor : 'end';
 
     batch(() => {
-      dispatch(getChannelMembersSuccess(chatId, members, next_cursor));
+      dispatch(getChannelMembersSuccess({chatId, members, nextCursor}));
     });
 
     return Promise.resolve(members);
   } catch (err) {
     console.log(err);
-    dispatch(getChannelMembersFail(chatId));
+    dispatch(getChannelMembersFail({chatId}));
     return Promise.reject(err);
   }
 };
@@ -206,9 +208,9 @@ export const getChannelMembers = (chatId: string) => async (dispatch, getState) 
 export const setTyping = (userId: string, chatId: string) => (dispatch, getState) => {
   let state = getState() as RootState;
   if (state.chats.typingsUsers[chatId]?.includes(userId)) return;
-  dispatch(setUserTyping(userId, chatId));
+  dispatch(setUserTyping({userId, chatId}));
   setTimeout(() => {
-    dispatch(unsetUserTyping(userId, chatId));
+    dispatch(unsetUserTyping({userId, chatId}));
   }, 5000);
 };
 
@@ -221,11 +223,11 @@ export const goToChat = (
     (navigation || NavigationService).navigate('ChatUI', {chatId: chatId});
 };
 
-export const goToThread = (threadId, navigation: NavigationInjectedProps['navigation']) => (
+export const goToThread = (threadId: string, navigation: NavigationInjectedProps['navigation']) => (
   dispatch,
   getState,
 ) => {
-  dispatch(setCurrentThread(threadId));
+  dispatch(setCurrentThread({threadId}));
   const state: RootState = getState();
   let params = {
     chatType: 'thread',
