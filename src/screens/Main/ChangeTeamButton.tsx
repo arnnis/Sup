@@ -1,12 +1,13 @@
 import React, {FC} from 'react';
 import {View, StyleSheet} from 'react-native';
+// @ts-ignore
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {RootState} from '../../reducers';
 import {connect} from 'react-redux';
 import Touchable from '../../components/Touchable';
 import FastImage from 'react-native-fast-image';
 import px from '../../utils/normalizePixel';
-import {currentTeamSelector} from '../../reducers/teams';
+import {currentTeamSelector} from '../../slices/teams-slice';
 
 type Props = ReturnType<typeof mapStateToProps> & {
   onPress(): void;

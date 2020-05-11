@@ -5,7 +5,7 @@ import {MessageAttachement} from '../models';
 import {batch} from 'react-redux';
 import {storeEntities} from './entities-slice';
 import {API_URL} from '../env';
-import {currentTeamTokenSelector} from '../reducers/teams';
+import {currentTeamTokenSelector} from '../slices/teams-slice';
 import {ProgressBarService} from '../contexts/progress-bar/provider';
 import {AppThunk} from '../store/configureStore';
 

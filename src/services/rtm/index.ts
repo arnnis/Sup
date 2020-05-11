@@ -1,5 +1,5 @@
 import http from '../../utils/http';
-import {store} from '../../App';
+import {store} from '../../store/configureStore';
 import {batch} from 'react-redux';
 import {setConnectionStatus} from '../../slices/app-slice';
 import {getCurrentUser} from '../../slices/app-thunks';

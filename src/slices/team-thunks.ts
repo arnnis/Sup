@@ -16,7 +16,7 @@ import {getCurrentUser} from './app-thunks';
 import {getMembers} from './members-thunks';
 import {SlackError} from '../utils/http/errors';
 import {Alert} from 'react-native';
-import {currentTeamSelector} from '../reducers/teams';
+import {currentTeamSelector} from '../slices/teams-slice';
 import isLandscape from '../utils/stylesheet/isLandscape';
 import {closeBottomSheet, setDrawerOpen, openBottomSheet} from './app-slice';
 import {Platform} from '../utils/platform';

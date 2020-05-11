@@ -6,26 +6,44 @@ import {
   ThunkAction,
   Action,
 } from '@reduxjs/toolkit';
+import {combineReducers} from 'redux';
 import persistConfig from './persistConfig';
-import rootReducer, {RootState} from '../reducers';
 
-function configureStore() {
-  const persistedReducer = persistReducer(persistConfig, rootReducer);
+import {entitiesReducer} from '../slices/entities-slice';
+import {teamsReducer} from '../slices/teams-slice';
+import {appReducer} from './../slices/app-slice';
+import {chatsReducer} from '../slices/chats-slice';
+import {messagesReducer} from '../slices/messages-slice';
+import {membersReducer} from '../slices/members-slice';
+import {filesReducer} from '../slices/files-slice';
 
-  const store = _configureStore({
-    reducer: persistedReducer,
-    middleware: [
-      ...getDefaultMiddleware({
-        serializableCheck: false,
-        immutableCheck: false,
-      }),
-      createLogger(),
-    ],
-  });
-  let persistor = persistStore(store);
+const rootReducer = combineReducers({
+  entities: entitiesReducer,
+  messages: messagesReducer,
+  chats: chatsReducer,
+  members: membersReducer,
+  app: appReducer,
+  teams: teamsReducer,
+  files: filesReducer,
+});
 
-  return {store, persistor};
-}
+const persistedReducer = persistReducer<RootState>(persistConfig, rootReducer);
+
+export const store = _configureStore({
+  reducer: persistedReducer,
+  middleware: [
+    ...getDefaultMiddleware({
+      serializableCheck: false,
+      immutableCheck: false,
+    }),
+  ],
+});
+
+export const persistor = persistStore(store);
+
+export type RootState = ReturnType<typeof rootReducer>;
+
+export type AppDispatch = typeof store.dispatch;
 
 export type AppThunk<ReturnType = void> = ThunkAction<
   ReturnType,
@@ -33,5 +51,3 @@ export type AppThunk<ReturnType = void> = ThunkAction<
   unknown,
   Action<string>
 >;
-
-export default configureStore;
