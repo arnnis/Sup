@@ -3,7 +3,7 @@ import http from '../utils/http';
 import {Chat, Message, PaginationResult} from '../models';
 import {storeEntities} from './entities-slice';
 import * as chatsActions from './chats-slice';
-import {RootState} from '../reducers';
+import {RootState} from '../store/configureStore';
 import imsDirects from '../utils/filterIms';
 import isLandscape from '../utils/stylesheet/isLandscape';
 import {openBottomSheet} from './app-slice';
