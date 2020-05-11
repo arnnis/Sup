@@ -1,4 +1,5 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {createSlice, PayloadAction, createSelector} from '@reduxjs/toolkit';
+import {RootState} from '../reducers';
 
 export type TeamsState = Readonly<{
   currentTeam: string;
@@ -82,3 +83,22 @@ export const {
   setCurrentTeam,
   logout,
 } = teamsSlice.actions;
+
+export const meSelector = createSelector(
+  (state: RootState) => state,
+  (state) =>
+    state.entities.users.byId[
+      state.teams.list.find((tm) => tm.id === state.teams.currentTeam)?.userId ?? ''
+    ],
+);
+
+export const currentTeamTokenSelector = createSelector(
+  [(state: RootState) => state.teams.list, (state: RootState) => state.teams.currentTeam],
+  (teamsList, currentTeamId) => teamsList.find((tm) => tm.id === currentTeamId)?.token,
+);
+
+export const currentTeamSelector = createSelector(
+  [(state: RootState) => state.teams, (state: RootState) => state.entities],
+  (teams, entites) =>
+    entites.teams.byId[teams.list.find((tm) => tm.id === teams.currentTeam)?.id ?? ''],
+);

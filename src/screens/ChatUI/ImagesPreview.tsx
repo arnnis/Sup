@@ -1,11 +1,12 @@
 import React, {FC, useState} from 'react';
 import {Modal, ActivityIndicator, StyleSheet, View, Text} from 'react-native';
 import ImageViewer from 'react-native-image-zoom-viewer';
+// @ts-ignore
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useSelector} from 'react-redux';
 
 import {MessageAttachement} from '../../models';
-import {currentTeamTokenSelector} from '../../reducers/teams';
+import {currentTeamTokenSelector} from '../../slices/teams-slice';
 import Touchable from '../../components/Touchable';
 import px from '../../utils/normalizePixel';
 
@@ -20,7 +21,7 @@ const ImagesPreview: FC<Props> = ({open, images, onDismiss, initalIndex}) => {
   const token = useSelector(currentTeamTokenSelector);
 
   const normalizeImages = () =>
-    images.map(img => ({
+    images.map((img) => ({
       url: img.url_private_download,
       props: {headers: {Authorization: 'Bearer ' + token}},
     }));
@@ -62,7 +63,7 @@ const ImagesPreview: FC<Props> = ({open, images, onDismiss, initalIndex}) => {
       </View>
     );
 
-  const renderIndicator = (currentIndex, allSize) =>
+  const renderIndicator = (currentIndex: number, allSize: number) =>
     images.length > 1 && (
       <View
         style={[

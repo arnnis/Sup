@@ -1,4 +1,4 @@
-import {store} from '../../App';
+import {store} from '../../store/configureStore';
 import {updateEntity} from '../../slices/entities-slice';
 import {setTyping} from '../../slices/chats-thunks';
 import {UserTypingEvent, ChatMarkedEvent} from './types';

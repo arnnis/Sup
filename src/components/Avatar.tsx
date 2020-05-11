@@ -1,19 +1,20 @@
 import React, {PureComponent} from 'react';
 import {View, StyleSheet, ViewStyle, TouchableOpacity} from 'react-native';
+// @ts-ignore
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import px from '../utils/normalizePixel';
 import FastImage from 'react-native-fast-image';
 import {connect, DispatchProp} from 'react-redux';
 import {RootState} from '../reducers';
 import {getMember, goToUserProfile} from '../slices/members-thunks';
-import {currentTeamTokenSelector} from '../reducers/teams';
+import {currentTeamTokenSelector} from '../slices/teams-slice';
 import {withNavigation, NavigationInjectedProps} from 'react-navigation';
 
 type Props = ReturnType<typeof mapStateToProps> &
   NavigationInjectedProps &
   DispatchProp<any> & {
     userId: string;
-    width?: number;
+    width: number;
     style?: ViewStyle;
     onPress?(): void;
     containerStyle?: ViewStyle;
@@ -143,7 +144,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state: RootState, ownProps) => ({
+const mapStateToProps = (state: RootState, ownProps: any) => ({
   user: state.entities.users.byId[ownProps.userId],
   token: currentTeamTokenSelector(state),
 });

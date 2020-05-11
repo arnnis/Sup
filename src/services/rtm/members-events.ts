@@ -1,6 +1,6 @@
 import {send} from '.';
 import {PresencesQueryRequest, PresenceChangeEvent, PresenceSubscribeRequest} from './types';
-import {store} from '../../App';
+import {store} from '../../store/configureStore';
 import {updateEntity} from '../../slices/entities-slice';
 import {RootState} from '../../reducers';
 

@@ -12,7 +12,7 @@ import px from '../../utils/normalizePixel';
 import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 import {NavigationInjectedProps, withNavigation} from 'react-navigation';
 import Day from './Day';
-import {meSelector} from '../../reducers/teams';
+import {meSelector} from '../../slices/teams-slice';
 import rem from '../../utils/stylesheet/rem';
 import Reactions from './Reactions';
 import {goToThread} from '../../slices/chats-thunks';

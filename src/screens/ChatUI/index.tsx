@@ -14,7 +14,7 @@ import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 import InputToolbar from './InputToolbar';
 import {getMember, goToUserProfile} from '../../slices/members-thunks';
 import isLandscape from '../../utils/stylesheet/isLandscape';
-import {meSelector, currentTeamTokenSelector} from '../../reducers/teams';
+import {meSelector, currentTeamTokenSelector} from '../../slices/teams-slice';
 import px from '../../utils/normalizePixel';
 import Touchable from '../../components/Touchable';
 import ChannelMembersCount from './ChannelMembersCount';
@@ -25,6 +25,7 @@ import {setCurrentChat, setCurrentThread} from '../../slices/chats-slice';
 import select from '../../utils/select';
 import UploadDropZoneWeb from './UploadDropZoneWeb';
 import ChannelDetails from '../ChannelDetails';
+// @ts-ignore
 import ChannelDetailsIcon from '../../assets/icons/dock-right.svg';
 import {openUploadDialog} from '../../slices/files-slice';
 import {Platform} from '../../utils/platform';
@@ -120,7 +121,7 @@ class ChatUI extends Component<Props> {
     });
   }
 
-  _invertedWheelEvent = (e) => {
+  _invertedWheelEvent = (e: React.WheelEvent) => {
     this._scrollNode.scrollTop -= e.deltaY;
     e.preventDefault();
   };
@@ -183,7 +184,7 @@ class ChatUI extends Component<Props> {
     this.props.dispatch(openUploadDialog({params: {files, chatId, threadId}}));
   };
 
-  renderMessageCell = ({item: messageId, index}) => {
+  renderMessageCell = ({item: messageId, index}: {item: string; index: number}) => {
     let {chatType} = this.props;
     let prevMessageId = this.isInverted()
       ? this.props.messagesList[index + 1]
@@ -370,8 +371,8 @@ const styles = StyleSheet.create({
   },
 });
 
-let defaultList = [];
-const mapStateToProps = (state: RootState, ownProps) => {
+let defaultList: any = [];
+const mapStateToProps = (state: RootState, ownProps: any) => {
   let chatId = ownProps.chatId ?? ownProps.navigation?.getParam('chatId');
   let threadId = ownProps.threadId ?? ownProps.navigation?.getParam('threadId');
   let chatType = ownProps.chatType ?? ownProps.navigation?.getParam('chatType');
@@ -396,7 +397,7 @@ const mapStateToProps = (state: RootState, ownProps) => {
     lastMessageStatus,
     lastMessage:
       state.entities.messages.byId[
-        lastMessageStatus && lastMessageStatus.messageId && lastMessageStatus.messageId
+        (lastMessageStatus && lastMessageStatus.messageId && lastMessageStatus.messageId) || ''
       ],
     me,
     currentTeamToken: currentTeamTokenSelector(state),

@@ -17,7 +17,7 @@ import PopupMenu from './PopupMenu';
 import ChatUI from '../ChatUI';
 import ChatEmptyPlaceholder from './ChatEmptyPlaceholder';
 import BottomSheet from './BottomSheet';
-import {currentTeamSelector} from '../../reducers/teams';
+import {currentTeamSelector} from '../../slices/teams-slice';
 import Toast from '../../components/Toast';
 import {toggleToast, setDrawerOpen} from '../../slices/app-slice';
 import Screen from '../../components/Screen';

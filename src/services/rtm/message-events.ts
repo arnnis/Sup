@@ -20,7 +20,7 @@ import {
   MessageDeletedEvent,
   MessageChangedEvent,
 } from './types';
-import {meSelector} from '../../reducers/teams';
+import {meSelector} from '../../slices/teams-slice';
 import {goToChat} from '../../slices/chats-thunks';
 import {addReaction, removeReaction} from '../../slices/messages-thunks';
 import {Platform} from '../../utils/platform';
