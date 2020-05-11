@@ -5,7 +5,7 @@ import px from '../utils/normalizePixel';
 import ThemeContext from '../contexts/theme';
 import Touchable from './Touchable';
 import {DispatchProp} from 'react-redux';
-import {togglePresence} from '../actions/app/thunks';
+import {togglePresence} from '../slices/app-thunks';
 
 interface Props {
   style?: ViewStyle;

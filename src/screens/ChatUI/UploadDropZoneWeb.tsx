@@ -5,7 +5,7 @@ import ThemeContext from '../../contexts/theme';
 import px from '../../utils/normalizePixel';
 import {Platform} from '../../utils/platform';
 import {useDispatch} from 'react-redux';
-import {openBottomSheet} from '../../actions/app';
+import {openBottomSheet} from '../../slices/app-slice';
 
 interface Props {
   onDrop(files: File[]): void;

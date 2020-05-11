@@ -1,7 +1,5 @@
-import {Reducer} from 'redux';
-import {RootAction} from '../actions';
-import { createSelector } from 'reselect';
-import { RootState } from '.';
+import {createSlice, PayloadAction, createSelector} from '@reduxjs/toolkit';
+import {RootState} from '../reducers';
 
 export type TeamsState = Readonly<{
   currentTeam: string;
@@ -15,22 +13,25 @@ export type TeamsState = Readonly<{
 
 const initialState: TeamsState = {
   currentTeam: '',
-  list: [
-  ],
+  list: [],
   loading: {},
 };
 
-export const teamsReducer: Reducer<TeamsState, RootAction> = (state = initialState, action) => {
-  switch (action.type) {
-    case 'SIGNIN_TEAM_SUCCESS': {
+const teamsSlice = createSlice({
+  name: 'app',
+  initialState,
+  reducers: {
+    signinTeamSuccess(
+      state,
+      action: PayloadAction<{token: string; teamId: string; userId: string}>,
+    ) {
       let {teamId, userId, token} = action.payload;
       return {
         ...state,
         list: [{id: teamId, token, userId}, ...state.list],
       };
-    }
-
-    case 'GET_TEAM_START': {
+    },
+    getTeamStart(state, action: PayloadAction<{teamId: string}>) {
       let {teamId} = action.payload;
       return {
         ...state,
@@ -39,10 +40,8 @@ export const teamsReducer: Reducer<TeamsState, RootAction> = (state = initialSta
           [teamId]: true,
         },
       };
-    }
-
-    case 'GET_TEAM_FAIL':
-    case 'GET_TEAM_SUCCESS': {
+    },
+    getTeamSuccess(state, action: PayloadAction<{teamId: string}>) {
       let {teamId} = action.payload;
       return {
         ...state,
@@ -51,44 +50,55 @@ export const teamsReducer: Reducer<TeamsState, RootAction> = (state = initialSta
           [teamId]: false,
         },
       };
-    }
+    },
+    getTeamFail(state, action: PayloadAction<{teamId: string}>) {
+      this.getTeamStart(state, action);
+    },
 
-    case 'SET_CURRENT_TEAM': {
+    setCurrentTeam(state, action: PayloadAction<{teamId: string}>) {
       let {teamId} = action.payload;
       return {
         ...state,
         currentTeam: teamId,
       };
-    }
-
-    case 'LOGOUT': {
+    },
+    logout(state, action: PayloadAction<{teamId: string}>) {
       let {teamId} = action.payload;
       return {
         ...state,
         currentTeam: teamId === state.currentTeam ? '' : state.currentTeam,
-        list: state.list.filter(tm => tm.id !== teamId),
+        list: state.list.filter((tm) => tm.id !== teamId),
       };
-    }
+    },
+  },
+});
 
-    default:
-      return state;
-  }
-};
+export const teamsReducer = teamsSlice.reducer;
+
+export const {
+  signinTeamSuccess,
+  getTeamStart,
+  getTeamSuccess,
+  getTeamFail,
+  setCurrentTeam,
+  logout,
+} = teamsSlice.actions;
 
 export const meSelector = createSelector(
   (state: RootState) => state,
-  state =>
+  (state) =>
     state.entities.users.byId[
-      state.teams.list.find(tm => tm.id === state.teams.currentTeam)?.userId
+      state.teams.list.find((tm) => tm.id === state.teams.currentTeam)?.userId ?? ''
     ],
 );
 
 export const currentTeamTokenSelector = createSelector(
   [(state: RootState) => state.teams.list, (state: RootState) => state.teams.currentTeam],
-  (teamsList, currentTeamId) => teamsList.find(tm => tm.id === currentTeamId)?.token,
+  (teamsList, currentTeamId) => teamsList.find((tm) => tm.id === currentTeamId)?.token,
 );
 
 export const currentTeamSelector = createSelector(
   [(state: RootState) => state.teams, (state: RootState) => state.entities],
-  (teams, entites) => entites.teams.byId[teams.list.find(tm => tm.id === teams.currentTeam)?.id],
+  (teams, entites) =>
+    entites.teams.byId[teams.list.find((tm) => tm.id === teams.currentTeam)?.id ?? ''],
 );

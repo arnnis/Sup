@@ -8,7 +8,7 @@ import {RootState} from '../../reducers';
 import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 import Touchable from '../../components/Touchable';
 import {NavigationInjectedProps, withNavigation} from 'react-navigation';
-import {goToUserProfile} from '../../actions/members/thunks';
+import {goToUserProfile} from '../../slices/members-thunks';
 
 const {width} = Dimensions.get('window');
 

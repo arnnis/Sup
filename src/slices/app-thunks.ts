@@ -1,19 +1,17 @@
-import {getCurrentUserFail, getCurrentUserStart, setPresence} from '.';
-import {User} from '../../models';
-import http from '../../utils/http';
+import {setPresence} from './app-slice';
+import {User} from '../models';
+import http from '../utils/http';
 import {batch} from 'react-redux';
-import {storeEntities} from '../entities';
-import {RootState} from '../../reducers';
-import select from '../../utils/select';
-import {API_URL} from '../../env';
-import {currentTeamTokenSelector} from '../../reducers/teams';
+import {storeEntities} from './entities-slice';
+import {RootState} from '../reducers';
+import select from '../utils/select';
+import {AppThunk} from '../store/configureStore';
 
-export const getCurrentUser = () => async (dispatch, getState) => {
+export const getCurrentUser = (): AppThunk => async (dispatch, getState) => {
   try {
     let store: RootState = getState();
-    let currentUser = store.teams.list.find(ws => ws.id === store.teams.currentTeam).userId;
+    let currentUser = store.teams.list.find((ws) => ws.id === store.teams.currentTeam)?.userId;
 
-    dispatch(getCurrentUserStart());
     let {user}: {user: User} = await http({
       path: '/users.info',
       body: {
@@ -24,15 +22,14 @@ export const getCurrentUser = () => async (dispatch, getState) => {
     });
 
     batch(() => {
-      dispatch(storeEntities('users', [user]));
+      dispatch(storeEntities({entity: 'users', data: [user]}));
     });
   } catch (err) {
-    dispatch(getCurrentUserFail());
     console.log(err);
   }
 };
 
-export const togglePresence = () => async (dispatch, getState) => {
+export const togglePresence = (): AppThunk => async (dispatch, getState) => {
   let state: RootState = getState();
   let currentPresence = state.app.presence;
   let nextPresence = select(currentPresence, {

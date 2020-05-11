@@ -1,13 +1,14 @@
-import {getMessagesStart, getMessagesFail, getMessagesSuccess} from '.';
+import {getMessagesStart, getMessagesFail, getMessagesSuccess} from './messages-slice';
 import {batch} from 'react-redux';
-import {storeEntities, updateEntity} from '../entities';
-import {Message, PaginationResult} from '../../models';
-import http from '../../utils/http';
-import {RootState} from '../../reducers';
-import {SlackError} from '../../utils/http/errors';
+import {storeEntities, updateEntity} from './entities-slice';
+import {Message, PaginationResult} from '../models';
+import http from '../utils/http';
+import {RootState} from '../reducers';
+import {SlackError} from '../utils/http/errors';
+import {AppThunk} from '../store/configureStore';
 
-export const getMessagesByChatId = (chatId: string) => async (dispatch, getState) => {
-  let store: RootState = getState();
+export const getMessagesByChatId = (chatId: string): AppThunk => async (dispatch, getState) => {
+  let store = getState();
   let messageList = store.messages.list[chatId] || [];
   let cursor = messageList[messageList.length - 1] || '';
   let hasNextPage =
@@ -16,7 +17,7 @@ export const getMessagesByChatId = (chatId: string) => async (dispatch, getState
   if (hasNextPage || alreadyLoading) return;
 
   try {
-    dispatch(getMessagesStart(chatId));
+    dispatch(getMessagesStart({chatId}));
     let {messages, response_metadata}: {messages: Array<Message>} & PaginationResult = await http({
       path: '/conversations.history',
       body: {
@@ -29,19 +30,19 @@ export const getMessagesByChatId = (chatId: string) => async (dispatch, getState
     let nextCursor = response_metadata ? response_metadata.next_cursor : 'end';
 
     batch(() => {
-      dispatch(getMessagesSuccess(chatId, messages, nextCursor));
-      dispatch(storeEntities('messages', messages));
+      dispatch(getMessagesSuccess({chatId, messages, nextCursor}));
+      dispatch(storeEntities({entity: 'messages', data: messages}));
     });
 
     return Promise.resolve(messages);
   } catch (err) {
     console.log(err);
-    dispatch(getMessagesFail(chatId));
+    dispatch(getMessagesFail({chatId}));
     return Promise.reject(err);
   }
 };
 
-export const getRepliesByThreadId = (threadId: string, chatId: string) => async (
+export const getRepliesByThreadId = (threadId: string, chatId: string): AppThunk => async (
   dispatch,
   getState,
 ) => {
@@ -54,7 +55,7 @@ export const getRepliesByThreadId = (threadId: string, chatId: string) => async 
   if (hasNextPage || alreadyLoading) return;
 
   try {
-    dispatch(getMessagesStart(threadId));
+    dispatch(getMessagesStart({chatId: threadId}));
     let {messages, response_metadata}: {messages: Array<Message>} & PaginationResult = await http({
       path: '/conversations.replies',
       body: {
@@ -65,19 +66,19 @@ export const getRepliesByThreadId = (threadId: string, chatId: string) => async 
       },
     });
 
-    messages = messages.filter(msg => msg.ts !== threadId);
+    messages = messages.filter((msg) => msg.ts !== threadId);
 
     let nextCursor = response_metadata ? response_metadata.next_cursor : 'end';
 
     batch(() => {
-      dispatch(getMessagesSuccess(threadId, messages, nextCursor));
-      dispatch(storeEntities('messages', messages));
+      dispatch(getMessagesSuccess({chatId: threadId, messages, nextCursor}));
+      dispatch(storeEntities({entity: 'messages', data: messages}));
     });
 
     return Promise.resolve(messages);
   } catch (err) {
     console.log(err);
-    dispatch(getMessagesFail(threadId));
+    dispatch(getMessagesFail({chatId: threadId}));
     return Promise.reject(err);
   }
 };
@@ -87,8 +88,8 @@ export const removeReactionRequest = (
   messageId?: string,
   fileId?: string,
   fileCommentId?: string,
-) => async (dispatch, getState) => {
-  const state: RootState = getState();
+): AppThunk => async (dispatch, getState) => {
+  const state = getState();
   if (!state.chats.currentChatId) return;
 
   let result: {messages: Array<Message>} & {ok: boolean} = await http({
@@ -110,8 +111,8 @@ export const addReactionRequest = (
   messageId?: string,
   fileId?: string,
   fileCommentId?: string,
-) => async (dispatch, getState) => {
-  const state: RootState = getState();
+): AppThunk => async (dispatch, getState) => {
+  const state = getState();
   if (!state.chats.currentChatId) return;
   try {
     let result: {messages: Array<Message>} & {ok: boolean} = await http({
@@ -134,11 +135,11 @@ export const addReactionRequest = (
   }
 };
 
-export const addReaction = (name: string, user: string, messageId: string) => (
+export const addReaction = (name: string, user: string, messageId: string): AppThunk => (
   dispatch,
   getState,
 ) => {
-  const state: RootState = getState();
+  const state = getState();
   let message = state.entities.messages.byId[messageId];
 
   // Message not loaded. so no need to update reaction
@@ -146,38 +147,46 @@ export const addReaction = (name: string, user: string, messageId: string) => (
 
   let reactions = message.reactions;
 
-  const reaction = message.reactions?.find(reaction => reaction.name === name);
+  const reaction = message.reactions?.find((reaction) => reaction.name === name);
 
   if (reaction && reaction.users.includes(user)) return;
 
   // Reaction already exist. so only increase count
   if (reaction)
     dispatch(
-      updateEntity('messages', messageId, {
-        reactions: reactions.map(r =>
-          r.name === name
-            ? {
-                ...r,
-                count: r.count + 1,
-                users: [...r.users, user],
-              }
-            : r,
-        ),
+      updateEntity({
+        entity: 'messages',
+        key: messageId,
+        data: {
+          reactions: reactions?.map((r) =>
+            r.name === name
+              ? {
+                  ...r,
+                  count: r.count + 1,
+                  users: [...r.users, user],
+                }
+              : r,
+          ),
+        },
       }),
     );
   else
     dispatch(
-      updateEntity('messages', messageId, {
-        reactions: [...(reactions || []), {name: name, users: [user], count: 1}],
+      updateEntity({
+        entity: 'messages',
+        key: messageId,
+        data: {
+          reactions: [...(reactions || []), {name: name, users: [user], count: 1}],
+        },
       }),
     );
 };
 
-export const removeReaction = (name: string, user: string, messageId: string) => (
+export const removeReaction = (name: string, user: string, messageId: string): AppThunk => (
   dispatch,
   getState,
 ) => {
-  const state: RootState = getState();
+  const state = getState();
 
   let message = state.entities.messages.byId[messageId];
   // Message not loaded. so no need to update reaction
@@ -185,7 +194,7 @@ export const removeReaction = (name: string, user: string, messageId: string) =>
 
   const reactions = message.reactions;
 
-  const reaction = message.reactions?.find(reaction => reaction.name === name);
+  const reaction = message.reactions?.find((reaction) => reaction.name === name);
 
   // Check reaction exists
   if (!reaction) return;
@@ -195,27 +204,37 @@ export const removeReaction = (name: string, user: string, messageId: string) =>
   // Count is 1, so we should remove reaction object, otherwise decrease count by 1
   if (reaction.count === 1)
     dispatch(
-      updateEntity('messages', messageId, {
-        reactions: reactions?.filter(reaction => reaction.name !== name),
+      updateEntity({
+        entity: 'messages',
+        key: messageId,
+        data: {
+          reactions: reactions?.filter((reaction) => reaction.name !== name),
+        },
       }),
     );
   else
     dispatch(
-      updateEntity('messages', messageId, {
-        reactions: reactions?.map(reaction =>
-          reaction.name === name
-            ? {
-                ...reaction,
-                count: reaction.count - 1,
-                users: reaction.users.filter(user => user !== user),
-              }
-            : reaction,
-        ),
+      updateEntity({
+        entity: 'messages',
+        key: messageId,
+        data: {
+          reactions: reactions?.map((reaction) =>
+            reaction.name === name
+              ? {
+                  ...reaction,
+                  count: reaction.count - 1,
+                  users: reaction.users.filter((user) => user !== user),
+                }
+              : reaction,
+          ),
+        },
       }),
     );
 };
 
-export const removeMessage = (chatId: string, messageId: string) => async (dispatch: any) => {
+export const removeMessage = (chatId: string, messageId: string): AppThunk => async (
+  dispatch: any,
+) => {
   try {
     let result: {ok: boolean} = await http({
       path: '/chat.delete',

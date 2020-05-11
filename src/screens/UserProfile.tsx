@@ -1,5 +1,6 @@
 import React, {Component, FC} from 'react';
 import {View, Text, StyleSheet, ScrollView} from 'react-native';
+// @ts-ignore
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Header from '../components/Header';
 import {RootState} from '../reducers';
@@ -7,22 +8,21 @@ import {connect, DispatchProp} from 'react-redux';
 import {NavigationInjectedProps, withNavigation} from 'react-navigation';
 import px from '../utils/normalizePixel';
 import {User} from '../models';
-import {openChat, goToChat} from '../actions/chats/thunks';
+import {openChat, goToChat} from '../slices/chats-thunks';
 import {ActivityIndicator} from 'react-native-paper';
 import withTheme, {ThemeInjectedProps} from '../contexts/theme/withTheme';
 import Touchable from '../components/Touchable';
 import FastImage from 'react-native-fast-image';
-import {currentTeamTokenSelector} from '../reducers/teams';
+import {currentTeamTokenSelector} from '../slices/teams-slice';
 import Screen from '../components/Screen';
 import {InfoBox, InfoRow, ActionRow, SwitchRow} from '../components/InfoBox';
 import withStylesheet, {StyleSheetInjectedProps} from '../utils/stylesheet/withStylesheet';
-import {togglePresence} from '../actions/app/thunks';
-import {logoutFromCurrentTeam} from '../actions/teams/thunks';
+import {togglePresence} from '../slices/app-thunks';
+import {logoutFromCurrentTeam} from '../slices/team-thunks';
 import isLandscape from '../utils/stylesheet/isLandscape';
-import {closeBottomSheet} from '../actions/app';
+import {closeBottomSheet} from '../slices/app-slice';
 
 type Props = ReturnType<typeof mapStateToProps> &
-  StyleSheetInjectedProps &
   ThemeInjectedProps &
   NavigationInjectedProps &
   DispatchProp<any> & {
@@ -102,6 +102,7 @@ class UserProfile extends Component<Props> {
         }}>
         {isMe && (
           <Touchable
+            onPress={() => {}}
             disabled
             style={[styles.button, {backgroundColor: theme.backgroundColorLess2}]}>
             <Text style={[styles.buttonTitle, {color: theme.foregroundColor}]}>Edit Profile</Text>
@@ -171,7 +172,7 @@ class UserProfile extends Component<Props> {
   }
 
   render() {
-    let {entities, navigation, isMe, dynamicStyles} = this.props;
+    let {entities, navigation, isMe} = this.props;
     let userId = navigation.getParam('userId') || this.props.userId;
     let user = entities.users.byId[userId];
 

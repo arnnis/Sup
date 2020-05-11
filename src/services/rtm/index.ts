@@ -1,9 +1,9 @@
 import http from '../../utils/http';
-import {store} from '../../App';
+import {store} from '../../store/configureStore';
 import {batch} from 'react-redux';
-import {setConnectionStatus} from '../../actions/app';
-import {getCurrentUser} from '../../actions/app/thunks';
-import {getChats} from '../../actions/chats/thunks';
+import {setConnectionStatus} from '../../slices/app-slice';
+import {getCurrentUser} from '../../slices/app-thunks';
+import {getChats} from '../../slices/chats-thunks';
 import {
   sendMessage,
   handleMessageRecieved,
@@ -33,7 +33,7 @@ export const init = async () => {
 
   socket = new WebSocket(url);
 
-  socket.onopen = e => {
+  socket.onopen = (e) => {
     console.log('[open] Connection established');
     connected = true;
     store.dispatch(setConnectionStatus('connected'));
@@ -96,7 +96,7 @@ export const init = async () => {
     }
   };
 
-  socket.onclose = event => {
+  socket.onclose = (event) => {
     if (event.wasClean) {
       console.log(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
     } else {
@@ -110,7 +110,7 @@ export const init = async () => {
     !__DEV__ && _reconnect();
   };
 
-  socket.onerror = error => {
+  socket.onerror = (error) => {
     console.log(`[error] ${error.message}`);
   };
 };

@@ -5,15 +5,16 @@ import {FileSystem as fs} from 'react-native-unimodules';
 import {Audio} from 'expo-av';
 import {Howl} from 'howler';
 import bytes from 'bytes';
+// @ts-ignore
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {RootState} from '../../reducers';
 import {MessageAttachement} from '../../models';
 import px from '../../utils/normalizePixel';
 import Touchable from '../../components/Touchable';
-import {currentTeamTokenSelector, meSelector} from '../../reducers/teams';
+import {currentTeamTokenSelector, meSelector} from '../../slices/teams-slice';
 import ThemeContext from '../../contexts/theme';
-import {messageFilesSelector} from '../../reducers/messages';
+import {messageFilesSelector} from '../../slices/messages-slice';
 import {Platform} from '../../utils/platform';
 import {shell} from 'electron';
 
@@ -94,7 +95,7 @@ export const File: FC<FileProps> = ({file, containerStyle, textStyle, isMe}) => 
             Authorization: 'Bearer ' + token,
           },
         },
-        progress =>
+        (progress) =>
           handleDownloadProgressUpdate(
             progress.totalBytesWritten,
             progress.totalBytesExpectedToWrite,
@@ -141,7 +142,7 @@ export const File: FC<FileProps> = ({file, containerStyle, textStyle, isMe}) => 
       await soundRef.current.playAsync();
       setPlaying(true);
 
-      soundRef.current.setOnPlaybackStatusUpdate(playbackStatus => {
+      soundRef.current.setOnPlaybackStatusUpdate((playbackStatus) => {
         if (!playbackStatus.isLoaded) {
           // Update your UI for the unloaded state
           if (playbackStatus.error) {

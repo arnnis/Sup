@@ -6,7 +6,7 @@ import {createSelector} from 'reselect';
 import {Message, MessageAttachement} from '../../models';
 import px from '../../utils/normalizePixel';
 import {connect, useSelector} from 'react-redux';
-import {currentTeamTokenSelector} from '../../reducers/teams';
+import {currentTeamTokenSelector} from '../../slices/teams-slice';
 import ImagesPreview from './ImagesPreview';
 
 type Props = ReturnType<typeof mapStateToProps> & {
@@ -50,7 +50,7 @@ class MessageImages extends Component<Props> {
         onPress={() =>
           this.setState({
             imageViewerOpen: true,
-            imageViewerCurrentImageIndex: images.map(image => image.id).indexOf(image.id),
+            imageViewerCurrentImageIndex: images.map((image) => image.id).indexOf(image.id),
           })
         }
       />
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
 
 const messageImagesSelector = createSelector(
   (message: Message) => message,
-  message => message.files && message.files.filter(file => file.mimetype.startsWith('image')),
+  (message) => message.files && message.files.filter((file) => file.mimetype.startsWith('image')),
 );
 
 const mapStateToProps = (state: RootState, ownProps) => {

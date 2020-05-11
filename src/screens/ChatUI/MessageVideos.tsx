@@ -8,7 +8,7 @@ import {Message} from '../../models';
 import {RootState} from '../../reducers';
 import {connect} from 'react-redux';
 import px from '../../utils/normalizePixel';
-import {currentTeamTokenSelector} from '../../reducers/teams';
+import {currentTeamTokenSelector} from '../../slices/teams-slice';
 import {Platform} from '../../utils/platform';
 
 type Props = ReturnType<typeof mapStateToProps> & {
@@ -28,7 +28,7 @@ class MessageVideos extends Component<Props> {
     }
     return (
       <View style={styles.container}>
-        {videos.map(video => (
+        {videos.map((video) => (
           <MessageVideo
             uri={video.url_private_download}
             width={width}
@@ -96,7 +96,7 @@ class MessageVideo extends Component<MessageVideoProps> {
     //return this.renderThumbnail(uri, width, height);
     return (
       <Video
-        ref={ref => (this.video = ref)}
+        ref={(ref) => (this.video = ref)}
         source={{uri, headers: {Authorization: 'Bearer ' + token}}}
         rate={1.0}
         volume={1.0}
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
 
 const messageVideosSelector = createSelector(
   (message: Message) => message,
-  message => message.files && message.files.filter(file => file.mimetype.startsWith('video')),
+  (message) => message.files && message.files.filter((file) => file.mimetype.startsWith('video')),
 );
 
 const mapStateToProps = (state: RootState, ownProps) => ({

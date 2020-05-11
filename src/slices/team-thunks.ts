@@ -1,53 +1,46 @@
 import {
-  initTeamStart,
-  initTeamSuccess,
-  initTeamFail,
-  signinTeamStart,
   signinTeamSuccess,
-  signinTeamFail,
   getTeamStart,
   getTeamSuccess,
   getTeamFail,
   setCurrentTeam,
-  getEmojisStart,
-  getEmojisFail,
   logout,
-} from '.';
+} from './teams-slice';
 import {batch} from 'react-redux';
-import {storeEntities} from '../entities';
-import http from '../../utils/http';
-import {RootState} from '../../reducers';
-import {NavigationService} from '../../navigation/Navigator';
-import {getChats} from '../chats/thunks';
-import {_closeSocket, init as initRTM} from '../../services/rtm';
-import {getCurrentUser} from '../app/thunks';
-import {getMembers} from '../members/thunks';
-import {SlackError} from '../../utils/http/errors';
+import {storeEntities} from './entities-slice';
+import http from '../utils/http';
+import {NavigationService} from '../navigation/Navigator';
+import {getChats} from './chats-thunks';
+import {_closeSocket, init as initRTM} from '../services/rtm';
+import {getCurrentUser} from './app-thunks';
+import {getMembers} from './members-thunks';
+import {SlackError} from '../utils/http/errors';
 import {Alert} from 'react-native';
-import {currentTeamSelector} from '../../reducers/teams';
-import isLandscape from '../../utils/stylesheet/isLandscape';
-import {closeBottomSheet, setDrawerOpen, openBottomSheet} from '../app';
-import {Platform} from '../../utils/platform';
-import AlertWeb from '../../utils/AlertWeb';
+import {currentTeamSelector} from '../slices/teams-slice';
+import isLandscape from '../utils/stylesheet/isLandscape';
+import {closeBottomSheet, setDrawerOpen, openBottomSheet} from './app-slice';
+import {Platform} from '../utils/platform';
+import AlertWeb from '../utils/AlertWeb';
+import {AppThunk} from '../store/configureStore';
 
-export const signinTeam = (domain: string, email: string, password: string, pin?: string) => async (
-  dispatch,
-  getState,
-) => {
-  let state: RootState = getState();
+export const signinTeam = (
+  domain: string,
+  email: string,
+  password: string,
+  pin?: string,
+): AppThunk => async (dispatch, getState) => {
+  let state = getState();
 
   if (
     state.teams.list
-      .map(tm => state.entities.teams.byId[tm.id])
-      .some(team => team.domain === domain)
+      .map((tm) => state.entities.teams.byId[tm.id])
+      .some((team) => team.domain === domain)
   ) {
     alert('You have already signed into this team.');
     return;
   }
 
   try {
-    dispatch(signinTeamStart());
-
     let {team_id}: {team_id: string} = await http({
       path: '/auth.findTeam',
       body: {
@@ -67,15 +60,14 @@ export const signinTeam = (domain: string, email: string, password: string, pin?
       isFormData: true,
     });
 
-    dispatch(signinTeamSuccess(token, team_id, user));
+    dispatch(signinTeamSuccess({token, teamId: team_id, userId: user}));
     dispatch(switchTeam(team_id));
 
-    dispatch(setDrawerOpen(false));
+    dispatch(setDrawerOpen({drawerState: false}));
     if (isLandscape()) dispatch(closeBottomSheet());
     else NavigationService.navigate('Main');
     return Promise.resolve();
   } catch (err) {
-    dispatch(signinTeamFail());
     if (err instanceof SlackError) {
       err.message === 'team_not_found' && alert('Team not found');
       err.message === 'missing_pin' && alert('Please enter 2FA pin and try again');
@@ -86,13 +78,11 @@ export const signinTeam = (domain: string, email: string, password: string, pin?
   }
 };
 
-export const initTeam = () => async (dispatch, getState) => {
-  let store: RootState = getState();
+export const initTeam = (): AppThunk => async (dispatch, getState) => {
+  let store = getState();
   let currentTeamId = store.teams.currentTeam;
 
   if (!currentTeamId) return;
-
-  dispatch(initTeamStart());
 
   try {
     initRTM();
@@ -103,16 +93,14 @@ export const initTeam = () => async (dispatch, getState) => {
       dispatch(getEmojis());
       await dispatch(getChats());
       dispatch(getMembers());
-      dispatch(initTeamSuccess());
     });
   } catch (err) {
     console.log(err);
-    dispatch(initTeamFail());
   }
 };
 
-export const getTeam = (teamId: string) => async dispatch => {
-  dispatch(getTeamStart(teamId));
+export const getTeam = (teamId: string): AppThunk => async (dispatch) => {
+  dispatch(getTeamStart({teamId}));
 
   try {
     let {team: team}: {team: any} = await http({
@@ -124,25 +112,25 @@ export const getTeam = (teamId: string) => async dispatch => {
     });
 
     batch(() => {
-      dispatch(storeEntities('teams', [team]));
-      dispatch(getTeamSuccess(teamId));
+      dispatch(storeEntities({entity: 'teams', data: [team]}));
+      dispatch(getTeamSuccess({teamId}));
     });
   } catch (err) {
     console.log(err);
-    dispatch(getTeamFail(teamId));
+    dispatch(getTeamFail({teamId}));
   }
 };
 
-export const switchTeam = (teamId: string) => dispatch => {
+export const switchTeam = (teamId: string): AppThunk => (dispatch) => {
   _closeSocket();
   batch(() => {
-    dispatch(setCurrentTeam(teamId));
+    dispatch(setCurrentTeam({teamId}));
     dispatch(initTeam());
   });
 };
 
-export const logoutFromCurrentTeam = () => (dispatch, getState) => {
-  let state: RootState = getState();
+export const logoutFromCurrentTeam = (): AppThunk => (dispatch, getState) => {
+  let state = getState();
   const currentTeamName = currentTeamSelector(state)?.name;
   const _Alert = Platform.isNative ? Alert : AlertWeb();
   _Alert.alert(
@@ -157,8 +145,8 @@ export const logoutFromCurrentTeam = () => (dispatch, getState) => {
         onPress: () => {
           let currentTeam = state.teams.currentTeam;
           _closeSocket();
-          dispatch(logout(currentTeam));
-          dispatch(setCurrentTeam(null));
+          dispatch(logout({teamId: currentTeam}));
+          dispatch(setCurrentTeam({teamId: ''}));
         },
       },
     ],
@@ -168,24 +156,22 @@ export const logoutFromCurrentTeam = () => (dispatch, getState) => {
   );
 };
 
-export const getEmojis = () => async dispatch => {
+export const getEmojis = (): AppThunk => async (dispatch) => {
   try {
-    dispatch(getEmojisStart());
     let {emoji}: {emoji: any} = await http({
       path: '/emoji.list',
       method: 'POST',
     });
 
     batch(() => {
-      dispatch(storeEntities('emojis', emoji));
+      dispatch(storeEntities({entity: 'emojis', data: emoji}));
     });
   } catch (err) {
-    dispatch(getEmojisFail());
     console.log(err);
   }
 };
 
-export const goToAddTeam = () => dispatch => {
+export const goToAddTeam = (): AppThunk => (dispatch) => {
   if (!isLandscape()) NavigationService.navigate('Auth');
-  else dispatch(openBottomSheet('Auth'));
+  else dispatch(openBottomSheet({screen: 'Auth'}));
 };

@@ -18,9 +18,9 @@ import ThemeContext from '../../../contexts/theme';
 import Header from '../../../components/Header';
 import {RootState} from '../../../reducers';
 import Touchable from '../../../components/Touchable';
-import {closeUploadDialog} from '../../../actions/files';
+import {closeUploadDialog} from '../../../slices/files-slice';
 import Send from '../Send';
-import {uploadFileWeb} from '../../../actions/files/thunks';
+import {uploadFileWeb} from '../../../slices/files-thunks';
 
 interface Props {}
 
@@ -70,7 +70,7 @@ const UploadDialog: FC<Props> = () => {
     new Promise((resolve, reject) => {
       try {
         const fr = new FileReader();
-        fr.onload = function() {
+        fr.onload = function () {
           resolve(fr.result as string);
         };
         fr.readAsDataURL(file);
@@ -88,7 +88,7 @@ const UploadDialog: FC<Props> = () => {
   const closeDialog = () => dispatch(closeUploadDialog());
 
   const handleSendPress = () => {
-    uploadFiles.forEach(file => {
+    uploadFiles.forEach((file) => {
       dispatch(uploadFileWeb(file.origin, [params.chatId], caption, params.threadId));
     });
 
