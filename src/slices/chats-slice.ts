@@ -1,7 +1,7 @@
 import {createSlice, PayloadAction, createSelector} from '@reduxjs/toolkit';
 import {Chat} from '../models';
 import {setCurrentTeam} from './teams-slice';
-import {RootState} from '../reducers';
+import {RootState} from '../store/configureStore';
 
 export type ChatsState = {
   currentChatId: string;
