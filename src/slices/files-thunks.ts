@@ -1,14 +1,15 @@
-import {getFilesStart, getFilesSuccess, getFilesFail} from '.';
-import {RootState} from '../../reducers';
-import http from '../../utils/http';
-import {MessageAttachement} from '../../models';
+import {getFilesStart, getFilesSuccess, getFilesFail} from './files-slice';
+import {RootState} from '../reducers';
+import http from '../utils/http';
+import {MessageAttachement} from '../models';
 import {batch} from 'react-redux';
-import {storeEntities} from '../entities';
-import {API_URL} from '../../env';
-import {currentTeamTokenSelector} from '../../reducers/teams';
-import {ProgressBarService} from '../../contexts/progress-bar/provider';
+import {storeEntities} from './entities-slice';
+import {API_URL} from '../env';
+import {currentTeamTokenSelector} from '../slices/teams-slice';
+import {ProgressBarService} from '../contexts/progress-bar/provider';
+import {AppThunk} from '../store/configureStore';
 
-export const getFiles = (channel?: string, fileTypes?: string[], user?: string) => async (
+export const getFiles = (channel?: string, fileTypes?: string[], user?: string): AppThunk => async (
   dispatch,
   getState,
 ) => {
@@ -31,8 +32,8 @@ export const getFiles = (channel?: string, fileTypes?: string[], user?: string) 
       },
     });
     batch(() => {
-      dispatch(storeEntities('files', files));
-      dispatch(getFilesSuccess(files));
+      dispatch(storeEntities({entity: 'files', data: files}));
+      dispatch(getFilesSuccess({files}));
     });
   } catch (err) {
     dispatch(getFilesFail());
@@ -44,13 +45,13 @@ export const uploadFileWeb = (
   channels: string[],
   comment?: string,
   threadId?: string,
-) => (dispatch, getState) => {
+): AppThunk => (dispatch, getState) => {
   return new Promise((resolve, reject) => {
     const url = `${API_URL}/files.upload`;
     const fd = new FormData();
     const token = currentTeamTokenSelector(getState());
     fd.append('file', file);
-    fd.append('token', token);
+    fd.append('token', token || '');
     fd.append('channels', channels.join(','));
     comment && fd.append('initial_comment', comment);
     threadId && fd.append('thread_ts', threadId);
@@ -67,7 +68,7 @@ export const uploadFileWeb = (
 
     xhr.upload.addEventListener(
       'progress',
-      e => ProgressBarService.updateProgress(progressId, Math.ceil((e.loaded / e.total) * 100)),
+      (e) => ProgressBarService.updateProgress(progressId, Math.ceil((e.loaded / e.total) * 100)),
       false,
     );
     xhr.addEventListener(

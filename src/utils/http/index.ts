@@ -1,18 +1,18 @@
 import NetInfo from '@react-native-community/netinfo';
 import {API_URL} from '../../env';
 import {NetworkError, SlackError, ServerError} from './errors';
-import {store} from '../../App';
+import {store} from '../../store/configureStore';
 import {RootState} from '../../reducers';
 import {Platform} from 'react-native';
-import {logoutFromCurrentTeam} from '../../actions/teams/thunks';
-import {currentTeamTokenSelector} from '../../reducers/teams';
+import {logoutFromCurrentTeam} from '../../slices/team-thunks';
+import {currentTeamTokenSelector} from '../../slices/teams-slice';
 
 interface RequestOption {
   path: string;
   method?: 'GET' | 'POST';
   isFormData?: boolean;
   silent?: boolean;
-  body?: Object;
+  body?: any;
 }
 
 export default async (options: RequestOption) => {
@@ -85,7 +85,7 @@ const handleSlackError = (error: SlackError, path: string, silent: boolean) => {
   }
 };
 
-const createFormData = (body: Object) => {
+const createFormData = (body: any) => {
   let formData = new FormData();
   for (let field in body) {
     formData.append(field, body[field]);

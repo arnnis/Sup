@@ -181,7 +181,7 @@ export interface MessageAttachement {
   permalink?: string;
   size: number;
   filetype: string;
-  id?: string;
+  id: string;
   created?: number;
   timestamp?: number;
   pretty_type?: string;

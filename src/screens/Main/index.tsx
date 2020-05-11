@@ -9,7 +9,7 @@ import px from '../../utils/normalizePixel';
 import {RootState} from '../../reducers';
 import DrawerLayout from 'react-native-gesture-handler/DrawerLayout';
 import TeamsList from '../TeamsList';
-import {initTeam, goToAddTeam} from '../../actions/teams/thunks';
+import {initTeam, goToAddTeam} from '../../slices/team-thunks';
 import BottomTabbar from './BottomTabBar';
 import TeamEmptyPlaceholder from './TeamEmptyPlaceholder';
 import ChangeTeamButton from './ChangeTeamButton';
@@ -17,9 +17,9 @@ import PopupMenu from './PopupMenu';
 import ChatUI from '../ChatUI';
 import ChatEmptyPlaceholder from './ChatEmptyPlaceholder';
 import BottomSheet from './BottomSheet';
-import {currentTeamSelector} from '../../reducers/teams';
+import {currentTeamSelector} from '../../slices/teams-slice';
 import Toast from '../../components/Toast';
-import {toggleToast, setDrawerOpen} from '../../actions/app';
+import {toggleToast, setDrawerOpen} from '../../slices/app-slice';
 import Screen from '../../components/Screen';
 import Menu from '../../components/Menu/Menu';
 
@@ -42,7 +42,7 @@ const Main: FC = React.memo(() => {
     }
 
     StatusBar.setBarStyle('light-content');
-    global['toast'] = toast => dispatch(toggleToast(toast));
+    global['toast'] = (toast) => dispatch(toggleToast(toast));
   }, []);
 
   useEffect(() => {
@@ -100,7 +100,7 @@ const Main: FC = React.memo(() => {
       <Screen>
         <StatusBar backgroundColor="#3A1C39" animated />
         <DrawerLayout
-          ref={ref => (drawerRef.current = ref)}
+          ref={(ref) => (drawerRef.current = ref)}
           drawerType="slide"
           renderNavigationView={() => <TeamsList onTeamSelect={toggleDrawer} />}
           drawerWidth={px(185)}

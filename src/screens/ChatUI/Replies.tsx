@@ -7,7 +7,7 @@ import px from '../../utils/normalizePixel';
 import Touchable from '../../components/Touchable';
 import {withNavigation, NavigationInjectedProps} from 'react-navigation';
 import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
-import {goToThread} from '../../actions/chats/thunks';
+import {goToThread} from '../../slices/chats-thunks';
 
 type Props = ReturnType<typeof mapStateToProps> &
   ThemeInjectedProps &
@@ -26,7 +26,7 @@ class Replies extends PureComponent<Props> {
     let {message} = this.props;
     return (
       <View style={styles.participantsAvatarContainer} pointerEvents="box-only">
-        {message.reply_users.slice(0, 4).map(replyUser => (
+        {message.reply_users.slice(0, 4).map((replyUser) => (
           <Avatar
             userId={replyUser}
             width={px(20)}

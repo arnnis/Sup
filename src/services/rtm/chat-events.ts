@@ -1,6 +1,6 @@
-import {store} from '../../App';
-import {updateEntity} from '../../actions/entities';
-import {setTyping} from '../../actions/chats/thunks';
+import {store} from '../../store/configureStore';
+import {updateEntity} from '../../slices/entities-slice';
+import {setTyping} from '../../slices/chats-thunks';
 import {UserTypingEvent, ChatMarkedEvent} from './types';
 
 export const handleChatsMarkedAsSeen = (data: ChatMarkedEvent) => {
@@ -8,9 +8,13 @@ export const handleChatsMarkedAsSeen = (data: ChatMarkedEvent) => {
   let dmCount = data.dm_count;
   let unreadCount = data.unread_count_display;
   store.dispatch(
-    updateEntity('chats', chatId, {
-      dm_count: dmCount,
-      unread_count: unreadCount,
+    updateEntity({
+      entity: 'chats',
+      key: chatId,
+      data: {
+        dm_count: dmCount,
+        unread_count: unreadCount,
+      },
     }),
   );
 };

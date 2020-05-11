@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {View, StyleSheet, Text, ViewStyle} from 'react-native';
+// @ts-ignore
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import withTheme, {ThemeInjectedProps} from '../contexts/theme/withTheme';
 import px from '../utils/normalizePixel';
@@ -9,9 +10,9 @@ import {NavigationService} from '../navigation/Navigator';
 type ButtonsTypes = 'back' | 'menu';
 
 type Props = ThemeInjectedProps & {
-  left?: ButtonsTypes | JSX.Element;
-  center?: string | JSX.Element;
-  right?: ButtonsTypes | JSX.Element;
+  left?: ButtonsTypes | JSX.Element | null;
+  center?: string | JSX.Element | null;
+  right?: ButtonsTypes | JSX.Element | null;
   statusBarColor?: string;
   style?: ViewStyle;
 

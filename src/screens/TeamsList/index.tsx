@@ -9,7 +9,7 @@ import px from '../../utils/normalizePixel';
 import TeamCell from './TeamCell';
 import AddTeam from './AddTeam';
 import {Team} from '../../models';
-import {switchTeam} from '../../actions/teams/thunks';
+import {switchTeam} from '../../slices/team-thunks';
 import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 import {Version} from '../../env';
 

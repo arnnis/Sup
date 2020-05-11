@@ -1,29 +1,58 @@
-import {createStore, applyMiddleware, Middleware} from 'redux';
-import thunk from 'redux-thunk';
 import {createLogger} from 'redux-logger';
 import {persistStore, persistReducer} from 'redux-persist';
+import {
+  configureStore as RTKConfigureStore,
+  getDefaultMiddleware,
+  ThunkAction,
+  Action,
+} from '@reduxjs/toolkit';
+import {combineReducers} from 'redux';
 import persistConfig from './persistConfig';
-import rootReducer from '../reducers';
 
-function configureStore() {
-  let middlewares: Middleware[] = [];
-  middlewares.push(thunk);
+import {entitiesReducer} from '../slices/entities-slice';
+import {teamsReducer} from '../slices/teams-slice';
+import {appReducer} from './../slices/app-slice';
+import {chatsReducer} from '../slices/chats-slice';
+import {messagesReducer} from '../slices/messages-slice';
+import {membersReducer} from '../slices/members-slice';
+import {filesReducer} from '../slices/files-slice';
 
-  if (__DEV__) {
-    const logger = createLogger({
-      level: 'info',
-      collapsed: true,
-    });
-    middlewares.push(logger);
-  }
+const rootReducer = combineReducers({
+  entities: entitiesReducer,
+  messages: messagesReducer,
+  chats: chatsReducer,
+  members: membersReducer,
+  app: appReducer,
+  teams: teamsReducer,
+  files: filesReducer,
+});
 
-  const enhancer = applyMiddleware(...middlewares);
-  const persistedReducer = persistReducer(persistConfig, rootReducer);
+const persistedReducer = persistReducer<RootState>(persistConfig, rootReducer);
 
-  let store = createStore(persistedReducer, enhancer);
-  let persistor = persistStore(store);
+const logger = createLogger();
 
-  return {store, persistor};
-}
+const middlewares = [
+  ...getDefaultMiddleware({
+    serializableCheck: false,
+    immutableCheck: false,
+  }),
+  logger,
+];
 
-export default configureStore;
+export const store = RTKConfigureStore({
+  reducer: persistedReducer,
+  middleware: middlewares,
+});
+
+export const persistor = persistStore(store);
+
+export type RootState = ReturnType<typeof rootReducer>;
+
+export type AppDispatch = typeof store.dispatch;
+
+export type AppThunk<ReturnType = void> = ThunkAction<
+  ReturnType,
+  RootState,
+  unknown,
+  Action<string>
+>;

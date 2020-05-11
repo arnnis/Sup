@@ -6,27 +6,28 @@ import MediaQuery from 'react-responsive';
 
 import Message from './Message';
 import {RootState} from '../../reducers';
-import {addMessageToChat} from '../../actions/messages';
-import {getMessagesByChatId, getRepliesByThreadId} from '../../actions/messages/thunks';
-import {markChatAsRead, getChatInfo, goToChannelDetails} from '../../actions/chats/thunks';
+import {addMessageToChat} from '../../slices/messages-slice';
+import {getMessagesByChatId, getRepliesByThreadId} from '../../slices/messages-thunks';
+import {markChatAsRead, getChatInfo, goToChannelDetails} from '../../slices/chats-thunks';
 import Header from '../../components/Header';
 import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 import InputToolbar from './InputToolbar';
-import {getMember, goToUserProfile} from '../../actions/members/thunks';
+import {getMember, goToUserProfile} from '../../slices/members-thunks';
 import isLandscape from '../../utils/stylesheet/isLandscape';
-import {meSelector, currentTeamTokenSelector} from '../../reducers/teams';
+import {meSelector, currentTeamTokenSelector} from '../../slices/teams-slice';
 import px from '../../utils/normalizePixel';
 import Touchable from '../../components/Touchable';
 import ChannelMembersCount from './ChannelMembersCount';
 import DirectPresense from './DirectPresense';
 import Screen from '../../components/Screen';
 import Typing from './Typing';
-import {setCurrentChat, setCurrentThread} from '../../actions/chats';
+import {setCurrentChat, setCurrentThread} from '../../slices/chats-slice';
 import select from '../../utils/select';
 import UploadDropZoneWeb from './UploadDropZoneWeb';
 import ChannelDetails from '../ChannelDetails';
+// @ts-ignore
 import ChannelDetailsIcon from '../../assets/icons/dock-right.svg';
-import {openUploadDialog} from '../../actions/files';
+import {openUploadDialog} from '../../slices/files-slice';
 import {Platform} from '../../utils/platform';
 
 export type ChatType = 'direct' | 'channel' | 'thread';
@@ -96,11 +97,11 @@ class ChatUI extends Component<Props> {
   componentWillUnmount() {
     let {chatType, dispatch} = this.props;
     if (chatType === 'channel' || chatType === 'direct') {
-      dispatch(setCurrentChat(''));
+      dispatch(setCurrentChat({chatId: ''}));
     }
 
     if (chatType === 'thread') {
-      dispatch(setCurrentThread(''));
+      dispatch(setCurrentThread({threadId: ''}));
     }
   }
 
@@ -120,7 +121,7 @@ class ChatUI extends Component<Props> {
     });
   }
 
-  _invertedWheelEvent = e => {
+  _invertedWheelEvent = (e: React.WheelEvent) => {
     this._scrollNode.scrollTop -= e.deltaY;
     e.preventDefault();
   };
@@ -128,7 +129,7 @@ class ChatUI extends Component<Props> {
   async getMessage() {
     let {lastMessageStatus, lastMessage, nextCursor, messagesList, dispatch, chatId} = this.props;
     if (lastMessageStatus && lastMessageStatus.messageId && !lastMessageStatus.loading) {
-      dispatch(addMessageToChat(lastMessageStatus.messageId, chatId));
+      dispatch(addMessageToChat({messageId: lastMessageStatus.messageId, chatId}));
       dispatch(getMember(lastMessage.user));
     }
 
@@ -142,7 +143,7 @@ class ChatUI extends Component<Props> {
   getReplies() {
     let {dispatch, threadId, chatId} = this.props;
 
-    dispatch(addMessageToChat(threadId, threadId));
+    dispatch(addMessageToChat({messageId: threadId as string, threadId: threadId as string}));
 
     dispatch(getRepliesByThreadId(threadId, chatId));
   }
@@ -160,7 +161,7 @@ class ChatUI extends Component<Props> {
 
   markChatAsRead = () => {
     let {dispatch, chatId} = this.props;
-    dispatch(markChatAsRead(chatId, this.props.messagesList[0]));
+    dispatch(markChatAsRead(chatId, this.props.messagesList[0] as string));
   };
 
   openChatDetails = () => {
@@ -180,10 +181,10 @@ class ChatUI extends Component<Props> {
 
   handleFileDropWeb = (files: File[]) => {
     let {chatId, threadId} = this.props;
-    this.props.dispatch(openUploadDialog({files, chatId, threadId}));
+    this.props.dispatch(openUploadDialog({params: {files, chatId, threadId}}));
   };
 
-  renderMessageCell = ({item: messageId, index}) => {
+  renderMessageCell = ({item: messageId, index}: {item: string; index: number}) => {
     let {chatType} = this.props;
     let prevMessageId = this.isInverted()
       ? this.props.messagesList[index + 1]
@@ -223,7 +224,7 @@ class ChatUI extends Component<Props> {
     const inverted = this.isInverted();
     return (
       <FlatList
-        ref={ref => (this._flatlistRef = ref)}
+        ref={(ref) => (this._flatlistRef = ref)}
         data={messagesList}
         renderItem={this.renderMessageCell}
         bounces={false}
@@ -370,8 +371,8 @@ const styles = StyleSheet.create({
   },
 });
 
-let defaultList = [];
-const mapStateToProps = (state: RootState, ownProps) => {
+let defaultList: any = [];
+const mapStateToProps = (state: RootState, ownProps: any) => {
   let chatId = ownProps.chatId ?? ownProps.navigation?.getParam('chatId');
   let threadId = ownProps.threadId ?? ownProps.navigation?.getParam('threadId');
   let chatType = ownProps.chatType ?? ownProps.navigation?.getParam('chatType');
@@ -396,7 +397,7 @@ const mapStateToProps = (state: RootState, ownProps) => {
     lastMessageStatus,
     lastMessage:
       state.entities.messages.byId[
-        lastMessageStatus && lastMessageStatus.messageId && lastMessageStatus.messageId
+        (lastMessageStatus && lastMessageStatus.messageId && lastMessageStatus.messageId) || ''
       ],
     me,
     currentTeamToken: currentTeamTokenSelector(state),
