@@ -1,15 +1,15 @@
 import React, {useState} from 'react';
 import {View, Text, Dimensions, StyleSheet} from 'react-native';
 import {TabView, TabBar, SceneMap} from 'react-native-tab-view';
+// @ts-ignore
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import px from '../../utils/normalizePixel';
 import DirectsList from '../DirectsList';
 import ChannelsList from '../ChannelsList';
-import {RootState} from '../../reducers';
 import {
   totalDirectsUnreadCountSelector,
   totalChannelsUnreadCountSelector,
-} from '../../reducers/chats';
+} from '../../slices/chats-slice';
 import {useSelector} from 'react-redux';
 
 const ScrollableTabView = () => {
@@ -29,7 +29,7 @@ const ScrollableTabView = () => {
   const totalDirectsUnreadCount = useSelector(totalDirectsUnreadCountSelector);
   const totalChannelsUnreadCount = useSelector(totalChannelsUnreadCountSelector);
 
-  const _handleScrollableTabIndexChange = index =>
+  const _handleScrollableTabIndexChange = (index) =>
     setScrollableTabState({...scrollableTabState, index});
 
   const _renderScrollableTabScene = SceneMap({
@@ -67,7 +67,7 @@ const ScrollableTabView = () => {
         renderScene={_renderScrollableTabScene}
         onIndexChange={_handleScrollableTabIndexChange}
         initialLayout={{width: Dimensions.get('window').width}}
-        renderTabBar={props => (
+        renderTabBar={(props) => (
           <TabBar
             {...props}
             indicatorStyle={{backgroundColor: '#fff'}}
