@@ -2126,6 +2126,11 @@
   dependencies:
     "@babel/types" "^7.3.0"
 
+"@types/bytes@^3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@types/bytes/-/bytes-3.1.0.tgz#835a3e4aea3b4d7604aca216a78de372bff3ecc3"
+  integrity sha512-5YG1AiIC8HPPXRvYAIa7ehK3YMAwd0DWiPCtpuL9sgKceWLyWsVtLRA+lT4NkoanDNF9slwQ66lPizWDpgRlWA==
+
 "@types/debug@^4.1.4":
   version "4.1.5"
   resolved "https://registry.yarnpkg.com/@types/debug/-/debug-4.1.5.tgz#b14efa8852b7768d898906613c23f688713e02cd"
@@ -2174,6 +2179,11 @@
   dependencies:
     "@types/react" "*"
     hoist-non-react-statics "^3.3.0"
+
+"@types/howler@^2.1.2":
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/@types/howler/-/howler-2.1.2.tgz#318a9cac65eeb8ed7d453dd70c9367067d35137b"
+  integrity sha512-gK7snhJcWVvTdiE6cCBAjeZ9od9Q8LmB5lEyB/3n6jMJOLn7EQ8Zvmkz8XPhnN5xB+b7QzCiqxJY3YiHrM3Jpg==
 
 "@types/invariant@^2.2.29":
   version "2.2.30"

@@ -1,4 +1,4 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {createSlice, PayloadAction, createSelector} from '@reduxjs/toolkit';
 import {Message, PendingMessage} from '../models';
 import {getLastMessageSuccess} from './chats-slice';
 import {setCurrentTeam} from './teams-slice';
@@ -106,3 +106,12 @@ export const {
   removePendingMessage,
   removeMessageFromChat,
 } = messagesSlice.actions;
+
+export const messageFilesSelector = createSelector(
+  (message: Message) => message,
+  (message) =>
+    message.files &&
+    message.files.filter(
+      (file) => !file.mimetype?.startsWith('image') && !file.mimetype?.startsWith('video'),
+    ),
+);

@@ -32,7 +32,7 @@ const App = () => {
             <MenuProvider>
               <PersistGate loading={null} persistor={persistor}>
                 <Navigator
-                  ref={(navigatorRef) => {
+                  ref={(navigatorRef: any) => {
                     NavigationService.setTopLevelNavigator(navigatorRef);
                   }}
                 />

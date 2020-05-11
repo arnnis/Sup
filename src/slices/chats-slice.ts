@@ -1,6 +1,7 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {createSlice, PayloadAction, createSelector} from '@reduxjs/toolkit';
 import {Chat} from '../models';
 import {setCurrentTeam} from './teams-slice';
+import {RootState} from '../reducers';
 
 export type ChatsState = {
   currentChatId: string;
@@ -169,3 +170,19 @@ export const {
   getChannelMembersStart,
   getChannelMembersSuccess,
 } = chatsSlice.actions;
+
+export const totalDirectsUnreadCountSelector = createSelector(
+  [(state: RootState) => state.chats.directsList, (state: RootState) => state.entities.chats],
+  (directsList, chatsEntities) =>
+    directsList
+      .map((chatId) => chatsEntities.byId[chatId])
+      .reduce((acc, cur) => acc + cur.dm_count, 0),
+);
+
+export const totalChannelsUnreadCountSelector = createSelector(
+  [(state: RootState) => state.chats.channelsList, (state: RootState) => state.entities.chats],
+  (directsList, chatsEntities) =>
+    directsList
+      .map((chatId) => chatsEntities.byId[chatId])
+      .reduce((acc, cur) => acc + cur.unread_count, 0),
+);
