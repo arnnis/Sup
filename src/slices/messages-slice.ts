@@ -49,8 +49,10 @@ const messagesSlice = createSlice({
       // Check for possible duplication in list
       if ((state.list[targetId] || []).includes(messageId)) return;
 
-      // only add if pagination has ended for this thread: if not it will break pagination. (pagination uses last message ts to load older messages)
-      if (threadId && state.nextCursor[threadId] !== 'end') return;
+      // When adding message to a thread
+      // Do not add the message if pagination has started And it has not ended yet.
+      // Otherwise it will break pagination. (pagination uses last message ts to load older messages)
+      if (threadId && state.nextCursor[threadId] && state.nextCursor[threadId] !== 'end') return;
 
       // When message is for a thread,
       // we add the message to end of array,

@@ -1,7 +1,7 @@
 import {createLogger} from 'redux-logger';
 import {persistStore, persistReducer} from 'redux-persist';
 import {
-  configureStore as _configureStore,
+  configureStore as RTKConfigureStore,
   getDefaultMiddleware,
   ThunkAction,
   Action,
@@ -29,14 +29,19 @@ const rootReducer = combineReducers({
 
 const persistedReducer = persistReducer<RootState>(persistConfig, rootReducer);
 
-export const store = _configureStore({
+const logger = createLogger();
+
+const middlewares = [
+  ...getDefaultMiddleware({
+    serializableCheck: false,
+    immutableCheck: false,
+  }),
+  logger,
+];
+
+export const store = RTKConfigureStore({
   reducer: persistedReducer,
-  middleware: [
-    ...getDefaultMiddleware({
-      serializableCheck: false,
-      immutableCheck: false,
-    }),
-  ],
+  middleware: middlewares,
 });
 
 export const persistor = persistStore(store);
