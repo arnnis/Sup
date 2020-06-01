@@ -132,8 +132,8 @@ android {
         applicationId "com.sup"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 7
-        versionName "0.2.9"
+        versionCode 8
+        versionName "0.3.0"
         setProperty("archivesBaseName", "Sup-$versionName") // appends version to output apk name.
     }
     splits {
