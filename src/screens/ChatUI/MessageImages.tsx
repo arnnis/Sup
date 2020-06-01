@@ -8,6 +8,7 @@ import px from '../../utils/normalizePixel';
 import {connect, useSelector} from 'react-redux';
 import {currentTeamTokenSelector} from '../../slices/teams-slice';
 import ImagesPreview from './ImagesPreview';
+import {Platform} from '../../utils/platform';
 
 type Props = ReturnType<typeof mapStateToProps> & {
   messageId: string;
@@ -87,6 +88,11 @@ interface MessageImage {
 
 export const MessageImage: FC<MessageImage> = ({uri, desiredHeight, mainSize, onPress}) => {
   let token = useSelector(currentTeamTokenSelector);
+
+  // On web slack returns cors errors. This is a workaround to fetch the image using a server
+  uri = !Platform.isWeb
+    ? uri
+    : encodeURI(`http://slack-img-cors-bypass.herokuapp.com/url?url=${uri}&t=${'Bearer ' + token}`);
 
   return (
     <TouchableWithoutFeedback onPress={onPress}>
