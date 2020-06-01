@@ -9,6 +9,7 @@ import {MessageAttachement} from '../../models';
 import {currentTeamTokenSelector} from '../../slices/teams-slice';
 import Touchable from '../../components/Touchable';
 import px from '../../utils/normalizePixel';
+import {Platform} from '../../utils/platform';
 
 interface Props {
   open: boolean;
@@ -22,7 +23,13 @@ const ImagesPreview: FC<Props> = ({open, images, onDismiss, initalIndex}) => {
 
   const normalizeImages = () =>
     images.map((img) => ({
-      url: img.url_private_download,
+      url: Platform.isWeb
+        ? encodeURI(
+            `http://slack-img-cors-bypass.herokuapp.com/url?url=${img.url_private_download}&t=${
+              'Bearer ' + token
+            }`,
+          )
+        : img.url_private_download,
       props: {headers: {Authorization: 'Bearer ' + token}},
     }));
 

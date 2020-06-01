@@ -5,7 +5,7 @@ import {connect, DispatchProp} from 'react-redux';
 import Electron from 'electron';
 
 import {isSameUser} from './utils';
-import {RootState} from '../../reducers';
+import {RootState} from '../../store/configureStore';
 import Bubble from './Bubble';
 import Avatar from '../../components/Avatar';
 import px from '../../utils/normalizePixel';
