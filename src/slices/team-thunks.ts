@@ -34,7 +34,7 @@ export const signinTeam = (
   if (
     state.teams.list
       .map((tm) => state.entities.teams.byId[tm.id])
-      .some((team) => team.domain === domain)
+      .some((team) => team?.domain === domain)
   ) {
     alert('You have already signed into this team.');
     return;
