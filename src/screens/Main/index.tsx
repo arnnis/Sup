@@ -9,7 +9,7 @@ import px from '../../utils/normalizePixel';
 import {RootState} from '../../store/configureStore';
 import DrawerLayout from 'react-native-gesture-handler/DrawerLayout';
 import TeamsList from '../TeamsList';
-import {initTeam, goToAddTeam} from '../../slices/team-thunks';
+import {initTeam, goToAddTeam, getTeams} from '../../slices/team-thunks';
 import BottomTabbar from './BottomTabBar';
 import TeamEmptyPlaceholder from './TeamEmptyPlaceholder';
 import ChangeTeamButton from './ChangeTeamButton';
@@ -40,6 +40,8 @@ const Main: FC = React.memo(() => {
       dispatch(goToAddTeam());
     }
 
+    dispatch(getTeams());
+
     StatusBar.setBarStyle('light-content');
     // @ts-ignore
     global['toast'] = (toast) => dispatch(toggleToast(toast));
@@ -59,11 +61,11 @@ const Main: FC = React.memo(() => {
     if (drawerOpen) {
       // @ts-ignore
       drawerRef.current.closeDrawer();
-      // dispatch(setDrawerOpen({drawerState: false}));
+      dispatch(setDrawerOpen({drawerState: false}));
     } else {
       // @ts-ignore
       drawerRef.current.openDrawer();
-      // dispatch(setDrawerOpen({drawerState: true}));
+      dispatch(setDrawerOpen({drawerState: true}));
     }
   };
 
@@ -110,7 +112,7 @@ const Main: FC = React.memo(() => {
           renderNavigationView={() => <TeamsList onTeamSelect={toggleDrawer} />}
           drawerWidth={px(185)}
           onDrawerClose={() => dispatch(setDrawerOpen({drawerState: false}))}
-          onDrawerOpen={() => dispatch(setDrawerOpen({drawerState: false}))}>
+          onDrawerOpen={() => dispatch(setDrawerOpen({drawerState: true}))}>
           <View style={{flex: 1, flexDirection: 'row'}}>
             {renderMain()}
             {renderCurrentChat()}
