@@ -34,7 +34,7 @@ const logger = createLogger();
 const middlewares = [
   ...getDefaultMiddleware({
     serializableCheck: false,
-    immutableCheck: false,
+    // immutableCheck: false,
   }),
   logger,
 ];

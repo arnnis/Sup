@@ -1,13 +1,15 @@
 import {createSlice, PayloadAction, createSelector} from '@reduxjs/toolkit';
-import {RootState} from '../reducers';
+import {RootState} from '../store/configureStore';
+
+export interface LoggedInTeam {
+  id: string;
+  userId: string;
+  token: string;
+}
 
 export type TeamsState = Readonly<{
   currentTeam: string;
-  list: Array<{
-    id: string;
-    userId: string;
-    token: string;
-  }>;
+  list: Array<LoggedInTeam>;
   loading: {[teamId: string]: boolean};
 }>;
 
