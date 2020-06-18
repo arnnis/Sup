@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect, FC} from 'react';
+import React, {useRef, useEffect, FC} from 'react';
 import {StatusBar, View} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {useMediaQuery} from 'react-responsive';
@@ -6,7 +6,7 @@ import {Portal} from 'react-native-paper';
 
 import Header from '../../components/Header';
 import px from '../../utils/normalizePixel';
-import {RootState} from '../../reducers';
+import {RootState} from '../../store/configureStore';
 import DrawerLayout from 'react-native-gesture-handler/DrawerLayout';
 import TeamsList from '../TeamsList';
 import {initTeam, goToAddTeam} from '../../slices/team-thunks';
@@ -21,7 +21,6 @@ import {currentTeamSelector} from '../../slices/teams-slice';
 import Toast from '../../components/Toast';
 import {toggleToast, setDrawerOpen} from '../../slices/app-slice';
 import Screen from '../../components/Screen';
-import Menu from '../../components/Menu/Menu';
 
 const Main: FC = React.memo(() => {
   let drawerOpen = useSelector((state: RootState) => state.app.drawerOpen);
@@ -42,24 +41,29 @@ const Main: FC = React.memo(() => {
     }
 
     StatusBar.setBarStyle('light-content');
+    // @ts-ignore
     global['toast'] = (toast) => dispatch(toggleToast(toast));
   }, []);
 
   useEffect(() => {
     if (!drawerOpen) {
+      // @ts-ignore
       drawerRef.current.closeDrawer();
     } else {
+      // @ts-ignore
       drawerRef.current.openDrawer();
     }
   }, [drawerOpen]);
 
   const toggleDrawer = () => {
     if (drawerOpen) {
+      // @ts-ignore
       drawerRef.current.closeDrawer();
-      dispatch(setDrawerOpen(false));
+      // dispatch(setDrawerOpen({drawerState: false}));
     } else {
+      // @ts-ignore
       drawerRef.current.openDrawer();
-      dispatch(setDrawerOpen(true));
+      // dispatch(setDrawerOpen({drawerState: true}));
     }
   };
 
@@ -100,12 +104,13 @@ const Main: FC = React.memo(() => {
       <Screen>
         <StatusBar backgroundColor="#3A1C39" animated />
         <DrawerLayout
+          // @ts-ignore
           ref={(ref) => (drawerRef.current = ref)}
           drawerType="slide"
           renderNavigationView={() => <TeamsList onTeamSelect={toggleDrawer} />}
           drawerWidth={px(185)}
-          onDrawerClose={() => dispatch(setDrawerOpen(false))}
-          onDrawerOpen={() => dispatch(setDrawerOpen(true))}>
+          onDrawerClose={() => dispatch(setDrawerOpen({drawerState: false}))}
+          onDrawerOpen={() => dispatch(setDrawerOpen({drawerState: false}))}>
           <View style={{flex: 1, flexDirection: 'row'}}>
             {renderMain()}
             {renderCurrentChat()}

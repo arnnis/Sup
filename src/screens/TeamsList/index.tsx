@@ -60,7 +60,7 @@ class TeamsList extends Component<Props> {
 
   render() {
     let {teamsList, theme} = this.props;
-
+    console.log('teams', teamsList);
     return (
       <View style={[styles.container, {backgroundColor: theme.darkGray}]}>
         <FlatList
@@ -72,6 +72,7 @@ class TeamsList extends Component<Props> {
             index,
           })}
           ListFooterComponent={<AddTeam />}
+          keyExtractor={(item) => item.id}
         />
         {this.renderVersion()}
       </View>

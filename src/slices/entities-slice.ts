@@ -32,6 +32,9 @@ const entitiesSlice = createSlice({
       action: PayloadAction<{entity: EntityType; data: (User & Chat & Message & Team)[] | object}>,
     ) {
       let {entity, data} = action.payload;
+
+      if (!data) return;
+
       if (Array.isArray(data)) {
         data = data.reduce(
           (preValue, curValue) => ({
@@ -42,8 +45,6 @@ const entitiesSlice = createSlice({
           {},
         );
       }
-
-      if (!data) return;
 
       state[entity].byId = merge(state[entity].byId, data);
     },
@@ -66,8 +67,11 @@ const entitiesSlice = createSlice({
     },
   },
   extraReducers: (b) => {
-    b.addCase(setCurrentTeam, () => {
-      return initialState;
+    b.addCase(setCurrentTeam, (state) => {
+      return {
+        ...initialState,
+        teams: state.teams,
+      };
     });
   },
 });
