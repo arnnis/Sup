@@ -1,8 +1,8 @@
-import React, {Component, PureComponent} from 'react';
+import React, {Component} from 'react';
 import {DispatchProp} from 'react-redux';
 import {View, StyleSheet, FlatList, ActivityIndicator, Text} from 'react-native';
 import {connect} from 'react-redux';
-import {RootState} from '../../reducers';
+import {RootState} from '../../store/configureStore';
 import {NavigationInjectedProps, withNavigation} from 'react-navigation';
 
 import px from '../../utils/normalizePixel';
@@ -12,6 +12,7 @@ import {Team} from '../../models';
 import {switchTeam} from '../../slices/team-thunks';
 import withTheme, {ThemeInjectedProps} from '../../contexts/theme/withTheme';
 import {Version} from '../../env';
+import {LoggedInTeam} from '../../slices/teams-slice';
 
 type Props = ReturnType<typeof mapStateToProps> &
   ThemeInjectedProps &
@@ -26,7 +27,7 @@ class TeamsList extends Component<Props> {
     this.props.onTeamSelect();
   };
 
-  renderTeamCell = ({item: teamInfo, index}) => {
+  renderTeamCell = ({item: teamInfo}: {item: LoggedInTeam}) => {
     let {entities, currentTeam} = this.props;
     let team = entities.teams.byId[teamInfo.id];
 
@@ -64,7 +65,6 @@ class TeamsList extends Component<Props> {
       <View style={[styles.container, {backgroundColor: theme.darkGray}]}>
         <FlatList
           data={teamsList}
-          //extraData={entities.teams}
           renderItem={this.renderTeamCell}
           getItemLayout={(data, index) => ({
             length: px(50),
