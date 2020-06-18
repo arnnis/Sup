@@ -176,3 +176,11 @@ export const goToAddTeam = (): AppThunk => (dispatch) => {
   if (!isLandscape()) NavigationService.navigate('Auth');
   else dispatch(openBottomSheet({screen: 'Auth'}));
 };
+
+export const getTeams = (): AppThunk => async (dispatch, getState) => {
+  const teamsList = getState().teams.list;
+  const currentTeamId = getState().teams.currentTeam;
+  batch(() => {
+    teamsList.filter((t) => t.id !== currentTeamId).forEach((team) => dispatch(getTeam(team.id)));
+  });
+};

@@ -54,7 +54,14 @@ const teamsSlice = createSlice({
       };
     },
     getTeamFail(state, action: PayloadAction<{teamId: string}>) {
-      this.getTeamStart(state, action);
+      let {teamId} = action.payload;
+      return {
+        ...state,
+        loading: {
+          ...state.loading,
+          [teamId]: false,
+        },
+      };
     },
 
     setCurrentTeam(state, action: PayloadAction<{teamId: string}>) {
