@@ -22,6 +22,7 @@ import {closeBottomSheet, setDrawerOpen, openBottomSheet} from './app-slice';
 import {Platform} from '../utils/platform';
 import AlertWeb from '../utils/AlertWeb';
 import {AppThunk} from '../store/configureStore';
+import {Team} from '../models';
 
 export const signinTeam = (
   domain: string,
@@ -103,7 +104,7 @@ export const getTeam = (teamId: string): AppThunk => async (dispatch) => {
   dispatch(getTeamStart({teamId}));
 
   try {
-    let {team: team}: {team: any} = await http({
+    let {team}: {team: Team} = await http({
       path: '/team.info',
       body: {
         team: teamId,

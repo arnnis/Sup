@@ -1,8 +1,8 @@
 import React, {FC} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 // @ts-ignore
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {RootState} from '../../reducers';
+import {RootState} from '../../store/configureStore';
 import {connect} from 'react-redux';
 import Touchable from '../../components/Touchable';
 import FastImage from 'react-native-fast-image';
