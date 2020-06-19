@@ -20,7 +20,7 @@ const initialState: TeamsState = {
 };
 
 const teamsSlice = createSlice({
-  name: 'app',
+  name: 'teams',
   initialState,
   reducers: {
     signinTeamSuccess(

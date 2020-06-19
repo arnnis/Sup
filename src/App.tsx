@@ -14,9 +14,6 @@ const App = () => {
   useEffect(() => {
     console.disableYellowBox = true;
     YellowBox.ignoreWarnings(['deprecated', 'Require cycle']);
-    // setTimeout(() => {
-    //   ProgressBarService.show({title: 'hello', onCancel: () => alert('ed')});
-    // }, 1000);
   }, []);
 
   return (

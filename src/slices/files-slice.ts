@@ -23,7 +23,7 @@ const initialState: FilesState = {
 };
 
 const filesSlice = createSlice({
-  name: 'app',
+  name: 'files',
   initialState,
   reducers: {
     getFilesStart(state) {

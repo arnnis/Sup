@@ -18,11 +18,11 @@ import {
 import {handleUserTyping, handleChatsMarkedAsSeen} from './chat-events';
 import {handleUserPresenceChange} from './members-events';
 
-export let socket: WebSocket = null;
+export let socket: WebSocket | null = null;
 export let connected = false;
-let pingInterval;
-let lastPingId;
-let reconnectInterval;
+let pingInterval: NodeJS.Timeout | null;
+export let lastPingId: number | null;
+let reconnectInterval: NodeJS.Timeout | null;
 let isReconnect = false;
 
 export const init = async () => {
@@ -107,7 +107,7 @@ export const init = async () => {
     store.dispatch(setConnectionStatus('disconnected'));
     connected = false;
 
-    !__DEV__ && _reconnect();
+    _reconnect();
   };
 
   socket.onerror = (error) => {
@@ -131,7 +131,7 @@ const _startPing = () => {
       return;
     }
     let message = sendMessage({type: 'ping'});
-    lastPingId = message && message.id;
+    lastPingId = message ? message.id : null;
     // console.log('[socket] ping sent');
   }, 10000);
 };

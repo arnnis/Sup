@@ -3,7 +3,7 @@ import {batch} from 'react-redux';
 import {storeEntities, updateEntity} from './entities-slice';
 import {Message, PaginationResult} from '../models';
 import http from '../utils/http';
-import {RootState} from '../reducers';
+import {RootState} from '../store/configureStore';
 import {SlackError} from '../utils/http/errors';
 import {AppThunk} from '../store/configureStore';
 

@@ -15,7 +15,7 @@ const initialState: UsersState = {
 };
 
 const membersSlice = createSlice({
-  name: 'app',
+  name: 'members',
   initialState,
   reducers: {
     getMembersStart(state) {

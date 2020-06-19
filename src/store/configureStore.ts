@@ -31,13 +31,7 @@ const persistedReducer = persistReducer<RootState>(persistConfig, rootReducer);
 
 const logger = createLogger();
 
-const middlewares = [
-  ...getDefaultMiddleware({
-    serializableCheck: false,
-    // immutableCheck: false,
-  }),
-  logger,
-];
+const middlewares = [...getDefaultMiddleware(), logger];
 
 export const store = RTKConfigureStore({
   reducer: persistedReducer,

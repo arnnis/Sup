@@ -16,7 +16,7 @@ const initialState: MessagesState = {
 };
 
 const messagesSlice = createSlice({
-  name: 'app',
+  name: 'messages',
   initialState,
   reducers: {
     getMessagesStart(state, action: PayloadAction<{chatId: string}>) {
@@ -87,10 +87,6 @@ const messagesSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(getLastMessageSuccess, (state, action) => {
-      let {nextCursor, directId} = action.payload;
-      state.nextCursor[directId] = nextCursor;
-    });
     builder.addCase(setCurrentTeam, () => {
       return initialState;
     });
