@@ -2,6 +2,7 @@ import {createSlice, PayloadAction, createSelector} from '@reduxjs/toolkit';
 import {Chat} from '../models';
 import {setCurrentTeam} from './teams-slice';
 import {RootState} from '../store/configureStore';
+import {addMessageToChat, removeMessageFromChat} from './messages-slice';
 
 export type ChatsState = {
   currentChatId: string;
@@ -144,6 +145,28 @@ const chatsSlice = createSlice({
     },
   },
   extraReducers: (b) => {
+    b.addCase(addMessageToChat, (state, action) => {
+      let {chatId, messageId} = action.payload;
+      if (!chatId) return;
+      return {
+        ...state,
+        lastMessages: {
+          ...state.lastMessages,
+          [chatId]: {
+            loading: false,
+            messageId,
+          },
+        },
+      };
+    });
+
+    b.addCase(removeMessageFromChat, (state, action) => {
+      let {chatId, messageId} = action.payload;
+      if (state.lastMessages[chatId]?.messageId === messageId) {
+        state.lastMessages[chatId].messageId = undefined;
+      }
+    });
+
     b.addCase(setCurrentTeam, () => {
       return initialState;
     });

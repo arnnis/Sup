@@ -2,7 +2,7 @@ import {send} from '.';
 import {PresencesQueryRequest, PresenceChangeEvent, PresenceSubscribeRequest} from './types';
 import {store} from '../../store/configureStore';
 import {updateEntity} from '../../slices/entities-slice';
-import {RootState} from '../../reducers';
+import {RootState} from '../../store/configureStore';
 
 export const queryPresences = (userIds: Array<string>) => {
   if (!userIds || !userIds.length) return;

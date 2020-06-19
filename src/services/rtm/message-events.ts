@@ -1,5 +1,5 @@
 import {SendInput, PendingMessage, PingMessage} from '../../models';
-import {store} from '../../App';
+import {store, RootState} from '../../store/configureStore';
 import {
   addPendingMessage,
   addMessageToChat,
@@ -9,7 +9,6 @@ import {
 import {send} from '.';
 import {batch} from 'react-redux';
 import {storeEntities, updateEntity} from '../../slices/entities-slice';
-import {RootState} from '../../reducers';
 import {getMember} from '../../slices/members-thunks';
 import dayjs from 'dayjs';
 import {
@@ -29,7 +28,10 @@ export const sendMessage = (input: SendInput) => {
   let fingerprint = Math.random() * 100000000000000000;
 
   if (input.type === 'message') {
+    if (!input.text) return false;
+
     let meId = meSelector(store.getState() as RootState).id;
+
     let pendingMessage: PendingMessage = {
       id: fingerprint,
       type: 'message',
@@ -44,7 +46,7 @@ export const sendMessage = (input: SendInput) => {
     store.dispatch(addPendingMessage({message: pendingMessage}));
 
     send(pendingMessage);
-    return true;
+    return pendingMessage;
   }
 
   if (input.type === 'ping') {
@@ -53,7 +55,7 @@ export const sendMessage = (input: SendInput) => {
       type: 'ping',
     };
     send(pingMessage);
-    return true;
+    return pingMessage;
   }
 
   return false;
