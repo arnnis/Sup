@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {File} from '../ChatUI/MessageFiles';
-import {RootState} from '../../reducers';
+import {RootState} from '../../store/configureStore';
 import {connect} from 'react-redux';
 import {View, StyleSheet} from 'react-native';
 import px from '../../utils/normalizePixel';
@@ -26,8 +26,8 @@ class FileCell extends Component<Props> {
 
   render() {
     let {file, theme} = this.props;
-    if (file.mimetype.startsWith('image')) return null;
-    if (file.mimetype.startsWith('video')) return null;
+    if (file?.mimetype?.startsWith('image')) return null;
+    if (file?.mimetype?.startsWith('video')) return null;
     return (
       <View
         style={[
