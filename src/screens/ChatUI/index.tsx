@@ -5,7 +5,7 @@ import {NavigationInjectedProps, withNavigation} from 'react-navigation';
 import MediaQuery from 'react-responsive';
 
 import Message from './Message';
-import {RootState} from '../../reducers';
+import {RootState} from '../../store/configureStore';
 import {addMessageToChat} from '../../slices/messages-slice';
 import {getMessagesByChatId, getRepliesByThreadId} from '../../slices/messages-thunks';
 import {markChatAsRead, getChatInfo, goToChannelDetails} from '../../slices/chats-thunks';

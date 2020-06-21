@@ -1,5 +1,5 @@
-import React, {useContext, useState, FC, useEffect} from 'react';
-import {View, StyleSheet, Platform} from 'react-native';
+import React, {useContext, useState, FC} from 'react';
+import {View, StyleSheet, Platform, Text} from 'react-native';
 import {EmojiData} from 'emoji-mart';
 
 import px from '../../utils/normalizePixel';
@@ -9,6 +9,7 @@ import * as RTM from '../../services/rtm';
 import EmojiButton from './EmojiButton';
 import ThemeContext from '../../contexts/theme';
 import FileUploadButton from './FileUploadButton';
+import VoiceRecording from './VoiceRecording';
 
 type Props = {
   chatId: string;
@@ -18,18 +19,28 @@ type Props = {
 const InputToolbar: FC<Props> = React.memo(({chatId, threadId}) => {
   const [text, setText] = useState('');
   const {theme} = useContext(ThemeContext);
+  const isVoice = !text || text.length === 0;
+  const [voiceRecording, setVoiceRecording] = useState(false);
 
-  const handleTextChanged = text => setText(text);
+  const handleTextChanged = (text: string) => setText(text);
+
+  const startVoiceRecording = () => {
+    setVoiceRecording(!voiceRecording);
+  };
 
   const handleSendPress = () => {
-    if (!text) return;
-    RTM.sendMessage({
-      type: 'message',
-      text,
-      channel: chatId,
-      thread_ts: threadId,
-    });
-    setText('');
+    if (isVoice) {
+      startVoiceRecording();
+    } else {
+      if (!text) return;
+      RTM.sendMessage({
+        type: 'message',
+        text,
+        channel: chatId,
+        thread_ts: threadId,
+      });
+      setText('');
+    }
   };
 
   const handleEmojiSelected = (emoji: EmojiData) => setText(text + emoji.native);
@@ -43,20 +54,26 @@ const InputToolbar: FC<Props> = React.memo(({chatId, threadId}) => {
     />
   );
 
-  const renderSend = () => <Send onPress={handleSendPress} />;
+  const renderSend = () => <Send onPress={handleSendPress} isVoice={isVoice} />;
 
   const renderEmojiButton = () => <EmojiButton onEmojiSelected={handleEmojiSelected} />;
 
   const renderFileUploadButton = () => <FileUploadButton chatId={chatId} threadId={threadId} />;
 
+  const renderVoiceRecordingArea = () => <VoiceRecording />;
+
   return (
     <View style={styles.container}>
       <View style={styles.wrapper}>
-        <View style={[styles.emojiAndComposeWrapper, {backgroundColor: theme.backgroundColor}]}>
-          {renderEmojiButton()}
-          {renderComposer()}
-          {renderFileUploadButton()}
-        </View>
+        {voiceRecording ? (
+          renderVoiceRecordingArea()
+        ) : (
+          <View style={[styles.emojiAndComposeWrapper, {backgroundColor: theme.backgroundColor}]}>
+            {renderEmojiButton()}
+            {renderComposer()}
+            {renderFileUploadButton()}
+          </View>
+        )}
         {renderSend()}
       </View>
     </View>
@@ -71,6 +88,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: px(5),
     alignItems: 'flex-end',
     paddingBottom: px(7.5),
+    height: '100%',
   },
   emojiButton: {
     borderRadius: px(15),

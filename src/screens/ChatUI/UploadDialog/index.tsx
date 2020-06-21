@@ -16,7 +16,7 @@ import EmojiButton from '../EmojiButton';
 import UploadImage from './UploadImage';
 import ThemeContext from '../../../contexts/theme';
 import Header from '../../../components/Header';
-import {RootState} from '../../../reducers';
+import {RootState} from '../../../store/configureStore';
 import Touchable from '../../../components/Touchable';
 import {closeUploadDialog} from '../../../slices/files-slice';
 import Send from '../Send';

@@ -6,20 +6,37 @@ import Touchable from '../../components/Touchable';
 
 interface Props {
   onPress(): void;
+  isVoice?: boolean;
 }
 
-const Send: FC<Props> = ({onPress}) => {
+const Send: FC<Props> = ({onPress, isVoice = false}) => {
+  const renderSendIcon = () => (
+    <MaterialCommunityIcons
+      name="send"
+      size={px(19)}
+      color="#fff"
+      style={Platform.select({
+        default: {marginLeft: px(2.5), marginTop: px(2.5)},
+        android: {marginLeft: px(2.5)},
+      })}
+    />
+  );
+  const renderVoiceIcon = () => (
+    <MaterialCommunityIcons
+      name="microphone"
+      size={px(21)}
+      color="#fff"
+      style={Platform.select({
+        ios: {marginLeft: px(2.5), marginTop: px(2.5)},
+        android: {marginLeft: px(2.5)},
+        web: {marginTop: px(2.5)},
+      })}
+    />
+  );
+
   return (
     <Touchable style={styles.conatiner} onPress={onPress}>
-      <MaterialCommunityIcons
-        name="send"
-        size={px(19)}
-        color="#fff"
-        style={Platform.select({
-          ios: {marginLeft: px(2.5), marginTop: px(2.5)},
-          android: {marginLeft: px(2.5)},
-        })}
-      />
+      {isVoice ? renderVoiceIcon() : renderSendIcon()}
     </Touchable>
   );
 };
