@@ -26,6 +26,10 @@ missing features.**
 [conversation]: https://user-images.githubusercontent.com/56032649/65983227-eda24d00-e489-11e9-9d31-ed6d392237e3.png
 [workspaces]: https://user-images.githubusercontent.com/56032649/65982799-0100e880-e489-11e9-87c0-ae898f3603dc.png
 
+## Donation
+If this project help you, you can give me a cup of coffee :)
+[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/paypalme2/arnnis)
+
 ## Contributing
 Run the following to start webpack development server:
 ```sh
@@ -60,3 +64,6 @@ To build for web:
 ```sh
 yarn web:release
 ```
+
+## License
+MIT
